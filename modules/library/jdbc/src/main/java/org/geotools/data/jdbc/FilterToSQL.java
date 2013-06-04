@@ -109,6 +109,7 @@ import org.opengis.filter.temporal.TOverlaps;
 import org.opengis.temporal.Period;
 
 import com.vividsolutions.jts.geom.Geometry;
+import java.util.*;
 
 /**
  * Encodes a filter into a SQL WHERE statement.  It should hopefully be generic
@@ -1415,11 +1416,23 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         } else if(literal instanceof java.sql.Date || literal instanceof java.sql.Timestamp) {
             // java.sql.date toString declares to always format to yyyy-mm-dd 
             // (and TimeStamp uses a similar approach)
-            out.write("'" + literal + "'");
+        	out.write("'" + literal);
+        	java.util.Date d = (java.util.Date) literal;
+        	// BC - better to statically compute this than use a calendar here
+        	if (d.getTime() < -62135769600000L) {
+        		out.write(" BC");
+        	}
+        	out.write("'");
         } else if(literal instanceof java.util.Date) {
             // get back to the previous case
             Timestamp ts = new java.sql.Timestamp(((Date) literal).getTime());
-            out.write("'" + ts + "'");
+            out.write("'" + ts);
+        	java.util.Date d = (java.util.Date) literal;
+        	// BC - better to statically compute this than use a calendar here
+        	if (d.getTime() < -62135769600000L) {
+        		out.write(" BC");
+        	}
+        	out.write("'");
         } else {
             // we don't know the type...just convert back to a string
             String encoding = (String) Converters.convert(literal,
@@ -1432,8 +1445,8 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
             // sigle quotes must be escaped to have a valid sql string
             String escaped = encoding.replaceAll("'", "''");
             out.write("'" + escaped + "'");
-        }
-    } 
+        } 
+    }
 
     /**
      * Subclasses must implement this method in order to encode geometry
