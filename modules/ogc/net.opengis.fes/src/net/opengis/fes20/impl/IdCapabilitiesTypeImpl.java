@@ -153,4 +153,16 @@ public class IdCapabilitiesTypeImpl extends EObjectImpl implements IdCapabilitie
         return super.eIsSet(featureID);
     }
 
+    @Override
+    public boolean hasEID() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean hasFID() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
 } //IdCapabilitiesTypeImpl

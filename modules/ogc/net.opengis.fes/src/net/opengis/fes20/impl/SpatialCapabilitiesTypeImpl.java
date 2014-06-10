@@ -6,7 +6,12 @@
  */
 package net.opengis.fes20.impl;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import net.opengis.fes20.Fes20Package;
+import net.opengis.fes20.GeometryOperandType;
 import net.opengis.fes20.GeometryOperandsType;
 import net.opengis.fes20.SpatialCapabilitiesType;
 import net.opengis.fes20.SpatialOperatorsType;
@@ -19,6 +24,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
+import org.opengis.filter.capability.GeometryOperand;
 
 /**
  * <!-- begin-user-doc -->
@@ -79,7 +85,7 @@ public class SpatialCapabilitiesTypeImpl extends EObjectImpl implements SpatialC
      * <!-- end-user-doc -->
      * @generated
      */
-    public GeometryOperandsType getGeometryOperands() {
+    public GeometryOperandsType getGeometryOperands2() {
         return geometryOperands;
     }
 
@@ -242,6 +248,15 @@ public class SpatialCapabilitiesTypeImpl extends EObjectImpl implements SpatialC
                 return spatialOperators != null;
         }
         return super.eIsSet(featureID);
+    }
+
+    @Override
+    public Collection<GeometryOperand> getGeometryOperands() {
+        List<GeometryOperand> geometryOperands = new ArrayList<GeometryOperand>();
+        for (GeometryOperandType go : getGeometryOperands2().getGeometryOperand()) {
+            geometryOperands.add(GeometryOperand.get(go.getName().getNamespaceURI(), go.getName().getLocalPart()));
+        }
+        return geometryOperands;
     }
 
 } //SpatialCapabilitiesTypeImpl

@@ -189,7 +189,11 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
              * needs to be improved?
              */
             if (!uri.startsWith("file:") && uri.contains("geoserver")) {
-                strategy = new GeoServerPre200Strategy();
+                if (Versions.v2_0_0.equals(capsVersion)) {
+                    strategy = new StrictWFS_2_0_Strategy();
+                } else {
+                    strategy = new GeoServerPre200Strategy();
+                }
             } else if (uri.contains("/ArcGIS/services/")) {
                 strategy = new StrictWFS_1_x_Strategy(); // new ArcGISServerStrategy();
             } else if (uri.contains("mapserver")) {

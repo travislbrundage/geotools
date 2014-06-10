@@ -19,6 +19,9 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
+import org.opengis.annotation.Specification;
+import org.opengis.annotation.UML;
+import org.opengis.filter.capability.ArithmeticOperators;
 
 /**
  * <!-- begin-user-doc -->
@@ -39,7 +42,7 @@ public class ScalarCapabilitiesTypeImpl extends EObjectImpl implements ScalarCap
      * The cached value of the '{@link #getLogicalOperators() <em>Logical Operators</em>}' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getLogicalOperators()
+     * @see #getLogicalOper0ators()
      * @generated
      * @ordered
      */
@@ -242,6 +245,17 @@ public class ScalarCapabilitiesTypeImpl extends EObjectImpl implements ScalarCap
                 return comparisonOperators != null;
         }
         return super.eIsSet(featureID);
+    }
+
+    @Override
+    public boolean hasLogicalOperators() {
+        return getLogicalOperators() != null;
+    }
+
+    @Override
+    @UML(identifier = "arithmeticOperators", specification = Specification.UNSPECIFIED)
+    public ArithmeticOperators getArithmeticOperators() {
+        return null;
     }
 
 } //ScalarCapabilitiesTypeImpl

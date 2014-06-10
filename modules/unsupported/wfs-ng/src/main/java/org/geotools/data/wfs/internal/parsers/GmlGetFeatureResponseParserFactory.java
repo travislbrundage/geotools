@@ -74,7 +74,11 @@ public class GmlGetFeatureResponseParserFactory implements WFSResponseFactory {
                                 // the specific strategy can hanlde?
                     "text/gml; subtype=gml/3.1.1",// the incorrectly advertised GeoServer format
                     "GML2",//
-                    "text/xml; subtype=gml/2.1.2"//
+                    "text/xml; subtype=gml/2.1.2",//
+                    "application/xml",//
+                    "text/xml; subtype=gml/3.2", //
+                    "application/gml+xml; version=3.2", //
+                    "gml32" //
             ));
 
     /**

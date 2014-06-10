@@ -17,21 +17,26 @@
 package org.geotools.wfs.v2_0.bindings;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
 
+import net.opengis.wfs.InsertResultsType;
+import net.opengis.wfs.InsertedFeatureType;
 import net.opengis.wfs20.QueryType;
 import net.opengis.wfs20.Wfs20Factory;
 
 import org.eclipse.emf.ecore.EObject;
+import org.geotools.filter.v1_0.capabilities.OGC;
+import org.geotools.util.Converters;
 import org.geotools.wfs.v2_0.WFS;
 import org.geotools.xml.ComplexEMFBinding;
 import org.geotools.xs.bindings.XSQNameBinding;
-import org.opengis.filter.Filter;
-import org.opengis.filter.sort.SortBy;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 public class QueryTypeBinding extends ComplexEMFBinding {
 
@@ -41,21 +46,20 @@ public class QueryTypeBinding extends ComplexEMFBinding {
         super(Wfs20Factory.eINSTANCE, WFS.QueryType);
         this.namespaceContext = namespaceContext;
     }
-    
+
     @Override
     protected void setProperty(EObject eObject, String property, Object value, boolean lax) {
         super.setProperty(eObject, property, value, lax);
         if (!lax) {
             if ("typeNames".equalsIgnoreCase(property)) {
-                QueryType q = (QueryType)eObject;
-                
-                //turn into list of qname
+                QueryType q = (QueryType) eObject;
+
+                // turn into list of qname
                 List qNames = new ArrayList();
                 for (Object s : q.getTypeNames()) {
                     try {
                         qNames.add(new XSQNameBinding(namespaceContext).parse(null, s));
-                    } 
-                    catch (Exception e) {
+                    } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
                 }
@@ -63,6 +67,43 @@ public class QueryTypeBinding extends ComplexEMFBinding {
                 q.getTypeNames().addAll(qNames);
             }
         }
+    }
+    
+    @Override
+    public Object getProperty(Object object, QName name) throws Exception {
+        if ("typeNames".equalsIgnoreCase(name.getLocalPart())) {
+            StringBuilder s = new StringBuilder();
+            for (Object typeName : ((QueryType) object).getTypeNames()) {
+                if (typeName instanceof Collection) {
+                    typeName = ((Collection) typeName).iterator().next();
+                }
+                s.append(Converters.convert(typeName, String.class));
+                s.append(",");
+            }
+            s.setLength(s.length() - 1);
+            return s.toString();
+        }
+        else if (("AbstractProjectionClause").equalsIgnoreCase(name.getLocalPart())){
+            return null;
+        }
+        
+        return super.getProperty(object, name);
+    }
+    
+    @Override
+    public Element encode(Object object, Document document, Element value) throws Exception {
+        Element e = super.encode(object, document, value);
+        
+        QueryType resultType = (QueryType) object;
+        
+        Iterator it = resultType.getAbstractProjectionClause().iterator();
+        while (it.hasNext()) {
+              Element node = document.createElementNS(WFS.NAMESPACE, "PropertyName");
+              node.setTextContent(it.next().toString());
+              e.appendChild(node);
+       }
+        
+        return e;
     }
 
 }
