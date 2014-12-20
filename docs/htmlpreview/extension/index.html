@@ -1,0 +1,256 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Extensions &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../index.html" />
+    <link rel="next" title="Application Schema Support" href="app-schema.html" />
+    <link rel="prev" title="Shapefile Renderer" href="../library/render/shapefile.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+        <li><a href="#">Extensions</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../library/render/shapefile.html"
+                        title="previous chapter">Shapefile Renderer</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="app-schema.html"
+                        title="next chapter">Application Schema Support</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/extension/index.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="extensions">
+<h1>Extensions<a class="headerlink" href="#extensions" title="Permalink to this headline">¶</a></h1>
+<p>Extensions build additional functionality on top of the core services of the GeoTools library.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="app-schema.html">Application Schema Support</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="app-schema.html#application-schema-dataaccess">Application Schema DataAccess</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="app-schema.html#creating-an-appschemadataaccess">Creating an AppSchemaDataAccess</a></li>
+<li class="toctree-l3"><a class="reference internal" href="app-schema.html#resource-management">Resource Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="app-schema.html#schema-download">Schema download</a></li>
+<li class="toctree-l3"><a class="reference internal" href="app-schema.html#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="app-schema.html#application-schema-resolver">Application Schema Resolver</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="app-schema.html#appschemaconfiguration">AppSchemaConfiguration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="app-schema.html#sample-dataaccess">Sample DataAccess</a></li>
+<li class="toctree-l2"><a class="reference internal" href="app-schema.html#application-schema-packages">Application Schema Packages</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="brewer/index.html">Brewer</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="brewer/faq.html">Brewer FAQ</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="brewer/faq.html#q-i-have-47-classes-to-represent-and-colorbrewer-only-goes-up-to-12">Q: I have 47 classes to represent and ColorBrewer only goes up to 12!</a></li>
+<li class="toctree-l3"><a class="reference internal" href="brewer/faq.html#q-but-why-does-it-only-go-up-to-12">Q: But why does it only go up to 12?</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="brewer/classifier.html">Classifier</a></li>
+<li class="toctree-l2"><a class="reference internal" href="brewer/colorbrewer.html">ColorBrewer</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="brewer/colorbrewer.html#stylegenerator">StyleGenerator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="brewer/colorbrewer.html#id1">ColorBrewer</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="brewer/colorbrewer.html#website">Website</a></li>
+<li class="toctree-l4"><a class="reference internal" href="brewer/colorbrewer.html#id2">ColorBrewer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="brewer/colorbrewer.html#example">Example</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="complex.html">Complex Feature</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="complex.html#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="graph/index.html">Graph</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="graph/index.html#graph-model">Graph Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graph/index.html#id1">Graph</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="graph/index.html#graph-access">Graph Access</a></li>
+<li class="toctree-l3"><a class="reference internal" href="graph/index.html#graph-traversal">Graph Traversal</a></li>
+<li class="toctree-l3"><a class="reference internal" href="graph/index.html#directed-graph">Directed Graph</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="graph/index.html#building">Building</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="graph/index.html#graphbuilder">GraphBuilder</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="graph/index.html#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="graph/index.html#graphgenerator">GraphGenerator</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="graph/index.html#building-graph-from-a-featurecollection">Building Graph from a FeatureCollection</a></li>
+<li class="toctree-l4"><a class="reference internal" href="graph/index.html#building-graph-from-line-segments">Building Graph from Line Segments</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="graph/index.html#building-a-featurecollection-from-your-graph">Building a FeatureCollection from your Graph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graph/index.html#shortest-path">Shortest Path</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="grid.html">Vector grids</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="grid.html#polygon-grids">Polygon grids</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="grid.html#creating-square-grids">Creating square grids</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grid.html#grids-for-display-in-different-map-projections">Grids for display in different map projections</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grid.html#creating-hexagonal-grids">Creating hexagonal grids</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grid.html#working-with-a-user-defined-feature-type">Working with a user-defined feature type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grid.html#selective-creation-of-grid-elements">Selective creation of grid elements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grid.html#finer-control-over-grid-element-shape">Finer control over grid element shape</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="grid.html#oblongs">Oblongs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="grid.html#hexagons">Hexagons</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="grid.html#line-grids">Line grids</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ogc/index.html">OGC</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ogc/ows.html">net.opengis.ows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ogc/wcs.html">net.opengis.wcs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ogc/wfs.html">net.opengis.wfs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ogc/wfsv.html">net.opengis.wfsv</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ogc/wps.html">net.opengis.wps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ogc/xlink.html">org.w3.xlink</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="wms/index.html">WMS</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="wms/faq.html">WMS FAQ</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="wms/faq.html#q-scrambled-png-images">Q: Scrambled PNG Images?</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="wms/wms.html">WebMapServer</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="wms/wms.html#wmscapabilities">WMSCapabilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="wms/wms.html#service">Service</a></li>
+<li class="toctree-l4"><a class="reference internal" href="wms/wms.html#request">Request</a></li>
+<li class="toctree-l4"><a class="reference internal" href="wms/wms.html#layer">Layer</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="wms/wms.html#styles">Styles</a></li>
+<li class="toctree-l3"><a class="reference internal" href="wms/wms.html#getmaprequest">GetMapRequest</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="validation.html">Validation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="validation.html#validationprocessor">ValidationProcessor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="validation.html#configuration">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="validation.html#feature-validation-example">Feature Validation Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="validation.html#integrity-validation-example">Integrity Validation Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="xsd/index.html">XSD</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="xsd/core.html">XSD-Core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="xsd/fes.html">XSD-FES</a></li>
+<li class="toctree-l2"><a class="reference internal" href="xsd/filter.html">XSD-Filter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="xsd/gml2.html">XSD GML2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="xsd/gml3.html">XSD-GML3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="xsd/kml.html">XSD-KML</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="xsd/kml.html#kml-parsing">KML Parsing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="xsd/kml.html#kml-encoding">KML Encoding</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="xsd/ows.html">XSD OWS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="xsd/sld.html">XSD SLD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="xsd/wcs.html">XSD WCS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="xsd/wfs.html">XSD WFS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="xsd/wms.html">XSD WMS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="xsd/wps.html">XSD WPS</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="transform/transform.html">Transform plugin</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="transform/transform.html#selecting-attributes">Selecting attributes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="transform/transform.html#renaming-attributes">Renaming attributes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="transform/transform.html#creating-new-attributes-with-expressions">Creating new attributes with expressions</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<p>Extensions build on top of the core concepts provided by the GeoTools library. This allows the project to take on more general topics then a just being a simple geospatial library.</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="app-schema.html" title="Application Schema Support"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="../library/render/shapefile.html" title="Shapefile Renderer"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+        <li><a href="#">Extensions</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

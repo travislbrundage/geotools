@@ -20,7 +20,7 @@ Since this tutorial has been written the result has been broken out into a disti
 * :download:`CSVLatLonStrategy.java </../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/parse/CSVLatLonStrategy.java>`
 * :download:`CSVSpecifiedLatLngStrategy.java </../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/parse/CSVSpecifiedLatLngStrategy.java>`
 * :download:`CSVSpecifiedWKTStrategy.java </../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/parse/CSVSpecifiedWKTStrategy.java>`
-* :download:`CSVStrategySupport.java </../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/parse/CSVStrategySupport.java.java>`
+* :download:`CSVStrategySupport.java </../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/parse/CSVStrategySupport.java>`
 
 CSVDataStore
 ^^^^^^^^^^^^
@@ -36,19 +36,13 @@ Using the CSVFileState to do work for us, the createTypeNames() method is much s
 
    .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVDataStore.java
       :language: java
-      :prepend: public Name getTypeName() {
-      :start-after: public Name getTypeName() {
-      :end-before: return Collections.singletonList(getTypeName());
-      :append: return Collections.singletonList(getTypeName());
-      :append: }
+      :lines: 40-47
 
 CSVDataStore now implements the FileDataStore interface to ensure a standard for operations which are performed by File DataStores. As such, it must override its methods. Note the use of the CSVStrategy in order to determine the schema; depending on the strategy defined, the schema for this store will be different. For this implementation, the CSVDataStore is read only, so the write methods throw a new UnsupportedOperationException.
 
    .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVDataStore.java
       :language: java
-      :prepend: public SimpleFeatureType getSchema() throws IOException {
-      :start-after: public SimpleFeatureType getSchema() throws IOException {
-      :end-before: public CSVStrategy getCSVStrategy() {
+      :lines: 55-90
 
 CSVDataStoreFactory
 ^^^^^^^^^^^^^^^^^^^
@@ -64,37 +58,25 @@ Much of the class's structure is improved to be more compartmentalized. The meta
 
    .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVDataStoreFactory.java
       :language: java
-      :start-after: @Override
-      :end-before: private boolean canProcessExtension(String filename) {
+      :lines: 55-68
 
 isAvailable() just attempts to read the class, and if it succeeds, returns true.
 
    .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVDataStoreFactory.java
       :language: java
-      :prepend: @Override
-      :prepend: public boolean isAvailable() {
-      :start-after: public boolean isAvailable() {
-      :end-before: @Override
+      :lines: 99-107
 
 The canProcess() method was made more tolerant, now accepting URL and File params through the fileFromParams() method. It will try File first, then URL before giving up.
 
    .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVDataStoreFactory.java
       :language: java
-      :prepend: private boolean canProcessExtension(String filename) {
-      :start-after: private boolean canProcessExtension(String filename) {
-      :end-before: return false;
-      :append: return false;
-      :append: }
+      :lines: 70-97
 
 Finally, the different strategies are implemented in the createDataStoreFromFile() method. The method is overloaded to make some parameters optional, which the class will then fill in for us.
 
    .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVDataStoreFactory.java
       :language: java
-      :prepend: public FileDataStore createDataStoreFromFile(File file) throws IOException {
-      :start-after: public FileDataStore createDataStoreFromFile(File file) throws IOException {
-      :end-before: return createDataStoreFromFile(file);
-      :append: return createDataStoreFromFile(file);
-      :append: }
+      :lines: 114-182
 
 CSVFeatureReader
 ^^^^^^^^^^^^^^^^
@@ -104,25 +86,11 @@ The CSVFeatureReader now delegates much of the functionality to a new class call
    .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVFeatureReader.java
       :language: java
       :start-after: import org.opengis.feature.simple.SimpleFeatureType;
-      :end-before: return iterator.hasNext();
-      :append: return iterator.hasNext();
-      :append: }
-      :append: }
 
 CSVIterator
 ^^^^^^^^^^^
 
-The CSVIterator is a helper class primarily for CSVFeatureReader. Much of the old code is now implemented here, and has the added benefit of allowing an iterator to be instantiated for use elsewhere, making the code more general than before.
-
-   .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/parse/CSVIterator.java
-      :language: java
-      :start-after: import com.csvreader.CsvReader;
-      :end-before: csvReader.close();
-      :append: csvReader.close();
-      :append: }
-      :append: }
-
-With the addition of the CSVFileState, the class now reads from it instead of the CSVDataStore.
+The CSVIterator is a helper class primarily for CSVFeatureReader. Much of the old code is now implemented here, and has the added benefit of allowing an iterator to be instantiated for use elsewhere, making the code more general than before. With the addition of the CSVFileState, the class now reads from it instead of the CSVDataStore.
 
    .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/parse/CSVIterator.java
       :language: java
@@ -133,11 +101,7 @@ Because we're now using strategy objects to implement functionality, the readFea
 
    .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/parse/CSVIterator.java
       :language: java
-      :prepend: private SimpleFeature readFeature() throws IOException {
-      :start-after: private SimpleFeature readFeature() throws IOException {
-      :end-before: @Override
-
-You can check out the entire :download:`CSVIterator.java </../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/parse/CSVIterator.java>` to see the full changes.
+      :lines: 54-60
 
 CSVFeatureSource
 ^^^^^^^^^^^^^^^^
@@ -153,9 +117,7 @@ The getBoundsInternal() method is now implemented by making use of the methods p
 
    .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVFeatureSource.java
       :language: java
-      :prepend: protected ReferencedEnvelope getBoundsInternal(Query query) throws IOException {
-      :start-after: protected ReferencedEnvelope getBoundsInternal(Query query) throws IOException {
-      :end-before: protected int getCountInternal(Query query) throws IOException {
+      :lines: 41-54
 
 The getReaderInternal() method now utilizes the strategy of the CSVDataStore rather than state to reflect the changes to the CSVFeatureReader design.
 
@@ -200,7 +162,6 @@ The class opens the file for reading, ensures it is the correct CSV format, and 
       :start-after: public CsvReader openCSVReader() throws IOException {
       :end-before: return csvReader;
       :append: return csvReader;
-      :append: }
 
 The readCSVHeaders() and getCSVHeaders() methods grab the headers from the file (thus, leaving just the data).
 
@@ -282,13 +243,11 @@ CSVSpecifiedWKTStrategy is the strategy used for a Well-Known-Text (WKT) format.
       :start-after: import com.vividsolutions.jts.io.WKTReader;
       :end-before: return builder.buildFeatureType();
       :append: return builder.buildFeatureType();
-      :append: }
 
 In creating a feature, the line is parsed for the WKT field specified before, and if found, attempts to read a Geometry object from the file. If for some reason the field is unparseable, it will just be set to a null value. The builder utility will then build this feature after the line has been fully read.
 
    .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/parse/CSVSpecifiedWKTStrategy.java
       :language: java
-      :prepend: @Override
       :prepend: public SimpleFeature createFeature(String recordId, String[] csvRecord) {
       :start-after: public SimpleFeature createFeature(String recordId, String[] csvRecord) {
 

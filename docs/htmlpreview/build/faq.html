@@ -1,0 +1,307 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Building FAQ &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../index.html" />
+    <link rel="up" title="Building" href="index.html" />
+    <link rel="next" title="Tutorials" href="../tutorial/index.html" />
+    <link rel="prev" title="Using Git" href="git.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Building</a> &raquo;</li>
+        <li><a href="#">Building FAQ</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Building FAQ</a><ul>
+<li><a class="reference internal" href="#what-version-of-jdk">What version of JDK?</a></li>
+<li><a class="reference internal" href="#how-do-i-build-from-source-code">How do I build from source code?</a></li>
+<li><a class="reference internal" href="#why-is-maven-3-slower">Why is Maven 3 Slower?</a></li>
+<li><a class="reference internal" href="#what-the-fastest-build">What the fastest build?</a></li>
+<li><a class="reference internal" href="#how-do-i-create-an-executable-jar-for-my-geotools-app">How do I create an executable jar for my GeoTools app?</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="git.html"
+                        title="previous chapter">Using Git</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../tutorial/index.html"
+                        title="next chapter">Tutorials</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/build/faq.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="building-faq">
+<h1>Building FAQ<a class="headerlink" href="#building-faq" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="what-version-of-jdk">
+<h2>What version of JDK?<a class="headerlink" href="#what-version-of-jdk" title="Permalink to this headline">¶</a></h2>
+<p>Our policy is waiting for the majority of our users before migrating to a new version of the Java
+language. In general we are held up by the slow migration of Java Enterprise Edition environments
+such as websphere.</p>
+<p>GeoTools 8 uses Java 6.</p>
+</div>
+<div class="section" id="how-do-i-build-from-source-code">
+<h2>How do I build from source code?<a class="headerlink" href="#how-do-i-build-from-source-code" title="Permalink to this headline">¶</a></h2>
+<p>Complete build instructions are provided in the user guide:</p>
+<ul class="simple">
+<li><a class="reference internal" href="index.html"><em>Building</em></a></li>
+</ul>
+<p>GeoTools makes use of the maven build system (in part to help us reused code from
+a number of other java projects).</p>
+<p>To build all the modules:</p>
+<div class="highlight-python"><div class="highlight"><pre>mvn install -Dall
+</pre></div>
+</div>
+<p>To load the modules into the eclipse IDE.</p>
+<ol class="arabic">
+<li><p class="first">Use <em class="menuselection">Windows ‣ Preferences</em> to open the Preference Dialog.
+Using the tree on the left navigate to the Java &gt; Build path &gt; Classpath Variables preference
+Page.</p>
+</li>
+<li><p class="first">Add an <strong>M2_REPO</strong> classpath variable pointing to your local repository
+where maven downloads jars.</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="24%" />
+<col width="76%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">PLATFORM</th>
+<th class="head">LOCAL REPOSITORY</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Windows XP:</td>
+<td><code class="file docutils literal"><span class="pre">C:\Documents</span> <span class="pre">and</span> <span class="pre">Settings\Jody\.m2\repository</span></code></td>
+</tr>
+<tr class="row-odd"><td>Windows:</td>
+<td><code class="file docutils literal"><span class="pre">C:\Users\Jody.m2\repository</span></code></td>
+</tr>
+<tr class="row-even"><td>Linux and Mac:</td>
+<td><code class="file docutils literal"><span class="pre">~/.m2/repository</span></code></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</li>
+</ol>
+<ol class="arabic" start="2">
+<li><p class="first">Generate the .project and .classpath files needed for eclipse:</p>
+<div class="highlight-python"><div class="highlight"><pre>mvn eclipse:eclipse -Dall
+</pre></div>
+</div>
+</li>
+</ol>
+<ol class="arabic simple" start="4">
+<li>You can now use the eclipse import wizard to load existing projects.</li>
+</ol>
+</div>
+<div class="section" id="why-is-maven-3-slower">
+<h2>Why is Maven 3 Slower?<a class="headerlink" href="#why-is-maven-3-slower" title="Permalink to this headline">¶</a></h2>
+<p>Maven 3 is not faster out of the box with the default settings.</p>
+<p>Gowever what is new is that you can ask it to use more than one core:</p>
+<div class="highlight-python"><div class="highlight"><pre>mvn install -Dall -T 2C
+</pre></div>
+</div>
+<p>The above asks the build to go in &#8220;threaded&#8221; mode; using two threads for each core.</p>
+</div>
+<div class="section" id="what-the-fastest-build">
+<h2>What the fastest build?<a class="headerlink" href="#what-the-fastest-build" title="Permalink to this headline">¶</a></h2>
+<p>This is the fastest build on my machine:</p>
+<div class="highlight-python"><div class="highlight"><pre>mvn install -DskipTests -o -T 2C
+</pre></div>
+</div>
+<p>The above options:</p>
+<ul class="simple">
+<li>install (without clean) only recompiles modified code</li>
+<li>no profiles or flags are used to build optional code; onlt the core library is built</li>
+<li>skipTests - the tests are still built; they are just not run</li>
+<li>o - allows the build to work &#8220;offline&#8221; (thus no external servers are checked during the build)</li>
+<li>T 2C - builds with two threads per core</li>
+</ul>
+<p>I use this configuration to quickly push all local changes into my local maven repository so I can
+test in a downstream application such as uDig or GeoServer.</p>
+</div>
+<div class="section" id="how-do-i-create-an-executable-jar-for-my-geotools-app">
+<h2>How do I create an executable jar for my GeoTools app?<a class="headerlink" href="#how-do-i-create-an-executable-jar-for-my-geotools-app" title="Permalink to this headline">¶</a></h2>
+<p>If you&#8217;re familiar with Maven you might have used the <a class="reference external" href="http://maven.apache.org/plugins/maven-assembly-plugin/">assembly plugin</a> to create self-contained, executable jars. The bad news is
+that this generally won&#8217;t work with GeoTools. The problem is that GeoTools modules often define one or more files in its
+META-INF/services directory with the same names as files defined in other modules.  The assembly plugin just copies
+files with the same name over the top of each other rather than merging their contents.</p>
+<p>The good news is that the <a class="reference external" href="http://maven.apache.org/plugins/maven-shade-plugin/index.html">Maven shade plugin</a> can be
+used instead and it will correctly merge the META-INF/services files from each of the GeoTools modules used by your
+application.</p>
+<p>The POM below will create an executable jar for the GeoTools <a class="reference internal" href="../tutorial/quickstart/index.html"><em>Quickstart</em></a> module which includes all of the required
+GeoTools modules and their dependencies.</p>
+<div class="highlight-xml"><div class="highlight"><pre><span class="nt">&lt;project</span> <span class="na">xmlns=</span><span class="s">&quot;http://maven.apache.org/POM/4.0.0&quot;</span> <span class="na">xmlns:xsi=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span>
+       <span class="na">xsi:schemaLocation=</span><span class="s">&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;modelVersion&gt;</span>4.0.0<span class="nt">&lt;/modelVersion&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>org.geotools.demo<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>quickstart<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;packaging&gt;</span>jar<span class="nt">&lt;/packaging&gt;</span>
+  <span class="nt">&lt;version&gt;</span>1.0<span class="nt">&lt;/version&gt;</span>
+  <span class="nt">&lt;name&gt;</span>GeoTools Quickstart example<span class="nt">&lt;/name&gt;</span>
+  <span class="nt">&lt;url&gt;</span>http://geotools.org<span class="nt">&lt;/url&gt;</span>
+
+  <span class="nt">&lt;properties&gt;</span>
+      <span class="nt">&lt;geotools.version&gt;</span>2.6.2<span class="nt">&lt;/geotools.version&gt;</span>
+  <span class="nt">&lt;/properties&gt;</span>
+
+  <span class="nt">&lt;build&gt;</span>
+      <span class="nt">&lt;plugins&gt;</span>
+          <span class="nt">&lt;plugin&gt;</span>
+              <span class="nt">&lt;artifactId&gt;</span>maven-compiler-plugin<span class="nt">&lt;/artifactId&gt;</span>
+              <span class="nt">&lt;configuration&gt;</span>
+                  <span class="nt">&lt;encoding&gt;</span>UTF-8<span class="nt">&lt;/encoding&gt;</span>
+                  <span class="nt">&lt;target&gt;</span>1.5<span class="nt">&lt;/target&gt;</span>
+                  <span class="nt">&lt;source&gt;</span>1.5<span class="nt">&lt;/source&gt;</span>
+              <span class="nt">&lt;/configuration&gt;</span>
+          <span class="nt">&lt;/plugin&gt;</span>
+          <span class="nt">&lt;plugin&gt;</span>
+              <span class="nt">&lt;groupId&gt;</span>org.apache.maven.plugins<span class="nt">&lt;/groupId&gt;</span>
+              <span class="nt">&lt;artifactId&gt;</span>maven-shade-plugin<span class="nt">&lt;/artifactId&gt;</span>
+              <span class="nt">&lt;version&gt;</span>1.3.1<span class="nt">&lt;/version&gt;</span>
+              <span class="nt">&lt;executions&gt;</span>
+                  <span class="nt">&lt;execution&gt;</span>
+                      <span class="nt">&lt;phase&gt;</span>package<span class="nt">&lt;/phase&gt;</span>
+                      <span class="nt">&lt;goals&gt;</span>
+                          <span class="nt">&lt;goal&gt;</span>shade<span class="nt">&lt;/goal&gt;</span>
+                      <span class="nt">&lt;/goals&gt;</span>
+                      <span class="nt">&lt;configuration&gt;</span>
+                          <span class="nt">&lt;transformers&gt;</span>
+                              <span class="c">&lt;!-- This bit sets the main class for the executable jar as you otherwise --&gt;</span>
+                              <span class="c">&lt;!-- would with the assembly plugin                                       --&gt;</span>
+                              <span class="nt">&lt;transformer</span> <span class="na">implementation=</span><span class="s">&quot;org.apache.maven.plugins.shade.resource.ManifestResourceTransformer&quot;</span><span class="nt">&gt;</span>
+                                  <span class="nt">&lt;manifestEntries&gt;</span>
+                                      <span class="nt">&lt;Main-Class&gt;</span>org.geotools.demo.Quickstart<span class="nt">&lt;/Main-Class&gt;</span>
+                                  <span class="nt">&lt;/manifestEntries&gt;</span>
+                              <span class="nt">&lt;/transformer&gt;</span>
+                              <span class="c">&lt;!-- This bit merges the various GeoTools META-INF/services files         --&gt;</span>
+                              <span class="nt">&lt;transformer</span> <span class="na">implementation=</span><span class="s">&quot;org.apache.maven.plugins.shade.resource.ServicesResourceTransformer&quot;</span><span class="nt">/&gt;</span>
+                          <span class="nt">&lt;/transformers&gt;</span>
+                      <span class="nt">&lt;/configuration&gt;</span>
+                  <span class="nt">&lt;/execution&gt;</span>
+              <span class="nt">&lt;/executions&gt;</span>
+          <span class="nt">&lt;/plugin&gt;</span>
+      <span class="nt">&lt;/plugins&gt;</span>
+  <span class="nt">&lt;/build&gt;</span>
+
+  <span class="nt">&lt;dependencies&gt;</span>
+      <span class="nt">&lt;dependency&gt;</span>
+          <span class="nt">&lt;groupId&gt;</span>org.geotools<span class="nt">&lt;/groupId&gt;</span>
+          <span class="nt">&lt;artifactId&gt;</span>gt-shapefile<span class="nt">&lt;/artifactId&gt;</span>
+          <span class="nt">&lt;version&gt;</span>${geotools.version}<span class="nt">&lt;/version&gt;</span>
+      <span class="nt">&lt;/dependency&gt;</span>
+      <span class="nt">&lt;dependency&gt;</span>
+          <span class="nt">&lt;groupId&gt;</span>org.geotools<span class="nt">&lt;/groupId&gt;</span>
+          <span class="nt">&lt;artifactId&gt;</span>gt-epsg-hsql<span class="nt">&lt;/artifactId&gt;</span>
+          <span class="nt">&lt;version&gt;</span>${geotools.version}<span class="nt">&lt;/version&gt;</span>
+      <span class="nt">&lt;/dependency&gt;</span>
+      <span class="nt">&lt;dependency&gt;</span>
+          <span class="nt">&lt;groupId&gt;</span>org.geotools<span class="nt">&lt;/groupId&gt;</span>
+          <span class="nt">&lt;artifactId&gt;</span>gt-swing<span class="nt">&lt;/artifactId&gt;</span>
+          <span class="nt">&lt;version&gt;</span>${geotools.version}<span class="nt">&lt;/version&gt;</span>
+      <span class="nt">&lt;/dependency&gt;</span>
+      <span class="nt">&lt;dependency&gt;</span>
+          <span class="nt">&lt;groupId&gt;</span>junit<span class="nt">&lt;/groupId&gt;</span>
+          <span class="nt">&lt;artifactId&gt;</span>junit<span class="nt">&lt;/artifactId&gt;</span>
+          <span class="nt">&lt;version&gt;</span>4.5<span class="nt">&lt;/version&gt;</span>
+          <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
+      <span class="nt">&lt;/dependency&gt;</span>
+  <span class="nt">&lt;/dependencies&gt;</span>
+<span class="nt">&lt;/project&gt;</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="../tutorial/index.html" title="Tutorials"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="git.html" title="Using Git"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="index.html" >Building</a> &raquo;</li>
+        <li><a href="#">Building FAQ</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,169 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>JTS Wrapper Plugin &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../index.html" />
+    <link rel="up" title="Unsupported" href="index.html" />
+    <link rel="next" title="Process" href="process/index.html" />
+    <link rel="prev" title="Operations" href="geometry/operation.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Unsupported</a> &raquo;</li>
+        <li><a href="#">JTS Wrapper Plugin</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">JTS Wrapper Plugin</a><ul>
+<li><a class="reference internal" href="#about-jts-wrapper">About JTS Wrapper</a></li>
+<li><a class="reference internal" href="#using-jts-wrapper">Using JTS Wrapper</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="geometry/operation.html"
+                        title="previous chapter">Operations</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="process/index.html"
+                        title="next chapter">Process</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/unsupported/jts-wrapper.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="jts-wrapper-plugin">
+<h1>JTS Wrapper Plugin<a class="headerlink" href="#jts-wrapper-plugin" title="Permalink to this headline">¶</a></h1>
+<p>The <strong>gt-jts-wrapper</strong> module was originally donated by SYS TECHNOLOGIES, it is an implementation of the ISO Geometry interfaces done up as wrappers around the Java Topology Suite SFSQL implementations.</p>
+<p>Related Links:</p>
+<ul class="simple">
+<li><a class="reference internal" href="../library/opengis/geometry.html"><em>gt-main geometry</em></a></li>
+<li><a class="reference internal" href="../library/jts/index.html"><em>gt-jts</em></a></li>
+</ul>
+<p><strong>Maven</strong>:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;dependency&gt;
+  &lt;groupId&gt;org.geotools&lt;/groupId&gt;
+  &lt;artifactId&gt;gt-jts-wrapper&lt;/artifactId&gt;
+  &lt;version&gt;${geotools.version}&lt;/version&gt;
+&lt;/dependency&gt;
+</pre></div>
+</div>
+<div class="section" id="about-jts-wrapper">
+<h2>About JTS Wrapper<a class="headerlink" href="#about-jts-wrapper" title="Permalink to this headline">¶</a></h2>
+<p>Since the JTS project tracks the SFSQL specification there is not a direct one to one mapping between ISO Geometry constructs and JTS.</p>
+<p>While this code has been used in a commercial setting there is no way this module is not going to be extended to support CurveSegments due to the above technical limitation.</p>
+<p>There have been reports of synchronization problems between the wrapper classes (that implement the ISO Geometry interfaces) and their internal JTS Geometry object. But for the most part you can use this module without trouble.</p>
+</div>
+<div class="section" id="using-jts-wrapper">
+<h2>Using JTS Wrapper<a class="headerlink" href="#using-jts-wrapper" title="Permalink to this headline">¶</a></h2>
+<p>The JTS Wrapper is a pure plugin and does not define any additional API. Place it on your
+CLASSPATH and the GeoTools GeometryFactory will be able to pick up this implementation and use it.</p>
+<p>It is recommended to use a GeometryBuilder in order to set up
+a group of factories to work together:</p>
+<div class="highlight-python"><div class="highlight"><pre>GeometryBuilder builder = new GeometryBuilde( DefaultGeographicCRS.WGS84 );
+Point point = builder.createPoint( 48.44, -123.37 );
+</pre></div>
+</div>
+<p>You could also make use of the factories directly:</p>
+<div class="highlight-python"><div class="highlight"><pre>Hints hints = new Hints( Hints.CRS, DefaultGeographicCRS.WGS84 );
+PositionFactory positionFactory = GeometryFactoryFinder.getPositionFactory( hints );
+PrimitiveFactory primitiveFactory = GeometryFactoryFinder.getPrimitiveFactory( hints );
+
+DirectPosition here = positionFactory.createDirectPosition( new double[]{48.44, -123.37} );
+Point point1 = primitiveFactory.createPoint( here );
+</pre></div>
+</div>
+<p>Finally gt-main offers a WKT reader that you can use:</p>
+<div class="highlight-python"><div class="highlight"><pre>WKTParser parser = new WKTParser( DefaultGeographicCRS.WGS84 );
+Point point = (Point) parser.parse(&quot;POINT( 48.44 -123.37)&quot;);
+</pre></div>
+</div>
+<p>For additional examples review the more extensive documentation for the <strong>gt-geometry</strong> module.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="process/index.html" title="Process"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="geometry/operation.html" title="Operations"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="index.html" >Unsupported</a> &raquo;</li>
+        <li><a href="#">JTS Wrapper Plugin</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

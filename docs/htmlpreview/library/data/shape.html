@@ -1,0 +1,370 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Shapefile Plugin &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../index.html" />
+    <link rel="up" title="Data" href="index.html" />
+    <link rel="next" title="OGR Plugin" href="ogr.html" />
+    <link rel="prev" title="ArcSDE Plugin" href="arcsde.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Data</a> &raquo;</li>
+        <li><a href="#">Shapefile Plugin</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Shapefile Plugin</a><ul>
+<li><a class="reference internal" href="#connection-parameters">Connection Parameters</a></li>
+<li><a class="reference internal" href="#shapefile">Shapefile</a><ul>
+<li><a class="reference internal" href="#access">Access</a></li>
+<li><a class="reference internal" href="#creating">Creating</a></li>
+<li><a class="reference internal" href="#force-projection">Force Projection</a></li>
+<li><a class="reference internal" href="#character-sets">Character Sets</a></li>
+<li><a class="reference internal" href="#timezone">Timezone</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#reading-prj">Reading PRJ</a></li>
+<li><a class="reference internal" href="#reading-dbf">Reading DBF</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="arcsde.html"
+                        title="previous chapter">ArcSDE Plugin</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="ogr.html"
+                        title="next chapter">OGR Plugin</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/library/data/shape.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="shapefile-plugin">
+<h1>Shapefile Plugin<a class="headerlink" href="#shapefile-plugin" title="Permalink to this headline">¶</a></h1>
+<p>Allows the GeoTools library to work with ESRI shapefiles.</p>
+<p><strong>References</strong></p>
+<ul class="simple">
+<li><a class="reference external" href="http://docs.geotools.org/latest/javadocs/org/geotools/data/shapefile/ShapefileDataStoreFactory.html">ShapefileDataStoreFactory</a> (javadocs)</li>
+<li><a class="reference external" href="http://en.wikipedia.org/wiki/Shapefile">http://en.wikipedia.org/wiki/Shapefile</a></li>
+<li><a class="reference external" href="http://en.wikipedia.org/wiki/DBase">http://en.wikipedia.org/wiki/DBase</a></li>
+</ul>
+<p><strong>Maven</strong>:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;dependency&gt;
+   &lt;groupId&gt;org.geotools&lt;/groupId&gt;
+   &lt;artifactId&gt;gt-shape&lt;/artifactId&gt;
+   &lt;version&gt;${geotools.version}&lt;/version&gt;
+ &lt;/dependency&gt;
+</pre></div>
+</div>
+<div class="section" id="connection-parameters">
+<h2>Connection Parameters<a class="headerlink" href="#connection-parameters" title="Permalink to this headline">¶</a></h2>
+<p>The following connection parameters are available:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="32%" />
+<col width="68%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Param</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>&#8220;url&#8221;</td>
+<td>A URL of the file ending in &#8220;shp&#8221;</td>
+</tr>
+<tr class="row-odd"><td>&#8220;namespace&#8221;</td>
+<td>Optional: URI to use for the FeatureType</td>
+</tr>
+<tr class="row-even"><td>&#8220;create spatial index&#8221;</td>
+<td>Optional: Use Boolean.TRUE to create an index</td>
+</tr>
+<tr class="row-odd"><td>&#8220;charset&#8221;</td>
+<td>Optional: Chartset used to decode strings in the
+DBF file</td>
+</tr>
+<tr class="row-even"><td>&#8220;timezone&#8221;</td>
+<td>Optional: Timezone used to parse dates in the
+DBF file</td>
+</tr>
+<tr class="row-odd"><td colspan="2"><dl class="first last docutils">
+<dt>&#8220;memory mapped buffer&#8221;  | Optional: memory map the files (unadvisable for</dt>
+<dd><div class="first last line-block">
+<div class="line">large files under windows, defaults to false)</div>
+</div>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="row-even"><td colspan="2"><dl class="first last docutils">
+<dt>&#8220;cache memory maps&#8221;     | Optional: when memory mapping, cache and reuse</dt>
+<dd><div class="first last line-block">
+<div class="line">memory maps (defaults to true)</div>
+</div>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="row-odd"><td colspan="2"><dl class="first last docutils">
+<dt>&#8220;create spatial index&#8221;  | Optional: if false, won&#8217;t try to create a spatial</dt>
+<dd><div class="first last line-block">
+<div class="line">index if missing (defaults to true)</div>
+</div>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="row-even"><td colspan="2"><dl class="first last docutils">
+<dt>&#8220;enable spatial index&#8221;  | Optional: if false, the spatial index won&#8217;t be used</dt>
+<dd><div class="first last line-block">
+<div class="line">even if available (and won&#8217;t be created if missing</div>
+</div>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p>This information is also in the <a class="reference external" href="http://docs.geotools.org/latest/javadocs/org/geotools/data/shapefile/ShapefileDataStoreFactory.html">javadocs</a> .</p>
+<p>Internally gt-shape provides a two implementations at this time; one for simple access and another that supports the use of an index. The factory will
+be able to sort out which one is appropriate when using DataStoreFinder or FileDataStoreFinder.</p>
+</div>
+<div class="section" id="shapefile">
+<h2>Shapefile<a class="headerlink" href="#shapefile" title="Permalink to this headline">¶</a></h2>
+<p>A Shapefile is a common file format which contains numerous features of the same type. Each shapefile has a single feature type.</p>
+<p>The classic three files:</p>
+<ul class="simple">
+<li>filename.shp: shapes</li>
+<li>filename.shx: shapes to attributes index</li>
+<li>filename.dbf: attributes</li>
+</ul>
+<p>Basic metadata:
+* filename.prj: projection</p>
+<p>Open source extensions:</p>
+<ul class="simple">
+<li>filename.qix: quadtree spatial index</li>
+<li>filename.fix: feature id index</li>
+<li>filename.sld: style-layer-descriptor style xml object</li>
+</ul>
+<p>ESRI extensions:</p>
+<ul class="simple">
+<li>filename.sbn: attribute index</li>
+<li>filename.sbx: spatial index</li>
+<li>filename.lyr: arcmap-only style object</li>
+<li>filename.avl: arcview style object</li>
+<li>filename.shp.xml: fgdc metadata</li>
+</ul>
+<p>This style of file format (from the dawn of time) is referred to as &#8220;sidecar&#8221; files, at a minimum filename.shp and its sidecar file filename.dbf are needed.</p>
+<div class="section" id="access">
+<h3>Access<a class="headerlink" href="#access" title="Permalink to this headline">¶</a></h3>
+<p>Working with an Existing Shapefile:</p>
+<div class="highlight-python"><div class="highlight"><pre>File file = new File(&quot;example.shp&quot;);
+Map map = new HashMap();
+map.put( &quot;url&quot;, file.toURL() );
+DataStore dataStore = DataStoreFinder.getDataStore( Map map );
+String typeName = dataStore.getTypeNames()[0];
+
+FeatureSource source = dataStore( typeName );
+
+Filter filter = CQL.toFilter(&quot;BBOX(THE_GEOM, 10,20,30,40)&quot;);
+FeatureCollection collection = source.getFeatures( filter );
+FeatureIterator iterator = collection.iterator();
+try {
+    while( iterator.hasNext() ){
+         Feature feature = (Feature) iterator.next();
+         ...
+    }
+}
+finally {
+   collection.close( iterator );
+}
+</pre></div>
+</div>
+</div>
+<div class="section" id="creating">
+<h3>Creating<a class="headerlink" href="#creating" title="Permalink to this headline">¶</a></h3>
+<p>Here is a quick example:</p>
+<div class="highlight-python"><div class="highlight"><pre>FileDataStoreFactorySpi factory = new IndexedShapefileDataStoreFactory();
+
+File file = new File(&quot;my.shp&quot;);
+Map map = Collections.singletonMap( &quot;url&quot;, file.toURL() );
+
+DataStore myData = factory.createNewDataStore( map );
+FeatureType featureType = DataUtilities.createType( &quot;my&quot;, &quot;geom:Point,name:String,age:Integer,description:String&quot; );
+myData.createSchema( featureType );
+</pre></div>
+</div>
+<p>The featureType created above was just done quickly, in your application you may wish to use a DefaultFeatureTypeBuilder.</p>
+<p>Supports:</p>
+<ul class="simple">
+<li>attribute names must be 15 characters or you will get a warning:</li>
+<li>a single geometry column (stored in the SHP file)
+* LineString, MultiLineString - Files occasionally contain invalid lines with one point
+* Polygon, MultiPolygon
+* Point, MultiPoint*</li>
+<li>&#8220;simple&#8221; attributes (stored in the DBF file)<ul>
+<li>String  max length of 255</li>
+<li>Integer</li>
+<li>Double</li>
+<li>Boolean</li>
+<li>Date - TimeStamp interpretation that is both date and time</li>
+</ul>
+</li>
+</ul>
+<p>Limitations:</p>
+<ul class="simple">
+<li>only work with MultiLineStrings, MultiPolygon or MultiPoint. GIS data often travels
+in herds - so being restricted to the plural form is not a great limitation.</li>
+<li>only work with fixed length strings (you will find the FeatureType
+has a restriction to help you check this, and warnings will be produced if
+your content ends up trimmed).</li>
+<li>Only supports a single GeometryAttribute</li>
+<li>Shapefile does not support plain Geometry (ie mixed LineString, Point and Polygon all in the same file).</li>
+</ul>
+</div>
+<div class="section" id="force-projection">
+<h3>Force Projection<a class="headerlink" href="#force-projection" title="Permalink to this headline">¶</a></h3>
+<p>If you run the above code, and then load the result in a GIS application like ArcView it will complain that the projection is unknown.</p>
+<p>You can &#8220;force&#8221; the projection using the following code:</p>
+<div class="highlight-python"><div class="highlight"><pre>CoordinateReferenceSystem crs = CRS.decode(&quot;EPSG:4326&quot;);
+shape.forceCoordianteReferneceSystem( crs );
+</pre></div>
+</div>
+<p>This is only a problem if you did not specify the CoordinateReferenceSystem as part of your FeatureType&#8217;s GeometryAttribute, or if a prj file has not been provided.</p>
+</div>
+<div class="section" id="character-sets">
+<h3>Character Sets<a class="headerlink" href="#character-sets" title="Permalink to this headline">¶</a></h3>
+<p>If you are working with Acerbic, Chinese or Korean character sets you will need to make use of the &#8220;charset&#8221; connection parameter when setting up your shapefile. The codes used here are the same as documented/defined for the Java Charset class. Indeed you can provide a Chartset or if you provide a String it will be converted to a Charset.</p>
+<p>Thanks to the University of Soul for providing and testing this functionality.</p>
+</div>
+<div class="section" id="timezone">
+<h3>Timezone<a class="headerlink" href="#timezone" title="Permalink to this headline">¶</a></h3>
+<p>The store will build dates using the default timezone. If you need to work against metereological data the timezone has normally to be forced to &#8220;UTC&#8221; instead.</p>
+</div>
+</div>
+<div class="section" id="reading-prj">
+<h2>Reading PRJ<a class="headerlink" href="#reading-prj" title="Permalink to this headline">¶</a></h2>
+<p>You can use the CRS utility class to read the PRJ file if required. The contents of the file are in &#8220;well known text&#8221;:</p>
+<div class="highlight-python"><div class="highlight"><pre>CoordinateReferenceSystem crs = CRS.parseWKT(wkt);
+</pre></div>
+</div>
+</div>
+<div class="section" id="reading-dbf">
+<h2>Reading DBF<a class="headerlink" href="#reading-dbf" title="Permalink to this headline">¶</a></h2>
+<p>A shapefile is actually comprised of a core &#8220;shp&#8221; file and a number of &#8220;sidecar&#8221; files. One of the sidecar files is a &#8220;dbf&#8221; file used to record attributes. This is the original DBF file format provided by one of the original grandfather databases &#8220;DBase&#8221;.</p>
+<p>The GeoTools library includes just enough DBF file format support to get out of bed in the morning; indeed you should considered these facilities an internal detail to our shapefile reading code.</p>
+<p>Thanks to Larry Reeder form the user list for suppling the following code example:</p>
+<div class="highlight-python"><div class="highlight"><pre>// Here&#39;s an example that should work (warning, I haven&#39;t
+// tried to compile this).  The example assumes the first field has a
+// character data type and the second has a numeric data type:
+
+FileInputStream fis = new FileInputStream( &quot;yourfile.dbf&quot; );
+DbaseFileReader dbfReader =  new DbaseFileReader(fis.getChannel(),
+false,  Charset.forName(&quot;ISO-8859-1&quot;));
+
+while ( dbfReader.hasNext() ){
+   final Object[] fields = dbfReader.readEntry();
+
+   String field1 = (String) fields[0];
+   Integer field2 = (Integer) fields[1];
+
+   System.out.println(&quot;DBF field 1 value is: &quot; + field1);
+   System.out.println(&quot;DBF field 2 value is: &quot; + field2);
+}
+
+dbfReader.close();
+fis.close();
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="ogr.html" title="OGR Plugin"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="arcsde.html" title="ArcSDE Plugin"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" >Data</a> &raquo;</li>
+        <li><a href="#">Shapefile Plugin</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

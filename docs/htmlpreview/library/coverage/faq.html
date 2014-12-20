@@ -1,0 +1,153 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Coverage FAQ &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../index.html" />
+    <link rel="up" title="Coverage" href="index.html" />
+    <link rel="next" title="Internal" href="internal/index.html" />
+    <link rel="prev" title="Coverage" href="index.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Coverage</a> &raquo;</li>
+        <li><a href="#">Coverage FAQ</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Coverage FAQ</a><ul>
+<li><a class="reference internal" href="#q-relationship-with-iso-coverage">Q: Relationship with ISO Coverage?</a></li>
+<li><a class="reference internal" href="#q-how-is-raster-data-supported">Q: How is raster data supported?</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Coverage</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="internal/index.html"
+                        title="next chapter">Internal</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/library/coverage/faq.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="coverage-faq">
+<h1>Coverage FAQ<a class="headerlink" href="#coverage-faq" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="q-relationship-with-iso-coverage">
+<h2>Q: Relationship with ISO Coverage?<a class="headerlink" href="#q-relationship-with-iso-coverage" title="Permalink to this headline">¶</a></h2>
+<p>Within GeoTools, the coverage module exists below the main module (where Feature is defined) and therefore a GeoTools GridCoverage is not a feature.</p>
+<p>This is in opposition to the ISO Coverage model (where Coverage extends Feature) provided by ISO 19123 specification.</p>
+<p>GeoTools &#8216;Coverage&#8217; objects emerged from an earlier specification published by the OpenGeospatial Consortium (OGC) called &#8220;Grid Coverage Services Implementation&#8221; (OGC 01-004).</p>
+</div>
+<div class="section" id="q-how-is-raster-data-supported">
+<h2>Q: How is raster data supported?<a class="headerlink" href="#q-how-is-raster-data-supported" title="Permalink to this headline">¶</a></h2>
+<p>The design of the coverage modules follows closely the design of image handling in Java. Java provides three major subsystems in their Java media API&#8217;s which are used and extended in GeoTools.</p>
+<dl class="docutils">
+<dt>Image I/O system</dt>
+<dd>To access files with image content. This provides code to access many
+standard image formats.</dd>
+<dt>Java Advanced Imaging (JAI) system</dt>
+<dd>which provides a powerful approach for performing operations on images.
+Not only does JAI provide efficient code for performing lots of
+operations, but it creates a system through which a user can create
+chains of operations which can be applied repeatedly to an image or
+applied to a whole slew of images.</dd>
+<dt>JAI Image I/O system</dt>
+<dd>Combines the two other systems by treating image access as one of the
+JAI operations allowing for differed access and enabling the treatment
+of file access as a standard step in an operation chain. The module
+also provides access to additional file formats.</dd>
+</dl>
+<p>When combined, these subsystems provide immense power to the GeoTools coverage module but this dependency does require that programmers who wish to use and extend the module must learn to use these other Java modules.</p>
+<p>To get the most out of the gt-coverage module developers should be familiar with the underlying mathematical ideas. Knowledge of ideas such as an Affine Transforms (for rotating and scaling) is required to work effectively with the coverage module. Affines are explained any computer graphics textbooks, and on many web sites, if you need a refresher.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="internal/index.html" title="Internal"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="index.html" title="Coverage"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" >Coverage</a> &raquo;</li>
+        <li><a href="#">Coverage FAQ</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

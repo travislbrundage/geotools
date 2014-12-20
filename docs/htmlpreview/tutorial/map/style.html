@@ -1,0 +1,1058 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Map Style Tutorial &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../index.html" />
+    <link rel="up" title="Tutorials" href="../index.html" />
+    <link rel="next" title="AffineTransformation Tutorial" href="../affinetransform.html" />
+    <link rel="prev" title="Image Tutorial" href="../raster/image.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Tutorials</a> &raquo;</li>
+        <li><a href="#">Map Style Tutorial</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Map Style Tutorial</a><ul>
+<li><a class="reference internal" href="#id1">Style</a><ul>
+<li><a class="reference internal" href="#example">Example</a></li>
+<li><a class="reference internal" href="#main-application">Main Application</a></li>
+<li><a class="reference internal" href="#displaying-a-shapefile">Displaying a shapefile</a></li>
+<li><a class="reference internal" href="#creating-a-style">Creating a style</a></li>
+<li><a class="reference internal" href="#creating-styles-by-hand">Creating styles By Hand</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#selection">Selection</a><ul>
+<li><a class="reference internal" href="#dependencies">Dependencies</a></li>
+<li><a class="reference internal" href="#id2">Example</a></li>
+<li><a class="reference internal" href="#id3">Main Application</a></li>
+<li><a class="reference internal" href="#shapefile-viewer-with-custom-map-tool">Shapefile viewer with custom map tool</a></li>
+<li><a class="reference internal" href="#what-features-did-the-user-click-on">What features did the user click on ?</a></li>
+<li><a class="reference internal" href="#creating-a-style-based-on-the-selection">Creating a Style based on the selection</a><ul>
+<li><a class="reference internal" href="#the-default-style">The default style</a></li>
+<li><a class="reference internal" href="#the-selected-style">The selected style</a></li>
+<li><a class="reference internal" href="#creating-a-rule-and-symbolizer">Creating a Rule and Symbolizer</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#geometry-type-of-the-shapefile-features">Geometry type of the shapefile features</a></li>
+<li><a class="reference internal" href="#running-the-application">Running the application</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#things-to-try">Things to try</a></li>
+<li><a class="reference internal" href="#style-layer-descriptor">Style Layer Descriptor</a><ul>
+<li><a class="reference internal" href="#controlling-the-rendering-process">Controlling the Rendering Process</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../raster/image.html"
+                        title="previous chapter">Image Tutorial</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../affinetransform.html"
+                        title="next chapter">AffineTransformation Tutorial</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/tutorial/map/style.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="map-style-tutorial">
+<span id="style"></span><h1>Map Style Tutorial<a class="headerlink" href="#map-style-tutorial" title="Permalink to this headline">¶</a></h1>
+<p>Style is all about looking good. In this lab we are going to learn the basics of how to make good looking maps.</p>
+<div class="section" id="id1">
+<h2>Style<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>Please ensure your pom.xml includes the following:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;properties&gt;
+    &lt;geotools.version&gt;2.7-M2&lt;/geotools.version&gt;
+&lt;/properties&gt;
+
+&lt;dependencies&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.geotools&lt;/groupId&gt;
+        &lt;artifactId&gt;gt-shapefile&lt;/artifactId&gt;
+        &lt;version&gt;${geotools.version}&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.geotools&lt;/groupId&gt;
+        &lt;artifactId&gt;gt-epsg-hsql&lt;/artifactId&gt;
+        &lt;version&gt;${geotools.version}&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.geotools&lt;/groupId&gt;
+        &lt;artifactId&gt;gt-swing&lt;/artifactId&gt;
+        &lt;version&gt;${geotools.version}&lt;/version&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;
+</pre></div>
+</div>
+<div class="section" id="example">
+<h3>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h3>
+<dl class="docutils">
+<dt>The example code is available</dt>
+<dd><ul class="first last simple">
+<li>Directly from svn: <a class="reference external" href="http://svn.osgeo.org/geotools/tags/2.6.4/demo/example/src/main/java/org/geotools/demo/StyleLab.java">StyleLab.java</a></li>
+<li>Included in the demo directory when you download the GeoTools source code</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="main-application">
+<h3>Main Application<a class="headerlink" href="#main-application" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic">
+<li><p class="first">Please create the file <strong>StyleLab.java</strong></p>
+</li>
+<li><p class="first">Copy and paste in the following code:</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="cm">/*</span>
+<span class="cm"> *    GeoTools - The Open Source Java GIS Toolkit</span>
+<span class="cm"> *    http://geotools.org</span>
+<span class="cm"> *</span>
+<span class="cm"> *    (C) 2006-2008, Open Source Geospatial Foundation (OSGeo)</span>
+<span class="cm"> *</span>
+<span class="cm"> *    This file is hereby placed into the Public Domain. This means anyone is</span>
+<span class="cm"> *    free to do whatever they wish with this file. Use it well and enjoy!</span>
+<span class="cm"> */</span>
+<span class="kn">package</span> <span class="nn">org.geotools.tutorial.style</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.awt.Color</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.io.File</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.geotools.data.FeatureSource</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.data.FileDataStore</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.data.FileDataStoreFinder</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.factory.CommonFactoryFinder</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.map.FeatureLayer</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.map.Layer</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.map.MapContent</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.styling.FeatureTypeStyle</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.styling.Fill</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.styling.Graphic</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.styling.LineSymbolizer</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.styling.Mark</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.styling.PointSymbolizer</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.styling.PolygonSymbolizer</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.styling.Rule</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.styling.SLDParser</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.styling.Stroke</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.styling.Style</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.styling.StyleFactory</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.swing.JMapFrame</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.swing.data.JFileDataStoreChooser</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.swing.dialog.JExceptionReporter</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.swing.styling.JSimpleStyleDialog</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.opengis.feature.simple.SimpleFeatureType</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.opengis.filter.FilterFactory</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">com.vividsolutions.jts.geom.LineString</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.vividsolutions.jts.geom.MultiLineString</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.vividsolutions.jts.geom.MultiPolygon</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.vividsolutions.jts.geom.Polygon</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">StyleLab</span> <span class="o">{</span>
+
+    <span class="kd">static</span> <span class="n">StyleFactory</span> <span class="n">styleFactory</span> <span class="o">=</span> <span class="n">CommonFactoryFinder</span><span class="o">.</span><span class="na">getStyleFactory</span><span class="o">();</span>
+    <span class="kd">static</span> <span class="n">FilterFactory</span> <span class="n">filterFactory</span> <span class="o">=</span> <span class="n">CommonFactoryFinder</span><span class="o">.</span><span class="na">getFilterFactory</span><span class="o">();</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+        <span class="n">StyleLab</span> <span class="n">me</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StyleLab</span><span class="o">();</span>
+        <span class="n">me</span><span class="o">.</span><span class="na">displayShapefile</span><span class="o">();</span>
+    <span class="o">}</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="displaying-a-shapefile">
+<h3>Displaying a shapefile<a class="headerlink" href="#displaying-a-shapefile" title="Permalink to this headline">¶</a></h3>
+<p>If you have worked through the previous labs, most of this method will look familiar to you:</p>
+<blockquote>
+<div><div class="highlight-java"><div class="highlight"><pre>    <span class="cm">/**</span>
+<span class="cm">     * Prompts the user for a shapefile (unless a filename is provided</span>
+<span class="cm">     * on the command line; then creates a simple Style and displays</span>
+<span class="cm">     * the shapefile on screen</span>
+<span class="cm">     */</span>
+    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">displayShapefile</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+        <span class="n">File</span> <span class="n">file</span> <span class="o">=</span> <span class="n">JFileDataStoreChooser</span><span class="o">.</span><span class="na">showOpenFile</span><span class="o">(</span><span class="s">&quot;shp&quot;</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">file</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span><span class="o">;</span>
+        <span class="o">}</span>
+
+        <span class="n">FileDataStore</span> <span class="n">store</span> <span class="o">=</span> <span class="n">FileDataStoreFinder</span><span class="o">.</span><span class="na">getDataStore</span><span class="o">(</span><span class="n">file</span><span class="o">);</span>
+        <span class="n">FeatureSource</span> <span class="n">featureSource</span> <span class="o">=</span> <span class="n">store</span><span class="o">.</span><span class="na">getFeatureSource</span><span class="o">();</span>
+
+        <span class="c1">// Create a map content and add our shapefile to it</span>
+        <span class="n">MapContent</span> <span class="n">map</span> <span class="o">=</span> <span class="k">new</span> <span class="n">MapContent</span><span class="o">();</span>
+        <span class="n">map</span><span class="o">.</span><span class="na">setTitle</span><span class="o">(</span><span class="s">&quot;StyleLab&quot;</span><span class="o">);</span>
+
+        <span class="c1">// Create a basic Style to render the features</span>
+        <span class="n">Style</span> <span class="n">style</span> <span class="o">=</span> <span class="n">createStyle</span><span class="o">(</span><span class="n">file</span><span class="o">,</span> <span class="n">featureSource</span><span class="o">);</span>
+
+        <span class="c1">// Add the features and the associated Style object to</span>
+        <span class="c1">// the MapContent as a new Layer</span>
+        <span class="n">Layer</span> <span class="n">layer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FeatureLayer</span><span class="o">(</span><span class="n">featureSource</span><span class="o">,</span> <span class="n">style</span><span class="o">);</span>
+        <span class="n">map</span><span class="o">.</span><span class="na">addLayer</span><span class="o">(</span><span class="n">layer</span><span class="o">);</span>
+
+        <span class="c1">// Now display the map</span>
+        <span class="n">JMapFrame</span><span class="o">.</span><span class="na">showMap</span><span class="o">(</span><span class="n">map</span><span class="o">);</span>
+    <span class="o">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>The main thing to note is that we are calling a <strong>createStyle</strong> method to set a Style for the map layer.
+Let&#8217;s look at this method next.</p>
+</div>
+<div class="section" id="creating-a-style">
+<h3>Creating a style<a class="headerlink" href="#creating-a-style" title="Permalink to this headline">¶</a></h3>
+<p>This method first looks to see if there is an SLD document (Styled Layer Descriptor) associated with the shapefile.
+If it finds one it processes that file to create the style. Otherwise, it displays a <strong>JSimpleStyleDialog</strong> to
+prompt the user for style choices:</p>
+<blockquote>
+<div><div class="highlight-java"><div class="highlight"><pre>    <span class="cm">/**</span>
+<span class="cm">     * Create a Style to display the features. If an SLD file is in the same</span>
+<span class="cm">     * directory as the shapefile then we will create the Style by processing</span>
+<span class="cm">     * this. Otherwise we display a JSimpleStyleDialog to prompt the user for</span>
+<span class="cm">     * preferences.</span>
+<span class="cm">     */</span>
+    <span class="kd">private</span> <span class="n">Style</span> <span class="nf">createStyle</span><span class="o">(</span><span class="n">File</span> <span class="n">file</span><span class="o">,</span> <span class="n">FeatureSource</span> <span class="n">featureSource</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">File</span> <span class="n">sld</span> <span class="o">=</span> <span class="n">toSLDFile</span><span class="o">(</span><span class="n">file</span><span class="o">);</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">sld</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="n">createFromSLD</span><span class="o">(</span><span class="n">sld</span><span class="o">);</span>
+        <span class="o">}</span>
+
+        <span class="n">SimpleFeatureType</span> <span class="n">schema</span> <span class="o">=</span> <span class="o">(</span><span class="n">SimpleFeatureType</span><span class="o">)</span><span class="n">featureSource</span><span class="o">.</span><span class="na">getSchema</span><span class="o">();</span>
+        <span class="k">return</span> <span class="n">JSimpleStyleDialog</span><span class="o">.</span><span class="na">showDialog</span><span class="o">(</span><span class="kc">null</span><span class="o">,</span> <span class="n">schema</span><span class="o">);</span>
+    <span class="o">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>The following two methods do the work of figuring out the SLD file name, based on the shapefile name, and processing
+the SLD document if one is found:</p>
+<blockquote>
+<div><div class="highlight-java"><div class="highlight"><pre>    <span class="cm">/**</span>
+<span class="cm">     * Figure out if a valid SLD file is available.</span>
+<span class="cm">     */</span>
+    <span class="kd">public</span> <span class="n">File</span> <span class="nf">toSLDFile</span><span class="o">(</span><span class="n">File</span> <span class="n">file</span><span class="o">)</span>  <span class="o">{</span>
+        <span class="n">String</span> <span class="n">path</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="na">getAbsolutePath</span><span class="o">();</span>
+        <span class="n">String</span> <span class="n">base</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="na">substring</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span><span class="n">path</span><span class="o">.</span><span class="na">length</span><span class="o">()-</span><span class="mi">4</span><span class="o">);</span>
+        <span class="n">String</span> <span class="n">newPath</span> <span class="o">=</span> <span class="n">base</span> <span class="o">+</span> <span class="s">&quot;.sld&quot;</span><span class="o">;</span>
+        <span class="n">File</span> <span class="n">sld</span> <span class="o">=</span> <span class="k">new</span> <span class="n">File</span><span class="o">(</span> <span class="n">newPath</span> <span class="o">);</span>
+        <span class="k">if</span><span class="o">(</span> <span class="n">sld</span><span class="o">.</span><span class="na">exists</span><span class="o">()</span> <span class="o">){</span>
+            <span class="k">return</span> <span class="n">sld</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="n">newPath</span> <span class="o">=</span> <span class="n">base</span> <span class="o">+</span> <span class="s">&quot;.SLD&quot;</span><span class="o">;</span>
+        <span class="n">sld</span> <span class="o">=</span> <span class="k">new</span> <span class="n">File</span><span class="o">(</span> <span class="n">newPath</span> <span class="o">);</span>
+        <span class="k">if</span><span class="o">(</span> <span class="n">sld</span><span class="o">.</span><span class="na">exists</span><span class="o">()</span> <span class="o">){</span>
+            <span class="k">return</span> <span class="n">sld</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**</span>
+<span class="cm">     * Create a Style object from a definition in a SLD document</span>
+<span class="cm">     */</span>
+    <span class="kd">private</span> <span class="n">Style</span> <span class="nf">createFromSLD</span><span class="o">(</span><span class="n">File</span> <span class="n">sld</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="n">SLDParser</span> <span class="n">stylereader</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SLDParser</span><span class="o">(</span><span class="n">styleFactory</span><span class="o">,</span> <span class="n">sld</span><span class="o">.</span><span class="na">toURI</span><span class="o">().</span><span class="na">toURL</span><span class="o">());</span>
+            <span class="n">Style</span><span class="o">[]</span> <span class="n">style</span> <span class="o">=</span> <span class="n">stylereader</span><span class="o">.</span><span class="na">readXML</span><span class="o">();</span>
+            <span class="k">return</span> <span class="n">style</span><span class="o">[</span><span class="mi">0</span><span class="o">];</span>
+            
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">JExceptionReporter</span><span class="o">.</span><span class="na">showDialog</span><span class="o">(</span><span class="n">e</span><span class="o">,</span> <span class="s">&quot;Problem creating style&quot;</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="o">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="creating-styles-by-hand">
+<h3>Creating styles By Hand<a class="headerlink" href="#creating-styles-by-hand" title="Permalink to this headline">¶</a></h3>
+<p>The methods that we&#8217;ve looked at so far are all we really need in this simple application. But now let&#8217;s look at how to create a style programmatically.
+This illustrates some of what is happening behind the scenes in the previous code. It also introduces you to <strong>StyleFactory</strong> and <strong>FilterFactory</strong>
+which provide a huge amount of flexibility in the styles that you can create.</p>
+<p>In the code below, the first method works out what type of geometry we have in our shapefile: points, lines or polygons. It then calls a geometry-specific
+method to create a Style object.</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="cm">/**</span>
+<span class="cm">     * Here is a programmatic alternative to using JSimpleStyleDialog to</span>
+<span class="cm">     * get a Style. This methods works out what sort of feature geometry</span>
+<span class="cm">     * we have in the shapefile and then delegates to an appropriate style</span>
+<span class="cm">     * creating method.</span>
+<span class="cm">     */</span>
+    <span class="kd">private</span> <span class="n">Style</span> <span class="nf">createStyle2</span><span class="o">(</span><span class="n">FeatureSource</span> <span class="n">featureSource</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">SimpleFeatureType</span> <span class="n">schema</span> <span class="o">=</span> <span class="o">(</span><span class="n">SimpleFeatureType</span><span class="o">)</span><span class="n">featureSource</span><span class="o">.</span><span class="na">getSchema</span><span class="o">();</span>
+        <span class="n">Class</span> <span class="n">geomType</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="na">getGeometryDescriptor</span><span class="o">().</span><span class="na">getType</span><span class="o">().</span><span class="na">getBinding</span><span class="o">();</span>
+
+        <span class="k">if</span> <span class="o">(</span><span class="n">Polygon</span><span class="o">.</span><span class="na">class</span><span class="o">.</span><span class="na">isAssignableFrom</span><span class="o">(</span><span class="n">geomType</span><span class="o">)</span>
+                <span class="o">||</span> <span class="n">MultiPolygon</span><span class="o">.</span><span class="na">class</span><span class="o">.</span><span class="na">isAssignableFrom</span><span class="o">(</span><span class="n">geomType</span><span class="o">))</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="n">createPolygonStyle</span><span class="o">();</span>
+
+        <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">LineString</span><span class="o">.</span><span class="na">class</span><span class="o">.</span><span class="na">isAssignableFrom</span><span class="o">(</span><span class="n">geomType</span><span class="o">)</span>
+                <span class="o">||</span> <span class="n">MultiLineString</span><span class="o">.</span><span class="na">class</span><span class="o">.</span><span class="na">isAssignableFrom</span><span class="o">(</span><span class="n">geomType</span><span class="o">))</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="n">createLineStyle</span><span class="o">();</span>
+
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="n">createPointStyle</span><span class="o">();</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**</span>
+<span class="cm">     * Create a Style to draw polygon features with a thin blue outline and</span>
+<span class="cm">     * a cyan fill</span>
+<span class="cm">     */</span>
+    <span class="kd">private</span> <span class="n">Style</span> <span class="nf">createPolygonStyle</span><span class="o">()</span> <span class="o">{</span>
+
+        <span class="c1">// create a partially opaque outline stroke</span>
+        <span class="n">Stroke</span> <span class="n">stroke</span> <span class="o">=</span> <span class="n">styleFactory</span><span class="o">.</span><span class="na">createStroke</span><span class="o">(</span>
+                <span class="n">filterFactory</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="n">Color</span><span class="o">.</span><span class="na">BLUE</span><span class="o">),</span>
+                <span class="n">filterFactory</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="mi">1</span><span class="o">),</span>
+                <span class="n">filterFactory</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="mf">0.5</span><span class="o">));</span>
+
+        <span class="c1">// create a partial opaque fill</span>
+        <span class="n">Fill</span> <span class="n">fill</span> <span class="o">=</span> <span class="n">styleFactory</span><span class="o">.</span><span class="na">createFill</span><span class="o">(</span>
+                <span class="n">filterFactory</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="n">Color</span><span class="o">.</span><span class="na">CYAN</span><span class="o">),</span>
+                <span class="n">filterFactory</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="mf">0.5</span><span class="o">));</span>
+
+        <span class="cm">/*</span>
+<span class="cm">         * Setting the geometryPropertyName arg to null signals that we want to</span>
+<span class="cm">         * draw the default geomettry of features</span>
+<span class="cm">         */</span>
+        <span class="n">PolygonSymbolizer</span> <span class="n">sym</span> <span class="o">=</span> <span class="n">styleFactory</span><span class="o">.</span><span class="na">createPolygonSymbolizer</span><span class="o">(</span><span class="n">stroke</span><span class="o">,</span> <span class="n">fill</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
+
+        <span class="n">Rule</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">styleFactory</span><span class="o">.</span><span class="na">createRule</span><span class="o">();</span>
+        <span class="n">rule</span><span class="o">.</span><span class="na">symbolizers</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="n">sym</span><span class="o">);</span>
+        <span class="n">FeatureTypeStyle</span> <span class="n">fts</span> <span class="o">=</span> <span class="n">styleFactory</span><span class="o">.</span><span class="na">createFeatureTypeStyle</span><span class="o">(</span><span class="k">new</span> <span class="n">Rule</span><span class="o">[]{</span><span class="n">rule</span><span class="o">});</span>
+        <span class="n">Style</span> <span class="n">style</span> <span class="o">=</span> <span class="n">styleFactory</span><span class="o">.</span><span class="na">createStyle</span><span class="o">();</span>
+        <span class="n">style</span><span class="o">.</span><span class="na">featureTypeStyles</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="n">fts</span><span class="o">);</span>
+
+        <span class="k">return</span> <span class="n">style</span><span class="o">;</span>
+    <span class="o">}</span>
+    
+    <span class="cm">/**</span>
+<span class="cm">     * Create a Style to draw line features as thin blue lines</span>
+<span class="cm">     */</span>
+    <span class="kd">private</span> <span class="n">Style</span> <span class="nf">createLineStyle</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">Stroke</span> <span class="n">stroke</span> <span class="o">=</span> <span class="n">styleFactory</span><span class="o">.</span><span class="na">createStroke</span><span class="o">(</span>
+                <span class="n">filterFactory</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="n">Color</span><span class="o">.</span><span class="na">BLUE</span><span class="o">),</span>
+                <span class="n">filterFactory</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="mi">1</span><span class="o">));</span>
+
+        <span class="cm">/*</span>
+<span class="cm">         * Setting the geometryPropertyName arg to null signals that we want to</span>
+<span class="cm">         * draw the default geomettry of features</span>
+<span class="cm">         */</span>
+        <span class="n">LineSymbolizer</span> <span class="n">sym</span> <span class="o">=</span> <span class="n">styleFactory</span><span class="o">.</span><span class="na">createLineSymbolizer</span><span class="o">(</span><span class="n">stroke</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
+
+        <span class="n">Rule</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">styleFactory</span><span class="o">.</span><span class="na">createRule</span><span class="o">();</span>
+        <span class="n">rule</span><span class="o">.</span><span class="na">symbolizers</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="n">sym</span><span class="o">);</span>
+        <span class="n">FeatureTypeStyle</span> <span class="n">fts</span> <span class="o">=</span> <span class="n">styleFactory</span><span class="o">.</span><span class="na">createFeatureTypeStyle</span><span class="o">(</span><span class="k">new</span> <span class="n">Rule</span><span class="o">[]{</span><span class="n">rule</span><span class="o">});</span>
+        <span class="n">Style</span> <span class="n">style</span> <span class="o">=</span> <span class="n">styleFactory</span><span class="o">.</span><span class="na">createStyle</span><span class="o">();</span>
+        <span class="n">style</span><span class="o">.</span><span class="na">featureTypeStyles</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="n">fts</span><span class="o">);</span>
+
+        <span class="k">return</span> <span class="n">style</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**</span>
+<span class="cm">     * Create a Style to draw point features as circles with blue outlines</span>
+<span class="cm">     * and cyan fill</span>
+<span class="cm">     */</span>
+    <span class="kd">private</span> <span class="n">Style</span> <span class="nf">createPointStyle</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">Graphic</span> <span class="n">gr</span> <span class="o">=</span> <span class="n">styleFactory</span><span class="o">.</span><span class="na">createDefaultGraphic</span><span class="o">();</span>
+
+        <span class="n">Mark</span> <span class="n">mark</span> <span class="o">=</span> <span class="n">styleFactory</span><span class="o">.</span><span class="na">getCircleMark</span><span class="o">();</span>
+
+        <span class="n">mark</span><span class="o">.</span><span class="na">setStroke</span><span class="o">(</span><span class="n">styleFactory</span><span class="o">.</span><span class="na">createStroke</span><span class="o">(</span>
+                <span class="n">filterFactory</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="n">Color</span><span class="o">.</span><span class="na">BLUE</span><span class="o">),</span> <span class="n">filterFactory</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="mi">1</span><span class="o">)));</span>
+
+        <span class="n">mark</span><span class="o">.</span><span class="na">setFill</span><span class="o">(</span><span class="n">styleFactory</span><span class="o">.</span><span class="na">createFill</span><span class="o">(</span><span class="n">filterFactory</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="n">Color</span><span class="o">.</span><span class="na">CYAN</span><span class="o">)));</span>
+
+        <span class="n">gr</span><span class="o">.</span><span class="na">graphicalSymbols</span><span class="o">().</span><span class="na">clear</span><span class="o">();</span>
+        <span class="n">gr</span><span class="o">.</span><span class="na">graphicalSymbols</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="n">mark</span><span class="o">);</span>
+        <span class="n">gr</span><span class="o">.</span><span class="na">setSize</span><span class="o">(</span><span class="n">filterFactory</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="mi">5</span><span class="o">));</span>
+
+        <span class="cm">/*</span>
+<span class="cm">         * Setting the geometryPropertyName arg to null signals that we want to</span>
+<span class="cm">         * draw the default geomettry of features</span>
+<span class="cm">         */</span>
+        <span class="n">PointSymbolizer</span> <span class="n">sym</span> <span class="o">=</span> <span class="n">styleFactory</span><span class="o">.</span><span class="na">createPointSymbolizer</span><span class="o">(</span><span class="n">gr</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
+
+        <span class="n">Rule</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">styleFactory</span><span class="o">.</span><span class="na">createRule</span><span class="o">();</span>
+        <span class="n">rule</span><span class="o">.</span><span class="na">symbolizers</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="n">sym</span><span class="o">);</span>
+        <span class="n">FeatureTypeStyle</span> <span class="n">fts</span> <span class="o">=</span> <span class="n">styleFactory</span><span class="o">.</span><span class="na">createFeatureTypeStyle</span><span class="o">(</span><span class="k">new</span> <span class="n">Rule</span><span class="o">[]{</span><span class="n">rule</span><span class="o">});</span>
+        <span class="n">Style</span> <span class="n">style</span> <span class="o">=</span> <span class="n">styleFactory</span><span class="o">.</span><span class="na">createStyle</span><span class="o">();</span>
+        <span class="n">style</span><span class="o">.</span><span class="na">featureTypeStyles</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="n">fts</span><span class="o">);</span>
+
+        <span class="k">return</span> <span class="n">style</span><span class="o">;</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+
+<span class="c1">// docs end source</span>
+</pre></div>
+</div>
+<p>Things to note:</p>
+<ul class="simple">
+<li>Each of the geometry specific methods is creating a type of <strong>Symbolizer</strong>: the class that controls how features are rendered</li>
+<li>Each method wraps the symbolizer in a <strong>Rule</strong>, then a <strong>FeatureTypeStyle</strong>, and finally a <strong>Style</strong></li>
+<li>In real life, it is common to have more than one Rule in a FeatureTypeStyle. For example, we might create one rule to draw features when the
+map is zoomed out, and another for when we are displaying fine details.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="selection">
+<h2>Selection<a class="headerlink" href="#selection" title="Permalink to this headline">¶</a></h2>
+<p>This tutorial brings together many of the techniques and classes that we&#8217;ve covered in the previous
+examples. It is best if you have already worked through at least the quickstart, csv2shp and style
+tutorials.</p>
+<p>We are going to:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Create a custom map cursor tool to select features when the user clicks the map</li>
+<li>Add a toolbar button to JMapFrame to launch this tool</li>
+<li>Use a Filter to find which features were under, or near the mouse click</li>
+<li>Create rendering styles to draw selected and unselected features in different colours</li>
+</ul>
+</div></blockquote>
+<div class="section" id="dependencies">
+<h3>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h3>
+<p>Please ensure your pom.xml includes the following:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;properties&gt;
+    &lt;geotools.version&gt;2.7-SNAPSHOT&lt;/geotools.version&gt;
+&lt;/properties&gt;
+
+&lt;dependencies&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.geotools&lt;/groupId&gt;
+        &lt;artifactId&gt;gt-shapefile&lt;/artifactId&gt;
+        &lt;version&gt;${geotools.version}&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.geotools&lt;/groupId&gt;
+        &lt;artifactId&gt;gt-epsg-hsql&lt;/artifactId&gt;
+        &lt;version&gt;${geotools.version}&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.geotools&lt;/groupId&gt;
+        &lt;artifactId&gt;gt-swing&lt;/artifactId&gt;
+        &lt;version&gt;${geotools.version}&lt;/version&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;
+</pre></div>
+</div>
+</div>
+<div class="section" id="id2">
+<h3>Example<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<dl class="docutils">
+<dt>The example code is available</dt>
+<dd><ul class="first last simple">
+<li>Directly from svn: <a class="reference external" href="http://svn.osgeo.org/geotools/trunk/demo/example/src/main/java/org/geotools/demo/SelectionLab.java">SelectionLab.java</a></li>
+<li>Included in the demo directory when you download the GeoTools source code</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="id3">
+<h3>Main Application<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic">
+<li><p class="first">Please create the file <strong>SelectionLab.java</strong></p>
+</li>
+<li><p class="first">Copy and paste in the following code:</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="cm">/*</span>
+<span class="cm"> *    GeoTools - The Open Source Java GIS Toolkit</span>
+<span class="cm"> *    http://geotools.org</span>
+<span class="cm"> *</span>
+<span class="cm"> *    (C) 2006-2008, Open Source Geospatial Foundation (OSGeo)</span>
+<span class="cm"> *</span>
+<span class="cm"> *    This file is hereby placed into the Public Domain. This means anyone is</span>
+<span class="cm"> *    free to do whatever they wish with this file. Use it well and enjoy!</span>
+<span class="cm"> */</span>
+<span class="kn">package</span> <span class="nn">org.geotools.tutorial.style</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.awt.Color</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.awt.Point</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.awt.Rectangle</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.awt.event.ActionEvent</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.awt.event.ActionListener</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.awt.geom.AffineTransform</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.awt.geom.Rectangle2D</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.io.File</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.HashSet</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Set</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">javax.swing.JButton</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javax.swing.JToolBar</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.geotools.data.FileDataStore</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.data.FileDataStoreFinder</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.data.simple.SimpleFeatureCollection</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.data.simple.SimpleFeatureIterator</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.data.simple.SimpleFeatureSource</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.factory.CommonFactoryFinder</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.geometry.jts.ReferencedEnvelope</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.map.FeatureLayer</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.map.Layer</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.map.MapContent</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.styling.FeatureTypeStyle</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.styling.Fill</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.styling.Graphic</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.styling.Mark</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.styling.Rule</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.styling.Stroke</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.styling.Style</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.styling.StyleFactory</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.styling.Symbolizer</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.swing.JMapFrame</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.swing.data.JFileDataStoreChooser</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.swing.event.MapMouseEvent</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.swing.tool.CursorTool</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.opengis.feature.simple.SimpleFeature</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.opengis.feature.type.GeometryDescriptor</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.opengis.filter.Filter</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.opengis.filter.FilterFactory2</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.opengis.filter.identity.FeatureId</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">com.vividsolutions.jts.geom.LineString</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.vividsolutions.jts.geom.MultiLineString</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.vividsolutions.jts.geom.MultiPolygon</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.vividsolutions.jts.geom.Polygon</span><span class="o">;</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * In this example we create a map tool to select a feature clicked</span>
+<span class="cm"> * with the mouse. The selected feature will be painted yellow.</span>
+<span class="cm"> *</span>
+<span class="cm"> * @source $URL: http://svn.osgeo.org/geotools/trunk/demo/example/src/main/java/org/geotools/demo/SelectionLab.java $</span>
+<span class="cm"> */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SelectionLab</span> <span class="o">{</span>
+
+    <span class="cm">/*</span>
+<span class="cm">     * Factories that we will use to create style and filter objects</span>
+<span class="cm">     */</span>
+    <span class="kd">private</span> <span class="n">StyleFactory</span> <span class="n">sf</span> <span class="o">=</span> <span class="n">CommonFactoryFinder</span><span class="o">.</span><span class="na">getStyleFactory</span><span class="o">();</span>
+    <span class="kd">private</span> <span class="n">FilterFactory2</span> <span class="n">ff</span> <span class="o">=</span> <span class="n">CommonFactoryFinder</span><span class="o">.</span><span class="na">getFilterFactory2</span><span class="o">();</span>
+
+    <span class="cm">/*</span>
+<span class="cm">     * Convenient constants for the type of feature geometry in the shapefile</span>
+<span class="cm">     */</span>
+    <span class="kd">private</span> <span class="kd">enum</span> <span class="n">GeomType</span> <span class="o">{</span> <span class="n">POINT</span><span class="o">,</span> <span class="n">LINE</span><span class="o">,</span> <span class="n">POLYGON</span> <span class="o">};</span>
+
+    <span class="cm">/*</span>
+<span class="cm">     * Some default style variables</span>
+<span class="cm">     */</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">Color</span> <span class="n">LINE_COLOUR</span> <span class="o">=</span> <span class="n">Color</span><span class="o">.</span><span class="na">BLUE</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">Color</span> <span class="n">FILL_COLOUR</span> <span class="o">=</span> <span class="n">Color</span><span class="o">.</span><span class="na">CYAN</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">Color</span> <span class="n">SELECTED_COLOUR</span> <span class="o">=</span> <span class="n">Color</span><span class="o">.</span><span class="na">YELLOW</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">float</span> <span class="n">OPACITY</span> <span class="o">=</span> <span class="mf">1.0f</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">float</span> <span class="n">LINE_WIDTH</span> <span class="o">=</span> <span class="mf">1.0f</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">float</span> <span class="n">POINT_SIZE</span> <span class="o">=</span> <span class="mf">10.0f</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="n">JMapFrame</span> <span class="n">mapFrame</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="n">SimpleFeatureSource</span> <span class="n">featureSource</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="n">String</span> <span class="n">geometryAttributeName</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="n">GeomType</span> <span class="n">geometryType</span><span class="o">;</span>
+
+    <span class="cm">/*</span>
+<span class="cm">     * The application method</span>
+<span class="cm">     */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+        <span class="n">SelectionLab</span> <span class="n">me</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SelectionLab</span><span class="o">();</span>
+
+        <span class="n">File</span> <span class="n">file</span> <span class="o">=</span> <span class="n">JFileDataStoreChooser</span><span class="o">.</span><span class="na">showOpenFile</span><span class="o">(</span><span class="s">&quot;shp&quot;</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">file</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span><span class="o">;</span>
+        <span class="o">}</span>
+
+        <span class="n">me</span><span class="o">.</span><span class="na">displayShapefile</span><span class="o">(</span><span class="n">file</span><span class="o">);</span>
+    <span class="o">}</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>Much of this should look familiar to you from the style tutorial. We&#8217;ve added some constants and
+class variables that we&#8217;ll use when creating styles.</p>
+<p>A subtle difference is that we are now using FilterFactory2 instead of FilterFactory. This class
+adds additional methods, one of which we&#8217;ll need when selecting features based on a mouse click.</p>
+</div>
+<div class="section" id="shapefile-viewer-with-custom-map-tool">
+<h3>Shapefile viewer with custom map tool<a class="headerlink" href="#shapefile-viewer-with-custom-map-tool" title="Permalink to this headline">¶</a></h3>
+<p>Next we add the displayShapefile method which is also very similar to the one that we used in
+style tutorial.</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="cm">/**</span>
+<span class="cm">     * This method connects to the shapefile; retrieves information about</span>
+<span class="cm">     * its features; creates a map frame to display the shapefile and adds</span>
+<span class="cm">     * a custom feature selection tool to the toolbar of the map frame.</span>
+<span class="cm">     */</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">displayShapefile</span><span class="o">(</span><span class="n">File</span> <span class="n">file</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+        <span class="n">FileDataStore</span> <span class="n">store</span> <span class="o">=</span> <span class="n">FileDataStoreFinder</span><span class="o">.</span><span class="na">getDataStore</span><span class="o">(</span><span class="n">file</span><span class="o">);</span>
+        <span class="n">featureSource</span> <span class="o">=</span> <span class="n">store</span><span class="o">.</span><span class="na">getFeatureSource</span><span class="o">();</span>
+        <span class="n">setGeometry</span><span class="o">();</span>
+
+        <span class="cm">/*</span>
+<span class="cm">         * Create the JMapFrame and set it to display the shapefile&#39;s features</span>
+<span class="cm">         * with a default line and colour style</span>
+<span class="cm">         */</span>
+        <span class="n">MapContent</span> <span class="n">map</span> <span class="o">=</span> <span class="k">new</span> <span class="n">MapContent</span><span class="o">();</span>
+        <span class="n">map</span><span class="o">.</span><span class="na">setTitle</span><span class="o">(</span><span class="s">&quot;Feature selection tool example&quot;</span><span class="o">);</span>
+        <span class="n">Style</span> <span class="n">style</span> <span class="o">=</span> <span class="n">createDefaultStyle</span><span class="o">();</span>
+        <span class="n">Layer</span> <span class="n">layer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FeatureLayer</span><span class="o">(</span><span class="n">featureSource</span><span class="o">,</span> <span class="n">style</span><span class="o">);</span>
+        <span class="n">map</span><span class="o">.</span><span class="na">addLayer</span><span class="o">(</span><span class="n">layer</span><span class="o">);</span>
+        <span class="n">mapFrame</span> <span class="o">=</span> <span class="k">new</span> <span class="n">JMapFrame</span><span class="o">(</span><span class="n">map</span><span class="o">);</span>
+        <span class="n">mapFrame</span><span class="o">.</span><span class="na">enableToolBar</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+        <span class="n">mapFrame</span><span class="o">.</span><span class="na">enableStatusBar</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+
+        <span class="cm">/*</span>
+<span class="cm">         * Before making the map frame visible we add a new button to its</span>
+<span class="cm">         * toolbar for our custom feature selection tool</span>
+<span class="cm">         */</span>
+        <span class="n">JToolBar</span> <span class="n">toolBar</span> <span class="o">=</span> <span class="n">mapFrame</span><span class="o">.</span><span class="na">getToolBar</span><span class="o">();</span>
+        <span class="n">JButton</span> <span class="n">btn</span> <span class="o">=</span> <span class="k">new</span> <span class="n">JButton</span><span class="o">(</span><span class="s">&quot;Select&quot;</span><span class="o">);</span>
+        <span class="n">toolBar</span><span class="o">.</span><span class="na">addSeparator</span><span class="o">();</span>
+        <span class="n">toolBar</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">btn</span><span class="o">);</span>
+
+        <span class="cm">/*</span>
+<span class="cm">         * When the user clicks the button we want to enable</span>
+<span class="cm">         * our custom feature selection tool. Since the only</span>
+<span class="cm">         * mouse action we are intersted in is &#39;clicked&#39;, and</span>
+<span class="cm">         * we are not creating control icons or cursors here,</span>
+<span class="cm">         * we can just create our tool as an anonymous sub-class</span>
+<span class="cm">         * of CursorTool.</span>
+<span class="cm">         */</span>
+        <span class="n">btn</span><span class="o">.</span><span class="na">addActionListener</span><span class="o">(</span><span class="k">new</span> <span class="n">ActionListener</span><span class="o">()</span> <span class="o">{</span>
+
+            <span class="kd">public</span> <span class="kt">void</span> <span class="nf">actionPerformed</span><span class="o">(</span><span class="n">ActionEvent</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">mapFrame</span><span class="o">.</span><span class="na">getMapPane</span><span class="o">().</span><span class="na">setCursorTool</span><span class="o">(</span>
+                        <span class="k">new</span> <span class="n">CursorTool</span><span class="o">()</span> <span class="o">{</span>
+
+                            <span class="nd">@Override</span>
+                            <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onMouseClicked</span><span class="o">(</span><span class="n">MapMouseEvent</span> <span class="n">ev</span><span class="o">)</span> <span class="o">{</span>
+                                <span class="n">selectFeatures</span><span class="o">(</span><span class="n">ev</span><span class="o">);</span>
+                            <span class="o">}</span>
+                        <span class="o">});</span>
+            <span class="o">}</span>
+        <span class="o">});</span>
+
+        <span class="cm">/**</span>
+<span class="cm">         * Finally, we display the map frame. When it is closed</span>
+<span class="cm">         * this application will exit.</span>
+<span class="cm">         */</span>
+        <span class="n">mapFrame</span><span class="o">.</span><span class="na">setSize</span><span class="o">(</span><span class="mi">600</span><span class="o">,</span> <span class="mi">600</span><span class="o">);</span>
+        <span class="n">mapFrame</span><span class="o">.</span><span class="na">setVisible</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+    <span class="o">}</span>
+</pre></div>
+</div>
+<p>Note that we are customizing the JMapFrame by adding a button to its toolbar. When the user clicks this button a new
+<strong>CursorTool</strong> is set for the map window.  This tool has just one method that responds to a mouse click in the map area.</p>
+</div>
+<div class="section" id="what-features-did-the-user-click-on">
+<h3>What features did the user click on ?<a class="headerlink" href="#what-features-did-the-user-click-on" title="Permalink to this headline">¶</a></h3>
+<p>Next we&#8217;ll add the method that is called when the user is in selection mode. Our custom toolbar
+button has been pressed, and the user has now clicked somewhere on the map.</p>
+<p>The method first creates a 5x5 pixel wide rectangle around the mouse position to make it easier to
+select point and line features. This is transformed from pixel coordinates to world coordinates
+and used to create a Filter to identify features under, or close to, the mouse click.</p>
+<blockquote>
+<div><div class="highlight-java"><div class="highlight"><pre>    <span class="cm">/**</span>
+<span class="cm">     * This method is called by our feature selection tool when</span>
+<span class="cm">     * the user has clicked on the map.</span>
+<span class="cm">     *</span>
+<span class="cm">     * @param pos map (world) coordinates of the mouse cursor</span>
+<span class="cm">     */</span>
+    <span class="kt">void</span> <span class="nf">selectFeatures</span><span class="o">(</span><span class="n">MapMouseEvent</span> <span class="n">ev</span><span class="o">)</span> <span class="o">{</span>
+
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Mouse click at: &quot;</span> <span class="o">+</span> <span class="n">ev</span><span class="o">.</span><span class="na">getMapPosition</span><span class="o">());</span>
+
+        <span class="cm">/*</span>
+<span class="cm">         * Construct a 5x5 pixel rectangle centred on the mouse click position</span>
+<span class="cm">         */</span>
+        <span class="n">Point</span> <span class="n">screenPos</span> <span class="o">=</span> <span class="n">ev</span><span class="o">.</span><span class="na">getPoint</span><span class="o">();</span>
+        <span class="n">Rectangle</span> <span class="n">screenRect</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Rectangle</span><span class="o">(</span><span class="n">screenPos</span><span class="o">.</span><span class="na">x</span><span class="o">-</span><span class="mi">2</span><span class="o">,</span> <span class="n">screenPos</span><span class="o">.</span><span class="na">y</span><span class="o">-</span><span class="mi">2</span><span class="o">,</span> <span class="mi">5</span><span class="o">,</span> <span class="mi">5</span><span class="o">);</span>
+        
+        <span class="cm">/*</span>
+<span class="cm">         * Transform the screen rectangle into bounding box in the coordinate</span>
+<span class="cm">         * reference system of our map context. Note: we are using a naive method</span>
+<span class="cm">         * here but GeoTools also offers other, more accurate methods.</span>
+<span class="cm">         */</span>
+        <span class="n">AffineTransform</span> <span class="n">screenToWorld</span> <span class="o">=</span> <span class="n">mapFrame</span><span class="o">.</span><span class="na">getMapPane</span><span class="o">().</span><span class="na">getScreenToWorldTransform</span><span class="o">();</span>
+        <span class="n">Rectangle2D</span> <span class="n">worldRect</span> <span class="o">=</span> <span class="n">screenToWorld</span><span class="o">.</span><span class="na">createTransformedShape</span><span class="o">(</span><span class="n">screenRect</span><span class="o">).</span><span class="na">getBounds2D</span><span class="o">();</span>
+        <span class="n">ReferencedEnvelope</span> <span class="n">bbox</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ReferencedEnvelope</span><span class="o">(</span>
+                <span class="n">worldRect</span><span class="o">,</span>
+                <span class="n">mapFrame</span><span class="o">.</span><span class="na">getMapContent</span><span class="o">().</span><span class="na">getCoordinateReferenceSystem</span><span class="o">());</span>
+
+        <span class="cm">/*</span>
+<span class="cm">         * Create a Filter to select features that intersect with</span>
+<span class="cm">         * the bounding box</span>
+<span class="cm">         */</span>
+        <span class="n">Filter</span> <span class="n">filter</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">intersects</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">property</span><span class="o">(</span><span class="n">geometryAttributeName</span><span class="o">),</span> <span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="n">bbox</span><span class="o">));</span>
+
+        <span class="cm">/*</span>
+<span class="cm">         * Use the filter to identify the selected features</span>
+<span class="cm">         */</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="n">SimpleFeatureCollection</span> <span class="n">selectedFeatures</span> <span class="o">=</span>
+                    <span class="n">featureSource</span><span class="o">.</span><span class="na">getFeatures</span><span class="o">(</span><span class="n">filter</span><span class="o">);</span>
+
+            <span class="n">SimpleFeatureIterator</span> <span class="n">iter</span> <span class="o">=</span> <span class="n">selectedFeatures</span><span class="o">.</span><span class="na">features</span><span class="o">();</span>
+            <span class="n">Set</span><span class="o">&lt;</span><span class="n">FeatureId</span><span class="o">&gt;</span> <span class="n">IDs</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashSet</span><span class="o">&lt;</span><span class="n">FeatureId</span><span class="o">&gt;();</span>
+            <span class="k">try</span> <span class="o">{</span>
+                <span class="k">while</span> <span class="o">(</span><span class="n">iter</span><span class="o">.</span><span class="na">hasNext</span><span class="o">())</span> <span class="o">{</span>
+                    <span class="n">SimpleFeature</span> <span class="n">feature</span> <span class="o">=</span> <span class="n">iter</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
+                    <span class="n">IDs</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">feature</span><span class="o">.</span><span class="na">getIdentifier</span><span class="o">());</span>
+
+                    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;   &quot;</span> <span class="o">+</span> <span class="n">feature</span><span class="o">.</span><span class="na">getIdentifier</span><span class="o">());</span>
+                <span class="o">}</span>
+
+            <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+                <span class="n">iter</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+            <span class="o">}</span>
+
+            <span class="k">if</span> <span class="o">(</span><span class="n">IDs</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">())</span> <span class="o">{</span>
+                <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;   no feature selected&quot;</span><span class="o">);</span>
+            <span class="o">}</span>
+
+            <span class="n">displaySelectedFeatures</span><span class="o">(</span><span class="n">IDs</span><span class="o">);</span>
+
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Exception</span> <span class="n">ex</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">ex</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+            <span class="k">return</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>Note that we are using an <em>intersects</em> filter and not a <em>bbox</em> (bounding box) filter in this method.  A bounding box
+filter is very fast, but it would only test if the rectangle around the mouse click is within the <strong>envelope</strong>, as
+opposed to the <strong>boundary</strong>, of each feature. For this application, that&#8217;s not what we want to do. To see why, consider
+this example...</p>
+<img alt="../../_images/selectionlab-bbox.png" src="../../_images/selectionlab-bbox.png" />
+<p>The blue shapes are parts of a single MultiPolygon which is the standard geometry type for polygonal features in
+shapefiles. Using a bounding box filter, clicking in the orange shape would select it plus all of the blue shapes
+because the click region is within their envelope (the grey rectangle).</p>
+</div>
+<div class="section" id="creating-a-style-based-on-the-selection">
+<h3>Creating a Style based on the selection<a class="headerlink" href="#creating-a-style-based-on-the-selection" title="Permalink to this headline">¶</a></h3>
+<p>Once the method above has worked out which features were selected, if any, it passes their FeatureIds to the
+<strong>displaySelected</strong> method.  This calls one of two Style creating methods and then redisplays the map with the
+updated Style:</p>
+<blockquote>
+<div><div class="highlight-java"><div class="highlight"><pre>    <span class="cm">/**</span>
+<span class="cm">     * Sets the display to paint selected features yellow and</span>
+<span class="cm">     * unselected features in the default style.</span>
+<span class="cm">     *</span>
+<span class="cm">     * @param IDs identifiers of currently selected features</span>
+<span class="cm">     */</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">displaySelectedFeatures</span><span class="o">(</span><span class="n">Set</span><span class="o">&lt;</span><span class="n">FeatureId</span><span class="o">&gt;</span> <span class="n">IDs</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">Style</span> <span class="n">style</span><span class="o">;</span>
+
+        <span class="k">if</span> <span class="o">(</span><span class="n">IDs</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">())</span> <span class="o">{</span>
+            <span class="n">style</span> <span class="o">=</span> <span class="n">createDefaultStyle</span><span class="o">();</span>
+
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="n">style</span> <span class="o">=</span> <span class="n">createSelectedStyle</span><span class="o">(</span><span class="n">IDs</span><span class="o">);</span>
+        <span class="o">}</span>
+
+        <span class="n">Layer</span> <span class="n">layer</span> <span class="o">=</span> <span class="n">mapFrame</span><span class="o">.</span><span class="na">getMapContent</span><span class="o">().</span><span class="na">layers</span><span class="o">().</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+        <span class="o">((</span><span class="n">FeatureLayer</span><span class="o">)</span> <span class="n">layer</span><span class="o">).</span><span class="na">setStyle</span><span class="o">(</span><span class="n">style</span><span class="o">);</span>
+        <span class="n">mapFrame</span><span class="o">.</span><span class="na">getMapPane</span><span class="o">().</span><span class="na">repaint</span><span class="o">();</span>
+    <span class="o">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+<div class="section" id="the-default-style">
+<h4>The default style<a class="headerlink" href="#the-default-style" title="Permalink to this headline">¶</a></h4>
+<p>This method creates a Style with a single <strong>Rule</strong> for all features using the line and fill constants defined at the top
+of the class:</p>
+<blockquote>
+<div><div class="highlight-java"><div class="highlight"><pre>    <span class="cm">/**</span>
+<span class="cm">     * Create a default Style for feature display</span>
+<span class="cm">     */</span>
+    <span class="kd">private</span> <span class="n">Style</span> <span class="nf">createDefaultStyle</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">Rule</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">createRule</span><span class="o">(</span><span class="n">LINE_COLOUR</span><span class="o">,</span> <span class="n">FILL_COLOUR</span><span class="o">);</span>
+
+        <span class="n">FeatureTypeStyle</span> <span class="n">fts</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="na">createFeatureTypeStyle</span><span class="o">();</span>
+        <span class="n">fts</span><span class="o">.</span><span class="na">rules</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="n">rule</span><span class="o">);</span>
+
+        <span class="n">Style</span> <span class="n">style</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="na">createStyle</span><span class="o">();</span>
+        <span class="n">style</span><span class="o">.</span><span class="na">featureTypeStyles</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="n">fts</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">style</span><span class="o">;</span>
+    <span class="o">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="the-selected-style">
+<h4>The selected style<a class="headerlink" href="#the-selected-style" title="Permalink to this headline">¶</a></h4>
+<p>This method creates a Style with one <strong>Rule</strong> for selected features, to paint them in a
+highlight colour, and a second <strong>Rule</strong> for unselected features. Both rules are then wrapped in the Style object.</p>
+<blockquote>
+<div><div class="highlight-java"><div class="highlight"><pre>    <span class="cm">/**</span>
+<span class="cm">     * Create a Style where features with given IDs are painted</span>
+<span class="cm">     * yellow, while others are painted with the default colors.</span>
+<span class="cm">     */</span>
+    <span class="kd">private</span> <span class="n">Style</span> <span class="nf">createSelectedStyle</span><span class="o">(</span><span class="n">Set</span><span class="o">&lt;</span><span class="n">FeatureId</span><span class="o">&gt;</span> <span class="n">IDs</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">Rule</span> <span class="n">selectedRule</span> <span class="o">=</span> <span class="n">createRule</span><span class="o">(</span><span class="n">SELECTED_COLOUR</span><span class="o">,</span> <span class="n">SELECTED_COLOUR</span><span class="o">);</span>
+        <span class="n">selectedRule</span><span class="o">.</span><span class="na">setFilter</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">id</span><span class="o">(</span><span class="n">IDs</span><span class="o">));</span>
+
+        <span class="n">Rule</span> <span class="n">otherRule</span> <span class="o">=</span> <span class="n">createRule</span><span class="o">(</span><span class="n">LINE_COLOUR</span><span class="o">,</span> <span class="n">FILL_COLOUR</span><span class="o">);</span>
+        <span class="n">otherRule</span><span class="o">.</span><span class="na">setElseFilter</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+
+        <span class="n">FeatureTypeStyle</span> <span class="n">fts</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="na">createFeatureTypeStyle</span><span class="o">();</span>
+        <span class="n">fts</span><span class="o">.</span><span class="na">rules</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="n">selectedRule</span><span class="o">);</span>
+        <span class="n">fts</span><span class="o">.</span><span class="na">rules</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="n">otherRule</span><span class="o">);</span>
+
+        <span class="n">Style</span> <span class="n">style</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="na">createStyle</span><span class="o">();</span>
+        <span class="n">style</span><span class="o">.</span><span class="na">featureTypeStyles</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="n">fts</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">style</span><span class="o">;</span>
+    <span class="o">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>Note that the first Rule includes a <strong>Filter</strong>, created with the <strong>FilterFactory2.id</strong> method. This means the rule will
+only apply to the selected features.</p>
+<p>The second rule is flagged as an <em>alternative</em> (applies to all other features) with the <strong>setElseFilter</strong> method.</p>
+</div>
+<div class="section" id="creating-a-rule-and-symbolizer">
+<h4>Creating a Rule and Symbolizer<a class="headerlink" href="#creating-a-rule-and-symbolizer" title="Permalink to this headline">¶</a></h4>
+<p>OK, we&#8217;re nearly at the end !</p>
+<p>Here is the method <strong>createRule</strong>. This is where the <strong>Symbolizer</strong> is created that describes how to draw a feature.</p>
+<blockquote>
+<div><div class="highlight-java"><div class="highlight"><pre>    <span class="cm">/**</span>
+<span class="cm">     * Helper for createXXXStyle methods. Creates a new Rule containing</span>
+<span class="cm">     * a Symbolizer tailored to the geometry type of the features that</span>
+<span class="cm">     * we are displaying.</span>
+<span class="cm">     */</span>
+    <span class="kd">private</span> <span class="n">Rule</span> <span class="nf">createRule</span><span class="o">(</span><span class="n">Color</span> <span class="n">outlineColor</span><span class="o">,</span> <span class="n">Color</span> <span class="n">fillColor</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">Symbolizer</span> <span class="n">symbolizer</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="n">Fill</span> <span class="n">fill</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="n">Stroke</span> <span class="n">stroke</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="na">createStroke</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="n">outlineColor</span><span class="o">),</span> <span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="n">LINE_WIDTH</span><span class="o">));</span>
+
+        <span class="k">switch</span> <span class="o">(</span><span class="n">geometryType</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">case</span> <span class="n">POLYGON</span><span class="o">:</span>
+                <span class="n">fill</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="na">createFill</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="n">fillColor</span><span class="o">),</span> <span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="n">OPACITY</span><span class="o">));</span>
+                <span class="n">symbolizer</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="na">createPolygonSymbolizer</span><span class="o">(</span><span class="n">stroke</span><span class="o">,</span> <span class="n">fill</span><span class="o">,</span> <span class="n">geometryAttributeName</span><span class="o">);</span>
+                <span class="k">break</span><span class="o">;</span>
+
+            <span class="k">case</span> <span class="n">LINE</span><span class="o">:</span>
+                <span class="n">symbolizer</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="na">createLineSymbolizer</span><span class="o">(</span><span class="n">stroke</span><span class="o">,</span> <span class="n">geometryAttributeName</span><span class="o">);</span>
+                <span class="k">break</span><span class="o">;</span>
+
+            <span class="k">case</span> <span class="n">POINT</span><span class="o">:</span>
+                <span class="n">fill</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="na">createFill</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="n">fillColor</span><span class="o">),</span> <span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="n">OPACITY</span><span class="o">));</span>
+
+                <span class="n">Mark</span> <span class="n">mark</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="na">getCircleMark</span><span class="o">();</span>
+                <span class="n">mark</span><span class="o">.</span><span class="na">setFill</span><span class="o">(</span><span class="n">fill</span><span class="o">);</span>
+                <span class="n">mark</span><span class="o">.</span><span class="na">setStroke</span><span class="o">(</span><span class="n">stroke</span><span class="o">);</span>
+
+                <span class="n">Graphic</span> <span class="n">graphic</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="na">createDefaultGraphic</span><span class="o">();</span>
+                <span class="n">graphic</span><span class="o">.</span><span class="na">graphicalSymbols</span><span class="o">().</span><span class="na">clear</span><span class="o">();</span>
+                <span class="n">graphic</span><span class="o">.</span><span class="na">graphicalSymbols</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="n">mark</span><span class="o">);</span>
+                <span class="n">graphic</span><span class="o">.</span><span class="na">setSize</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="n">POINT_SIZE</span><span class="o">));</span>
+
+                <span class="n">symbolizer</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="na">createPointSymbolizer</span><span class="o">(</span><span class="n">graphic</span><span class="o">,</span> <span class="n">geometryAttributeName</span><span class="o">);</span>
+        <span class="o">}</span>
+
+        <span class="n">Rule</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="na">createRule</span><span class="o">();</span>
+        <span class="n">rule</span><span class="o">.</span><span class="na">symbolizers</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="n">symbolizer</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">rule</span><span class="o">;</span>
+    <span class="o">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="geometry-type-of-the-shapefile-features">
+<h3>Geometry type of the shapefile features<a class="headerlink" href="#geometry-type-of-the-shapefile-features" title="Permalink to this headline">¶</a></h3>
+<p>Finally (yes, really) the createRule method above needs to know what sort of feature geometry we are dealing with to
+create the appropriate class of Symbolizer. Here is the method that works that out:</p>
+<blockquote>
+<div><div class="highlight-java"><div class="highlight"><pre>    <span class="cm">/**</span>
+<span class="cm">     * Retrieve information about the feature geometry</span>
+<span class="cm">     */</span>
+    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">setGeometry</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">GeometryDescriptor</span> <span class="n">geomDesc</span> <span class="o">=</span> <span class="n">featureSource</span><span class="o">.</span><span class="na">getSchema</span><span class="o">().</span><span class="na">getGeometryDescriptor</span><span class="o">();</span>
+        <span class="n">geometryAttributeName</span> <span class="o">=</span> <span class="n">geomDesc</span><span class="o">.</span><span class="na">getLocalName</span><span class="o">();</span>
+
+        <span class="n">Class</span><span class="o">&lt;?&gt;</span> <span class="n">clazz</span> <span class="o">=</span> <span class="n">geomDesc</span><span class="o">.</span><span class="na">getType</span><span class="o">().</span><span class="na">getBinding</span><span class="o">();</span>
+
+        <span class="k">if</span> <span class="o">(</span><span class="n">Polygon</span><span class="o">.</span><span class="na">class</span><span class="o">.</span><span class="na">isAssignableFrom</span><span class="o">(</span><span class="n">clazz</span><span class="o">)</span> <span class="o">||</span>
+                <span class="n">MultiPolygon</span><span class="o">.</span><span class="na">class</span><span class="o">.</span><span class="na">isAssignableFrom</span><span class="o">(</span><span class="n">clazz</span><span class="o">))</span> <span class="o">{</span>
+            <span class="n">geometryType</span> <span class="o">=</span> <span class="n">GeomType</span><span class="o">.</span><span class="na">POLYGON</span><span class="o">;</span>
+
+        <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">LineString</span><span class="o">.</span><span class="na">class</span><span class="o">.</span><span class="na">isAssignableFrom</span><span class="o">(</span><span class="n">clazz</span><span class="o">)</span> <span class="o">||</span>
+                <span class="n">MultiLineString</span><span class="o">.</span><span class="na">class</span><span class="o">.</span><span class="na">isAssignableFrom</span><span class="o">(</span><span class="n">clazz</span><span class="o">))</span> <span class="o">{</span>
+
+            <span class="n">geometryType</span> <span class="o">=</span> <span class="n">GeomType</span><span class="o">.</span><span class="na">LINE</span><span class="o">;</span>
+
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="n">geometryType</span> <span class="o">=</span> <span class="n">GeomType</span><span class="o">.</span><span class="na">POINT</span><span class="o">;</span>
+        <span class="o">}</span>
+
+    <span class="o">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="running-the-application">
+<h3>Running the application<a class="headerlink" href="#running-the-application" title="Permalink to this headline">¶</a></h3>
+<p>Here is the program displaying the <strong>bc_voting_areas</strong> shapefile (included in the <a class="reference external" href="http://udig.refractions.net/docs/data-v1_2.zip">uDig sample data</a>) with one feature
+(polygon) selected:</p>
+<img alt="../../_images/SelectionLab.png" src="../../_images/SelectionLab.png" />
+</div>
+</div>
+<div class="section" id="things-to-try">
+<h2>Things to try<a class="headerlink" href="#things-to-try" title="Permalink to this headline">¶</a></h2>
+<p>In Geometry and CRS tutorial we saw how to change the Coordinate Reference System of a MapContent.
+Try the following:</p>
+<ul class="simple">
+<li>Modify this application so that you can change the CRS in which the features are displayed.</li>
+<li>Display the <strong>bc_voting_areas</strong> shapefile and change the CRS to EPSG:4326</li>
+<li>Now try to use the selection tool. You will find that it no longer works !</li>
+</ul>
+<p>See if you can you figure out why the tool isn&#8217;t working and how to fix it.</p>
+<p>There is actually some amazing style generation code included with GeoTools. Add a dependency
+on the <strong>gt-brewer</strong> module and having a look at the <strong>ColorBrewer class</strong>.</p>
+<p>The class works by first asking you to calculate a <em>categorization</em> using one of the categorization
+functions on a feature collection; you can then pass the resulting categorization on to color brewer
+and it will generate a style for you based predefined palettes.</p>
+<p>For more information visit: <a class="reference external" href="http://colorbrewer2.org/">http://colorbrewer2.org/</a></p>
+</div>
+<div class="section" id="style-layer-descriptor">
+<h2>Style Layer Descriptor<a class="headerlink" href="#style-layer-descriptor" title="Permalink to this headline">¶</a></h2>
+<p>Style is all about looking good, and this section is a box of crayons, learning how to make a map
+look good is the practice of cartography.</p>
+<p>Actually cartography is focused on using a map to communicate, choosing what information to include,
+being strict about removing information that is off topic and so on.</p>
+<p>Occasionally organizations will have <em>cartographic standards</em> that must be followed. How thick lines
+must be exactly, what shade of blue to use for water.  Having a cartographic standard is a great
+time saver ‐ the rest of us are going to have to be creative.</p>
+<p>We do have one kind of standard to help us though: the Styled Layer Descriptor (SLD) standard
+‐ this document defines a nice data structure for Style which we have captured in the form
+of Java objects. If you get stuck at any point please review the SLD specification as it defines
+all the ideas we are going to work with today.</p>
+<p>At its heart it focuses on two things:</p>
+<dl class="docutils">
+<dt>Style Layer Descriptor</dt>
+<dd>Covers the definition of “ layers ” or presentations of feature content.</dd>
+<dt>Symbology Encoding</dt>
+<dd>Covers portrayal or how to draw the features</dd>
+</dl>
+<div class="section" id="controlling-the-rendering-process">
+<h3>Controlling the Rendering Process<a class="headerlink" href="#controlling-the-rendering-process" title="Permalink to this headline">¶</a></h3>
+<p>This is the heart of map making with GeoTools (or indeed with open standards).</p>
+<a class="reference internal image-reference" href="../../_images/renderingProcess.png"><img alt="../../_images/renderingProcess.png" src="../../_images/renderingProcess.png" style="width: 80%;" /></a>
+<p>It helps if you imagine a big funnel throwing all the features at your map at once. This is going
+to work kind of like those machines for sorting coins ‐ early stages of the machine are going to
+select a feature; once we are sure what kind of feature we have we are going to use the feature to
+control actual drawing onto different bitmaps. Finally we will gather up all the different bitmaps
+(and slap some labels on top) to produce a final image.</p>
+<p>Rendering occurs in the following stages:</p>
+<ul class="simple">
+<li>Content Selection: selecting and filtering</li>
+<li>Portrayal: actual drawing</li>
+<li>Composition: putting everything together</li>
+</ul>
+<p>The first line of defence is “ FeatureTypeStyle ”, it makes use of a constraint to select what
+FeatureType you want to work with. If you don&#8217;t care use the FeatureType with the name <cite>Feature</cite>
+as kind of a wild card (since everything extends <cite>Feature</cite>).</p>
+<p>Next up we have Rules. Rules actually use Filter (from the Filter tutorial) to perform strict
+checks about what is going to get drawn. In addition to checking feature attributes with Filter,
+a Rule is able to check the current scale of the map. Finally there is an <cite>Other</cite> rule to catch any
+features left over from earlier Rules.</p>
+<p>Now that a Rule has selected features for us to work with we can get down to drawing in the
+Portrayal step. The renderer will go through a list of symbolizers (for a Rule) and draw the
+results. The symbolizers are just a list of draw instructions to be done in order. The symbolizers
+use expressions to define width and color ‐ allowing you to dynamically generate the
+appearance on a feature by feature basis!</p>
+<p>The only symbolizer which is not drawn in order is TextSymbolizer which gathers up text labels for
+the next step.</p>
+<p>Finally in the composition step ‐ will take all the content drawn during portrayal and squish
+them together into a final image. Finally the text labels are generated from all layers and drawn
+on top of the map (taking care to avoid overlapping any text).</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="../affinetransform.html" title="AffineTransformation Tutorial"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="../raster/image.html" title="Image Tutorial"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Tutorials</a> &raquo;</li>
+        <li><a href="#">Map Style Tutorial</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

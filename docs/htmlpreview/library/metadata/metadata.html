@@ -1,0 +1,230 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Metadata &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../index.html" />
+    <link rel="up" title="Metadata" href="index.html" />
+    <link rel="next" title="GeoTools" href="geotools.html" />
+    <link rel="prev" title="Commons Pool" href="pool.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Metadata</a> &raquo;</li>
+        <li><a href="#">Metadata</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Metadata</a><ul>
+<li><a class="reference internal" href="#predefined-metadata">Predefined Metadata</a></li>
+<li><a class="reference internal" href="#custom-metadata">Custom Metadata</a></li>
+<li><a class="reference internal" href="#freeze">Freeze</a></li>
+<li><a class="reference internal" href="#metadata-wkt">Metadata WKT</a></li>
+<li><a class="reference internal" href="#metadata-iso19115">Metadata ISO19115</a></li>
+<li><a class="reference internal" href="#metadata-database">Metadata Database</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="pool.html"
+                        title="previous chapter">Commons Pool</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="geotools.html"
+                        title="next chapter">GeoTools</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/library/metadata/metadata.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="metadata">
+<h1>Metadata<a class="headerlink" href="#metadata" title="Permalink to this headline">¶</a></h1>
+<p>The MetaData interfaces can be used as straight up Java Beans, with properties and so on.</p>
+<p>Simple Properties:</p>
+<div class="highlight-python"><div class="highlight"><pre>public void referenceDocument( Citation citation ) {
+    System.out.println( citation.getTitle() );
+    System.out.println( citation.getTitle().toString( Locale.FRENCH) );
+}
+</pre></div>
+</div>
+<p>Collections:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">System</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">println</span><span class="p">(</span> <span class="n">citation</span><span class="o">.</span><span class="n">getIdentifiers</span><span class="p">()</span> <span class="p">);</span>
+<span class="n">System</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">println</span><span class="p">(</span> <span class="n">citation</span><span class="o">.</span><span class="n">getAlternateTitles</span><span class="p">()</span> <span class="p">);</span>
+</pre></div>
+</div>
+<p>Use in this manner is straightforward.</p>
+<div class="section" id="predefined-metadata">
+<h2>Predefined Metadata<a class="headerlink" href="#predefined-metadata" title="Permalink to this headline">¶</a></h2>
+<p>The GeoTools library provides predefined constants for the usual suspects, using Citation as an example the usual suspects are among others:</p>
+<ul class="simple">
+<li>EPSG</li>
+<li>OGC</li>
+<li>Oracle</li>
+</ul>
+<p>All of these organisations have published documentation, or specifications, that you may wish to offer as a citation when describing your own information.</p>
+<p>The <strong>Citations</strong> class rounds up these constants, and a few more, for you to reuse:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">referenceDocument</span><span class="p">(</span> <span class="n">Citations</span><span class="o">.</span><span class="n">EPSG</span> <span class="p">);</span>
+<span class="n">referenceDocument</span><span class="p">(</span> <span class="n">Citations</span><span class="o">.</span><span class="n">OGC</span> <span class="p">);</span>
+<span class="n">referenceDocument</span><span class="p">(</span> <span class="n">Citations</span><span class="o">.</span><span class="n">ORACLE</span> <span class="p">);</span>
+</pre></div>
+</div>
+<p>These constants however are &#8220;frozen&#8221; and may not be changed.</p>
+</div>
+<div class="section" id="custom-metadata">
+<h2>Custom Metadata<a class="headerlink" href="#custom-metadata" title="Permalink to this headline">¶</a></h2>
+<p>The metadata package does not offer a factory at this time. As such we must ask you to work directly with the implementation classes.</p>
+<p>Creating metadata is easy:</p>
+<div class="highlight-python"><div class="highlight"><pre>CitationImpl citation = new CitationImpl();
+</pre></div>
+</div>
+<p>No surprises here, a no argument constructor exists, just a regular Java Bean. Some other constructors accept an argument but they are just convenience.</p>
+<p>You can set up using the bean properties using set methods:</p>
+<div class="highlight-python"><div class="highlight"><pre>citation.setEditionDate( new Date() ); // today
+</pre></div>
+</div>
+<p>And sometimes a bit of a chore (reading javadocs to see what is needed):</p>
+<div class="highlight-python"><div class="highlight"><pre>Collection parties = Collections.singleton( ResponsiblePartyImpl.GEOTOOLS );
+citation.setCitedResponsibleParties( parties );
+</pre></div>
+</div>
+<p>The above method set the whole collection, discarding any previous collection for the &#8220;cited responsible parties&#8221; property. The code below is an alternative that add a responsible party without discarding the previous ones:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">citation</span><span class="o">.</span><span class="n">getCitedResponsibleParties</span><span class="p">()</span><span class="o">.</span><span class="n">add</span><span class="p">(</span> <span class="n">ResponsiblePartyImpl</span><span class="o">.</span><span class="n">GEOTOOLS</span> <span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="freeze">
+<h2>Freeze<a class="headerlink" href="#freeze" title="Permalink to this headline">¶</a></h2>
+<p>Next we have our first trick; although you can set up metadata classes using setter methods, the result is not generally considered threadsafe.</p>
+<p>There are three techniques commonly employed for threadsafety:</p>
+<ul class="simple">
+<li>Do nothing: and in the javadocs ask developers to only edit from one thread</li>
+<li>Synchronise: really safe, but you pay a performance hit when reading values from many threads</li>
+<li>Immutable: super safe as you can only configure the object during creation, allowing it to be quickly read from many threads at once. It is however inconvenient to setup.</li>
+</ul>
+<p>With the limitations of those two ideas in mind, the metadata has an interesting compromise:</p>
+<ul class="simple">
+<li>Freeze: set up the object in one thread, and freeze it into a read-only mode</li>
+</ul>
+<p>The Freeze step &#8220;throws a switch&#8221; and keeps the object from having any further changes applied.:</p>
+<div class="highlight-python"><div class="highlight"><pre>Citation f = (Citation) c.unmodifiable();
+</pre></div>
+</div>
+<p>Note that the original code c citation stay modifiable; only the returned one is unmodifiable.</p>
+<p>The OpenGIS interfaces are not really set up to be mutable, that is once created a lot of code expects them to never change. Hence the freeze step, it works better then the honour system.</p>
+</div>
+<div class="section" id="metadata-wkt">
+<h2>Metadata WKT<a class="headerlink" href="#metadata-wkt" title="Permalink to this headline">¶</a></h2>
+<p>WKT is actually &#8220;Well Known Text&#8221; and don&#8217;t worry nobody knows this the first time.</p>
+<p>Not all meatadata beans have a WKT representation, the ones used in defining a CoordianteReferenceSystem are generally well behaved.:</p>
+<div class="highlight-python"><div class="highlight"><pre>CoordinateReferenceSystem crs = DefaultGeographicCRS.WGS84;
+System.out.println( crs.toWKT() );
+</pre></div>
+</div>
+<p>Scary I know, CorodinateReferenceSystems are actually metadata - in this case the define the meaning of all those coordinates we shunt around a GIS system.</p>
+</div>
+<div class="section" id="metadata-iso19115">
+<h2>Metadata ISO19115<a class="headerlink" href="#metadata-iso19115" title="Permalink to this headline">¶</a></h2>
+<p>Metadata is often stored as XML files based on ISO 19115. GeoTools
+does not have a parser for these documents at this time.</p>
+<p>If you are interested in volunteering or funding this work please
+talk to us on the development list.</p>
+</div>
+<div class="section" id="metadata-database">
+<h2>Metadata Database<a class="headerlink" href="#metadata-database" title="Permalink to this headline">¶</a></h2>
+<p>The metadata module provides support for working with metadata entries stored in a database.</p>
+<p>Any JDBC database will do, and the detailed configurations are in the javadocs.</p>
+<p>Once again please consult the javadocs for details:</p>
+<div class="highlight-python"><div class="highlight"><pre>Connection     connection = ...
+MetadataSource source = new MetadataSource(connection);
+Telephone telephone  = (Telephone) source.getEntry(Telephone.class, id);
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="geotools.html" title="GeoTools"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="pool.html" title="Commons Pool"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" >Metadata</a> &raquo;</li>
+        <li><a href="#">Metadata</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

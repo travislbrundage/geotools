@@ -1,0 +1,211 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Icon &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../index.html" />
+    <link rel="up" title="Render" href="index.html" />
+    <link rel="next" title="WKT Marks" href="wkt.html" />
+    <link rel="prev" title="Styling features for display" href="style.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Render</a> &raquo;</li>
+        <li><a href="#">Icon</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Icon</a><ul>
+<li><a class="reference internal" href="#markfactory">MarkFactory</a></li>
+<li><a class="reference internal" href="#externalgraphicsfactory">ExternalGraphicsFactory</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="style.html"
+                        title="previous chapter">Styling features for display</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="wkt.html"
+                        title="next chapter">WKT Marks</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/library/render/icon.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="icon">
+<h1>Icon<a class="headerlink" href="#icon" title="Permalink to this headline">¶</a></h1>
+<p>The gt-render module supplies two factories that can be used to teach the rendering system about your custom icons.</p>
+<p>Notes: This is considered Advanced material because you need to register the factory you have created.</p>
+<div class="section" id="markfactory">
+<h2>MarkFactory<a class="headerlink" href="#markfactory" title="Permalink to this headline">¶</a></h2>
+<p>The job of this class is to evaluate the provided expression (it should evaluate into a String) and construct a good Java Shape out of it that we can draw on the map.:</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="kn">package</span> <span class="nn">org.geotools.render</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.awt.Graphics2D</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.awt.Shape</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.awt.geom.GeneralPath</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.geotools.renderer.style.MarkFactory</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.opengis.feature.Feature</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.opengis.filter.expression.Expression</span><span class="o">;</span>
+
+<span class="kd">class</span> <span class="nc">SplatMarkFactory</span> <span class="kd">implements</span> <span class="n">MarkFactory</span> <span class="o">{</span>
+
+<span class="kd">private</span> <span class="kd">static</span> <span class="n">GeneralPath</span> <span class="n">SPLAT</span><span class="o">;</span>
+
+<span class="kd">static</span> <span class="o">{</span>
+    <span class="n">SPLAT</span> <span class="o">=</span> <span class="k">new</span> <span class="n">GeneralPath</span><span class="o">(</span><span class="n">GeneralPath</span><span class="o">.</span><span class="na">WIND_EVEN_ODD</span><span class="o">);</span>
+    <span class="n">SPLAT</span><span class="o">.</span><span class="na">moveTo</span><span class="o">(-</span><span class="mf">0.2f</span><span class="o">,</span> <span class="mf">0.9f</span><span class="o">);</span>
+    <span class="n">SPLAT</span><span class="o">.</span><span class="na">lineTo</span><span class="o">(</span><span class="mf">0.266f</span><span class="o">,</span> <span class="o">-</span><span class="mf">0.5f</span><span class="o">);</span>
+    <span class="n">SPLAT</span><span class="o">.</span><span class="na">lineTo</span><span class="o">(-</span><span class="mf">0.366f</span><span class="o">,</span> <span class="o">-</span><span class="mf">0.7f</span><span class="o">);</span>
+    <span class="n">SPLAT</span><span class="o">.</span><span class="na">lineTo</span><span class="o">(</span><span class="mf">0.4f</span><span class="o">,</span> <span class="mf">1.12f</span><span class="o">);</span>
+    <span class="n">SPLAT</span><span class="o">.</span><span class="na">lineTo</span><span class="o">(</span><span class="mf">0.3f</span><span class="o">,</span> <span class="mf">1.10f</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="n">Shape</span> <span class="nf">getShape</span><span class="o">(</span><span class="n">Graphics2D</span> <span class="n">graphics</span><span class="o">,</span> <span class="n">Expression</span> <span class="n">symbolUrl</span><span class="o">,</span> <span class="n">Feature</span> <span class="n">feature</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">symbolUrl</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+        <span class="c1">// cannot handle a null url</span>
+        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="c1">// Evaluate the expression as a String</span>
+    <span class="n">String</span> <span class="n">wellKnownName</span> <span class="o">=</span> <span class="n">symbolUrl</span><span class="o">.</span><span class="na">evaluate</span><span class="o">(</span><span class="n">feature</span><span class="o">,</span> <span class="n">String</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    
+    <span class="k">if</span> <span class="o">(</span><span class="n">wellKnownName</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">wellKnownName</span><span class="o">.</span><span class="na">equalsIgnoreCase</span><span class="o">(</span><span class="s">&quot;splat&quot;</span><span class="o">))</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">SPLAT</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="kc">null</span><span class="o">;</span> <span class="c1">// we do not know this one</span>
+<span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>To use this class we are going to need to define a style that refers to this new mark:</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="n">StyleBuilder</span> <span class="n">builder</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StyleBuilder</span><span class="o">();</span>
+    <span class="n">FilterFactory2</span> <span class="n">ff</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">getFilterFactory</span><span class="o">();</span>
+    
+    <span class="n">Graphic</span> <span class="n">splat</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">createGraphic</span><span class="o">(</span><span class="kc">null</span><span class="o">,</span> <span class="n">builder</span><span class="o">.</span><span class="na">createMark</span><span class="o">(</span><span class="s">&quot;splat&quot;</span><span class="o">),</span> <span class="kc">null</span><span class="o">);</span>
+    <span class="n">PointSymbolizer</span> <span class="n">symbolizer</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">createPointSymbolizer</span><span class="o">(</span><span class="n">splat</span><span class="o">);</span>
+    
+    <span class="c1">// builder will fill in all the other classes with defaults</span>
+    <span class="n">Style</span> <span class="n">style</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">createStyle</span><span class="o">(</span><span class="n">symbolizer</span><span class="o">);</span>
+</pre></div>
+</div>
+<p>To register your class you will need to:</p>
+<ol class="arabic">
+<li><p class="first">Create the following folder: META_INF/services/</p>
+</li>
+<li><p class="first">In this folder create a file: org.geotools.renderer.style.MarkFactory</p>
+<p>The contents of this file should list your implementation:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">org</span><span class="o">.</span><span class="n">geotools</span><span class="o">.</span><span class="n">demo</span><span class="o">.</span><span class="n">render</span><span class="o">.</span><span class="n">SplatMarkFactory</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="externalgraphicsfactory">
+<h2>ExternalGraphicsFactory<a class="headerlink" href="#externalgraphicsfactory" title="Permalink to this headline">¶</a></h2>
+<p>This factory is much more capable, as it is not restricted to creating a simple shape.</p>
+<p>This class is responsible for:</p>
+<ul>
+<li><p class="first">evaluate the provided expression (it should evaluate into a URL)</p>
+<p>A feature is allowing the expression to refer to attributes if needed.</p>
+</li>
+<li><p class="first">construct a Java Icon</p>
+</li>
+<li><p class="first">both a format and a size are provided for reference</p>
+</li>
+</ul>
+<p>Your implementation can:</p>
+<ul class="simple">
+<li>implement a dynamic Icon directly (useful for symbols that need to be composed based on feature attributes)</li>
+<li>or as simple as a straight SwingIcon backed by a PNG file contained in your jar.</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="wkt.html" title="WKT Marks"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="style.html" title="Styling features for display"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" >Render</a> &raquo;</li>
+        <li><a href="#">Icon</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

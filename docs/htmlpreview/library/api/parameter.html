@@ -1,0 +1,236 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Parameter &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../index.html" />
+    <link rel="up" title="API" href="index.html" />
+    <link rel="next" title="Envelope" href="envelope.html" />
+    <link rel="prev" title="Style Layer Descriptor" href="sld.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">API</a> &raquo;</li>
+        <li><a href="#">Parameter</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="sld.html"
+                        title="previous chapter">Style Layer Descriptor</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="envelope.html"
+                        title="next chapter">Envelope</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/library/api/parameter.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="parameter">
+<h1>Parameter<a class="headerlink" href="#parameter" title="Permalink to this headline">¶</a></h1>
+<p>The connection parameters are described using the <strong>Parameter</strong> class. There is also a small
+extension to this idea with the <strong>DataAccessFactory.Param</strong> class. The extension provided
+for backwards compatibility, as the methods focus on data entry and has been
+superseded by the Converters class.</p>
+<img alt="../../_images/param.PNG" src="../../_images/param.PNG" />
+<p>The <strong>Parameter</strong> is used for:</p>
+<ul>
+<li><p class="first">DataAccessFactory.getParameterInfo()</p>
+<p>To describe the keys and values to put into your map. You can use this information to ask your
+end users the details about their data such as if they want an index created for their shapefile access.</p>
+</li>
+<li><p class="first"><strong>ProcessFactory</strong> in <strong>gt-process</strong> to describe the parameters to geospatial processes.</p>
+</li>
+<li><p class="first"><strong>JDataStoreWizard</strong> from <strong>gt-swing</strong> used to allow users to connect to data in our tutorials.</p>
+</li>
+</ul>
+<p>In all these cases the Parameter are used to describe the contents of a Map&lt;String,Object&gt;.</p>
+<p>The class itself is open ended, with only a few well defined restrictions advertised at this time.</p>
+<p>The following public fields are available:</p>
+<ul>
+<li><p class="first">Parameter.key : String</p>
+<p>Programatic machine readable key or name used to store the value. Suitable for use in a java.util.Map of connection parameters.</p>
+</li>
+<li><p class="first">Parameter.type : Class&lt;T&gt;</p>
+<p>Formal restriction on the type of the Java Object allowed as a value. May be used in conjunction with minOccurs and maxOccurs
+when a List of values is allowed.</p>
+</li>
+<li><p class="first">Parameter.title : InternationalString</p>
+</li>
+<li><p class="first">Parameter.description : InternationalString</p>
+<p>Human readable title and description for data entry prompting.</p>
+</li>
+<li><p class="first">Parameter.required : boolean</p>
+</li>
+<li><p class="first">Parameter.minOccurs : int</p>
+</li>
+<li><p class="first">Parameter.maxOccurs : int</p>
+<p>Indication of if the value is required, or if more than one value is allowed and any restrictions on the resulting list.</p>
+</li>
+<li><p class="first">Parameter.sample : Object</p>
+<p>A sample, or default, value that can be shown to users as a starting point.</p>
+</li>
+<li><p class="first">Parameter.metadata : Map&lt;String, Object&gt;</p>
+<p>Here is where the Parameter description becomes open ended, as you can add your own restrictions and information
+to this &#8220;metadata&#8221; map.</p>
+<p>We have defined a series of well known keys (with javadocs):</p>
+<ul>
+<li><p class="first">FEATURE_TYPE - when the parameter.type is a SimpleFeature, this key is used to record the expected FeatureType</p>
+</li>
+<li><p class="first">IS_PASSWORD</p>
+<p>Example use:</p>
+<div class="highlight-python"><div class="highlight"><pre>// Using IS_PASSWORD to check Parameter.metadata
+field.setPassword( Boolean.TRUE.equals( parameter.metadata.get( Parameter.IS_PASSWORD )));
+
+// Or use the utility method
+field.setPassword( parameter.isPassword() );
+</pre></div>
+</div>
+</li>
+<li><p class="first">LENGTH</p>
+<p>Example use:</p>
+<blockquote>
+<div><p>Integer length = parameter.metadata.get( Parameter.LENGTH );
+field.setLength( length == null ? 40 : length );</p>
+</div></blockquote>
+</li>
+<li><p class="first">CRS - when the parameter type is spatial (such as a Geometry or Feature) this records the expected CoordianteReferenceSystem</p>
+</li>
+<li><p class="first">ELEMENT - used to indicate the element type for a List</p>
+</li>
+<li><p class="first">MIN - min value for any comparable such as a Number, Date or String. Assumed to be the same Class as parameter.type.</p>
+</li>
+<li><p class="first">MAX - max value for any comparable such as a Number, Date or String. Assumed to be the same Class as parameter.type.</p>
+</li>
+<li><p class="first">EXT - extension used for selecting Files</p>
+</li>
+<li><p class="first">LEVEL - indicates if the parameter is suitable for a general &#8220;user&#8221;, &#8220;advanced&#8221; user, or only applicable to a &#8220;program&#8221; (such as a JEE Session).</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>A number of constructors are available. It is recommended that you use <em>KVP</em> when defining the metadata map (as it was created with this express purpose in mind).</p>
+<p>A couple of methods have been defined; to solidify how the metadata map above is used:</p>
+<ul class="simple">
+<li>Parameter.isPassword() - check if metadata.get( IS_PASSWORD ) is true</li>
+<li>Parameter.getLevel() - check if level is &#8220;user&#8221;, &#8220;advanced&#8221; or &#8220;program&#8221; (defaulting to &#8220;user&#8221;).</li>
+</ul>
+<p>The <strong>Param</strong> subclass only offers a few additional ideas:</p>
+<ul>
+<li><p class="first">Param.lookUp(Map&lt;String, ?&gt;)</p>
+<p>Used to safely look up a value in a map of connection parameters:</p>
+<div class="highlight-python"><div class="highlight"><pre>// Server is required; so if iis not available an IOException is thrown
+String server = (String) SERVER.lookup( connectionParameters );
+
+// May be null as PORT is optional
+// Is able to type convert a String to an Integer to match PORT.type
+Integer port = (Integer) PORT.lookup( connectionParams );
+if( port == null ){
+   port = PORT.sample; // default port for PostGIS
+}
+</pre></div>
+</div>
+</li>
+<li><p class="first">Param.text(Object)</p>
+<p>Convert object to an appropriate String representation for display to a user.</p>
+</li>
+<li><p class="first">Param.parse(String)</p>
+<p>Used to parse a user supplied String into the required Class indicated by Param.type.</p>
+</li>
+<li><p class="first">Param.handle(String)</p>
+<p>Convert a String to the required Class; with the extra ability to handle arrays of values:</p>
+<div class="highlight-python"><div class="highlight"><pre>Param DASH = new Param( &quot;dash&quot;, int[].class );
+
+int[] arrary = (int[]) DASH.handle(&quot;1 2 3 4 5 6&quot;);
+</pre></div>
+</div>
+<p>Convert a String (provide by the user) to the required Class indicated by Param.type, handling
+arrays using whitespace if required.</p>
+</li>
+</ul>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="envelope.html" title="Envelope"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="sld.html" title="Style Layer Descriptor"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" >API</a> &raquo;</li>
+        <li><a href="#">Parameter</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

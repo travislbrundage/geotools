@@ -1,0 +1,247 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Style Layer Descriptor &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../index.html" />
+    <link rel="up" title="API" href="index.html" />
+    <link rel="next" title="Parameter" href="parameter.html" />
+    <link rel="prev" title="DataStore" href="datastore.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">API</a> &raquo;</li>
+        <li><a href="#">Style Layer Descriptor</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Style Layer Descriptor</a><ul>
+<li><a class="reference internal" href="#id1">Style Layer Descriptor</a></li>
+<li><a class="reference internal" href="#symbology-encoding">Symbology Encoding</a><ul>
+<li><a class="reference internal" href="#symbolizer">Symbolizer</a></li>
+<li><a class="reference internal" href="#textsymbolizer">TextSymbolizer</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#sld-utility-class">SLD Utility Class</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="datastore.html"
+                        title="previous chapter">DataStore</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="parameter.html"
+                        title="next chapter">Parameter</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/library/api/sld.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="style-layer-descriptor">
+<h1>Style Layer Descriptor<a class="headerlink" href="#style-layer-descriptor" title="Permalink to this headline">¶</a></h1>
+<p>The <strong>gt-api</strong> module provides interfaces for the style layer descriptor data structure and
+offers GeoTools specific extensions to the symbology encoding data structure.</p>
+<p>References:</p>
+<ul class="simple">
+<li><a class="reference internal" href="../../tutorial/map/style.html"><em>style</em></a> (tutorial)</li>
+<li><a class="reference internal" href="../opengis/se.html"><em>gt-opengis symbology encoding</em></a></li>
+<li><a class="reference internal" href="../render/style.html"><em>gt-render style</em></a> (code examples)</li>
+<li><a class="reference external" href="http://www.opengeospatial.org/standards/sld">http://www.opengeospatial.org/standards/sld</a> (style layer descriptor)</li>
+<li><a class="reference external" href="http://www.opengeospatial.org/standards/symbol">http://www.opengeospatial.org/standards/symbol</a> (symbology encoding)</li>
+</ul>
+<div class="section" id="id1">
+<h2>Style Layer Descriptor<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>The StyleLayerDescriptor concept comes to us from  the SLD specification. It is aimed at defining how a
+web map server can draw an entire map (with all the layers included in one gulp.)</p>
+<img alt="../../_images/sld.PNG" src="../../_images/sld.PNG" />
+<p>Since many of the elements referenced above assume we are operating inside a WMS this class is not used
+frequently during day to day use.</p>
+<p>That said if you are letting a user manage styles you will want to let them provide names and titles and general organise what is going on.</p>
+<p>Styling for a Map is captured with three initial classes:</p>
+<ul class="simple">
+<li>StyledLayerDescriptor representing the styling information for an entire Map</li>
+<li>NamedLayer defines FeatureTypeConstraints to test if the style is applicable to your data, and a list of Style</li>
+<li>Style defines how features or Rasters are to be drawn</li>
+</ul>
+</div>
+<div class="section" id="symbology-encoding">
+<h2>Symbology Encoding<a class="headerlink" href="#symbology-encoding" title="Permalink to this headline">¶</a></h2>
+<p>This implementation differs slightly in its approach presented in <strong>gt-opengis</strong> in that the objects are mutable and can be modified
+after construction.</p>
+<p>This section also introduces some of the interesting GeoTools specific extensions that have been created.</p>
+<img alt="../../_images/rule.PNG" src="../../_images/rule.PNG" />
+<p>In the above example of <strong>Rule</strong> you can see the following differences:</p>
+<ul>
+<li><p class="first">Rule.isElseFilter()</p>
+</li>
+<li><p class="first">Rule.setElseFilter()</p>
+<p>Both getters and setters are now provided.</p>
+</li>
+<li><p class="first">Rule.symbolizers() provides direct access to a List&lt;Symbolizer&gt;</p>
+<p>You can modify the list of symbolizers directly:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">rule</span><span class="o">.</span><span class="n">clear</span><span class="p">();</span>
+<span class="n">rule</span><span class="o">.</span><span class="n">symbolizers</span><span class="p">()</span><span class="o">.</span><span class="n">add</span><span class="p">(</span> <span class="n">pointSymbolizer</span> <span class="p">);</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>This style of programming is available when working with symbology encoding data structures
+such as Rule.</p>
+<div class="section" id="symbolizer">
+<h3>Symbolizer<a class="headerlink" href="#symbolizer" title="Permalink to this headline">¶</a></h3>
+<img alt="../../_images/symbolizer2.PNG" src="../../_images/symbolizer2.PNG" />
+<p>GeoTools extends the concept of Symbolizer allowing the geometry to be defined using a general Expression (rather than just a PropertyName references). This facility allows a geometry to be defined using a Function expression giving users an opportunity to preprocess the geometry.</p>
+</div>
+<div class="section" id="textsymbolizer">
+<h3>TextSymbolizer<a class="headerlink" href="#textsymbolizer" title="Permalink to this headline">¶</a></h3>
+<img alt="../../_images/textSymbolizer.PNG" src="../../_images/textSymbolizer.PNG" />
+<p>GeoTools extends the concept of a TextSymbolizer allowing:</p>
+<ul>
+<li><p class="first">TextSymbolizer.getPriority()</p>
+<p>Priority used to determine precedence when labels collisions occur during rendering. The label with the highest priority
+&#8220;wins&#8221; with the others being moved out of the way (within a tolerance) or just not displayed.</p>
+</li>
+<li><p class="first">TextSymbolizer.getOption(String)</p>
+<p>Additional vendor specific options used to control the rendering process.</p>
+</li>
+<li><p class="first">TextSymbolizer2.getGraphic()</p>
+<p>Graphic to display behind the text label</p>
+</li>
+<li><p class="first">TextSymbolizer2.getSnippet()</p>
+<p>Used by text renderers such as KML and RSS to specify a snippet of text.</p>
+</li>
+<li><p class="first">TextSymbolizer2.getFeatureDescription()</p>
+<p>Used by formats like KML or RSS to supply info on a feature.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="sld-utility-class">
+<h2>SLD Utility Class<a class="headerlink" href="#sld-utility-class" title="Permalink to this headline">¶</a></h2>
+<p>The SLD utility class is used to perform common operations on Style objects. This is the class you can used when you &#8220;just&#8221; want to hack away at an existing Style object.</p>
+<p>This utility class originated as part of the uDig application.</p>
+<ul>
+<li><p class="first">Changing the Colors</p>
+<p>Utility methods exits to change the &#8220;first&#8221; symbolizer found in the Style:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">SLD</span><span class="o">.</span><span class="n">setLineColour</span><span class="p">(</span><span class="n">style</span><span class="p">,</span> <span class="n">Color</span><span class="o">.</span><span class="n">BLUE</span> <span class="p">);</span>
+<span class="n">SLD</span><span class="o">.</span><span class="n">setPolyColour</span><span class="p">(</span><span class="n">style</span><span class="p">,</span> <span class="n">Color</span><span class="o">.</span><span class="n">RED</span> <span class="p">);</span>
+</pre></div>
+</div>
+<p>You can also perform these kinds of changes on individual symbolizers:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">SLD</span><span class="o">.</span><span class="n">setLineColour</span><span class="p">(</span> <span class="n">lineSymbolizer</span><span class="p">,</span> <span class="n">Color</span><span class="o">.</span><span class="n">BLUE</span> <span class="p">);</span>
+<span class="n">SLD</span><span class="o">.</span><span class="n">setPolyColour</span><span class="p">(</span> <span class="n">polygonSymbolizer</span><span class="p">,</span> <span class="n">Color</span><span class="o">.</span><span class="n">RED</span> <span class="p">);</span>
+</pre></div>
+</div>
+<p>You can combine this approach with a StyleVisitor to edit the colors for specific rules:</p>
+<div class="highlight-python"><div class="highlight"><pre>DuplicatingStyleVisitor repaint = new DuplicatingStyleVisitor(){
+   boolean flag=false;
+   public void visit(Rule rule){
+        flag=rule.getName().equals(&quot;fred&quot;);
+
+        super.visit( rule ); // makes a copy
+        flag=false;
+   }
+   public void visit(PolygonSymbolizer polygonSymbolizer){
+        super.visit( rule ); // makes a copy
+        if( flag ){
+            PolygonSymbolizer copy = getObject(); // the copy just made
+            SLD.setPolyColour( copy, Color.RED );
+        }
+   }
+};
+style.accepts( repaint ):
+Style modified = (Style) repaint.getObject();
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="parameter.html" title="Parameter"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="datastore.html" title="DataStore"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" >API</a> &raquo;</li>
+        <li><a href="#">Style Layer Descriptor</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

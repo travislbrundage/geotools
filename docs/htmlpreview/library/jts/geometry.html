@@ -1,0 +1,468 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Geometry &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../index.html" />
+    <link rel="up" title="JTS" href="index.html" />
+    <link rel="next" title="Testing equality of Geometry objects" href="equals.html" />
+    <link rel="prev" title="JTS FAQ" href="faq.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">JTS</a> &raquo;</li>
+        <li><a href="#">Geometry</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Geometry</a><ul>
+<li><a class="reference internal" href="#creating-a-point">Creating a Point</a></li>
+<li><a class="reference internal" href="#creating-a-linestring">Creating a LineString</a></li>
+<li><a class="reference internal" href="#creating-a-polygon">Creating a Polygon</a></li>
+<li><a class="reference internal" href="#creating-circularstring">Creating CircularString</a></li>
+<li><a class="reference internal" href="#custom-curves">Custom Curves</a></li>
+<li><a class="reference internal" href="#id1">Geometry</a></li>
+<li><a class="reference internal" href="#geometries-enum">Geometries Enum</a></li>
+<li><a class="reference internal" href="#precisionmodel">PrecisionModel</a></li>
+<li><a class="reference internal" href="#coordinatesequence">CoordinateSequence</a></li>
+<li><a class="reference internal" href="#jts">JTS</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="faq.html"
+                        title="previous chapter">JTS FAQ</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="equals.html"
+                        title="next chapter">Testing equality of Geometry objects</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/library/jts/geometry.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="geometry">
+<h1>Geometry<a class="headerlink" href="#geometry" title="Permalink to this headline">¶</a></h1>
+<p>To create a Geometry object we make use of the GeometryFactory provided by JTS. GeometryFactory has a bunch of create methods that take Coordinate instances (and arrays) and wrap them up in the appropriate instance of Geometry.</p>
+<p>The OGC Simple Features for SQL specification implemented by JTS works with <em>Point</em>, <em>LineString</em> and <em>Polygon</em>.</p>
+<img alt="../../_images/geometry.png" src="../../_images/geometry.png" />
+<p>Each <em>Geometry</em> can be contained in an <em>Envelope</em> (acting as a bounding box that contains all the geometry coordinates).</p>
+<p>The OGC Simple Feature for SQL specification also provides support for GeometryCollections. GeometryCollections are themselves considered a Geometry.</p>
+<img alt="../../_images/geometry_collection.png" src="../../_images/geometry_collection.png" />
+<p>You can create your own GeometryFactory with a specific PrecisionModel and CoordinateSequenceFactory.</p>
+<img alt="../../_images/geometry_factory.png" src="../../_images/geometry_factory.png" />
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>These &#8220;advanced&#8221; configuration options are interest if you need to take charge of how the coordinates are stored (perhaps as floats rather than doubles?) The two concepts work together: if you are storing your coordinates in an array of floats, then JTS only needs to consider float precision during calculations.</p>
+<p class="last">The GeometryFactory created by default works just fine.</p>
+</div>
+<p>GeoTools extends these core Geometry classes to allow support for curves. These implementations generate coordinates allowing them to act as normal JTS Geometries (as required for JTS Operations).</p>
+<img alt="../../_images/geometry2.png" src="../../_images/geometry2.png" />
+<p>The linearization process used to generate coordinates makes use of the control points defining the curve and a tolerance provided by a CurvedGeometryFactory.</p>
+<div class="section" id="creating-a-point">
+<h2>Creating a Point<a class="headerlink" href="#creating-a-point" title="Permalink to this headline">¶</a></h2>
+<p>This time we are using a JTS GeometryFactory, although you can create one yourself (if you want to fiddle with Precision}} there is a global one available using the FactoryFinder.:</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="n">GeometryFactory</span> <span class="n">geometryFactory</span> <span class="o">=</span> <span class="n">JTSFactoryFinder</span><span class="o">.</span><span class="na">getGeometryFactory</span><span class="o">();</span>
+    
+    <span class="n">Coordinate</span> <span class="n">coord</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Coordinate</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">1</span><span class="o">);</span>
+    <span class="n">Point</span> <span class="n">point</span> <span class="o">=</span> <span class="n">geometryFactory</span><span class="o">.</span><span class="na">createPoint</span><span class="o">(</span><span class="n">coord</span><span class="o">);</span>
+</pre></div>
+</div>
+<p>&#8220;Well Known Text&#8221; is a simple text format defined by the Simple Feature for SQL specification:</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="n">GeometryFactory</span> <span class="n">geometryFactory</span> <span class="o">=</span> <span class="n">JTSFactoryFinder</span><span class="o">.</span><span class="na">getGeometryFactory</span><span class="o">();</span>
+    
+    <span class="n">WKTReader</span> <span class="n">reader</span> <span class="o">=</span> <span class="k">new</span> <span class="n">WKTReader</span><span class="o">(</span><span class="n">geometryFactory</span><span class="o">);</span>
+    <span class="n">Point</span> <span class="n">point</span> <span class="o">=</span> <span class="o">(</span><span class="n">Point</span><span class="o">)</span> <span class="n">reader</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="s">&quot;POINT (1 1)&quot;</span><span class="o">);</span>
+</pre></div>
+</div>
+<p>If you need to represent many points (perhaps fence posts forming a fence) you can use use a MultiPoint.</p>
+</div>
+<div class="section" id="creating-a-linestring">
+<h2>Creating a LineString<a class="headerlink" href="#creating-a-linestring" title="Permalink to this headline">¶</a></h2>
+<img alt="../../_images/geometry_linestring.png" src="../../_images/geometry_linestring.png" />
+<p>The following makes a line string in the shape of a check mark:</p>
+<div class="highlight-python"><div class="highlight"><pre>GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory();
+
+Coordinate[] coords  =
+ new Coordinate[] {new Coordinate(0, 2), new Coordinate(2, 0), new Coordinate(8, 6) };
+
+LineString line = geometryFactory.createLineString(coordinates);
+</pre></div>
+</div>
+<p>Alternative - Reading a LineString from WKT:</p>
+<div class="highlight-python"><div class="highlight"><pre>GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory();
+
+WKTReader reader = new WKTReader( geometryFactory );
+LineString line = (LineString) reader.read(&quot;LINESTRING(0 2, 2 0, 8 6)&quot;);
+</pre></div>
+</div>
+<p>If you need to represent a line with gaps in it you can use a MultiLineString.</p>
+</div>
+<div class="section" id="creating-a-polygon">
+<h2>Creating a Polygon<a class="headerlink" href="#creating-a-polygon" title="Permalink to this headline">¶</a></h2>
+<img alt="../../_images/geometry_polygon.png" src="../../_images/geometry_polygon.png" />
+<p>The following makes a Polygon in the shape of a square:</p>
+<div class="highlight-python"><div class="highlight"><pre>GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory();
+
+Coordinate[] coords  =
+   new Coordinate[] {new Coordinate(4, 0), new Coordinate(2, 2),
+                     new Coordinate(4, 4), new Coordinate(6, 2), new Coordinate(4, 0) };
+
+LinearRing ring = geometryFactory.createLinearRing( coords );
+LinearRing holes[] = null; // use LinearRing[] to represent holes
+Polygon polygon = geometryFactory.createPolygon(ring, holes );
+</pre></div>
+</div>
+<p>Alternative - Reading a Polygon from WKT:</p>
+<div class="highlight-python"><div class="highlight"><pre>GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory( null );
+
+WKTReader reader = new WKTReader( geometryFactory );
+Polygon polygon = (Polygon) reader.read(&quot;POLYGON((20 10, 30 0, 40 10, 30 20, 20 10))&quot;);
+</pre></div>
+</div>
+<p>You can also create a Polygon will holes in it. And once again use a MultiPolygon to represent a single geometry made up of distinct shapes.</p>
+</div>
+<div class="section" id="creating-circularstring">
+<h2>Creating CircularString<a class="headerlink" href="#creating-circularstring" title="Permalink to this headline">¶</a></h2>
+<p>To create a CircularString (or a CircularRing) use the GeoTools CurvedGeometryFactory. When setting up a CurvedGeometryFactory the provided tolerance will be used during linearization:</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="n">GeometryFactory</span> <span class="n">geometryFactory</span> <span class="o">=</span> <span class="n">JTSFactoryFinder</span><span class="o">.</span><span class="na">getGeometryFactory</span><span class="o">();</span>
+    <span class="n">CurvedGeometryFactory</span> <span class="n">curvedFactory</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CurvedGeometryFactory</span><span class="o">(</span><span class="n">geometryFactory</span><span class="o">,</span><span class="n">Double</span><span class="o">.</span><span class="na">MAX_VALUE</span><span class="o">);</span>
+    
+    <span class="n">PackedCoordinateSequence</span> <span class="n">coords</span> <span class="o">=</span> <span class="k">new</span> <span class="n">PackedCoordinateSequence</span><span class="o">.</span><span class="na">Double</span><span class="o">(</span>
+       <span class="k">new</span> <span class="kt">double</span><span class="o">[]{</span><span class="mi">10</span><span class="o">,</span><span class="mi">14</span><span class="o">,</span><span class="mi">6</span><span class="o">,</span><span class="mi">10</span><span class="o">,</span><span class="mi">14</span><span class="o">,</span><span class="mi">10</span><span class="o">},</span> <span class="mi">2</span> <span class="o">);</span>
+    
+    <span class="n">CircularString</span> <span class="n">arc</span> <span class="o">=</span> <span class="o">(</span><span class="n">CircularString</span><span class="o">)</span> <span class="n">curvedFactory</span><span class="o">.</span><span class="na">createCurvedGeometry</span><span class="o">(</span><span class="n">coords</span><span class="o">);</span>
+</pre></div>
+</div>
+<p>The circle arc is defined between coordinates 10,14 and 14, 10 passing through point 6,10. The example uses a PackedCoordianteSequence allowing an array of doubles to be used directly. Curve support is limited to 2D coordinates. A CircularLineString is returned in this case, a CircularRing would be produced if two or more curves were provided form a closed ring.</p>
+<p>Reading a circular arc from WKT:</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="n">GeometryFactory</span> <span class="n">geometryFactory</span> <span class="o">=</span> <span class="n">JTSFactoryFinder</span><span class="o">.</span><span class="na">getGeometryFactory</span><span class="o">();</span>
+    <span class="n">CurvedGeometryFactory</span> <span class="n">curvedfactory</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CurvedGeometryFactory</span><span class="o">(</span><span class="n">Double</span><span class="o">.</span><span class="na">MAX_VALUE</span><span class="o">);</span>
+    
+    <span class="n">WKTReader2</span> <span class="n">reader</span> <span class="o">=</span> <span class="k">new</span> <span class="n">WKTReader2</span><span class="o">(</span><span class="n">curvedfactory</span><span class="o">);</span>
+    <span class="n">CircularString</span> <span class="n">arc</span> <span class="o">=</span> <span class="o">(</span><span class="n">CircularString</span><span class="o">)</span> <span class="n">reader</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="s">&quot;CIRCULARSTRING(10 14,6 10,14 10)&quot;</span><span class="o">);</span>
+</pre></div>
+</div>
+<p>A CompoundCurve (or closed CompoundRing) consists mix of CircularString and/or plain LineString components.</p>
+</div>
+<div class="section" id="custom-curves">
+<h2>Custom Curves<a class="headerlink" href="#custom-curves" title="Permalink to this headline">¶</a></h2>
+<p>The JTS Topology Suite does not have any constructs to represent a &#8220;curve&#8221; or &#8220;circle&#8221; - GeoTools added that as an extension. The mathematics used by JTS is strictly limited to geometry made up of straight (ie linear) lines.</p>
+<p>The GeoTools curve implementations rely on using control points to define a curve, and converting it to a straight lines at the last possible moment.</p>
+<p>Curves can also be produced by hand using a little bit of math.</p>
+<p>Creating a Circle:</p>
+<div class="highlight-python"><div class="highlight"><pre>private static Geometry createCircle(double x, double y, final double RADIUS) {
+  GeometricShapeFactory shapeFactory = new GeometricShapeFactory();
+  shapeFactory.setNumPoints(32);
+  shapeFactory.setCentre(new Coordinate(x, y));
+  shapeFactory.setSize(RADIUS * 2);
+  return shapeFactory.createCircle();
+}
+</pre></div>
+</div>
+<p>Even though &#8220;GeometricShapeFactory&#8221; is provided out of the box from JTS; there is nothing fancy
+about the code. It creates a series of coordinates in a circle.</p>
+<p>Another approach is to create a curve or shape object with one of Java&#8217;s handy Shape classes and then extract the coordinates from that object to create your geometry.</p>
+<p>Arcs without the maths:</p>
+<div class="highlight-python"><div class="highlight"><pre>private static Geometry createBezierCurve(Coordinate start,
+                                          Coordinate end,
+                                          Coordinate ctrlPoint1,
+                                          Coordinate ctrlPoint2
+                                          double smooth) {
+    Shape curve = new CubicCurve2D.Double(
+        start.x, start.y,
+        ctrlPoint1.x, ctrlPoint1.y,
+        ctrlPoint2.x, ctrlPoint2.y,
+        end.x, end.y);
+
+    // the value of the smooth arg determines how closely the line
+    // segments between points approximate the smooth curve
+    // (see javadocs for Shape.getPathIterator method)
+
+    PathIterator iter = curve.getPathIterator(null, smooth);
+
+    // a length 6 array is required for the iterator
+    double[] iterBuf = new double[6];
+
+    List&lt;Coordinate&gt; coords = new ArrayList&lt;Coordinate&gt;();
+    while (!iter.isDone()) {
+        iter.currentSegment(iterBuf);
+        coords.add(new Coordinate(buf[0], buf[1]);
+        iter.next();
+    }
+
+    GeometryFactory gf = new GeometryFactory();
+    return gf.createLineString(coords.toArray(new Coordinate[coords.size()]));
+}
+</pre></div>
+</div>
+<p>Here&#8217;s an example of some randomly orientated and shaped curves generated in this way...</p>
+<img alt="../../_images/geometry_curve.gif" src="../../_images/geometry_curve.gif" />
+<p>Sometimes you need to generate a smooth curve that is guaranteed to pass through a specified set of points. The tried and true approach here is to use a spline function. This generates a set of polynomial (cubic) curves, each of which fits a part of the data and joins smoothly to its neighbouring curves.</p>
+<p>Splines:</p>
+<div class="highlight-python"><div class="highlight"><pre>public Geometry splineInterpolatePoints(double[] xPoints, double[] yPoints) {
+   /*
+   * First we create a LineString of segments with the
+   * input points as vertices.
+   */
+   final int N = xPoints.length;
+   Coordinate[] coords = new Coordinate[N];
+   for (int i = 0; i &lt; N; i++) {
+      coords[i] = new Coordinate(xPoints[i], yPoints[i]);
+   }
+   GeometryFactory gf = new GeometryFactory();
+   LineString line = gf.createLineString(coords);
+
+   /*
+   * Now we use the GeoTools JTS utility class to smooth the
+   * line. The returned Geometry will have all of the vertices
+   * of the input line plus extra vertices tracing a spline
+   * curve. The second argument is the &#39;fit&#39; parameter which
+   * can be in the range 0 (loose fit) to 1 (tightest fit).
+   */
+   return JTS.smooth(line, 0.0);
+}
+</pre></div>
+</div>
+<p>Here is an example of this in use:</p>
+<img alt="../../_images/geometry_spline1.png" src="../../_images/geometry_spline1.png" />
+<p>Example smoothing a polygon:</p>
+<div class="highlight-python"><div class="highlight"><pre>WKTReader reader = new WKTReader();
+Geometry tShape = reader.read(
+&quot;POLYGON((10 0, 10 20, 0 20, 0 30, 30 30, 30 20, 20 20, 20 0, 10 0))&quot;);
+
+Geometry tLoose = JTS.smooth(tShape, 0.0);
+Geometry tTighter = JTS.smooth(tShape, 0.75);
+</pre></div>
+</div>
+<p>Here is the resulting image:</p>
+<img alt="../../_images/geometry_spline2.png" src="../../_images/geometry_spline2.png" />
+</div>
+<div class="section" id="id1">
+<h2>Geometry<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>Using Geometry is pretty straight forward, although a little intimidating when starting out due to the number of methods.</p>
+<img alt="../../_images/geometry_use.PNG" src="../../_images/geometry_use.PNG" />
+<p>Some summary information is available:</p>
+<ul class="simple">
+<li>getArea() - area returned in the same units as the coordinates (be careful of lat/lon data!)</li>
+<li>getCentroid() - the centre of the geometry</li>
+<li>getEnvelope() - returns a geometry which is probably not what you wanted</li>
+<li>getEnvelopeInternal() - this returns a useful Envelope</li>
+<li>getInteriorPoint() - the centre of the geometry (that is actually on the geometry)</li>
+<li>getDimension()</li>
+</ul>
+<p>Geometry relationships are represented by the following functions returning true or false:</p>
+<ul class="simple">
+<li>disjoint(Geometry) - same as &#8220;not&#8221; intersects</li>
+<li>touches(Geometry) - geometry have to just touch, crossing or overlap will not work</li>
+<li>intersects(Geometry)</li>
+<li>crosses(Geometry)</li>
+<li>within(Geometry) - geometry has to be full inside</li>
+<li>contains(Geometry)</li>
+<li>overlaps(Geometry) - has to actually overlap the edge, being within or touching will not work</li>
+<li>covers(Geometry)</li>
+<li>coveredBy(Geometry)</li>
+<li>relate(Geometry, String) - allows general check of relationship see dim9 page</li>
+<li>relate(Geometry)</li>
+</ul>
+<p>To actually determine a shape based on two geometry:</p>
+<ul class="simple">
+<li>intersection(Geometry)</li>
+<li>union(Geometry)</li>
+<li>difference(Geometry)</li>
+<li>symDifference(Geometry)</li>
+</ul>
+<p>Some of the most helpful functions are:</p>
+<ul class="simple">
+<li>distance( Geometry )</li>
+<li>buffer(double) - used to buffer the edge of a geometry to produce a polygon</li>
+<li>union() - used on a geometry collection to produce a single geometry</li>
+</ul>
+<p>The three most difficult methods are here (they will be discussed in detail):</p>
+<ul class="simple">
+<li>equals( Object ) - normal Java equals which checks that the two objects are the same instance</li>
+<li>equals( Geometry ) - checks if the geometry is the same shape</li>
+<li>equalsExact( Geometry ) - check if the data structure is the same</li>
+</ul>
+<p>There are some book keeping methods to help discovery how the geometry was constructed:</p>
+<ul class="simple">
+<li>getGeometryFactory()</li>
+<li>getPreceisionModel()</li>
+<li>toText() - the WKT representation of the Geometry</li>
+<li>getGeoemtryType() - factory method called (ie &#8220;point&#8221;, &#8220;linestring&#8221;, etc..)</li>
+</ul>
+<p>A couple of methods are there to store your developer information:</p>
+<ul class="simple">
+<li>getSRID() - stores the &#8220;spatial reference id&#8221;, used as an external key when working with databases</li>
+<li>getUserData() - intended to be used by developers, a best practice is to store a java.util.Map. GeoTools will occasionally use this field to store a &#8220;srsName&#8221; or full CoordianteReferenceSystem.</li>
+</ul>
+</div>
+<div class="section" id="geometries-enum">
+<h2>Geometries Enum<a class="headerlink" href="#geometries-enum" title="Permalink to this headline">¶</a></h2>
+<p>Code that makes use of Geometry ends up doing a fair amount of &#8220;instanceof&#8221; testing in order to determine what kind of Geometry is being used (to take appropriate action).</p>
+<p>We have an enumeration defined to help out in this case:</p>
+<blockquote>
+<div><div class="highlight-java"><div class="highlight"><pre><span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">hit</span><span class="o">(</span><span class="n">Point</span> <span class="n">point</span><span class="o">,</span> <span class="n">Geometry</span> <span class="n">geometry</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kd">final</span> <span class="kt">double</span> <span class="n">MAX_DISTANCE</span> <span class="o">=</span> <span class="mf">0.001</span><span class="o">;</span>
+    
+    <span class="k">switch</span> <span class="o">(</span><span class="n">Geometries</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">geometry</span><span class="o">))</span> <span class="o">{</span>
+    <span class="k">case</span> <span class="n">POINT</span><span class="o">:</span>
+    <span class="k">case</span> <span class="n">MULTIPOINT</span><span class="o">:</span>
+    <span class="k">case</span> <span class="n">LINESTRING</span><span class="o">:</span>
+    <span class="k">case</span> <span class="n">MULTILINESTRING</span><span class="o">:</span>
+        <span class="c1">// Test if p is within a threshold distance</span>
+        <span class="k">return</span> <span class="n">geometry</span><span class="o">.</span><span class="na">isWithinDistance</span><span class="o">(</span><span class="n">point</span><span class="o">,</span> <span class="n">MAX_DISTANCE</span><span class="o">);</span>
+        
+    <span class="k">case</span> <span class="n">POLYGON</span><span class="o">:</span>
+    <span class="k">case</span> <span class="n">MULTIPOLYGON</span><span class="o">:</span>
+        <span class="c1">// Test if the polygonal geometry contains p</span>
+        <span class="k">return</span> <span class="n">geometry</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="n">point</span><span class="o">);</span>
+        
+    <span class="k">default</span><span class="o">:</span>
+        <span class="c1">// For simplicity we just assume distance check will work for other</span>
+        <span class="c1">// types (e.g. GeometryCollection) in this example</span>
+        <span class="k">return</span> <span class="n">geometry</span><span class="o">.</span><span class="na">isWithinDistance</span><span class="o">(</span><span class="n">point</span><span class="o">,</span> <span class="n">MAX_DISTANCE</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="precisionmodel">
+<h2>PrecisionModel<a class="headerlink" href="#precisionmodel" title="Permalink to this headline">¶</a></h2>
+<p>Out of the box JTS works with a default double precision model. Configuring your GeometryFactory with a PrecisionModel allows you to work at a different resolution than this default.</p>
+<p>PrecisionModel forms the heart of &#8220;numerical stability&#8221; when working with Geometry. When working with large values the mathematics built into Java are not very accurate. By explicitly capturing the &#8220;round-off&#8221; process in a PrecisionModel JTS allows to manage these sorts of errors and make an appropriate tradeoff of speed vs accuracy for your work.</p>
+<ul>
+<li><p class="first">Round-off often occur, even when working in double precision.</p>
+<p>Especially if you are working in a coordinate system with big
+numbers and you&#8217;re a long way from the origin.</p>
+</li>
+<li><p class="first">The other reason to look at PrecisionModel is to ensure it matches
+your final use for your data. If you know you are only going to
+display an answer on the screen, you may be able to get by with
+reduced precision.</p>
+<p>By matching the PrecisionModel with your expected use, certain long
+running operations (that need to converge on an answer) can stop
+when they have reached the level of detail you expect. No sense
+doing extra work for more significant digits if the result is going
+to be rounded off at the end of the day.</p>
+</li>
+</ul>
+<p>The following code example takes into account that the location being passed in was only supplied as a floating point value x/y. We handle this by creating this test point with a GeometryFactory that takes a PrecisionModel argument. The test point will be flagged as having a certain limited precision and all JTS operations will take this into account.</p>
+<p>There are various ways of specifying a PrecisionModel but here we base it on the number of decimal places to use for coordinate comparisons.:</p>
+<div class="highlight-python"><div class="highlight"><pre>private boolean polyContains(Polygon poly, float x, float y, int numDecPlaces) {
+  double scale = Math.pow(10, numDecPlaces);
+  PrecisionModel pm = new PrecisionModel(scale);
+  GeometryFactory gf = new GeometryFactory(pm);
+
+  Geometry testPoint = gf.createPoint(new Coordinate(x, y));
+  return poly.contains(testPoint);
+}
+</pre></div>
+</div>
+<p>You can also define the PrecisionModel using a couple of constants:</p>
+<div class="highlight-python"><div class="highlight"><pre>pm = new PrecisionModel( PrecisionModel.Type.FIXED ); // fixed decimal point
+pm = new PrecisionModel( PrecisionModel.Type.FLOATING ); // for Java double
+pm = new PrecisionModel( PrecisionModel.Type.FLOATING_SINGLE ); // for Java float
+</pre></div>
+</div>
+<p>This is an advanced feature that is not often used.</p>
+</div>
+<div class="section" id="coordinatesequence">
+<h2>CoordinateSequence<a class="headerlink" href="#coordinatesequence" title="Permalink to this headline">¶</a></h2>
+<p>You may wish to provide a custom CoordinateSequenceFactory for reasons of efficiency and/or reducing memory use.</p>
+<p>Internally Geometry often works with Coordinate[]. However many of the spatial formats used for JTS will store values as a flat doube[] or float[] for efficiency. By implementing a CoordinateSequenceFactory GeoTools can teach JTS how to handle the values directly out of a shapefile for example.</p>
+<p>This is an advanced feature that is not often used.</p>
+</div>
+<div class="section" id="jts">
+<h2>JTS<a class="headerlink" href="#jts" title="Permalink to this headline">¶</a></h2>
+<p>Some of the code examples used above reference the <em>JTS</em> utility class. This class is provided by <strong>gt-api</strong> module; and contains many helpful methods for working with Geometry.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="equals.html" title="Testing equality of Geometry objects"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="faq.html" title="JTS FAQ"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" >JTS</a> &raquo;</li>
+        <li><a href="#">Geometry</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

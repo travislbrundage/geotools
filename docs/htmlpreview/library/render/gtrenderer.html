@@ -1,0 +1,321 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>GTRenderer to draw maps &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../index.html" />
+    <link rel="up" title="Render" href="index.html" />
+    <link rel="next" title="Map data and display classes" href="map.html" />
+    <link rel="prev" title="Render FAQ" href="faq.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Render</a> &raquo;</li>
+        <li><a href="#">GTRenderer to draw maps</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">GTRenderer to draw maps</a><ul>
+<li><a class="reference internal" href="#swing">Swing</a></li>
+<li><a class="reference internal" href="#d">3D</a></li>
+<li><a class="reference internal" href="#printing">Printing</a></li>
+<li><a class="reference internal" href="#pdf">PDF</a></li>
+<li><a class="reference internal" href="#svg">SVG</a></li>
+<li><a class="reference internal" href="#image">Image</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="faq.html"
+                        title="previous chapter">Render FAQ</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="map.html"
+                        title="next chapter">Map data and display classes</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/library/render/gtrenderer.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="gtrenderer-to-draw-maps">
+<h1>GTRenderer to draw maps<a class="headerlink" href="#gtrenderer-to-draw-maps" title="Permalink to this headline">¶</a></h1>
+<p>GTRenderer renderer is the reason why you signed up for this whole GeoTools experience; you want to see a Map.</p>
+<p>GTRenderer is actually an interface; currently there are two implementations:</p>
+<ul class="simple">
+<li>StreamingRenderer - a great implementation that does not cache anything. This decision makes it easier to understand and allows it to tackle that large datasets without running out of memory.</li>
+<li>ShapefileRenderer - (unsupported) restricted to shapefiles as a playground for trying out speed improvements. However all the good optimisations have been picked up by StreamingRenderer.</li>
+</ul>
+<img alt="../../_images/GTRenderer.PNG" src="../../_images/GTRenderer.PNG" />
+<p>Here is how to drawn an outputArea rectangle:</p>
+<div class="highlight-python"><div class="highlight"><pre>GTRenderer draw = new StreamingRenderer();
+draw.setMapContent(map);
+
+draw.paint(g2d, outputArea, map.getLayerBounds() );
+</pre></div>
+</div>
+<p>If you have completed the Quickstart, this is the approach used by the JMapPane class we use in a
+lot of our tutorials.</p>
+<p>The important part of the above example is that GTRenderer works on the Java2D class
+<strong>Graphics2D</strong>. You can find many implementations of Graphics2D allowing GeoTools to work with a
+range of graphics systems beyond the screen.</p>
+<div class="section" id="swing">
+<h2>Swing<a class="headerlink" href="#swing" title="Permalink to this headline">¶</a></h2>
+<p>You can create a swing control to render the image interactively; we
+provide an example JMapPane for use in our tutorials.</p>
+<p>GTRenderer is just a rendering engine - in your own application you may
+consider the following ideas:</p>
+<ul class="simple">
+<li>Experiment with different Java 2D graphics settings such as
+anti-aliasing</li>
+<li>Use background threads to draw tiles, and allowing your swing control
+to pull the tiles onto the screen for a smooth &#8220;slippy&#8221; map</li>
+</ul>
+</div>
+<div class="section" id="d">
+<h2>3D<a class="headerlink" href="#d" title="Permalink to this headline">¶</a></h2>
+<p>A google summer of code student put together and example of rendering
+into a texture buffers and using OpenGL to handle panning and zooming.</p>
+<p>Personally I would look for an Graphics2D implementation that was
+backed by OpenGL commands and use GeoTools to render out into the scene
+graph.</p>
+<p>If you are interested in the students code it is currently in the
+&#8220;spike&#8221; directory of GeoTools where we keep experiments.</p>
+</div>
+<div class="section" id="printing">
+<h2>Printing<a class="headerlink" href="#printing" title="Permalink to this headline">¶</a></h2>
+<p>The Java2D library is also used for Java printing. You can print using StreamingRenderer, the code works like normal just
+use the Graphics2D object from your Printer.</p>
+<p>uDig uses this facility to allow for printing maps directly to the
+printer.</p>
+</div>
+<div class="section" id="pdf">
+<h2>PDF<a class="headerlink" href="#pdf" title="Permalink to this headline">¶</a></h2>
+<p>We have also had success using GTRenderer and Batik for the generation
+of PDF output (they provide a Graphics2D object).</p>
+<p>You can see this functionality in uDig and GeoServer.</p>
+<p>The following example is taken from uDig:</p>
+<div class="highlight-python"><div class="highlight"><pre>  Rectangle suggestedPageSize = getITextPageSize(page1.getPageSize());
+  Rectangle pageSize = rotatePageIfNecessary(suggestedPageSize);
+  //rotate if we need landscape
+  Document document = new Document(pageSize);
+  ...
+  PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(outputFile));
+  document.open();
+  Graphics2D graphics = cb.createGraphics(pageSize.getWidth(), pageSize.getHeight());
+
+  // call your GTRenderer here
+  GTRenderer draw = new StreamingRenderer();
+  draw.setMapContent(map);
+
+  draw.paint(graphics, outputArea, map.getLayerBounds() );
+
+  // cleanup
+  graphics.dispose();
+
+  //cleanup
+  document.close();
+  writer.close();
+
+PDF Tips:
+
+You may wish to increase the page size by 2 and then scale the result by 50% in order to produce high resolution raster layers
+</pre></div>
+</div>
+</div>
+<div class="section" id="svg">
+<h2>SVG<a class="headerlink" href="#svg" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><p>The GeoVista team have used the Batik project to generate SVG output.</p>
+<p>You will need a dependency for gt-svg. This will bring it the correct version of batick for you and add support for svg icons.</p>
+</div></blockquote>
+<p>Thanks to James Macgill for the following code example:</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="cm">/**</span>
+<span class="cm"> * Generate an SVG document from the supplied information. Note, use cavasSize first if you want</span>
+<span class="cm"> * to change the default output size.</span>
+<span class="cm"> * </span>
+<span class="cm"> * @param map</span>
+<span class="cm"> *            Contains the layers (features + styles) to be rendered</span>
+<span class="cm"> * @param env</span>
+<span class="cm"> *            The portion of the map to generate an SVG from</span>
+<span class="cm"> * @param out</span>
+<span class="cm"> *            Stream to write the resulting SVG out to (probable should be a new file)</span>
+<span class="cm"> * @param canvasSize</span>
+<span class="cm"> *            optional canvas size, will default to 300x300</span>
+<span class="cm"> * @throws IOException</span>
+<span class="cm"> *             Should anything go wrong whilst writing to &#39;out&#39;</span>
+<span class="cm"> * @throws ParserConfigurationException</span>
+<span class="cm"> *             If critical XML tools are missing from the classpath</span>
+<span class="cm"> */</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">exportSVG</span><span class="o">(</span><span class="n">MapContent</span> <span class="n">map</span><span class="o">,</span> <span class="n">ReferencedEnvelope</span> <span class="n">env</span><span class="o">,</span> <span class="n">OutputStream</span> <span class="n">out</span><span class="o">,</span>
+        <span class="n">Dimension</span> <span class="n">canvasSize</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">ParserConfigurationException</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">canvasSize</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">canvasSize</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Dimension</span><span class="o">(</span><span class="mi">300</span><span class="o">,</span> <span class="mi">300</span><span class="o">);</span> <span class="c1">// default of 300x300</span>
+    <span class="o">}</span>
+    <span class="n">Document</span> <span class="n">document</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+    
+    <span class="n">DocumentBuilderFactory</span> <span class="n">dbf</span> <span class="o">=</span> <span class="n">DocumentBuilderFactory</span><span class="o">.</span><span class="na">newInstance</span><span class="o">();</span>
+    <span class="n">DocumentBuilder</span> <span class="n">db</span> <span class="o">=</span> <span class="n">dbf</span><span class="o">.</span><span class="na">newDocumentBuilder</span><span class="o">();</span>
+    
+    <span class="c1">// Create an instance of org.w3c.dom.Document</span>
+    <span class="n">document</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="na">getDOMImplementation</span><span class="o">().</span><span class="na">createDocument</span><span class="o">(</span><span class="kc">null</span><span class="o">,</span> <span class="s">&quot;svg&quot;</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
+    
+    <span class="c1">// Set up the map</span>
+    <span class="n">SVGGeneratorContext</span> <span class="n">ctx1</span> <span class="o">=</span> <span class="n">SVGGeneratorContext</span><span class="o">.</span><span class="na">createDefault</span><span class="o">(</span><span class="n">document</span><span class="o">);</span>
+    <span class="n">SVGGeneratorContext</span> <span class="n">ctx</span> <span class="o">=</span> <span class="n">ctx1</span><span class="o">;</span>
+    <span class="n">ctx</span><span class="o">.</span><span class="na">setComment</span><span class="o">(</span><span class="s">&quot;Generated by GeoTools2 with Batik SVG Generator&quot;</span><span class="o">);</span>
+    
+    <span class="n">SVGGraphics2D</span> <span class="n">g2d</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SVGGraphics2D</span><span class="o">(</span><span class="n">ctx</span><span class="o">,</span> <span class="kc">true</span><span class="o">);</span>
+    
+    <span class="n">g2d</span><span class="o">.</span><span class="na">setSVGCanvasSize</span><span class="o">(</span><span class="n">canvasSize</span><span class="o">);</span>
+    
+    <span class="n">StreamingRenderer</span> <span class="n">renderer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StreamingRenderer</span><span class="o">();</span>
+    <span class="n">renderer</span><span class="o">.</span><span class="na">setMapContent</span><span class="o">(</span><span class="n">map</span><span class="o">);</span>
+    
+    <span class="n">Rectangle</span> <span class="n">outputArea</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Rectangle</span><span class="o">(</span><span class="n">g2d</span><span class="o">.</span><span class="na">getSVGCanvasSize</span><span class="o">());</span>
+    <span class="n">ReferencedEnvelope</span> <span class="n">dataArea</span> <span class="o">=</span> <span class="n">map</span><span class="o">.</span><span class="na">getMaxBounds</span><span class="o">();</span>
+    
+    <span class="n">LOGGER</span><span class="o">.</span><span class="na">finest</span><span class="o">(</span><span class="s">&quot;rendering map&quot;</span><span class="o">);</span>
+    <span class="n">renderer</span><span class="o">.</span><span class="na">paint</span><span class="o">(</span><span class="n">g2d</span><span class="o">,</span> <span class="n">outputArea</span><span class="o">,</span> <span class="n">dataArea</span><span class="o">);</span>
+    <span class="n">LOGGER</span><span class="o">.</span><span class="na">finest</span><span class="o">(</span><span class="s">&quot;writing to file&quot;</span><span class="o">);</span>
+    <span class="n">OutputStreamWriter</span> <span class="n">osw</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="k">try</span> <span class="o">{</span>
+        <span class="n">osw</span> <span class="o">=</span> <span class="k">new</span> <span class="n">OutputStreamWriter</span><span class="o">(</span><span class="n">out</span><span class="o">,</span> <span class="s">&quot;UTF-8&quot;</span><span class="o">);</span>
+        <span class="n">g2d</span><span class="o">.</span><span class="na">stream</span><span class="o">(</span><span class="n">osw</span><span class="o">);</span>
+    <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">osw</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span>
+            <span class="n">osw</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+    <span class="o">}</span>
+    
+<span class="o">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="image">
+<h2>Image<a class="headerlink" href="#image" title="Permalink to this headline">¶</a></h2>
+<p>You can also ask Java to make you a Graphics2D for a BufferedImage in memory. After drawing into this
+image you can write it out to disk.</p>
+<p>Here is an example from Oliver on the email list (modified slightly to use current GeoTools classes):</p>
+<div class="highlight-python"><div class="highlight"><pre>public void saveImage(final MapContent map, final String file, final int imageWidth) {
+
+    GTRenderer renderer = new StreamingRenderer();
+    renderer.setMapContent(map);
+
+    Rectangle imageBounds = null;
+    ReferencedEnvelope mapBounds = null;
+    try {
+        mapBounds = map.getMaxBounds();
+        double heightToWidth = mapBounds.getSpan(1) / mapBounds.getSpan(0);
+        imageBounds = new Rectangle(
+                0, 0, imageWidth, (int) Math.round(imageWidth * heightToWidth));
+
+    } catch (Exception e) {
+        // failed to access map layers
+        throw new RuntimeException(e);
+    }
+
+    BufferedImage image = new BufferedImage(imageBounds.width, imageBounds.height, BufferedImage.TYPE_INT_RGB);
+
+    Graphics2D gr = image.createGraphics();
+    gr.setPaint(Color.WHITE);
+    gr.fill(imageBounds);
+
+    try {
+        renderer.paint(gr, imageBounds, mapBounds);
+        File fileToSave = new File(file);
+        ImageIO.write(image, &quot;jpeg&quot;, fileToSave);
+
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+}
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="map.html" title="Map data and display classes"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="faq.html" title="Render FAQ"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" >Render</a> &raquo;</li>
+        <li><a href="#">GTRenderer to draw maps</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

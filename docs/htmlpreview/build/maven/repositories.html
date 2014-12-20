@@ -1,0 +1,139 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Remote Repositories &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../index.html" />
+    <link rel="up" title="Using Maven" href="index.html" />
+    <link rel="next" title="Using Git" href="../git.html" />
+    <link rel="prev" title="Maven Local Settings" href="settings.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Building</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Using Maven</a> &raquo;</li>
+        <li><a href="#">Remote Repositories</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Remote Repositories</a><ul>
+<li><a class="reference internal" href="#reducing-internet-downloads">Reducing Internet Downloads</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="settings.html"
+                        title="previous chapter">Maven Local Settings</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../git.html"
+                        title="next chapter">Using Git</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/build/maven/repositories.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="remote-repositories">
+<h1>Remote Repositories<a class="headerlink" href="#remote-repositories" title="Permalink to this headline">¶</a></h1>
+<p>There are repositories of jars required by GeoTools stored online. These repositories are listed
+in the root pom.xml file.</p>
+<p>You can browse them online at:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://download.osgeo.org/webdav/geotools/">http://download.osgeo.org/webdav/geotools/</a> (Release repository)</li>
+<li><a class="reference external" href="http://repo.opengeo.org/">http://repo.opengeo.org/</a> (SNAPSHOT repository)</li>
+<li><a class="reference external" href="http://mirrors.ibiblio.org/pub/mirrors/maven2/">http://mirrors.ibiblio.org/pub/mirrors/maven2/</a> (Mirror of main maven repository)</li>
+</ul>
+<div class="section" id="reducing-internet-downloads">
+<h2>Reducing Internet Downloads<a class="headerlink" href="#reducing-internet-downloads" title="Permalink to this headline">¶</a></h2>
+<p>There are several tools to allow your development team to share a local mirror.</p>
+<ul class="simple">
+<li><a class="reference external" href="http://maven.apache.org/repository-management.html">http://maven.apache.org/repository-management.html</a></li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="../git.html" title="Using Git"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="settings.html" title="Maven Local Settings"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Building</a> &raquo;</li>
+          <li><a href="index.html" >Using Maven</a> &raquo;</li>
+        <li><a href="#">Remote Repositories</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

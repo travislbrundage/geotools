@@ -1,0 +1,224 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Maven Local Settings &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../index.html" />
+    <link rel="up" title="Using Maven" href="index.html" />
+    <link rel="next" title="Remote Repositories" href="repositories.html" />
+    <link rel="prev" title="Project Object Model (POM) Files" href="pom.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Building</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Using Maven</a> &raquo;</li>
+        <li><a href="#">Maven Local Settings</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Maven Local Settings</a><ul>
+<li><a class="reference internal" href="#settings-xml">settings.xml</a></li>
+<li><a class="reference internal" href="#local-repository">Local Repository</a></li>
+<li><a class="reference internal" href="#configuring-the-heap-size">Configuring the heap size</a></li>
+<li><a class="reference internal" href="#configuring-a-proxy-server">Configuring a proxy server</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="pom.html"
+                        title="previous chapter">Project Object Model (POM) Files</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="repositories.html"
+                        title="next chapter">Remote Repositories</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/build/maven/settings.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="maven-local-settings">
+<h1>Maven Local Settings<a class="headerlink" href="#maven-local-settings" title="Permalink to this headline">¶</a></h1>
+<p>On your machine you will find a directory in called &#8216;m2&#8217;. This is where maven stores all downloaded jars and installed projects.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="19%" />
+<col width="81%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Platform</th>
+<th class="head">Directory</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Linux:</td>
+<td><code class="docutils literal"><span class="pre">~/.m2</span></code></td>
+</tr>
+<tr class="row-odd"><td>Windows XP</td>
+<td><code class="docutils literal"><span class="pre">C:\Documents</span> <span class="pre">and</span> <span class="pre">Settings\USER\.m2</span></code></td>
+</tr>
+<tr class="row-even"><td>Windows 7</td>
+<td><code class="docutils literal"><span class="pre">C:\Users\USER\.m2</span></code></td>
+</tr>
+</tbody>
+</table>
+<p>The format of this directory is:</p>
+<ul class="simple">
+<li>.m2/repository - this is your local repository where jars have been downloaded or installed</li>
+<li>.m2/settings.xml - configuration file for site specific settings such as mirror to download from</li>
+<li>.m2/profiles.xml - configuration file for profiles (not often used)</li>
+</ul>
+<div class="section" id="settings-xml">
+<h2>settings.xml<a class="headerlink" href="#settings-xml" title="Permalink to this headline">¶</a></h2>
+<p>You can provide an optional settings.xml file in this directory that is used to describe configuration and resources available on your machine.</p>
+<p>Examples of use:</p>
+<ul>
+<li><p class="first">set a proxy server</p>
+</li>
+<li><p class="first">turn on / off online tests (same as <code class="docutils literal"><span class="pre">-o</span></code> command line option):</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;offline&gt;true&lt;/offline&gt;
+</pre></div>
+</div>
+</li>
+<li><p class="first">select testing profiles (so you can test against a local database, or geoserver install)</p>
+</li>
+<li><p class="first">Set up a mirror for better performance:</p>
+<p>Using ibiblio as your mirror of the central maven repository:</p>
+</li>
+</ul>
+<div class="highlight-xml"><div class="highlight"><pre> settings.xml
+ <span class="nt">&lt;settings&gt;</span>
+   <span class="nt">&lt;mirrors&gt;</span>
+     <span class="nt">&lt;mirror&gt;</span>
+       <span class="nt">&lt;id&gt;</span>ibiblio.org<span class="nt">&lt;/id&gt;</span>
+       <span class="nt">&lt;name&gt;</span>ibiblio Mirror of http://repo1.maven.org/maven2/<span class="nt">&lt;/name&gt;</span>
+       <span class="nt">&lt;url&gt;</span>http://mirrors.ibiblio.org/pub/mirrors/maven2<span class="nt">&lt;/url&gt;</span>
+       <span class="nt">&lt;mirrorOf&gt;</span>central<span class="nt">&lt;/mirrorOf&gt;</span>
+     <span class="nt">&lt;/mirror&gt;</span>
+   <span class="nt">&lt;/Mirrors&gt;</span>
+ <span class="nt">&lt;/Settings&gt;</span>
+
+There are often mirrors closer to your physical location::
+
+  <span class="nt">&lt;mirror&gt;</span>
+    <span class="nt">&lt;id&gt;</span>planetmirror<span class="nt">&lt;/id&gt;</span>
+    <span class="nt">&lt;name&gt;</span>Australian Mirror of http://repo1.maven.org/maven2/<span class="nt">&lt;/name&gt;</span>
+    <span class="nt">&lt;url&gt;</span>http://public.planetmirror.com/maven2/<span class="nt">&lt;/url&gt;</span>
+    <span class="nt">&lt;mirrorOf&gt;</span>central<span class="nt">&lt;/mirrorOf&gt;</span>
+  <span class="nt">&lt;/mirror&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="local-repository">
+<h2>Local Repository<a class="headerlink" href="#local-repository" title="Permalink to this headline">¶</a></h2>
+<p>You should see that any third party jars, such as JTS, will have been installed in this repository. You should also see that all successful module builds (e.g. main, referencing...) have had their jars installed in a directory called org/geotools.</p>
+<p>Tip:</p>
+<ul>
+<li><p class="first">Consider placing the repository on a different drive than that used for compiling for a faster build:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;localRepository&gt;D:\java\\repository\&lt;/localRepository&gt;
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="configuring-the-heap-size">
+<h2>Configuring the heap size<a class="headerlink" href="#configuring-the-heap-size" title="Permalink to this headline">¶</a></h2>
+<p>The Maven build may requires a fair amount of memory. For example some JUnit tests are known to fail on Maven 2 with the default heap size. If you need the maximal heap size increased, and may be configured as below (on Windows command line):</p>
+<div class="highlight-python"><div class="highlight"><pre>set MAVEN_OPTS=-Xmx384M
+</pre></div>
+</div>
+</div>
+<div class="section" id="configuring-a-proxy-server">
+<h2>Configuring a proxy server<a class="headerlink" href="#configuring-a-proxy-server" title="Permalink to this headline">¶</a></h2>
+<p>If you are behind a firewall, you will need maven to use a proxy server.</p>
+<ul class="simple">
+<li><a class="reference external" href="http://maven.apache.org/guides/mini/guide-proxies.html">http://maven.apache.org/guides/mini/guide-proxies.html</a></li>
+</ul>
+<p>The above link shows how modify the settings.xml file in your .m2 directory.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="repositories.html" title="Remote Repositories"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="pom.html" title="Project Object Model (POM) Files"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Building</a> &raquo;</li>
+          <li><a href="index.html" >Using Maven</a> &raquo;</li>
+        <li><a href="#">Maven Local Settings</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

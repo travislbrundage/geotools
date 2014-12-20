@@ -1,0 +1,315 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>GridCoverage &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../index.html" />
+    <link rel="up" title="Coverage" href="index.html" />
+    <link rel="next" title="ArcGrid Plugin" href="arcgrid.html" />
+    <link rel="prev" title="Format" href="internal/format.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Coverage</a> &raquo;</li>
+        <li><a href="#">GridCoverage</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">GridCoverage</a><ul>
+<li><a class="reference internal" href="#using">Using</a><ul>
+<li><a class="reference internal" href="#views">Views</a></li>
+<li><a class="reference internal" href="#renderedimage">RenderedImage</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#advanced">Advanced</a></li>
+<li><a class="reference internal" href="#operations">Operations</a><ul>
+<li><a class="reference internal" href="#resample">resample</a></li>
+<li><a class="reference internal" href="#interpolate">interpolate</a></li>
+<li><a class="reference internal" href="#crop">crop</a></li>
+<li><a class="reference internal" href="#available-operations">Available Operations</a></li>
+<li><a class="reference internal" href="#creating-new-operations">Creating new Operations</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#coveragestack">CoverageStack</a></li>
+<li><a class="reference internal" href="#utility-classes">Utility classes</a></li>
+<li><a class="reference internal" href="#spatiotemporalcoverage">SpatioTemporalCoverage</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="internal/format.html"
+                        title="previous chapter">Format</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="arcgrid.html"
+                        title="next chapter">ArcGrid Plugin</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/library/coverage/grid.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="gridcoverage">
+<h1>GridCoverage<a class="headerlink" href="#gridcoverage" title="Permalink to this headline">¶</a></h1>
+<p>To quickly read a GridCoverage we can make use of the grid coverage format support.:</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="n">File</span> <span class="n">file</span> <span class="o">=</span> <span class="k">new</span> <span class="n">File</span><span class="o">(</span><span class="s">&quot;test.tiff&quot;</span><span class="o">);</span>
+    
+    <span class="n">AbstractGridFormat</span> <span class="n">format</span> <span class="o">=</span> <span class="n">GridFormatFinder</span><span class="o">.</span><span class="na">findFormat</span><span class="o">(</span><span class="n">file</span><span class="o">);</span>
+    <span class="n">GridCoverage2DReader</span> <span class="n">reader</span> <span class="o">=</span> <span class="n">format</span><span class="o">.</span><span class="na">getReader</span><span class="o">(</span><span class="n">file</span><span class="o">);</span>
+    
+    <span class="n">GridCoverage2D</span> <span class="n">coverage</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span>
+</pre></div>
+</div>
+<p>If you already know what kind of file you have you have you can create the reader directly:</p>
+<div class="highlight-python"><div class="highlight"><pre>File file = new File(&quot;test.tiff&quot;);
+
+GeoTiffReader reader = new GeoTiffReader(file, new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE));
+GridCoverage2D coverage = reader.read(null);
+</pre></div>
+</div>
+<p>You can also create a GridCoverage &#8220;by hand&#8221; if you have a BufferedImage in memory that you would like to place onto a map.</p>
+<p>Here is an example of creating a grid coverage from a tile (containing a bufferedImage and a ReferencedEnvelope location:</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="n">GridCoverage2D</span> <span class="n">coverage</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span>
+    
+    <span class="n">CoordinateReferenceSystem</span> <span class="n">crs</span> <span class="o">=</span> <span class="n">coverage</span><span class="o">.</span><span class="na">getCoordinateReferenceSystem2D</span><span class="o">();</span>
+    <span class="n">Envelope</span> <span class="n">env</span> <span class="o">=</span> <span class="n">coverage</span><span class="o">.</span><span class="na">getEnvelope</span><span class="o">();</span>
+    <span class="n">RenderedImage</span> <span class="n">image</span> <span class="o">=</span> <span class="n">coverage</span><span class="o">.</span><span class="na">getRenderedImage</span><span class="o">();</span>
+</pre></div>
+</div>
+<div class="section" id="using">
+<h2>Using<a class="headerlink" href="#using" title="Permalink to this headline">¶</a></h2>
+<p>Once we have created a GridCoverage2D, we can then use the class to perform useful tasks. Many uses require access to the class itself but more generic uses can interact with the instance through its OpenGIS GridCoverage interface.</p>
+<p>GridCoverage2D provides access to:</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="n">GridCoverageFactory</span> <span class="n">factory</span> <span class="o">=</span> <span class="k">new</span> <span class="n">GridCoverageFactory</span><span class="o">();</span>
+    <span class="n">GridCoverage2D</span> <span class="n">coverage</span> <span class="o">=</span> <span class="n">factory</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="s">&quot;GridCoverage&quot;</span><span class="o">,</span> <span class="n">bufferedImage</span><span class="o">,</span> <span class="n">referencedEnvelope</span><span class="o">);</span>
+</pre></div>
+</div>
+<p>GridCovearge2D supports simple use directly using the methods above.
+For more complex uses we go through the Operations class as explained in the next section.</p>
+<p>You can also evaluate the coverage at a specific point in order to determine what values are present at that location.:</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="n">GridCoverage2D</span> <span class="n">coverage</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span>
+    
+    <span class="c1">// direct access</span>
+    <span class="n">DirectPosition</span> <span class="n">position</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DirectPosition2D</span><span class="o">(</span> <span class="n">crs</span><span class="o">,</span> <span class="n">x</span><span class="o">,</span> <span class="n">y</span><span class="o">);</span>
+    
+    <span class="kt">double</span><span class="o">[]</span> <span class="n">sample</span> <span class="o">=</span> <span class="o">(</span><span class="kt">double</span><span class="o">[])</span> <span class="n">coverage</span><span class="o">.</span><span class="na">evaluate</span><span class="o">(</span> <span class="n">position</span> <span class="o">);</span> <span class="c1">// assume double</span>
+    
+    <span class="c1">// resample with the same array</span>
+    <span class="n">sample</span> <span class="o">=</span> <span class="n">coverage</span><span class="o">.</span><span class="na">evaluate</span><span class="o">(</span> <span class="n">position</span><span class="o">,</span> <span class="n">sample</span> <span class="o">);</span>
+</pre></div>
+</div>
+<div class="section" id="views">
+<h3>Views<a class="headerlink" href="#views" title="Permalink to this headline">¶</a></h3>
+<p>There are several &#8216;views&#8217; of a GridCoverage2D object. Views are themselves GridCoverage2D objects but they privilege a particular numerical representation.</p>
+<p>The GridCoverage2D can present its values as they were in the original data source; such values are considered to be the &#8216;NATIVE&#8217; values. Under a different view, the GridCoverage2D can present the values as transformed by the Category defined for each SampleDimension which are the &#8216;GEOPHYSICAL&#8217; values. Under the ViewType.RENDERED view, the values obtained from the GridCoverage2d will be the same as under the &#8216;NATIVE&#8217; view unless those values cannot be rendered by the rendering system in which case the GeoTools module will change the values into renderable numbers. The &#8216;PHOTOGRAPHIC&#8217; view type will convert the original values first to their geophysical realization and then using the default color table of each Category into some coloured pixel value.</p>
+<p>To change the view on a GridCoverage2D called myGridCov, we can:</p>
+<div class="highlight-python"><div class="highlight"><pre>GridCoverage2D scicov = myGridCov.getView(ViewType.GEOPHYSICS);
+</pre></div>
+</div>
+<p>Similarly we can get a GridCoverage2D view of one of the other kind even going back to the original view.:</p>
+<div class="highlight-python"><div class="highlight"><pre>evaluate(..)
+</pre></div>
+</div>
+<p>Once armed with the appropriate view, we can use the evaluate(DirectPosition dp) method to obtain a nearest-neighbor interpolated value for any DirectPosition within the extent of the GridCoverage.</p>
+<p>As a trivial example, we could evaluate the scientific value of the &#8216;GEOPHYSICS&#8217; view created above at a particular DirectPosition with:</p>
+<div class="highlight-python"><div class="highlight"><pre>Object result = scicov.evaluate(somedp);
+</pre></div>
+</div>
+<p>The return value is dependent on the contents of our grid coverage. There are a series of such evaluate methods which return values in more useful formats.</p>
+</div>
+<div class="section" id="renderedimage">
+<h3>RenderedImage<a class="headerlink" href="#renderedimage" title="Permalink to this headline">¶</a></h3>
+<p>We can trivially get an AWT image from a GridCoverage2D with a simple call to the getRenderedImage() method. The result is a standard RenderedImage.</p>
+<p>Obviously we can combine two of these steps to go directly from the created grid coverage to the final image:</p>
+<div class="highlight-python"><div class="highlight"><pre>RenderedImage ri = myGridCoverage.getView(ViewType.GEOPHYSICS).getRenderedImage();
+</pre></div>
+</div>
+<p>It should be possible, when generating the RenderedImage to specify the color scheme to use for that particular image. Currently this
+is handled as part of the rendering process using a RasterSymbolizer.</p>
+</div>
+</div>
+<div class="section" id="advanced">
+<h2>Advanced<a class="headerlink" href="#advanced" title="Permalink to this headline">¶</a></h2>
+<p>The coverage module provides some powerful methods to use the different views of the grid coverage. Many of these uses are backed by the standard JAI mechanisms behind the scenes, sometimes combined with the georeferencing operations of the referencing module.</p>
+<p>The GeoTools coverage module provides <strong>Operations</strong> for convenience, this class bundles up the sophisticated and powerful internal mechanism of the processing package. The package summary in javadocs begins the explanation of the internal mechanism. This documentation page will need to be expanded with a better explanation of the coverage module operation system.</p>
+<p>The basic pattern of the operations mechanism runs as follows:</p>
+<ol class="arabic">
+<li><p class="first">Instantiate a new Processor</p>
+</li>
+<li><p class="first">Get the parameter group for the desired operation</p>
+</li>
+<li><p class="first">Configure the parameters in the parameter group</p>
+</li>
+<li><p class="first">Call the doOperation(..) method on the Processor</p>
+<p>With several options for configuration along the way.</p>
+</li>
+</ol>
+</div>
+<div class="section" id="operations">
+<h2>Operations<a class="headerlink" href="#operations" title="Permalink to this headline">¶</a></h2>
+<p>The Operations class provides a default instance with a series of methods to perform operations on
+a grid coverage. We use the static instance Operations.DEFAULT which acts merely as a convenience
+wrapper around the DefaultProcessor.doOperation(..) method and provides type safety and a simpler
+argument list.</p>
+<p>When using GeoTools implementations of operations; for any methods which return a Coverage we can
+safely cast them to a GridCoverage2D.</p>
+<div class="section" id="resample">
+<h3>resample<a class="headerlink" href="#resample" title="Permalink to this headline">¶</a></h3>
+<p>We can create a new grid coverage which is a resampling of the original grid coverage into a new image. We start by defining the georeferenced geometry of the resulting image and then call the resample(..) method of the Operations.DEFAULT instance.</p>
+<p>A new GridGeometry class can be defined using either an Envelope, height and width for convenience or, like for the GridCoverage2D constructor, using the MathTransform and CoordinateReferencingSystem instead of the envelope.</p>
+<p>Then we can invoke the resample(..) operation.:</p>
+<div class="highlight-python"><div class="highlight"><pre>GridGeometry mygg = new GridGeometry(...);
+GridCoverage2D covresample = (GridCoverage2D) Operations.DEFAULT.resample(scicov,mygg);
+Georeferencing Transformation
+</pre></div>
+</div>
+<p>We can use the resample(..) method to transform any GridCoverage to another CRS.:</p>
+<div class="highlight-python"><div class="highlight"><pre>CoordinateReferenceSystem targetCRS = CRS.decode(&quot;EPSG:32632&quot;);
+GridCoverage2D covtransformed = (GridCoverage2D) Operations.DEFAULT.resample(scicov,targetCRS);
+</pre></div>
+</div>
+<p>Wow, this is getting fun!</p>
+<p>This georeferencing transformation works backwards from what one might naively expect and from what happens with vector data. With vector data, tranformations take the positions in the original referencing system and calculate the positions in the target referencing system. In the GridCoverage system, we are expecting a regular grid in the target referencing system. Therefore, we first calculate the position of the grid points in the target referencing system, then, for each, we calculate the equivalent position in the original referencing system and estimate the value which the original grid would have at that calculated position. This is why we go through the resample(..) operation.</p>
+</div>
+<div class="section" id="interpolate">
+<h3>interpolate<a class="headerlink" href="#interpolate" title="Permalink to this headline">¶</a></h3>
+<p>Similarly, we can interpolate an image using the Operations class. In this case we need to pick the interpolation method we will use.:</p>
+<div class="highlight-python"><div class="highlight"><pre>javax.media.jai.Interpolation interp = Interpolation.getInstance(Interpolation.INTERP_BILINEAR);
+GridCoverage2D covinterpol =  (GridCoverage2D) Operations.DEFAULT.interpolate(scicov, interp);
+RenderedImage ri = covinterpol.getRenderedImage();
+</pre></div>
+</div>
+</div>
+<div class="section" id="crop">
+<h3>crop<a class="headerlink" href="#crop" title="Permalink to this headline">¶</a></h3>
+<p>The Crop operation provides a way to crop (cut) a GridCoverage in order to obtain a sub-area defined by an Envelope.:</p>
+<div class="highlight-python"><div class="highlight"><pre>final AbstractProcessor processor = new DefaultProcessor(null);
+
+final ParameterValueGroup param = processor.getOperation(&quot;CoverageCrop&quot;).getParameters();
+
+GridCoverage2D coverage = ...{get a coverage from somewhere}...;
+final GeneralEnvelope crop = new GeneralEnvelope( ... );
+param.parameter(&quot;Source&quot;).setValue( coverage );
+param.parameter(&quot;Envelope&quot;).setValue( crop );
+
+GridCoverage2D cropped = (GridCoverage2D) processor.doOperation(param);
+</pre></div>
+</div>
+</div>
+<div class="section" id="available-operations">
+<h3>Available Operations<a class="headerlink" href="#available-operations" title="Permalink to this headline">¶</a></h3>
+<p>The package summary javadoc should contain the full list of available operations. Unfortunately, the system is not automatic so it is possible to create new operations without documenting them.</p>
+<p>The full list of available operations can be obtained from the library with:</p>
+<div class="highlight-python"><div class="highlight"><pre>final DefaultProcessor proc = new DefaultProcessor(null);
+for (Operation o : proc.getOperations() ){
+    System.out.println(o.getName());
+    System.out.println(o.getDescription());
+    System.out.println();
+}
+</pre></div>
+</div>
+</div>
+<div class="section" id="creating-new-operations">
+<h3>Creating new Operations<a class="headerlink" href="#creating-new-operations" title="Permalink to this headline">¶</a></h3>
+<p>Users can create their own operations and add them to the operation system.</p>
+</div>
+</div>
+<div class="section" id="coveragestack">
+<h2>CoverageStack<a class="headerlink" href="#coveragestack" title="Permalink to this headline">¶</a></h2>
+<p>We can combine several GridCoverage2D instances into a 3 dimensional stack of coverages using the CoverageStack class.</p>
+</div>
+<div class="section" id="utility-classes">
+<h2>Utility classes<a class="headerlink" href="#utility-classes" title="Permalink to this headline">¶</a></h2>
+<p>GeoTools coverage module also provides some utility code.</p>
+</div>
+<div class="section" id="spatiotemporalcoverage">
+<h2>SpatioTemporalCoverage<a class="headerlink" href="#spatiotemporalcoverage" title="Permalink to this headline">¶</a></h2>
+<p>This is a wrapper around another coverage which allows us to call the .evaluate(..) method with coordinate and time values rather than forcing us to create the appropriate DirectPosition argument.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="arcgrid.html" title="ArcGrid Plugin"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="internal/format.html" title="Format"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" >Coverage</a> &raquo;</li>
+        <li><a href="#">GridCoverage</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

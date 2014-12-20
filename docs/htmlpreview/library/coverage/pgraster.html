@@ -1,0 +1,235 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Postgis Raster Plug in &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../index.html" />
+    <link rel="up" title="Coverage" href="index.html" />
+    <link rel="next" title="Mosaic Plugin" href="mosaic.html" />
+    <link rel="prev" title="Oracle GeoRaster Plugin" href="oracle.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Coverage</a> &raquo;</li>
+        <li><a href="#">Postgis Raster Plug in</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Postgis Raster Plug in</a><ul>
+<li><a class="reference internal" href="#setup-postgis-raster">Setup Postgis Raster</a></li>
+<li><a class="reference internal" href="#configuration">Configuration</a></li>
+<li><a class="reference internal" href="#use">Use</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="oracle.html"
+                        title="previous chapter">Oracle GeoRaster Plugin</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="mosaic.html"
+                        title="next chapter">Mosaic Plugin</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/library/coverage/pgraster.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="postgis-raster-plug-in">
+<h1>Postgis Raster Plug in<a class="headerlink" href="#postgis-raster-plug-in" title="Permalink to this headline">¶</a></h1>
+<p>This plug in is an extension to the Image Mosaicing Pyramidal JDBC Plugin. Since a Postgis raster
+object offers spatial functions and predicates,  configuration is simple.</p>
+<p>Prerequisites</p>
+<ul class="simple">
+<li>Postgis 2.0 available</li>
+</ul>
+<div class="section" id="setup-postgis-raster">
+<h2>Setup Postgis Raster<a class="headerlink" href="#setup-postgis-raster" title="Permalink to this headline">¶</a></h2>
+<p>This plugin expects the following table layout:</p>
+<ul class="simple">
+<li>A table having a Postgis raster column</li>
+<li>Each row in the table represents a tile</li>
+<li>The tiles are rectangles</li>
+<li>A new table is needed for each overview (pyramid level)</li>
+<li>The name of the raster column is identical in all tables</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Of course, it is possible to use sql views instead of tables for
+creating the best physical table layout for the local deployment</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>For Postgis JDBC drivers &lt; version 9 it is necessary to set a property in the database:</p>
+<p class="last">ALTER DATABASE dbname SET bytea_output TO &#8216;escape&#8217;</p>
+</div>
+<p>Prepare the tiles and overviews using the gdal tool box <a class="reference external" href="http://www.gdal.org">http://www.gdal.org</a>.
+A good candidate is <a class="reference external" href="http://www.gdal.org/gdal_retile.html">http://www.gdal.org/gdal_retile.html</a>.</p>
+<p>The utility for importing the tiles is described here <a class="reference external" href="http://postgis.refractions.net/docs/using_raster.xml.html">http://postgis.refractions.net/docs/using_raster.xml.html</a> and is included in Postgis 2.0.</p>
+<p>An example setup assumes the existense of 3 tables, <strong>rtable1</strong>, <strong>rtable2</strong> <strong>rtable3</strong>. <strong>rtable1</strong> is populated with the tiles from the base image,
+<strong>rtable2</strong> and <strong>rtable3</strong> are tables for overviews. The raster column in all tables is named <strong>rast</strong>. The plugin needs exactly one meta data table. Table name
+and column names must match with the xml configuration (example follows) . If the table is not present, create it with:</p>
+<div class="highlight-python"><div class="highlight"><pre>create table MOSAIC (NAME varchar(254) not null,
+         TileTable varchar(254)not null,
+         minX FLOAT8,minY FLOAT8, maxX FLOAT8, maxY FLOAT8,resX FLOAT8, resY FLOAT8,&quot;
+         primary key (NAME,TileTable))
+</pre></div>
+</div>
+<p>Now insert a record for a coverage named <strong>oek</strong>, which is stored in <strong>rtable1</strong>, <strong>rtable2</strong> <strong>rtable3</strong>. <strong>oek</strong> is the geotools name of the coverage:</p>
+<div class="highlight-python"><div class="highlight"><pre>insert into MOSAIC(NAME,TileTable) values (&#39;oek&#39;,&#39;&#39;rtable1)
+insert into MOSAIC(NAME,TileTable) values (&#39;oek&#39;,&#39;&#39;rtable2)
+insert into MOSAIC(NAME,TileTable) values (&#39;oek&#39;,&#39;&#39;rtable3)
+</pre></div>
+</div>
+</div>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p>The plugin needs a xml configuration file. Since connect and mapping info can be reused by many coverages, it is better to have the configuration splitted into 3 parts.</p>
+<ol class="arabic simple">
+<li>JDBC connect configuration stored as  <strong>connect.pgraster.xml.inc</strong> in this example setup.</li>
+</ol>
+<div class="highlight-xml"><div class="highlight"><pre><span class="nt">&lt;connect&gt;</span>
+   <span class="nt">&lt;dstype</span> <span class="na">value=</span><span class="s">&quot;DBCP&quot;</span><span class="nt">/&gt;</span>
+   <span class="nt">&lt;username</span> <span class="na">value=</span><span class="s">&quot;postgres&quot;</span><span class="nt">/&gt;</span>
+   <span class="nt">&lt;password</span> <span class="na">value=</span><span class="s">&quot;postgres&quot;</span><span class="nt">/&gt;</span>
+   <span class="nt">&lt;jdbcUrl</span> <span class="na">value=</span><span class="s">&quot;jdbc:postgresql://ux-server02:5432/geo&quot;</span><span class="nt">/&gt;</span>
+   <span class="nt">&lt;driverClassName</span> <span class="na">value=</span><span class="s">&quot;org.postgresql.Driver&quot;</span><span class="nt">/&gt;</span>
+   <span class="nt">&lt;maxActive</span> <span class="na">value=</span><span class="s">&quot;10&quot;</span><span class="nt">/&gt;</span>
+   <span class="nt">&lt;maxIdle</span> <span class="na">value=</span><span class="s">&quot;0&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/connect&gt;</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li>JDBC mapping configuration stored as <strong>mapping.pgraster.xml.inc</strong> in this example setup.</li>
+</ol>
+<div class="highlight-xml"><div class="highlight"><pre> <span class="nt">&lt;spatialExtension</span> <span class="na">name=</span><span class="s">&quot;pgraster&quot;</span><span class="nt">/&gt;</span>
+ <span class="nt">&lt;mapping&gt;</span>
+      <span class="nt">&lt;masterTable</span> <span class="na">name=</span><span class="s">&quot;MOSAIC&quot;</span> <span class="nt">&gt;</span>
+              <span class="nt">&lt;coverageNameAttribute</span> <span class="na">name=</span><span class="s">&quot;NAME&quot;</span><span class="nt">/&gt;</span>
+              <span class="nt">&lt;maxXAttribute</span> <span class="na">name=</span><span class="s">&quot;maxX&quot;</span><span class="nt">/&gt;</span>
+              <span class="nt">&lt;maxYAttribute</span> <span class="na">name=</span><span class="s">&quot;maxY&quot;</span><span class="nt">/&gt;</span>
+              <span class="nt">&lt;minXAttribute</span> <span class="na">name=</span><span class="s">&quot;minX&quot;</span><span class="nt">/&gt;</span>
+              <span class="nt">&lt;minYAttribute</span> <span class="na">name=</span><span class="s">&quot;minY&quot;</span><span class="nt">/&gt;</span>
+              <span class="nt">&lt;resXAttribute</span> <span class="na">name=</span><span class="s">&quot;resX&quot;</span><span class="nt">/&gt;</span>
+              <span class="nt">&lt;resYAttribute</span> <span class="na">name=</span><span class="s">&quot;resY&quot;</span><span class="nt">/&gt;</span>
+              <span class="nt">&lt;tileTableNameAtribute</span>  <span class="na">name=</span><span class="s">&quot;TileTable&quot;</span> <span class="nt">/&gt;</span>
+      <span class="nt">&lt;/masterTable&gt;</span>
+      <span class="nt">&lt;tileTable&gt;</span>
+              <span class="nt">&lt;blobAttributeName</span> <span class="na">name=</span><span class="s">&quot;rast&quot;</span> <span class="nt">/&gt;</span>
+      <span class="nt">&lt;/tileTable&gt;</span>
+<span class="nt">&lt;/mapping&gt;</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li>Coverage configuration including the above XML fragments, stored as <strong>oek.pgraster.xml</strong> in this example setup.</li>
+</ol>
+<div class="highlight-xml"><div class="highlight"><pre><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;</span>
+<span class="cp">&lt;!DOCTYPE ImageMosaicJDBCConfig [</span>
+<span class="cp">      &lt;!ENTITY mapping PUBLIC &quot;mapping&quot;  &quot;mapping.pgraster.xml.inc&quot;&gt;</span>
+      <span class="cp">&lt;!ENTITY connect PUBLIC &quot;connect&quot;  &quot;connect.pgraster.xml.inc&quot;&gt;</span>
+]&gt;
+
+<span class="nt">&lt;config</span> <span class="na">version=</span><span class="s">&quot;1.0&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;coverageName</span> <span class="na">name=</span><span class="s">&quot;oek&quot;</span><span class="nt">/&gt;</span>
+      <span class="nt">&lt;coordsys</span> <span class="na">name=</span><span class="s">&quot;EPSG:4326&quot;</span><span class="nt">/&gt;</span>
+      <span class="c">&lt;!-- interpolation 1 = nearest neighbour, 2 = bipolar, 3 = bicubic --&gt;</span>
+      <span class="nt">&lt;scaleop</span>  <span class="na">interpolation=</span><span class="s">&quot;1&quot;</span><span class="nt">/&gt;</span>
+ <span class="nt">&lt;axisOrder</span> <span class="na">ignore=</span><span class="s">&quot;false&quot;</span><span class="nt">/&gt;</span>
+      <span class="ni">&amp;mapping;</span>
+      <span class="ni">&amp;connect;</span>
+<span class="nt">&lt;/config&gt;</span>
+</pre></div>
+</div>
+<p>Store all thee files in the same folder. Most elements are self explanatory, the detailed documentation is in <a class="reference internal" href="jdbc/index.html#im-jdbc"><em>Image Mosaicing Pyramidal JDBC Plugin</em></a>.</p>
+</div>
+<div class="section" id="use">
+<h2>Use<a class="headerlink" href="#use" title="Permalink to this headline">¶</a></h2>
+<p>For a Java example of how to use your new coverage see <a class="reference internal" href="jdbc/index.html#im-jdbc"><em>Image Mosaicing Pyramidal JDBC Plugin</em></a>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="mosaic.html" title="Mosaic Plugin"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="oracle.html" title="Oracle GeoRaster Plugin"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" >Coverage</a> &raquo;</li>
+        <li><a href="#">Postgis Raster Plug in</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

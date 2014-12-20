@@ -1,0 +1,973 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Pregeneralized Plugin &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../index.html" />
+    <link rel="up" title="Data" href="index.html" />
+    <link rel="next" title="Property Plugin" href="property.html" />
+    <link rel="prev" title="OGR Plugin" href="ogr.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Data</a> &raquo;</li>
+        <li><a href="#">Pregeneralized Plugin</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Pregeneralized Plugin</a><ul>
+<li><a class="reference internal" href="#connection-parameters">Connection Parameters</a></li>
+<li><a class="reference internal" href="#pregeneralized">Pregeneralized</a></li>
+<li><a class="reference internal" href="#configuration">Configuration</a><ul>
+<li><a class="reference internal" href="#xml">XML</a></li>
+<li><a class="reference internal" href="#physical-layout">Physical Layout</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#toolbox">Toolbox</a></li>
+<li><a class="reference internal" href="#background">Background</a></li>
+<li><a class="reference internal" href="#datastructure">DataStructure</a><ul>
+<li><a class="reference internal" href="#generalizationinfos">GeneralizationInfos</a></li>
+<li><a class="reference internal" href="#generalizationinfo">GeneralizationInfo</a></li>
+<li><a class="reference internal" href="#generalization">Generalization</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#repository">Repository</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="ogr.html"
+                        title="previous chapter">OGR Plugin</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="property.html"
+                        title="next chapter">Property Plugin</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/library/data/pregeneralized.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="pregeneralized-plugin">
+<h1>Pregeneralized Plugin<a class="headerlink" href="#pregeneralized-plugin" title="Permalink to this headline">¶</a></h1>
+<p>This plugin offers the the possibility to use pregeneralized features to reduce cpu and memory
+usage at runtime. The effect is used to improve the response time for client code.</p>
+<p>This is an advanced plugin that is great for eking the greatest performance out of the GeoTools
+rendering system. This plugin allows you to smoothly switch between data at different levels of
+simplification when rendering at different levels.</p>
+<p>Consider it something like an image pyramid for raster data operating at different zoom levels.</p>
+<p><strong>References</strong></p>
+<ul class="simple">
+<li><a class="reference internal" href="../main/repository.html"><em>gt-main repository</em></a></li>
+</ul>
+<p><strong>Maven</strong>:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;dependency&gt;
+   &lt;groupId&gt;org.geotools&lt;/groupId&gt;
+   &lt;artifactId&gt;gt-feature-pregeneralized&lt;/artifactId&gt;
+   &lt;version&gt;${geotools.version}&lt;/version&gt;
+ &lt;/dependency&gt;
+</pre></div>
+</div>
+<div class="section" id="connection-parameters">
+<h2>Connection Parameters<a class="headerlink" href="#connection-parameters" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="42%" />
+<col width="58%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>&#8220;RepositoryClassName&#8221;</td>
+<td>Class name for the Repository implementation,
+must have a default Constructor</td>
+</tr>
+<tr class="row-odd"><td>&#8220;GeneralizationInfosProviderClassName&#8221;</td>
+<td>Class name for a GeneralizationInfosProvider
+must have a default Constructor</td>
+</tr>
+<tr class="row-even"><td>&#8220;GeneralizationInfosProviderParam&#8221;</td>
+<td>Optional Parameter for getGeneralizationInfos(obj)</td>
+</tr>
+<tr class="row-odd"><td>&#8220;namespace&#8221;</td>
+<td>Optional, an URI for an optional name space</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="pregeneralized">
+<h2>Pregeneralized<a class="headerlink" href="#pregeneralized" title="Permalink to this headline">¶</a></h2>
+<p>Before we start we need couple of things:</p>
+<ul class="simple">
+<li>Repository - used to look up featureSource implementations. See <a class="reference internal" href="../main/repository.html"><em>gt-main repository</em></a> page.</li>
+<li>GeneralizationInfos - configuration for PreGeneralizedDataStore describing generalisation method used.</li>
+</ul>
+<p>To create a <strong>PreGeneralizedDataStore</strong>:</p>
+<ul>
+<li><p class="first">As usual we recommend use of <strong>DataStoreFinder</strong> (as this plugin provides <strong>PreGeneralizedDataStoreFactory</strong> for it to use).:</p>
+<div class="highlight-python"><div class="highlight"><pre>Map&lt;String,Serializable&gt; paramMap = new HashMap&lt;String,Serializable&gt;();
+DataStore ds = null;
+try {
+   paramMap.put(&quot;RepositoryClassName&quot;, &quot;org.geotools.data.DefaultRepository&quot;);
+   paramMap.put&quot;GeneralizationInfosProviderClassName&quot;, &quot;org.geotools.data.gen.info.GeneralizationInfosProviderImpl&quot;);
+   paramMap.put(&quot;GeneralizationInfosProviderParam&quot;, &quot;src/test/resources/geninfo1.xml&quot;)
+
+   ds = DataStoreFinder.getDataStore(paramMap));
+   } catch (IOException ex) {
+     ex.printStackTrace();
+   }
+FeatureSource&lt;SimpleFeatureType, SimpleFeature&gt; fs = ds.getFeatureSource(&quot;GenStreams&quot;)
+</pre></div>
+</div>
+<p>To benefit from less memory usage und less cpu consumption the usage of
+Hints.GEOMETRY_DISTANCE is required. It is possible to pass hints to a
+query object, an example for reading all features with geometries fitting
+for a generalization of 22 meters:</p>
+<div class="highlight-python"><div class="highlight"><pre>FeatureSource&lt;SimpleFeatureType, SimpleFeature&gt; fs = ds.getFeatureSource(&quot;GenStreams&quot;);
+
+//fs.getSupportedHints().contains(Hints.GEOMETRY_DISTANCE) must be true;
+Query q = new  DefaultQuery(&quot;GenStreams&quot;);
+q.getHints().put(Hints.GEOMETRY_DISTANCE, 22.0);
+FeatureCollection&lt;SimpleFeatureType, SimpleFeature&gt; fCollection = fs.getFeatures(q);
+
+//
+// business as usual, but with generalized geometries!
+//
+</pre></div>
+</div>
+</li>
+<li><p class="first">Creating by hand using RepositoryDSFinder:</p>
+<div class="highlight-python"><div class="highlight"><pre>Repository repo = new RepositoryDSFinder();
+GeneralizationInfosProvider provider = new GeneralizationInfosProviderImpl();
+GeneralizationInfos infos = null;
+try {
+  infos = provider.getGeneralizationInfos(&quot;src/test/resources/geninfo1.xml&quot;);
+} catch (IOException e) {
+  e.printStackTrace();
+}
+DataStore ds = new PreGeneralizedDataStore(infos,repo)
+FeatureSource&lt;SimpleFeatureType, SimpleFeature&gt; fs = ds.getFeatureSource(&quot;GenStreams&quot;)
+</pre></div>
+</div>
+</li>
+<li><p class="first">Creating by hand using DefaultRepository:</p>
+<div class="highlight-python"><div class="highlight"><pre>Repository repo = new DefaultRepository();
+//
+// register your datastores in the repository
+//
+GeneralizationInfosProvider provider = new GeneralizationInfosProviderImpl();
+GeneralizationInfos infos = null;
+try {
+  infos = provider.getGeneralizationInfos(&quot;src/test/resources/geninfo1.xml&quot;);
+} catch (IOException e) {
+  e.printStackTrace();
+}
+DataStore ds = new PreGeneralizedDataStore(infos,repo)
+FeatureSource&lt;SimpleFeatureType, SimpleFeature&gt; fs = ds.getFeatureSource(&quot;GenStreams&quot;)
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p>This section has sample xml configuraiton files with corresponding physical layou.</p>
+<div class="section" id="xml">
+<h3>XML<a class="headerlink" href="#xml" title="Permalink to this headline">¶</a></h3>
+<p>Part of this java package is a GeneralizationInfosProviderImpl which offers the possibility to configure a GeneralizationInfos object in XML syntax.</p>
+<p>Code example:</p>
+<div class="highlight-python"><div class="highlight"><pre>GeneralizationInfosProvider provider = new GeneralizationInfosProviderImpl();
+GeneralizationInfos infos = null;
+try {
+  infos = provider.getGeneralizationInfos(&quot;src/test/resources/geninfo1.xml&quot;);
+} catch (IOException e) {
+  e.printStackTrace();
+}
+</pre></div>
+</div>
+<p>XML Configuration for vertical layout:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;GeneralizationInfos version=&quot;1.0&quot;&gt;
+  &lt;GeneralizationInfo dataSourceName=&quot;dsStreams&quot;  featureName=&quot;GenStreams&quot; baseFeatureName=&quot;streams&quot; geomPropertyName=&quot;the_geom&quot;&gt;
+    &lt;Generalization dataSourceName=&quot;dsStreams_5&quot;  distance=&quot;5&quot; featureName=&quot;streams_5&quot; geomPropertyName=&quot;the_geom&quot;/&gt;
+    &lt;Generalization dataSourceName=&quot;dsStreams_10&quot;  distance=&quot;10&quot; featureName=&quot;streams_10&quot; geomPropertyName=&quot;the_geom&quot;/&gt;
+    &lt;Generalization dataSourceName=&quot;dsStreams_20&quot;  distance=&quot;20&quot; featureName=&quot;streams_20&quot; geomPropertyName=&quot;the_geom&quot;/&gt;
+    &lt;Generalization dataSourceName=&quot;dsStreams_50&quot;  distance=&quot;50&quot; featureName=&quot;streams_50&quot; geomPropertyName=&quot;the_geom&quot;/&gt;
+  &lt;/GeneralizationInfo&gt;
+&lt;/GeneralizationInfos&gt;
+</pre></div>
+</div>
+<p>XML Configuration for horizontal layout:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;GeneralizationInfos version=&quot;1.0&quot;&gt;
+  &lt;GeneralizationInfo dataSourceName=&quot;dsStreams_5_10_20_50&quot;  featureName=&quot;GenStreams&quot; baseFeatureName=&quot;streams_5_10_20_50&quot; geomPropertyName=&quot;the_geom&quot;&gt;
+    &lt;Generalization dataSourceName=&quot;dsStreams_5_10_20_50&quot;  distance=&quot;5&quot; featureName=&quot;streams_5_10_20_50&quot; geomPropertyName=&quot;the_geom5&quot;/&gt;
+    &lt;Generalization dataSourceName=&quot;dsStreams_5_10_20_50&quot;  distance=&quot;10&quot; featureName=&quot;streams_5_10_20_50&quot; geomPropertyName=&quot;the_geom10&quot;/&gt;
+    &lt;Generalization dataSourceName=&quot;dsStreams_5_10_20_50&quot;  distance=&quot;20&quot; featureName=&quot;streams_5_10_20_50&quot; geomPropertyName=&quot;the_geom20&quot;/&gt;
+    &lt;Generalization dataSourceName=&quot;dsStreams_5_10_20_50&quot;  distance=&quot;50&quot; featureName=&quot;streams_5_10_20_50&quot; geomPropertyName=&quot;the_geom50&quot;/&gt;
+  &lt;/GeneralizationInfo&gt;
+&lt;/GeneralizationInfos&gt;
+</pre></div>
+</div>
+<p>XML Configuration for mixed layout:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;GeneralizationInfos version=&quot;1.0&quot;&gt;
+  &lt;GeneralizationInfo dataSourceName=&quot;dsStreams&quot;  featureName=&quot;GenStreams&quot; baseFeatureName=&quot;streams&quot; geomPropertyName=&quot;the_geom&quot;&gt;
+    &lt;Generalization dataSourceName=&quot;dsStreams_5_10&quot;  distance=&quot;5&quot; featureName=&quot;streams_5_10&quot; geomPropertyName=&quot;the_geom&quot;/&gt;
+    &lt;Generalization dataSourceName=&quot;dsStreams_5_10&quot;  distance=&quot;10&quot; featureName=&quot;streams_5_10&quot; geomPropertyName=&quot;the_geom2&quot;/&gt;
+    &lt;Generalization dataSourceName=&quot;dsStreams_20_50&quot;  distance=&quot;20&quot; featureName=&quot;streams_20_50&quot; geomPropertyName=&quot;the_geom&quot;/&gt;
+    &lt;Generalization dataSourceName=&quot;dsStreams_20_50&quot;  distance=&quot;50&quot; featureName=&quot;streams_20_50&quot; geomPropertyName=&quot;the_geom2&quot;/&gt;
+  &lt;/GeneralizationInfo&gt;
+&lt;/GeneralizationInfos&gt;
+</pre></div>
+</div>
+<p>Directories hold the generalized shape files. No white spaces are allowed within the distance list.</p>
+</div>
+<div class="section" id="physical-layout">
+<h3>Physical Layout<a class="headerlink" href="#physical-layout" title="Permalink to this headline">¶</a></h3>
+<p>Definition: The <strong>Base Feature</strong> is the original feature which is the starting point</p>
+<p>A geometry generalized to m meters will be written as g(m) , e. g.   g(5) is a
+geometry generalized to a minimum distance of 5 meters. The original geometry will
+be written as g(1)</p>
+<p>A feature has the following components</p>
+<ol class="arabic simple">
+<li>FID (Feature Identifier)</li>
+<li>a set of data attributes</li>
+<li>a set of geometry attributes (mostly only one, depending on the data store)</li>
+</ol>
+<p>For the following example we will use the <strong>streams.shp</strong> from the gt-sample-data jar (which contains sample data for test cases).</p>
+<ul class="simple">
+<li><a class="reference download internal" href="../../_downloads/streams.shp"><code class="xref download docutils literal"><span class="pre">streams.shp</span></code></a></li>
+<li><a class="reference download internal" href="../../_downloads/streams.dbf"><code class="xref download docutils literal"><span class="pre">streams.dbf</span></code></a></li>
+<li><a class="reference download internal" href="../../_downloads/streams.shx"><code class="xref download docutils literal"><span class="pre">streams.shx</span></code></a></li>
+<li><a class="reference download internal" href="../../_downloads/streams.prj"><code class="xref download docutils literal"><span class="pre">streams.prj</span></code></a></li>
+</ul>
+<p>This shapefile has the following feature type structure:</p>
+<ul>
+<li><p class="first">streams</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="14%" />
+<col width="22%" />
+<col width="31%" />
+<col width="33%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">FID</th>
+<th class="head">CAT_ID</th>
+<th class="head">CAT_DESCR</th>
+<th class="head">the_geom</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>int</td>
+<td>int</td>
+<td>int</td>
+<td>linestring</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+<p>We have two alternatives for how to represent generalized feature:</p>
+<ul>
+<li><p class="first">Vertical layout</p>
+<p>For each generalization, the whole feature set is duplicated, resulting in</p>
+<ul>
+<li><p class="first">streams</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="26%" />
+<col width="19%" />
+<col width="26%" />
+<col width="29%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">FID</th>
+<th class="head">CAT_ID</th>
+<th class="head">CAT_DESCR</th>
+<th class="head">the_geom</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>streams.1</td>
+<td>1</td>
+<td>4711</td>
+<td>g1(1)</td>
+</tr>
+<tr class="row-odd"><td>streams.2</td>
+<td>2</td>
+<td>4712</td>
+<td>g2(1)</td>
+</tr>
+<tr class="row-even"><td>...</td>
+<td>...</td>
+<td>...</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first">streams_5</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="26%" />
+<col width="19%" />
+<col width="26%" />
+<col width="29%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">FID</th>
+<th class="head">CAT_ID</th>
+<th class="head">CAT_DESCR</th>
+<th class="head">the_geom</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>streams.1</td>
+<td>1</td>
+<td>4711</td>
+<td>g1(5)</td>
+</tr>
+<tr class="row-odd"><td>streams.2</td>
+<td>2</td>
+<td>4712</td>
+<td>g2(5)</td>
+</tr>
+<tr class="row-even"><td>...</td>
+<td>...</td>
+<td>...</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first">streams_10</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="26%" />
+<col width="19%" />
+<col width="26%" />
+<col width="29%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">FID</th>
+<th class="head">CAT_ID</th>
+<th class="head">CAT_DESCR</th>
+<th class="head">the_geom</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>streams.1</td>
+<td>1</td>
+<td>4711</td>
+<td>g1(10)</td>
+</tr>
+<tr class="row-odd"><td>streams.2</td>
+<td>2</td>
+<td>4712</td>
+<td>g2(10)</td>
+</tr>
+<tr class="row-even"><td>...</td>
+<td>...</td>
+<td>...</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first">streams_20</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="26%" />
+<col width="19%" />
+<col width="26%" />
+<col width="29%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">FID</th>
+<th class="head">CAT_ID</th>
+<th class="head">CAT_DESCR</th>
+<th class="head">the_geom</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>streams.1</td>
+<td>1</td>
+<td>4711</td>
+<td>g1(20)</td>
+</tr>
+<tr class="row-odd"><td>streams.2</td>
+<td>2</td>
+<td>4712</td>
+<td>g2(20)</td>
+</tr>
+<tr class="row-even"><td>...</td>
+<td>...</td>
+<td>...</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first">streams_50</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="26%" />
+<col width="19%" />
+<col width="26%" />
+<col width="29%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">FID</th>
+<th class="head">CAT_ID</th>
+<th class="head">CAT_DESCR</th>
+<th class="head">the_geom</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>streams.1</td>
+<td>1</td>
+<td>4711</td>
+<td>g1(50)</td>
+</tr>
+<tr class="row-odd"><td>streams.2</td>
+<td>2</td>
+<td>4712</td>
+<td>g2(50)</td>
+</tr>
+<tr class="row-even"><td>...</td>
+<td>...</td>
+<td>...</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+<p>The only difference between these 5 feature sets are the geometries,
+which are generalized by 5,10,20 and 50 meters respectively.</p>
+<p>As you can see this approach results in a fair amount of dupication.</p>
+<ul>
+<li><p class="first">GenStreams</p>
+<p>A new Feature feature type is hiding all other features and using them
+dependent on the GEOMETRY_DISTANCE hint.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="14%" />
+<col width="22%" />
+<col width="31%" />
+<col width="33%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">FID</th>
+<th class="head">CAT_ID</th>
+<th class="head">CAT_DESCR</th>
+<th class="head">the_geom</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>int</td>
+<td>int</td>
+<td>int</td>
+<td>linestring</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+<p>The disadvantage is the duplication of all attribute values for each
+generalization. If the features are stored as shape files, there is no
+other alternative because shape files allow only one geometry.</p>
+<p>Storing the features in a database offers the possibility to use SQL views
+to avoiding this redundancy.</p>
+</li>
+<li><p class="first">Horizontal layout</p>
+<p>The generalized geometries were added as additional attributes.</p>
+<ul>
+<li><p class="first">streams</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="14%" />
+<col width="10%" />
+<col width="14%" />
+<col width="10%" />
+<col width="13%" />
+<col width="14%" />
+<col width="14%" />
+<col width="13%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">FID</th>
+<th class="head">CAT_ID</th>
+<th class="head">CAT_DESCR</th>
+<th class="head">the_geom</th>
+<th class="head">the_geom_5</th>
+<th class="head">the_geom_10</th>
+<th class="head">the_geom_20</th>
+<th class="head">the_geom50</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>streams.1</td>
+<td>1</td>
+<td>4711</td>
+<td>g1(1)</td>
+<td>g1(5)</td>
+<td>g1(10)</td>
+<td>g1(20)</td>
+<td>g1(5)</td>
+</tr>
+<tr class="row-odd"><td>streams.2</td>
+<td>2</td>
+<td>4712</td>
+<td>g2(1)</td>
+<td>g2(5)</td>
+<td>g2(10)</td>
+<td>g2(20)</td>
+<td>g2(5)</td>
+</tr>
+<tr class="row-even"><td>...</td>
+<td>...</td>
+<td>...</td>
+<td></td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first">GenStreams</p>
+<p>Again, there is a new feature</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="14%" />
+<col width="22%" />
+<col width="31%" />
+<col width="33%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">FID</th>
+<th class="head">CAT_ID</th>
+<th class="head">CAT_DESCR</th>
+<th class="head">the_geom</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>int</td>
+<td>int</td>
+<td>int</td>
+<td>linestring</td>
+</tr>
+</tbody>
+</table>
+<p>The generalized geometry attributes are hidden and are not part of the
+GenStreams feature type.</p>
+</li>
+</ul>
+</li>
+<li><p class="first">Mixed layout</p>
+<p>A combination of horizontal and vertical design</p>
+<ul>
+<li><p class="first">streams</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="26%" />
+<col width="19%" />
+<col width="26%" />
+<col width="29%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">FID</th>
+<th class="head">CAT_ID</th>
+<th class="head">CAT_DESCR</th>
+<th class="head">the_geom</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>streams.1</td>
+<td>1</td>
+<td>4711</td>
+<td>g1(1)</td>
+</tr>
+<tr class="row-odd"><td>streams.2</td>
+<td>2</td>
+<td>4712</td>
+<td>g2(1)</td>
+</tr>
+<tr class="row-even"><td>...</td>
+<td>...</td>
+<td>...</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first">streams_5_10</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="15%" />
+<col width="20%" />
+<col width="22%" />
+<col width="22%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">FID</th>
+<th class="head">CAT_ID</th>
+<th class="head">CAT_DESCR</th>
+<th class="head">the_geom_5</th>
+<th class="head">the_geom10</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>streams.1</td>
+<td>1</td>
+<td>4711</td>
+<td>g1(5)</td>
+<td>g1(10)</td>
+</tr>
+<tr class="row-odd"><td>streams.2</td>
+<td>2</td>
+<td>4712</td>
+<td>g2(5)</td>
+<td>g2(10)</td>
+</tr>
+<tr class="row-even"><td>...</td>
+<td>...</td>
+<td>...</td>
+<td></td>
+<td>...</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first">streams_20_50</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="15%" />
+<col width="20%" />
+<col width="22%" />
+<col width="24%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">FID</th>
+<th class="head">CAT_ID</th>
+<th class="head">CAT_DESCR</th>
+<th class="head">the_geom_20</th>
+<th class="head">the_geom_50</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>streams.1</td>
+<td>1</td>
+<td>4711</td>
+<td>g1(10)</td>
+<td>g1(50)</td>
+</tr>
+<tr class="row-odd"><td>streams.2</td>
+<td>2</td>
+<td>4712</td>
+<td>g2(10)</td>
+<td>g2(50)</td>
+</tr>
+<tr class="row-even"><td>...</td>
+<td>...</td>
+<td>...</td>
+<td></td>
+<td>...</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first">GenStreams</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="14%" />
+<col width="22%" />
+<col width="31%" />
+<col width="33%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">FID</th>
+<th class="head">CAT_ID</th>
+<th class="head">CAT_DESCR</th>
+<th class="head">the_geom</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>int</td>
+<td>int</td>
+<td>int</td>
+<td>linestring</td>
+</tr>
+</tbody>
+</table>
+<p>Independent of the used physical layout, the feature type of GenStreams
+is always the same. All other feature types are not visible and are
+called backend features.</p>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="toolbox">
+<h2>Toolbox<a class="headerlink" href="#toolbox" title="Permalink to this headline">¶</a></h2>
+<p>Included in this packages is a command line utility. Locate the jar file, the name is
+&#8220;gt-feature-pregeneralized-&lt;version&gt;.jar Assuming the version is &#8220;2.5-SNAPSHOT&#8221;, call with:</p>
+<div class="highlight-python"><div class="highlight"><pre>java -jar gt-feature-pregeneralized-2.5-SNAPSHOT.jar
+</pre></div>
+</div>
+<ul>
+<li><p class="first">Validating the xml config file</p>
+<p>You can validate your xml config file with:</p>
+<div class="highlight-python"><div class="highlight"><pre>java -jar gt-feature-pregeneralized-2.5-SNAPSHOT.jar validate myconfig.xml
+</pre></div>
+</div>
+</li>
+<li><p class="first">Create pregeneralized geometries for shape files</p>
+<p>Creating generalized versions for a shape file which can be used for a vertical layout.:</p>
+<div class="highlight-python"><div class="highlight"><pre>java -jar gt-feature-pregeneralized-2.5-SNAPSHOT.jar generalize streams.shp targetDir 15.0,30
+</pre></div>
+</div>
+<p>In the above example the parameters are:</p>
+<ul class="simple">
+<li>streams.shp
+The source shape file</li>
+<li>targetDir
+The directory where to store the generalized shape files</li>
+<li>15.0,30
+A comma separated list of distances (integer or doubles, decimal separator is &#8221;.&#8221;).</li>
+</ul>
+<p>This example would generate a sub directory &#8220;15.0&#8221; and a sub directory
+&#8220;30&#8221; in the target directory. The sub</p>
+</li>
+</ul>
+</div>
+<div class="section" id="background">
+<h2>Background<a class="headerlink" href="#background" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first">Motivation</p>
+<p>Spatial features have a least one geometry, which mostly contains a large number of points.
+As an example, the border of Austria (which is a small country) is a polygon constructed
+from 380000 points.</p>
+<p>Drawing this border on a screen with a resolution of 1280x1024 will draw each pixel many,many times.
+The same holds true for printing on a sheet of paper.</p>
+<p>The idea is to generalize this geometry, saying it is sufficient to have a minimum distance of 500
+meters between 2 Points of the polygon. This generalized geometry has still enough points to be drawn on the screen or on a sheet of paper.</p>
+</li>
+<li><p class="first">Idea</p>
+<p>The idea is to have a data store / feature source / feature reader implementation which acts as wrapper
+for the original features and their generalized geometries. Additionally there is a new
+Hint GEOMETRY_DISTANCE which has a value for the minimum distance between two points required.</p>
+<p>This Hint can be passed within the Query object.</p>
+<p>The wrappers itself behave like the original objects, except returning geometries dependent on the
+new hint. If no hint is given, the original geometries are returned.</p>
+</li>
+<li><p class="first">Relationship between GEOMETRY_DISTANCE and generalized geometries</p>
+<p>Assume the original geometries have an accuracy of 1 meter and we have generalizations for all
+geometries with 5m, 10m, 20m and 50m.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="42%" />
+<col width="58%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Requested Distance (dist)</th>
+<th class="head">Returned geometry</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>dist  &lt; 5</td>
+<td>original geometry</td>
+</tr>
+<tr class="row-odd"><td>5 &lt;= dist &lt; 10</td>
+<td>geometry generalized to 5 m</td>
+</tr>
+<tr class="row-even"><td>10 &lt;= dist &lt; 20</td>
+<td>geometry generalized to 10 m</td>
+</tr>
+<tr class="row-odd"><td>20 &lt;= dist &lt; 50</td>
+<td>geometry generalized to 20 m</td>
+</tr>
+<tr class="row-even"><td>50 &lt;= dist</td>
+<td>geometry generalized to 50 m</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first">Conclusion</p>
+<p>The focus of this module is to support the transparent handling of generalized geometries.
+There is no restriction how the GeneralizationInfos object is build and how the needed data
+stores are found.</p>
+<p>The two interfaces</p>
+<ul class="simple">
+<li>org.geotools.data.Repository</li>
+<li>org.geotools.data.gen.info.GeneralizationInfosProvider</li>
+</ul>
+<p>Allow special implementations to be plugged in. As an example, a GeneralizationInfosProvider
+implementation can build the configuration data from a jdbc database, getting as parameter a JNDI
+name.</p>
+<p>Once again, modifications of pregeneralized features are NOT possible.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="datastructure">
+<h2>DataStructure<a class="headerlink" href="#datastructure" title="Permalink to this headline">¶</a></h2>
+<p>Internally the following data structure is set up.</p>
+<img alt="../../_images/pregeneralized.PNG" src="../../_images/pregeneralized.PNG" />
+<div class="section" id="generalizationinfos">
+<h3>GeneralizationInfos<a class="headerlink" href="#generalizationinfos" title="Permalink to this headline">¶</a></h3>
+<p>Each PreGeneralizedDataStore has exactly one object of type GeneralizationInfos.</p>
+<p><strong>GeneralizationInfos</strong> holds a collection of <strong>GeneralizationInfo</strong> objects. The
+size of this collection is equal to the number of PreGeneralizedFeatureSource objects
+contained in the data store.</p>
+<ul class="simple">
+<li>infoMap - mapping from names of generalized features to the orresponding GeneralizationInfo objects</li>
+<li>dataSourceName - Optional, default data source location for all GeneralizationInfo objects</li>
+<li>dataSourceNameSpace - Optional, name space for the default data source location</li>
+</ul>
+</div>
+<div class="section" id="generalizationinfo">
+<h3>GeneralizationInfo<a class="headerlink" href="#generalizationinfo" title="Permalink to this headline">¶</a></h3>
+<p>A GeneralizationInfo holds the configuration information for one feature type and his generalized geometries.</p>
+<ul class="simple">
+<li>featureName - Name of the generalized feature (&#8220;GenStreams&#8221;)</li>
+<li>baseFeatureName - Name of the base feature (&#8220;streams&#8221;)</li>
+<li>geomPropertyName - Name of the geometry attribute in the base feature (&#8220;the_geom&#8221;)</li>
+<li>generalizations - Collection of org.geotools.data.gen.Generalization objects</li>
+<li>dataSourceName - Location of the datasource for the base Feature (URL of shape file)
+If no location is given, use location from GeneralizationInfos parent object.</li>
+<li>dataSourceNameSpace - Optional, name space for the dataSourceName</li>
+</ul>
+</div>
+<div class="section" id="generalization">
+<h3>Generalization<a class="headerlink" href="#generalization" title="Permalink to this headline">¶</a></h3>
+<p>A Generalization object belongs to a GeneralizationInfo object and holds information for geometries
+generalized to a given distance.</p>
+<ul class="simple">
+<li>distance - The generalization distance</li>
+<li>featureName - The the name of the feature containing these geometries (&#8220;streams_5_10&#8221;)</li>
+<li>geomPropertyName - The name of the geometry property (&#8220;the_geom_5&#8221;)</li>
+<li>dataSourceName - Optional, if not specified,  dataSoureName from the GeneralizationInfo parent object is used.</li>
+<li>dataSourceNameSpace - Optional, name space for the dataSourceName</li>
+</ul>
+</div>
+</div>
+<div class="section" id="repository">
+<h2>Repository<a class="headerlink" href="#repository" title="Permalink to this headline">¶</a></h2>
+<p>Prior to creating a pregeneralized data store an object implementing the interface
+Repository is needed. This class is document in <a class="reference internal" href="../main/repository.html"><em>gt-main repository</em></a> page.</p>
+<p>For PregeneralizedDataStore this interface has one important method</p>
+<ul>
+<li><p class="first">public DataStore dataStore(Name name)</p>
+<p>A Name object has a local name and a namespace (which could be null).</p>
+</li>
+</ul>
+<p>The local name corresponds to the dataSoureName property in the GeneralizationInfos,
+GeneralizationInfo and Generalization objects. The same holds true for the namespace parameter
+and the dataSourceNameSpace property.</p>
+<p>The content of the dataSourceName could be a registered name for a datastore (of course)
+or an URL to a shape file,an URL to a property file containing connect parameters for a
+database or anything else. It depends on the implementation of the Repository interface.</p>
+<p>Included in this package is an implementation org.getotools.data.gen.DSFinderRepository,
+which interprets a dataSoureName ending with &#8221;.shp&#8221; or &#8221;.SHP&#8221; as location of a shape file
+and anything else as a property file. This implementation will use the geotools
+DataStoreFinder.getDataStore(Map params) method to find the needed data store.</p>
+<p>Another existing Implementation is org.geotools.data.DefaultRepository which is useful
+for creating the data stores in the application and registering them with the corresponding names.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="property.html" title="Property Plugin"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="ogr.html" title="OGR Plugin"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" >Data</a> &raquo;</li>
+        <li><a href="#">Pregeneralized Plugin</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

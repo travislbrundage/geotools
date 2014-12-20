@@ -1,0 +1,584 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Feature &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../index.html" />
+    <link rel="up" title="Main" href="index.html" />
+    <link rel="next" title="FeatureCollection" href="collection.html" />
+    <link rel="prev" title="Function List" href="function_list.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Main</a> &raquo;</li>
+        <li><a href="#">Feature</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Feature</a><ul>
+<li><a class="reference internal" href="#build-a-feature-type">Build a Feature Type</a><ul>
+<li><a class="reference internal" href="#geometry-type">Geometry Type</a></li>
+<li><a class="reference internal" href="#attribute-descriptor">Attribute Descriptor</a></li>
+<li><a class="reference internal" href="#name">Name</a></li>
+<li><a class="reference internal" href="#datautilities">DataUtilities</a></li>
+<li><a class="reference internal" href="#featurefactory">FeatureFactory</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#build-a-feature">Build a Feature</a><ul>
+<li><a class="reference internal" href="#id1">DataUtilities</a></li>
+<li><a class="reference internal" href="#id2">FeatureFactory</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#accessing">Accessing</a><ul>
+<li><a class="reference internal" href="#property">Property</a></li>
+<li><a class="reference internal" href="#geometry">Geometry</a></li>
+<li><a class="reference internal" href="#coordinate-reference-system">Coordinate Reference System</a></li>
+<li><a class="reference internal" href="#boundingbox">BoundingBox</a></li>
+<li><a class="reference internal" href="#id3">Name</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#validation">Validation</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="function_list.html"
+                        title="previous chapter">Function List</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="collection.html"
+                        title="next chapter">FeatureCollection</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/library/main/feature.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="feature">
+<h1>Feature<a class="headerlink" href="#feature" title="Permalink to this headline">¶</a></h1>
+<p>This page consists of a series of code examples showing how to do common tasks with the GeoTools feature model.</p>
+<p>Reference:</p>
+<ul class="simple">
+<li><a class="reference internal" href="../opengis/model.html"><em>Model</em></a> gt-opengis data model</li>
+<li><a class="reference internal" href="../opengis/type.html"><em>FeatureType</em></a> gt-opengis feature type interfaces</li>
+<li><a class="reference internal" href="../opengis/feature.html"><em>Feature</em></a> gt-opengis feature interfaces</li>
+</ul>
+<div class="section" id="build-a-feature-type">
+<h2>Build a Feature Type<a class="headerlink" href="#build-a-feature-type" title="Permalink to this headline">¶</a></h2>
+<p>Since FeatureType is immutable you will often see them used as constants as shown in the following examples:</p>
+<p>Simple case:</p>
+<div class="highlight-python"><div class="highlight"><pre>SimpleFeatureTypeBuilder b = new SimpleFeatureTypeBuilder();
+
+//set the name
+b.setName( &quot;Flag&quot; );
+
+//add some properties
+b.add( &quot;name&quot;, String.class );
+b.add( &quot;classification&quot;, Integer.class );
+b.add( &quot;height&quot;, Double.class );
+
+//add a geometry property
+b.setCRS( DefaultGeographicCRS.WSG84 ); // set crs first
+b.add( &quot;location&quot;, Point.class ); // then add geometry
+
+//build the type
+final SimpleFeatureType FLAG = b.buildFeatureType();
+</pre></div>
+</div>
+<p>Alternative chaining:</p>
+<div class="highlight-python"><div class="highlight"><pre>SimpleFeatureTypeBuilder b = new SimpleFeatureTypeBuilder();
+SimpleFeatureType type;
+
+// you can chain builder methods
+final SimpleFeatureType FLAG =
+       b.name(&quot;Flag&quot;).add(&quot;name&quot;, String.class ).
+       add( &quot;classification&quot;, Integer.class ).add( &quot;height&quot;, Double.class ).
+       crs( DefaultGeographicCRS.WSG84 ).add( &quot;location&quot;, Point.class ).buildFeatureType();
+</pre></div>
+</div>
+<p>Include namespace information:</p>
+<div class="highlight-python"><div class="highlight"><pre>// you can set a namespace
+b.setNamespaceURI( &quot;http://geotools.org/example&quot; );
+</pre></div>
+</div>
+<div class="section" id="geometry-type">
+<h3>Geometry Type<a class="headerlink" href="#geometry-type" title="Permalink to this headline">¶</a></h3>
+<p>Multiple geometries (with implicit default geometry):</p>
+<div class="highlight-python"><div class="highlight"><pre>b.setCRS( DefaultGeographicCRS.WSG84 );
+
+//add some geometry properties (first added is the default)
+b.add( &quot;region&quot;, Polygon.class );
+b.add( &quot;hub&quot;, Point.class );
+b.add( &quot;network&quot;, MultiLineString.class );
+</pre></div>
+</div>
+<p>Multiple geometries with explicit default geoemtry:</p>
+<div class="highlight-python"><div class="highlight"><pre>b.setCRS( DefaultGeographicCRS.WSG84 );
+
+b.add( &quot;hub&quot;, Point.class );
+b.add( &quot;region&quot;, Polygon.class );
+b.add( &quot;network&quot;, MultiLineString.class );
+
+//set the default geometry
+b.setDefaultGeometry( &quot;region&quot; ):
+</pre></div>
+</div>
+<p>CRS for geometries:</p>
+<div class="highlight-python"><div class="highlight"><pre>CoordinateReferenceSystem crs = CRS.decode(&quot;EPSG:4326&quot;);
+
+//set the coordinate reference system
+b.setCRS( crs );
+
+// when geometry properties are added they will use the crs set above
+b.add( &quot;position&quot;, Point.class );
+b.add( &quot;route&quot;, LineString.class );
+</pre></div>
+</div>
+<p>Alternative: Unknown CRS:</p>
+<div class="highlight-python"><div class="highlight"><pre>b.setCRS( null );
+b.add( &quot;position&quot;, Point.class );
+b.add( &quot;route&quot;, LineString.class );
+</pre></div>
+</div>
+<p>Multiple CRS for Geometries:</p>
+<div class="highlight-python"><div class="highlight"><pre>CoordinateReferenceSystem crs1 = CRS.decode(&quot;EPSG:3005&quot;);
+CoordinateReferenceSystem crs2 = DefaultGeographicCRS.WSG84;
+
+b.setCRS( crs1 );
+b.add( &quot;local&quot;, Point.class );
+
+b.setCRS( crs2 );
+b.add( &quot;world&quot;, Point.class );
+</pre></div>
+</div>
+<p>Alternative: Chaining:</p>
+<div class="highlight-python"><div class="highlight"><pre>CoordinateReferenceSystem crs1 = CRS.decode(&quot;EPSG:3005&quot;);
+CoordinateReferenceSystem crs2 = DefaultGeographicCRS.WSG84;
+
+b.crs( crs1 ).add( &quot;local&quot;, Point.class );
+b.crs( crs2 ).add( &quot;world&quot;, Point.class );
+</pre></div>
+</div>
+<p>Alternative: Using an SRS:</p>
+<div class="highlight-python"><div class="highlight"><pre>b.srs( &quot;EPSG:3005&quot; ).add( &quot;local&quot;, Point.class );
+b.srs( &quot;EPSG:4326&quot; ).add( &quot;world&quot;, Point.class );
+</pre></div>
+</div>
+</div>
+<div class="section" id="attribute-descriptor">
+<h3>Attribute Descriptor<a class="headerlink" href="#attribute-descriptor" title="Permalink to this headline">¶</a></h3>
+<p>Simple Case:</p>
+<div class="highlight-python"><div class="highlight"><pre>AttributeTypeBuilder build = new AttributeTypeBuilder();
+build.setNillable(true);
+build.setBinding(String.class);
+
+AttributeDescriptor descriptor = build.buildDescriptor( &quot;name&quot; );
+</pre></div>
+</div>
+<p>Alternative: With Explicit Attribute Type:</p>
+<div class="highlight-python"><div class="highlight"><pre>AttributeTypeBuilder build = new AttributeTypeBuilder();
+build.setNillable(true);
+build.setBinding(String.class);
+build.setName(&quot;Text&quot;);
+
+AttributeType textType = build.buildType();
+AttributeDescriptor descriptor = build.buildDescriptor( &quot;name&quot;, textType );
+</pre></div>
+</div>
+<p>Building a Geometry Descriptor:</p>
+<div class="highlight-python"><div class="highlight"><pre>build.setNillable(true);
+build.setCRS(crs);
+build.setBinding(Polygon.class);
+
+GeometryType geometryType = build.buildGeometryType();
+GeometryDescriptor build.buildDescriptor( &quot;the_geom&quot;,   geometryType ) );
+</pre></div>
+</div>
+<p>Building a Geometry Descriptor with Limited Length:</p>
+<div class="highlight-python"><div class="highlight"><pre>AttributeTypeBuilder build = new AttributeTypeBuilder();
+build.setNillable(true);
+build.setBinding(String.class);
+build.setLength(15);
+AttributeDescriptor descriptor = build.buildDescriptor( &quot;username&quot; );
+</pre></div>
+</div>
+</div>
+<div class="section" id="name">
+<h3>Name<a class="headerlink" href="#name" title="Permalink to this headline">¶</a></h3>
+<p>Creating a specific name:</p>
+<div class="highlight-python"><div class="highlight"><pre>Name roadName = new NameImpl(&quot;http://localhost/&quot;,&quot;Road&quot;);
+</pre></div>
+</div>
+<p>Creating a global name:</p>
+<div class="highlight-python"><div class="highlight"><pre>Name roadName = new NameImpl(null,&quot;Road&quot;);
+</pre></div>
+</div>
+</div>
+<div class="section" id="datautilities">
+<h3>DataUtilities<a class="headerlink" href="#datautilities" title="Permalink to this headline">¶</a></h3>
+<p>DataUtilities has a method that you can use to quickly create a FeatureType for test cases:</p>
+<div class="highlight-python"><div class="highlight"><pre>final SimpleFeatureType FLAG = DataUtilities.createType(&quot;Flag&quot;,&quot;Location:Point,Name:String&quot;);
+</pre></div>
+</div>
+<p>You can define the Coordinate Reference System using :</p>
+<blockquote>
+<div>final SimpleFeatureType FLAG = DataUtilities.createType(&#8220;Flags&#8221;,&#8221;geom:MultiPoint:srid=4326,Name:String&#8221;);</div></blockquote>
+<p>You can also ask for the String representation of a FeatureType:</p>
+<blockquote>
+<div>System.out.println( DataUtilities.spec( FLAG ) );</div></blockquote>
+<p>For more information see <a class="reference internal" href="data.html"><em>DataUtilities</em></a>.</p>
+</div>
+<div class="section" id="featurefactory">
+<h3>FeatureFactory<a class="headerlink" href="#featurefactory" title="Permalink to this headline">¶</a></h3>
+<p>You can also use FeatureFactory directly; this is advised when building nested features (as we only have a SimpleFeatureTypeBuilder at present).</p>
+<p>Using a TypeFactory:</p>
+<div class="highlight-python"><div class="highlight"><pre>TypeFactory typeFactory = CommonFactoryFinder.getTypeFactory( null );
+SimpleTypeFactory featureTypeFactory =   CommonFactoryFinder.getSimpleTypeFeatureFactory( null );
+
+URI namespace = new URI(&quot;http://localhost/Flag/&quot;);
+CoordianteReferenceSystem crs = CRS.decode(&quot;EPSG:4326&quot;);
+
+Name locationName = new NameImpl( namespace, &quot;Location&quot; );
+InternationalString locationDescription = new SimpleInternationalString(&quot;Location of the base of this Flag, in WSG84&quot;);
+GeometryAttributeType GEOM = typeFactory.createGeometryType( locationName, Point.class, crs, false, false, null, null, locationDescription );
+
+Name idName = new NameImpl( namespace, &quot;Id&quot; );
+AttributeType ID = typeFactory.createAttributeType( idName, Integer.class, false, false, null, null, null );
+
+Name locationName = new NameImpl( namespace, &quot;Name&quot; );
+AttributeType NAME = typeFactory.createAttributeType( nameName, String.class, false, false, null, null, null );
+
+Name name = new NameImpl( new URI(&quot;http://localhost/&quot;), &quot;Flag&quot; );
+InternationalString description = new SimpleInternationalString(&quot;A Flag used to place a marker on the world&quot;);
+
+AttributeDescriptor defaultGeoemtry = typeFactory.createAttributeDescriptor(GEOM, geomName, 1, 1, true, null );
+
+List&lt;AttributeDescriptor&gt; types = new ArrayList&lt;AttributeDescriptor&gt;();
+types.add( defaultGeometry );
+types.add( typeFactory.createAttributeDescriptor(ID, idName, 1, 1, false, new Integer(0) ) );
+types.add( typeFactory.createAttributeDescriptor(NAME, nameName, 1, 1, true, null ) );
+
+final FeatureType FLAG = featureTypeFactory.createSimpleFeatureType( name, types, defaultGeometry, crs, Collections.EMPTY_SET, description );
+</pre></div>
+</div>
+<p>As you can see we usually recommend SimpleFeatureTypeBuilder as it provides assistance with the above work for you.</p>
+</div>
+</div>
+<div class="section" id="build-a-feature">
+<h2>Build a Feature<a class="headerlink" href="#build-a-feature" title="Permalink to this headline">¶</a></h2>
+<p>Simple Case:</p>
+<div class="highlight-python"><div class="highlight"><pre>//the type, schema = ( name:String, classification:Integer, height:Double, location:Point)
+SimpleFeatureType type = ...;
+
+//create the builder
+SimpleFeatureBuilder builder = new SimpleFeatureBuilder(type);
+
+//add the values
+builder.add( &quot;Canada&quot; );
+builder.add( 1 );
+builder.add( 20.5 );
+builder.add( new Point( -124, 52 ) );
+
+//build the feature with provided ID
+SimpleFeature feature = builder.buildFeature( &quot;fid.1&quot; );
+</pre></div>
+</div>
+<p>Alternative array of values provided in order:</p>
+<div class="highlight-python"><div class="highlight"><pre>Object[] values = new Object[]{
+  &quot;Canada&quot;, 1, 20.5, new Point( -124, 52  )
+};
+builder.addAll( values );
+</pre></div>
+</div>
+<p>Alternative list of values provided in order:</p>
+<div class="highlight-python"><div class="highlight"><pre>ArrayList&lt;Object&gt; values = new ArrayList&lt;Object&gt;( 4 );
+values.add(&quot;Canada&quot;);
+values.add( 1 );
+values.add( 20.5 );
+values.add( new Point( -124, 52  ) );
+builder.addAll( list );
+</pre></div>
+</div>
+<p>Alternative setting by Name:</p>
+<div class="highlight-python"><div class="highlight"><pre>builder.set( &quot;name&quot;, &quot;Canada&quot; );
+builder.set( &quot;classification&quot;, 1 );
+builder.set( &quot;height&quot;, 20.5 );
+builder.set( &quot;location&quot;, new Point( -124, 52  ) );
+</pre></div>
+</div>
+<p>Alternative setting by index:</p>
+<div class="highlight-python"><div class="highlight"><pre>builder.set( 0, &quot;Canada&quot; );
+builder.set( 1, 1 );
+builder.set( 2 20.5 );
+builder.set( 3, new Point( -124, 52  ) );
+</pre></div>
+</div>
+<div class="section" id="id1">
+<h3>DataUtilities<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>DataUtilities has some utility methods that will create a &#8220;template&#8221; feature with sensible default values filled in based on the FeatureType.</p>
+<p>For more information see <a class="reference internal" href="data.html"><em>DataUtilities</em></a>.</p>
+</div>
+<div class="section" id="id2">
+<h3>FeatureFactory<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>Once again we will ask you to use FilterFactory directly if you are building up a Feature by hand.</p>
+</div>
+</div>
+<div class="section" id="accessing">
+<h2>Accessing<a class="headerlink" href="#accessing" title="Permalink to this headline">¶</a></h2>
+<p>Direct access to values:</p>
+<div class="highlight-python"><div class="highlight"><pre>SimpleFeature feature = ...see above...;
+
+for (Object value : feature.getAttributes() ) {
+  System.out.print( value &quot;,&quot;);
+}
+// prints Canada,1,20.5,POINT( -124, 52 ),
+</pre></div>
+</div>
+<p>Access values using index:</p>
+<div class="highlight-python"><div class="highlight"><pre>for (int i = 0; i &lt; feature.getAttributeCount(); i++ ) {
+  Object value = feature.getAttribute( i );
+  System.out.print( value &quot;,&quot;);
+}
+// prints Canada,1,20.5,POINT( -124, 52 ),
+</pre></div>
+</div>
+<p>Access values using Name:</p>
+<div class="highlight-python"><div class="highlight"><pre>for (Property property : feature.getProperties()) {
+  String name = property.getName();
+  Object value = feature.getAttribute( property.getName() );
+  System.out.print( name+&quot;=&quot;+value+&quot;,&quot; );
+}
+// prints name=Canada,classification=1,height=20.5,location=POINT( -124, 52 ),
+</pre></div>
+</div>
+<div class="section" id="property">
+<h3>Property<a class="headerlink" href="#property" title="Permalink to this headline">¶</a></h3>
+<p>Property access:</p>
+<div class="highlight-python"><div class="highlight"><pre>Property property = feature.getProperty( &quot;name&quot; );
+String name = property.getName();
+Object value = property.getValue();
+</pre></div>
+</div>
+<p>Property access using Index:</p>
+<div class="highlight-python"><div class="highlight"><pre>Property property = feature.getProperty( 2 );
+String name = property.getName();
+Object value = property.getValue();
+</pre></div>
+</div>
+</div>
+<div class="section" id="geometry">
+<h3>Geometry<a class="headerlink" href="#geometry" title="Permalink to this headline">¶</a></h3>
+<p>Geometry value access:</p>
+<div class="highlight-python"><div class="highlight"><pre>Point point = (Point) feature.getDefaultGeometry();
+</pre></div>
+</div>
+<p>Geometry value access as value:</p>
+<div class="highlight-python"><div class="highlight"><pre>Point point = (Point) feature.getAttribute( &quot;location&quot; );
+</pre></div>
+</div>
+<p>Geometry value access as property:</p>
+<div class="highlight-python"><div class="highlight"><pre>GeometryAttribute geom = feature.getDefaultGeometryProperty();
+
+String name = geom.getName();
+Point point = (Point) geom.getValue();
+CoordinateReferenceSystem crs = geom.getCRS();
+BoundingBox bounds = geom.getBounds();
+</pre></div>
+</div>
+<p>Geometry value access using name:</p>
+<div class="highlight-python"><div class="highlight"><pre>GeometryAttribute geom = (GeometryAttribute) feature.getProperty(&quot;location&quot;);
+
+CoordinateReferenceSystem crs = geom.getCRS();
+BoundingBox bounds = geom.getBounds();
+Geometry point = (Geometry) theGeom.getValue();
+</pre></div>
+</div>
+</div>
+<div class="section" id="coordinate-reference-system">
+<h3>Coordinate Reference System<a class="headerlink" href="#coordinate-reference-system" title="Permalink to this headline">¶</a></h3>
+<p>CoordinateReferenceSystem access:</p>
+<div class="highlight-python"><div class="highlight"><pre>// Access the CRS of getDefaultGeometryProperty()
+CoordinateReferenceSystem crs = feature.getCRS();
+</pre></div>
+</div>
+<p>CoordinateReferenceSystem of default geometry property:</p>
+<div class="highlight-python"><div class="highlight"><pre>CoordinateReferenceSystem crs =
+     feature.getDefaultGeometryProperty() == null ? null : feature.getDefaultGeometryProperty().getCRS();
+</pre></div>
+</div>
+<p>CoordinateReferenceSystem of named Property:</p>
+<div class="highlight-python"><div class="highlight"><pre>GeometryAttribute location = (GeometryAttribute) feature.getProperty( &quot;location&quot; );
+CoordinateReferenceSystem bounds = location.getCRS();
+</pre></div>
+</div>
+</div>
+<div class="section" id="boundingbox">
+<h3>BoundingBox<a class="headerlink" href="#boundingbox" title="Permalink to this headline">¶</a></h3>
+<p>BoundingBox access:</p>
+<div class="highlight-python"><div class="highlight"><pre>// Access the BoundingBox of getDefaultGeometryProperty()
+BoundingBox bounds = feature.getBounds();
+</pre></div>
+</div>
+<p>BoundingBox of getDefaultGeometryProperty():</p>
+<div class="highlight-python"><div class="highlight"><pre>BoundingBox bounds =
+     feature.getDefaultGeometryProperty() == null ? null : feature.getDefaultGeometryProperty().getBounds();
+</pre></div>
+</div>
+<p>BoundingBox of named Property:</p>
+<div class="highlight-python"><div class="highlight"><pre>GeometryAttribute location = (GeometryAttribute) feature.getProperty( &quot;location&quot; );
+BoundingBox bounds = location.getBounds();
+</pre></div>
+</div>
+</div>
+<div class="section" id="id3">
+<h3>Name<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<p>Name access:</p>
+<div class="highlight-python"><div class="highlight"><pre>// can access both parts of a name - similar to XML QName
+String localName = name.getLocalPart();
+String namespace = name.getNamespaceURI(); // Note a String
+</pre></div>
+</div>
+<p>Check if name is global:</p>
+<div class="highlight-python"><div class="highlight"><pre>name.isGlobal(); // true! name.getNamespaceURI() == null
+</pre></div>
+</div>
+<p>Name comparison:</p>
+<div class="highlight-python"><div class="highlight"><pre>Name name1 = new Name( &quot;gopher://localhost/example&quot;, &quot;name&quot; );
+Name name2 = new Name( &quot;gopher://localhost&quot;, &quot;example/name&quot; );
+
+name1.equals( name2 ); // true they both represent gopher://localhost/example/name
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="validation">
+<h2>Validation<a class="headerlink" href="#validation" title="Permalink to this headline">¶</a></h2>
+<p>Validating a feature:</p>
+<div class="highlight-python"><div class="highlight"><pre>for (PropertyDescriptor property : feature.getType().getAttributes() )) {
+   Object value = feature.getAttribute( property.getName() );
+
+   Types.validate( property, value );
+}
+</pre></div>
+</div>
+<p>Checking Super Types by Hand:</p>
+<div class="highlight-python"><div class="highlight"><pre>SimpleFeature feature = ...;
+
+for (PropertyDescriptor property : feature.getType().getAttributes() )) {
+  PropertyType propertyType = property.getType();
+  Object value = feature.getAttribute( property.getName() );
+
+  if( value == null ){
+     //check nillability
+     if ( property.isNillable() ){
+        continue;
+     }
+     else {
+        throw new Exception( &quot;value can not be null&quot; );
+     }
+  }
+  //check the type
+  if ( type.getBinding().isAssignableFrom( value.getClass() ) ) {
+    throw new Exception( &quot;value not same type as binding&quot; );
+  }
+  // check restrictions for this propertyType and all super types
+  for(PropertyType type=propertyType; type !=null; type=propertyType.getSuper() ){
+     for( Filter valid : type.getRestrictions() ){
+          if( !valid.evaulate( value ) ){
+              throw new Exception(
+                  &quot;Not a valid &quot;+type.getName()+&quot; values must be:&quot;+valid
+               );
+          }
+     }
+  }
+}
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="collection.html" title="FeatureCollection"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="function_list.html" title="Function List"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" >Main</a> &raquo;</li>
+        <li><a href="#">Feature</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

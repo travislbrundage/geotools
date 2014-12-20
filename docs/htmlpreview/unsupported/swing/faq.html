@@ -1,0 +1,155 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Swing FAQ &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../index.html" />
+    <link rel="up" title="Swing" href="index.html" />
+    <link rel="next" title="JMapPane canvas class" href="jmappane.html" />
+    <link rel="prev" title="Swing" href="index.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Unsupported</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Swing</a> &raquo;</li>
+        <li><a href="#">Swing FAQ</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Swing FAQ</a><ul>
+<li><a class="reference internal" href="#q-what-is-jmappane-for">Q: What is JMapPane for?</a></li>
+<li><a class="reference internal" href="#q-what-is-the-best-way-to-simulate-a-car-moving-on-a-map">Q: What is the best way to simulate a car moving on a map?</a></li>
+<li><a class="reference internal" href="#q-jmappane-is-slow-how-do-i-make-it-faster">Q: JMapPane is Slow how do I make it faster?</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Swing</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="jmappane.html"
+                        title="next chapter">JMapPane canvas class</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/unsupported/swing/faq.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="swing-faq">
+<h1>Swing FAQ<a class="headerlink" href="#swing-faq" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="q-what-is-jmappane-for">
+<h2>Q: What is JMapPane for?<a class="headerlink" href="#q-what-is-jmappane-for" title="Permalink to this headline">¶</a></h2>
+<p>The JMapPane class is primiarly used as a teaching aid for the
+<a class="reference internal" href="../../tutorial/index.html"><em>tutorials</em></a> used to explore the GeoTools library.</p>
+<p>It is developed in collaboration with the user list, and while not a intended as a
+GIS application it is a good starting point for trying out your ideas.</p>
+</div>
+<div class="section" id="q-what-is-the-best-way-to-simulate-a-car-moving-on-a-map">
+<h2>Q: What is the best way to simulate a car moving on a map?<a class="headerlink" href="#q-what-is-the-best-way-to-simulate-a-car-moving-on-a-map" title="Permalink to this headline">¶</a></h2>
+<p>There is a flying saucers demo you can review; but the real answer is to set up a second
+raster to draw your moving car into; and draw that over top of the map rendered by gt-renderer.</p>
+<p>Remember that JMapPane is just a demo showing how you can use StreamingRenderer to draw into a
+BufferedImage. You can do the same thing in your own code; and have one buffered image for the
+map and a second one for your &#8220;overlays&#8221; including the moving car.</p>
+</div>
+<div class="section" id="q-jmappane-is-slow-how-do-i-make-it-faster">
+<h2>Q: JMapPane is Slow how do I make it faster?<a class="headerlink" href="#q-jmappane-is-slow-how-do-i-make-it-faster" title="Permalink to this headline">¶</a></h2>
+<p>This really comes down to how you use the GeoTools renderer. Remember that the GeoTools renderer
+is doing a lot of calculation and data access; not what you want in the middle of animation.</p>
+<p>The gt-renderer is optimised for memory use; it does not loading your data into memory
+(it is drawing from disk, or database, each time). You can experiment with loading your data
+into memory (specifically into a spatial index) if you want faster performance out of it.</p>
+<p>For raster rendering you have a great deal of control over performance using JAI TileCache settings
+in addition to convering your rasters into an efficient format (anything is better than jpeg).</p>
+<p>Referneces:</p>
+<ul class="simple">
+<li><a class="reference external" href="/library/main/collection">FeatureCollection Performance</a></li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="jmappane.html" title="JMapPane canvas class"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="index.html" title="Swing"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Unsupported</a> &raquo;</li>
+          <li><a href="index.html" >Swing</a> &raquo;</li>
+        <li><a href="#">Swing FAQ</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

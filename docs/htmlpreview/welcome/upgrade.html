@@ -1,0 +1,2041 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Upgrade &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../index.html" />
+    <link rel="up" title="Welcome" href="index.html" />
+    <link rel="next" title="Integration" href="integration.html" />
+    <link rel="prev" title="Use of Standards" href="standards.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Welcome</a> &raquo;</li>
+        <li><a href="#">Upgrade</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Upgrade</a><ul>
+<li><a class="reference internal" href="#geotools-10-0">GeoTools 10.0</a></li>
+<li><a class="reference internal" href="#geotools-9-0">GeoTools 9.0</a><ul>
+<li><a class="reference internal" href="#referencedenvelope-and-crs">ReferencedEnvelope and CRS</a></li>
+<li><a class="reference internal" href="#featurecollection-add">FeatureCollection Add</a></li>
+<li><a class="reference internal" href="#featurecollection-iterator">FeatureCollection Iterator</a></li>
+<li><a class="reference internal" href="#how-to-close-an-iterator">How to Close an Iterator</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#geotools-8-0">GeoTools 8.0</a><ul>
+<li><a class="reference internal" href="#style">Style</a></li>
+<li><a class="reference internal" href="#filter">Filter</a><ul>
+<li><a class="reference internal" href="#featureid">FeatureId</a></li>
+<li><a class="reference internal" href="#function">Function</a></li>
+<li><a class="reference internal" href="#functionexpression">FunctionExpression</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#direct-position-and-envelope">Direct Position and Envelope</a></li>
+<li><a class="reference internal" href="#numberrange">NumberRange</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#geotools-2-7">GeoTools 2.7</a><ul>
+<li><a class="reference internal" href="#query">Query</a></li>
+<li><a class="reference internal" href="#simplefeaturecollection">SimpleFeatureCollection</a></li>
+<li><a class="reference internal" href="#simplefeaturesource">SimpleFeatureSource</a></li>
+<li><a class="reference internal" href="#simplefeaturestore">SimpleFeatureStore</a></li>
+<li><a class="reference internal" href="#simplefeaturelocking">SimpleFeatureLocking</a></li>
+<li><a class="reference internal" href="#featurestore-modifyfeatures-by-name">FeatureStore modifyFeatures by Name</a></li>
+<li><a class="reference internal" href="#coverageprocessor">CoverageProcessor</a></li>
+<li><a class="reference internal" href="#generalenvelope">GeneralEnvelope</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#geotools-2-6">GeoTools 2.6</a><ul>
+<li><a class="reference internal" href="#gridrange-removed">GridRange Removed</a></li>
+<li><a class="reference internal" href="#overviewpolicy-enum-replace-hint-use">OverviewPolicy Enum replace Hint use</a></li>
+<li><a class="reference internal" href="#coverageutilities-and-featureutilities">CoverageUtilities and FeatureUtilities</a></li>
+<li><a class="reference internal" href="#coverage-processing-classes">Coverage Processing Classes</a></li>
+<li><a class="reference internal" href="#defaultparameterdescriptor-and-parameter">DefaultParameterDescriptor and Parameter</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#geotools-2-5">GeoTools 2.5</a><ul>
+<li><a class="reference internal" href="#featurecollction">FeatureCollction</a></li>
+<li><a class="reference internal" href="#jtsfactory">JTSFactory</a></li>
+<li><a class="reference internal" href="#progresslistener">ProgressListener</a></li>
+<li><a class="reference internal" href="#simplefeature">SimpleFeature</a></li>
+<li><a class="reference internal" href="#attributedescriptor-and-attributetype">AttributeDescriptor and AttributeType</a></li>
+<li><a class="reference internal" href="#name">Name</a></li>
+<li><a class="reference internal" href="#datastore">DataStore</a></li>
+<li><a class="reference internal" href="#dataaccess-and-datastore">DataAccess and DataStore</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#geotools-2-4">GeoTools 2.4</a><ul>
+<li><a class="reference internal" href="#referencingfactoryfinder">ReferencingFactoryFinder</a></li>
+<li><a class="reference internal" href="#featurestore-addfeatures">FeatureStore addFeatures</a></li>
+<li><a class="reference internal" href="#featuresource-getsupportedhints">FeatureSource getSupportedHints</a></li>
+<li><a class="reference internal" href="#query-gethints">Query getHints</a></li>
+<li><a class="reference internal" href="#id4">Filter</a></li>
+<li><a class="reference internal" href="#feature-getparent-removed">Feature.getParent removed</a></li>
+<li><a class="reference internal" href="#gtrenderer">GTRenderer</a></li>
+<li><a class="reference internal" href="#jts">JTS</a></li>
+<li><a class="reference internal" href="#jts-to-shape-converters">JTS to Shape converters</a></li>
+<li><a class="reference internal" href="#coverage-utility-classes">Coverage utility classes</a></li>
+<li><a class="reference internal" href="#spatialschema">spatialschema</a></li>
+<li><a class="reference internal" href="#repackage-arcsde">Repackage ArcSDE</a></li>
+<li><a class="reference internal" href="#worldimage">WorldImage</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="standards.html"
+                        title="previous chapter">Use of Standards</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="integration.html"
+                        title="next chapter">Integration</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/welcome/upgrade.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="upgrade">
+<h1>Upgrade<a class="headerlink" href="#upgrade" title="Permalink to this headline">¶</a></h1>
+<p>With a library as old as GeoTools you will occasionally run into a project from ten years ago that
+needs to be upgraded. This page collects the upgrade notes for each release change; highlighting any
+fundemental changes with code examples showing how to upgrade your code.</p>
+<p>But first to upgrade - change your dependency to 13-SNAPSHOT (or an appropriate stable version):</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;properties&gt;
+    &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+    &lt;geotools.version&gt;|release|&lt;/geotools.version&gt;
+&lt;/properties&gt;
+....
+&lt;dependencies&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.geotools&lt;/groupId&gt;
+        &lt;artifactId&gt;gt-shapefile&lt;/artifactId&gt;
+        &lt;version&gt;${geotools.version}&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.geotools&lt;/groupId&gt;
+        &lt;artifactId&gt;gt-swing&lt;/artifactId&gt;
+        &lt;version&gt;${geotools.version}&lt;/version&gt;
+    &lt;/dependency&gt;
+    ....
+&lt;/dependencies&gt;
+</pre></div>
+</div>
+<div class="section" id="geotools-10-0">
+<h2>GeoTools 10.0<a class="headerlink" href="#geotools-10-0" title="Permalink to this headline">¶</a></h2>
+<div class="sidebar">
+<p class="first sidebar-title">Wiki</p>
+<ul class="simple">
+<li><a class="reference external" href="http://docs.codehaus.org/display/GEOTOOLS/10.x">GeoTools 10.0</a></li>
+</ul>
+<p class="last">For background details on any API changes review the change proposals above.</p>
+</div>
+<p>GeoTools 10 add significant improvements in the coverage reading API.
+For those migrating the first visible benefit is that referring to a generic grid coverage reader does not require anymore to use AbstractGridCoverage2DReader (an abstract class) but tto the new GridCoverage2DReader interface. The old usage is still supported though, as most readers are still extending the same base class, but the usage of the interface allows for reader wrappers.</p>
+<p>BEFORE:</p>
+<div class="highlight-python"><div class="highlight"><pre>AbstractGridCoverage2DReader reader = format.getReader(source);
+</pre></div>
+</div>
+<p>AFTER:</p>
+<div class="highlight-python"><div class="highlight"><pre>GridCoverage2DReader reader = format.getReader(source);
+</pre></div>
+</div>
+</div>
+<div class="section" id="geotools-9-0">
+<h2>GeoTools 9.0<a class="headerlink" href="#geotools-9-0" title="Permalink to this headline">¶</a></h2>
+<div class="sidebar">
+<p class="first sidebar-title">Wiki</p>
+<ul class="simple">
+<li><a class="reference external" href="http://docs.codehaus.org/display/GEOTOOLS/9.x">GeoTools 9.0</a></li>
+</ul>
+<p class="last">For background details on any API changes review the change proposals above.</p>
+</div>
+<p>GeoTools 9 has resolved a long standing conflict between FeatureCollection acting as a &#8220;result&#8221; set capable of
+streaming large datasets vs. acting as a familiar Java Collection. The Java 5 &#8220;for each&#8221; syntax prevents
+the safe use of Iterator (as we cannot ensure it will be closed). As a result FeatureCollection no longer
+can extend java Collection and is acting as a pure &#8220;result set&#8221; with streaming access provided by FeatureIterator.</p>
+<div class="section" id="referencedenvelope-and-crs">
+<h3>ReferencedEnvelope and CRS<a class="headerlink" href="#referencedenvelope-and-crs" title="Permalink to this headline">¶</a></h3>
+<p>ReferencedEnvelope has in the past only supported 2D extents, we have introduced the subclass ReferencedEnvelope3D
+to support CoordianteReferenceSystems with three dimensions.</p>
+<p>There is now a new factory method to safely construct the appropriate implementation for a provided CoordinateReferenceSystem
+as shown below.</p>
+<p>BEFORE:</p>
+<div class="highlight-python"><div class="highlight"><pre>ReferencedEnvelope bbox = new ReferencedEnvelope( crs );
+ReferencedEnvelope copy = new ReferencedEnvelope( bbox );
+</pre></div>
+</div>
+<p>AFTER:</p>
+<div class="highlight-python"><div class="highlight"><pre>ReferencedEnvelope bbox = ReferencedEnvelope.create( crs );
+ReferencedEnvelope copy = ReferencedEnvelope.create( bbox );
+</pre></div>
+</div>
+<p>This represents an <em>incompatible API change</em>, existing code using &#8220;new ReferencedEnvelope&#8221; may now throw
+a RuntimeException when supplied with an incompatible CoordianteReferenceSystem.</p>
+</div>
+<div class="section" id="featurecollection-add">
+<h3>FeatureCollection Add<a class="headerlink" href="#featurecollection-add" title="Permalink to this headline">¶</a></h3>
+<p>With the FeatureCollection.add method being removed, you will need to use an explicit instance that supports
+adding content.</p>
+<p>BEFORE:</p>
+<div class="highlight-python"><div class="highlight"><pre>SimpleFeatureCollection features = FeatureCollections.newCollection();
+
+for( SimpleFeature feature : list ){
+   features.add( feature );
+}
+</pre></div>
+</div>
+<p>AFTER:</p>
+<div class="highlight-python"><div class="highlight"><pre>DefaultFeatureCollection features = new DefaultFeatureCollection();
+for( SimpleFeature feature : list ){
+   features.add( feature );
+}
+</pre></div>
+</div>
+<p>ALTERNATE (will throw exception if FeatureCollection does not implement java.util.Collection):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Collection</span><span class="o">&lt;</span><span class="n">SimpleFeature</span><span class="o">&gt;</span> <span class="n">collection</span> <span class="o">=</span> <span class="n">DataUtilities</span><span class="o">.</span><span class="n">collectionCast</span><span class="p">(</span> <span class="n">featureCollection</span> <span class="p">);</span>
+<span class="n">collection</span><span class="o">.</span><span class="n">addAll</span><span class="p">(</span> <span class="nb">list</span> <span class="p">);</span>
+</pre></div>
+</div>
+<p>ALTERNATE DETAIL:</p>
+<div class="highlight-python"><div class="highlight"><pre>SimpleFeatureCollection features = FeatureCollections.newCollection();
+if( features instanceof Collection ){
+    Collection&lt;SimpleFeature&gt; collection = (Collection) features;
+    collection.addAll( list );
+}
+else {
+    throw new IllegalStateException(&quot;FeatureCollections configured with immutbale implementation&quot;);
+}
+</pre></div>
+</div>
+<p>SPECIFIC:</p>
+<div class="highlight-python"><div class="highlight"><pre>ListFeatureCollection features = new ListFeatureCollection( schema, list );
+</pre></div>
+</div>
+</div>
+<div class="section" id="featurecollection-iterator">
+<h3>FeatureCollection Iterator<a class="headerlink" href="#featurecollection-iterator" title="Permalink to this headline">¶</a></h3>
+<p>The deprecated FeatureCollection.iterator() method is no longer available, please use FeatureCollection.features()
+as shown below.</p>
+<p>BEFORE:</p>
+<div class="highlight-python"><div class="highlight"><pre>Iterator i=featureCollection.iterator();
+try {
+    while( i.hasNext(); ){
+       SimpleFeature feature = i.next();
+       ...
+    }
+}
+finally {
+    featureCollection.close( i );
+}
+</pre></div>
+</div>
+<p>AFTER:</p>
+<div class="highlight-python"><div class="highlight"><pre>FeatureIterator i=featureCollection.features();
+try {
+     while( i.hasNext(); ){
+         SimpleFeature feature = i.next();
+         ...
+     }
+}
+finally {
+     i.close();
+}
+</pre></div>
+</div>
+<p>JAVA7:</p>
+<div class="highlight-python"><div class="highlight"><pre>try ( FeatureIterator i=featureCollection.features()){
+    while( i.hasNext() ){
+         SimpleFeature feature = i.next();
+         ...
+    }
+}
+</pre></div>
+</div>
+</div>
+<div class="section" id="how-to-close-an-iterator">
+<h3>How to Close an Iterator<a class="headerlink" href="#how-to-close-an-iterator" title="Permalink to this headline">¶</a></h3>
+<p>We have made FeatureIterator implement Closable (for Java 7 try-with-resource compatibility). This
+also provides an excellent replacement for FeatureCollection.close( Iterator ).</p>
+<p>If you are using any wrapping Iterators that still require the ability to close()
+please consider the following approach.</p>
+<p>BEFORE:</p>
+<div class="highlight-python"><div class="highlight"><pre>Iterator iterator = collection.iterator();
+try {
+   ...
+} finally {
+    if (collection instanceof SimpleFeatureCollection) {
+        ((SimpleFeatureCollection) collection).close(iterator);
+    }
+}
+</pre></div>
+</div>
+<p>QUICK:</p>
+<div class="highlight-python"><div class="highlight"><pre>Iterator iterator = collection.iterator();
+try {
+   ...
+} finally {
+    DataUtilities.close( iterator );
+}
+</pre></div>
+</div>
+<p>DETAIL:</p>
+<div class="highlight-python"><div class="highlight"><pre>Iterator iterator = collection.iterator();
+try {
+   ...
+} finally {
+    if (iterator instanceof Closeable) {
+        try {
+           ((Closeable)iterator).close();
+        }
+        catch( IOException e){
+            Logger log = Logger.getLogger( collection.getClass().getPackage().toString() );
+            log.log(Level.FINE, e.getMessage(), e );
+        }
+    }
+}
+</pre></div>
+</div>
+<p>JAVA7 using try-with-resource syntax for Iterator that implements Closeable:</p>
+<div class="highlight-python"><div class="highlight"><pre>try ( Iterator i=collection.features()){
+    while( i.hasNext() ){
+         Object object = i.next();
+         ...
+    }
+}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="geotools-8-0">
+<h2>GeoTools 8.0<a class="headerlink" href="#geotools-8-0" title="Permalink to this headline">¶</a></h2>
+<div class="sidebar">
+<p class="first sidebar-title">Wiki</p>
+<ul class="simple">
+<li><a class="reference external" href="http://docs.codehaus.org/display/GEOTOOLS/8.x">GeoTools 8.0</a></li>
+</ul>
+<p class="last">You are encourged to review the change proposals for GeoTools 8.0 for background information
+on the following changes.</p>
+</div>
+<p>The changes moving from GeoTools 2.7 to GeoTools 8.0 have a great emphasis on usability and
+documentation. Because of the focus on ease of use; many of the changes here are marked &#8220;Optional&#8221;
+this indicates that your code will not break; but you have a chance to clean it up and make
+your code more readable.</p>
+<div class="section" id="style">
+<h3>Style<a class="headerlink" href="#style" title="Permalink to this headline">¶</a></h3>
+<p>Some of the <strong>gt-opengis</strong> style methods that have been deprecated for a while are now removed.</p>
+<ul class="simple">
+<li>Mark.getRotation() / Mark.setRotation( Expression )</li>
+<li>Mark.getSize() / Mark.setSize( Expression )</li>
+</ul>
+<p>These are handled in a similar manner:</p>
+<ul>
+<li><p class="first">BEFORE:</p>
+<div class="highlight-python"><div class="highlight"><pre>for( GraphicalSymbol symbol : graphic.graphicalSymbols() ){
+    if( symbol instanceof Mark ){
+         Mark mark = (Mark) symbol;
+         mark.setSize( ff.literal( 8 ) );
+    }
+}
+</pre></div>
+</div>
+</li>
+<li><p class="first">AFTER:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">graphic</span><span class="o">.</span><span class="n">setSize</span><span class="p">(</span> <span class="n">ff</span><span class="o">.</span><span class="n">literal</span><span class="p">(</span> <span class="mi">8</span> <span class="p">)</span> <span class="p">);</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="filter">
+<h3>Filter<a class="headerlink" href="#filter" title="Permalink to this headline">¶</a></h3>
+<p>The filter system was upgrade to match Filter 2.0 resulting in a few additions. This mostly
+effects people writing their own functions (as now we need to know about parameter types).</p>
+<div class="section" id="featureid">
+<h4>FeatureId<a class="headerlink" href="#featureid" title="Permalink to this headline">¶</a></h4>
+<ul>
+<li><p class="first">BEFORE:</p>
+<div class="highlight-python"><div class="highlight"><pre>FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+Filter filter;
+
+Set&lt;FeatureId&gt; selected = new HashSet&lt;FeatureId&gt;();
+selected.add(ff.featureId(&quot;CITY.98734597823459687235&quot;));
+selected.add(ff.featureId(&quot;CITY.98734592345235823474&quot;));
+
+filter = ff.id(selected);
+</pre></div>
+</div>
+</li>
+<li><p class="first">AFTER</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="n">FilterFactory2</span> <span class="n">ff</span> <span class="o">=</span> <span class="n">CommonFactoryFinder</span><span class="o">.</span><span class="na">getFilterFactory2</span><span class="o">();</span>
+    <span class="n">Filter</span> <span class="n">filter</span><span class="o">;</span>
+    
+    <span class="n">filter</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">id</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">featureId</span><span class="o">(</span><span class="s">&quot;CITY.98734597823459687235&quot;</span><span class="o">),</span>
+                   <span class="n">ff</span><span class="o">.</span><span class="na">featureId</span><span class="o">(</span><span class="s">&quot;CITY.98734592345235823474&quot;</span><span class="o">));</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="function">
+<h4>Function<a class="headerlink" href="#function" title="Permalink to this headline">¶</a></h4>
+<p>We have extended <strong>gt-opengis</strong> Function to make the FunctionName description (especially
+argument names) more available.</p>
+<ul>
+<li><p class="first">To updateyour code:</p>
+<div class="highlight-python"><div class="highlight"><pre>class SplitFunction implements Function {
+    public static FunctionName NAME = new FunctionNameImpl( &quot;split&quot;, &quot;geometry&quot;, &quot;line&quot; );
+    ...
+    FunctionName getFunctionName(){
+        return NAME;
+    }
+    ...
+}
+</pre></div>
+</div>
+</li>
+</ul>
+<p>If you are extending abstract function expression base class; it provides a default implementation
+of getFunctionName() allowing your code to compile.</p>
+</div>
+<div class="section" id="functionexpression">
+<h4>FunctionExpression<a class="headerlink" href="#functionexpression" title="Permalink to this headline">¶</a></h4>
+<p>In a related matter <strong>gt-main</strong> no longer provides access to the deprecated FunctionExpression
+interface (it has returned an empty set for several releases now):</p>
+<ul>
+<li><p class="first">BEFORE:</p>
+<div class="highlight-python"><div class="highlight"><pre>Set&lt;String&gt; proposals = new TreeSet&lt;String&gt;();
+Set&lt;Function&gt; oldFunctions = FunctionFinder. CommonFactoryFinder.getFunctionExpressions(null);
+for( Function function : oldFunctions ) {
+    proposals.add(function.getName().toLowerCase());
+}
+</pre></div>
+</div>
+</li>
+<li><p class="first">AFTER:</p>
+<div class="highlight-python"><div class="highlight"><pre>Set&lt;String&gt; proposals = new TreeSet&lt;String&gt;();
+
+FunctionFinder functionFinder = new FunctionFinder(null);
+for( FunctionName function : functionFinder.getAllFunctionDescriptions() ){
+    proposals.add(function.getName().toLowerCase());
+}
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="direct-position-and-envelope">
+<h3>Direct Position and Envelope<a class="headerlink" href="#direct-position-and-envelope" title="Permalink to this headline">¶</a></h3>
+<p>Deprecated methods in <strong>gt-opengis</strong> and <strong>gt-referencing</strong> have now been removed.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="38%" />
+<col width="31%" />
+<col width="30%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Deprecated method in 2.7</th>
+<th class="head">Replacement in 8.0</th>
+<th class="head">Notes</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>DirectPosition.getCoordinates()</td>
+<td>DirectPosition.getCoordinate()</td>
+<td>For consistency with ISO 19107</td>
+</tr>
+<tr class="row-odd"><td>Envelope.getCenter()</td>
+<td>Envelope.getMedian()}}</td>
+<td>For consistency with ISO 19107</td>
+</tr>
+<tr class="row-even"><td>Envelope.getLength()</td>
+<td>Envelope.getSpan()</td>
+<td>For consistency with ISO 19107</td>
+</tr>
+<tr class="row-odd"><td>Precision.getMaximumSignificantDigits()</td>
+<td>Precision.getScale()}}</td>
+<td>Remove duplication</td>
+</tr>
+<tr class="row-even"><td>PointArray.length()</td>
+<td>List.size()</td>
+<td>PointArray instance can be used</td>
+</tr>
+<tr class="row-odd"><td>PointArray.position()</td>
+<td>this</td>
+<td>PointArray instance can be used</td>
+</tr>
+<tr class="row-even"><td>Position.getPosition()</td>
+<td>Position.getDirectPosition()</td>
+<td>For consistency with ISO 19107</td>
+</tr>
+<tr class="row-odd"><td>Point.setPosition()</td>
+<td>Point.setDirectPosition()</td>
+<td>For consistency with ISO 19107</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="numberrange">
+<h3>NumberRange<a class="headerlink" href="#numberrange" title="Permalink to this headline">¶</a></h3>
+<p>The <strong>gt-metadata</strong> NumberRange class is finally sheading some of its deprecated methods.</p>
+<p>** BEFORE:</p>
+<div class="highlight-python"><div class="highlight"><pre>NumberRange before = new NumberRange( 0.0, 5.0 );
+</pre></div>
+</div>
+<p>** AFTER:</p>
+<div class="highlight-python"><div class="highlight"><pre>NumberRange&lt;Double&gt; after1 = new NumberRange( Double.class, 0.0, 5.0 );
+NumberRange&lt;Double&gt; after2 = NumberRage.create( 0.0, 5.0 );
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="geotools-2-7">
+<h2>GeoTools 2.7<a class="headerlink" href="#geotools-2-7" title="Permalink to this headline">¶</a></h2>
+<div class="sidebar">
+<p class="first sidebar-title">Wiki</p>
+<ul class="simple">
+<li><a class="reference external" href="http://docs.codehaus.org/display/GEOTOOLS/2.7.x">GeoTools 2.7.0</a></li>
+</ul>
+<p class="last">You are encourged to review the change proposals for GeoTools 2.7.0 for background information
+on the following changes.</p>
+</div>
+<p>The changes from GeoTools 2.6 to GeoTools 2.7 focus on making your code more readible; you will
+find a number of optional changes (such as using Query rather than DefaultQuery) which will
+simplify make your code easier to follow.</p>
+<div class="section" id="query">
+<h3>Query<a class="headerlink" href="#query" title="Permalink to this headline">¶</a></h3>
+<p>The <em>gt-api*</em> module has been updated to make <strong>Query</strong> a concrete class rather than an interface.</p>
+<ul>
+<li><p class="first">BEFORE:</p>
+<div class="highlight-python"><div class="highlight"><pre>Query query = new DefaultQuery( typeName, filter );
+</pre></div>
+</div>
+</li>
+<li><p class="first">AFTER:</p>
+<div class="highlight-python"><div class="highlight"><pre>Query query = new Query( typeName, filter );
+</pre></div>
+</div>
+</li>
+</ul>
+<p>Tips:</p>
+<ul class="simple">
+<li>You can perform a search and replace to change DefaultQuery to Query on your code base</li>
+<li>If you have your own implementation of Query your code is now broken; after many years we have
+never seen an implementation of Query in the wild. You should be able to fix by extending rather
+then implementing Query.</li>
+<li>DefaultQuery still exists but all of the implementation code has now been &#8220;pulled up&#8221; into
+Query and DefaultQuery marked as deprecated.</li>
+<li>In a similar fashion <em>FeatureLock</em> can now be directly constructed rather than use a Factory.</li>
+</ul>
+</div>
+<div class="section" id="simplefeaturecollection">
+<h3>SimpleFeatureCollection<a class="headerlink" href="#simplefeaturecollection" title="Permalink to this headline">¶</a></h3>
+<p>We have vastly cut down the use of Java generics for causual users of the GeoTools library. The
+primary example of this is the introduction of <strong>SimpleFeatureCollection</strong> (which saves you
+typing in <strong>FeatureCollection&lt;SimpleFeatureType,SimpleFeature&gt;</strong> each time).</p>
+<ul>
+<li><p class="first">BEFORE:</p>
+<div class="highlight-python"><div class="highlight"><pre>FeatureSource&lt;SimpleFeatureType,SimpleFeature&gt; source =
+        (FeatureSource&lt;SimpleFeatureType,SimpleFeature&gt;) dataStore.getFeatureSource( typeName );
+Query query = new DefaultQuery( typeName, filter );
+FeatureCollection&lt;SimpleFeatureType,SimpleFeature&gt; featureCollection = source.getFeatures( query );
+</pre></div>
+</div>
+</li>
+<li><p class="first">AFTER:</p>
+<div class="highlight-python"><div class="highlight"><pre>SimpleFeatureSource source = dataStore.getFeatureSource( typeName );
+Query query = new Query( typeName, filter );
+SimpleFeatureCollection featureCollection = source.getFeatures( query );
+</pre></div>
+</div>
+</li>
+</ul>
+<p>Tips:</p>
+<ul>
+<li><p class="first">You can do a search and replace on this one; but you need to be very careful with any
+implementations you have that accept a FeatureCollection&lt;SimpleFeatureType,SimpleFeature&gt;
+as a method parameter!</p>
+</li>
+<li><p class="first">Be careful if you have your own FeatureStore implementation; a search and replace will change
+several of your methods so they no longer &#8220;override&#8221; the default implementation provided by
+AbstractFeatureStore.:</p>
+<div class="highlight-python"><div class="highlight"><pre>@Override // this would fail; you do use Override right?
+public Set addFeatures( SimpleFeatureCollection features ){
+   ... your implementation goes here ...
+</pre></div>
+</div>
+<p>To fix this code you will need to &#8220;undo&#8221; your search and replace for this method parameter:</p>
+<div class="highlight-python"><div class="highlight"><pre>@Override
+public Set addFeatures( FeatureCollection&lt;SimpleFeatureType,SimpleFeature&gt; features ){
+   ... your implementation goes here ...
+</pre></div>
+</div>
+<p>Note: If you use the &#64;Override annotation in your code you will get a proper error; since your
+new method would no longer override anything.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="simplefeaturesource">
+<h3>SimpleFeatureSource<a class="headerlink" href="#simplefeaturesource" title="Permalink to this headline">¶</a></h3>
+<p>The <strong>gt-api</strong> module now defines <strong>SimpleFeatuyreSource</strong> (to save you a bit of typing). In addition
+the <strong>DataStore</strong> interface now returns a <strong>SimpleFeatureSource</strong>; so if you want you optionally
+can update your code for readability.</p>
+<ul>
+<li><p class="first">BEFORE:</p>
+<div class="highlight-python"><div class="highlight"><pre>FeatureSource&lt;SimpleFeatureType,SimpleFeature&gt; source =
+       (FeatureSource&lt;SimpleFeatureType,SimpleFeature&gt;) dataStore.getFeatureSource( typeName );
+</pre></div>
+</div>
+</li>
+<li><p class="first">AFTER:</p>
+<blockquote>
+<div><p>SimpleFeatureSource source =  dataStore.getFeatureSource( typeName );</p>
+</div></blockquote>
+</li>
+</ul>
+<p>Tips:
+* you can do this with a search and replace
+* Be a bit careful when you have one of your own methods that is expecting a FeatureSource</p>
+</div>
+<div class="section" id="simplefeaturestore">
+<h3>SimpleFeatureStore<a class="headerlink" href="#simplefeaturestore" title="Permalink to this headline">¶</a></h3>
+<p>In a similar fashion returns a SimpleFeatureCollection; it also has a couple of its own tricks:</p>
+<ul>
+<li><p class="first">BEFORE:</p>
+<div class="highlight-python"><div class="highlight"><pre>FeatureSource&lt;SimpleFeatureType,SimpleFeature&gt; source =
+    (FeatureSource&lt;SimpleFeatureType,SimpleFeature&gt;) dataStore.getFeatureSource( typeName );
+if( source instanceof FeatureStore){
+   // read write access
+   FeatureStore&lt;SimpleFeatureType,SimpleFeature&gt; store =
+        (FeatureStore&lt;SimpleFeatureType,SimpleFeature&gt;) source;
+   store.addFeatures( newFeatures );
+   ...
+</pre></div>
+</div>
+</li>
+<li><p class="first">AFTER:</p>
+<div class="highlight-python"><div class="highlight"><pre>SimpleFeatureSource source =  dataStore.getFeatureSource( typeName );
+if( source instanceof SimpleFeatureStore){
+   // read write access
+   SimpleFeatureStore store = (SimpleFeatureStore) source;
+   store.addFeatures( newFeatures );
+   ...
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="simplefeaturelocking">
+<h3>SimpleFeatureLocking<a class="headerlink" href="#simplefeaturelocking" title="Permalink to this headline">¶</a></h3>
+<p>You can also explicitly use SimpleFeatureLocking if you want read/write/lock access to simple
+feature content. Much like <strong>Query</strong> it has been made a concrete class.</p>
+</div>
+<div class="section" id="featurestore-modifyfeatures-by-name">
+<h3>FeatureStore modifyFeatures by Name<a class="headerlink" href="#featurestore-modifyfeatures-by-name" title="Permalink to this headline">¶</a></h3>
+<p>The <strong>FeatureStore</strong> method modifyFeatures now allows you to modify features by name.</p>
+<ul>
+<li><p class="first">BEFORE:</p>
+<div class="highlight-python"><div class="highlight"><pre>FeatureSource&lt;SimpleFeatureType,SimpleFeature&gt; source =
+    (FeatureSource&lt;SimpleFeatureType,SimpleFeature&gt;) dataStore.getFeatureSource( typeName );
+if( source instanceof FeatureStore){
+   // read write access
+   FeatureStore&lt;SimpleFeatureType,SimpleFeature&gt; store =
+        (FeatureStore&lt;SimpleFeatureType,SimpleFeature&gt;) source;
+
+   SimpleFeatureType schema = store.getSchema();
+   AttributeDescriptor attribute = schema.getDescriptor( attributeName );
+   store.modifyFeatures( attribute, attributeValue, filter );
+</pre></div>
+</div>
+</li>
+<li><p class="first">AFTER:</p>
+<div class="highlight-python"><div class="highlight"><pre>SimpleFeatureSource source =  dataStore.getFeatureSource( typeName );
+if( source instanceof SimpleFeatureStore){
+   // read write access
+   SimpleFeatureStore store = (SimpleFeatureStore) source;
+   store.modifyFeatures( attributeName, attributeValue, filter );
+   ...
+</pre></div>
+</div>
+</li>
+</ul>
+<p>Tips:</p>
+<ul class="simple">
+<li>Generic FeatureSource allows modifyFeatures( Name, Value, filter )</li>
+</ul>
+</div>
+<div class="section" id="coverageprocessor">
+<h3>CoverageProcessor<a class="headerlink" href="#coverageprocessor" title="Permalink to this headline">¶</a></h3>
+<p>The DefaultProcessor and AbstractProcessor classes have been merged into a single class called
+<strong>CoverageProcessor</strong>.</p>
+<ul>
+<li><p class="first">BEFORE:</p>
+<div class="highlight-python"><div class="highlight"><pre>final DefaultProcessor processor= new DefaultProcessor(hints)
+</pre></div>
+</div>
+</li>
+<li><p class="first">AFTER:</p>
+<div class="highlight-python"><div class="highlight"><pre>final CoverageProcessor processor= new CoverageProcessor(hints)
+</pre></div>
+</div>
+<p>Or better:</p>
+<div class="highlight-python"><div class="highlight"><pre>final CoverageProcessor processor= CoverageProcessor.getInstace(hints);
+</pre></div>
+</div>
+</li>
+</ul>
+<p>Tips:</p>
+<ul class="simple">
+<li>Try to always use the static getDefaultInstance method in order to leverage on SoftReference caching</li>
+</ul>
+</div>
+<div class="section" id="generalenvelope">
+<h3>GeneralEnvelope<a class="headerlink" href="#generalenvelope" title="Permalink to this headline">¶</a></h3>
+<p>We have been removing old deprecated code from the <strong>GeneralEnvelope</strong> class.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="40%" />
+<col width="60%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Old Method</th>
+<th class="head">New Method</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>double getCenter(dimension)</td>
+<td>DirectPosition getMedian()</td>
+</tr>
+<tr class="row-odd"><td>double getCenter()</td>
+<td>double getMedian(dimension)</td>
+</tr>
+<tr class="row-even"><td>double getLength(dimension)</td>
+<td>double getSpan(dimension)</td>
+</tr>
+<tr class="row-odd"><td>getLength(dimension, unit)</td>
+<td>double getSpan(dimension, unit)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="geotools-2-6">
+<h2>GeoTools 2.6<a class="headerlink" href="#geotools-2-6" title="Permalink to this headline">¶</a></h2>
+<div class="sidebar">
+<p class="first sidebar-title">Wiki</p>
+<ul class="simple">
+<li><a class="reference external" href="http://docs.codehaus.org/display/GEOTOOLS/2.6.x">GeoTools 2.6.0</a></li>
+</ul>
+<p class="last">You are encourged to review the change proposals for GeoTools 2.6.0 for background information
+on the following changes.</p>
+</div>
+<p>The GeoTools 2.6.0 release is incremental in nature with the main change being the introduction
+of the &#8220;JDBC-NG&#8221; datastores the idea of Query capabilities (so you can check what hints are
+supported).</p>
+<div class="section" id="gridrange-removed">
+<h3>GridRange Removed<a class="headerlink" href="#gridrange-removed" title="Permalink to this headline">¶</a></h3>
+<p>GridRange implementations have been removed as the result of a change we are inheriting from GeoAPI
+where a swtich from GridRange to GridEnvelope has been made. GridRange comes from
+Grid Coverages Implementation specification 1.0 (which is basically dead) while
+GridEnvelope comes from ISO 19123 which looks like the replacement.</p>
+<p>There is a big difference between interfaces though:</p>
+<ul class="simple">
+<li><strong>GridRange</strong> treats its own maximum grid coordinates as EXCLUSIVES (like Java2D classes
+Rectangle2D, RenderedImage and Raster do); while</li>
+<li><strong>GridEnvelope</strong> uses a different convention where maximum grid coordinates are INCLUSIVES.</li>
+</ul>
+<p>This is shown in the code example below with the maxx variable.</p>
+<p>As far as switching over to the new classes, the equivalence are as follows:</p>
+<ol class="arabic">
+<li><p class="first">Replace <strong>GridRange2D</strong> with <strong>GridEnvelope2D</strong></p>
+<p>Notice that now GridEnvelope2D is a Java2D rectangle and that it is also mutable!</p>
+</li>
+<li><p class="first">Replace <strong>GeneralGridRange</strong> with <strong>GeneralGridEnvelope</strong></p>
+</li>
+</ol>
+<p>There are a few more caveats, which we are showing here below.</p>
+<p>BEFORE:</p>
+<ol class="arabic">
+<li><p class="first">Use getSpan where getLength was used</p>
+</li>
+<li><p class="first">Be EXTREMELY careful with the convetions for the inclusion/exclusion of the maximum coordinates.</p>
+</li>
+<li><p class="first">GridRange2D IS a Ractangle and is mutable now!</p>
+<p>BEFORE:</p>
+<div class="highlight-python"><div class="highlight"><pre>    import org.geotools.coverage.grid.GeneralGridRange;
+    final Rectangle actualDim = new Rectangle(0, 0, hrWidth, hrHeight);
+    final GeneralGridRange originalGridRange = new GeneralGridRange(actualDim);
+    final int w = originalGridRange.getLength(0);
+    final int maxx = originalGridRange.getUpper(0);
+
+    ...
+    import org.geotools.coverage.grid.GridRange2D;
+    final Rectangle actualDim = new Rectangle(0, 0, hrWidth, hrHeight);
+    final GridRange2D originalGridRange2D = new GridRange2D(actualDim);
+    final int w = originalGridRange2D.getLength(0);
+    final int maxx = originalGridRange2D.getUpper(0);
+    final Rectangle rect = (Rectangle)originalGridRange2D.clone();
+{code}
+</pre></div>
+</div>
+<p>AFTER:</p>
+<div class="highlight-python"><div class="highlight"><pre>import org.geotools.coverage.grid.GeneralGridEnvelope;
+final Rectangle actualDim = new Rectangle(0, 0, hrWidth, hrHeight);
+final GeneralGridEnvelope originalGridRange=new GeneralGridEnvelope (actualDim,2);
+final int w = originalGridRange.getSpan(0);
+final int maxx = originalGridRange.getHigh(0)+1;
+
+import org.geotools.coverage.grid.GridEnvelope2D;
+final Rectangle actualDim = new Rectangle(0, 0, hrWidth, hrHeight);
+final GridEnvelope2D originalGridRange2D = new GridEnvelope2D(actualDim);
+final int w = originalGridRange2D.getSpan(0);
+final int maxx = originalGridRange2D.getHigh(0)+1;
+final Rectangle rect = (Rectangle)originalGridRange2D.clone();
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="overviewpolicy-enum-replace-hint-use">
+<h3>OverviewPolicy Enum replace Hint use<a class="headerlink" href="#overviewpolicy-enum-replace-hint-use" title="Permalink to this headline">¶</a></h3>
+<p>The hints to control overviews were deprecated and have now been removed.</p>
+<p>The current deprecated values have been remove from the Hints class inside the Metadata module:</p>
+<ul class="simple">
+<li>VALUE_OVERVIEW_POLICY_QUALITY</li>
+<li>IGNORE_COVERAGE_OVERVIEW</li>
+<li>VALUE_OVERVIEW_POLICY_IGNORE</li>
+<li>VALUE_OVERVIEW_POLICY_NEAREST</li>
+<li>VALUE_OVERVIEW_POLICY_SPEED</li>
+</ul>
+<p>You should use the enum that comes with the OverviewPolicy enum. Here below you will find a few examples:</p>
+<ul>
+<li><p class="first">BEFORE:</p>
+<div class="highlight-python"><div class="highlight"><pre>Hints hints = new Hints();
+hints.put(Hints.OVERVIEW_POLICY, Hints.VALUE_OVERVIEW_POLICY_SPEED);
+WorldImageReader wiReader = new WorldImageReader(file, hints);
+</pre></div>
+</div>
+</li>
+<li><p class="first">AFTER:</p>
+<div class="highlight-python"><div class="highlight"><pre>Hints hints = new Hints();
+hints.put(Hints.OVERVIEW_POLICY, OverviewPolicy.SPEED);
+WorldImageReader wiReader = new WorldImageReader(file, hints);
+</pre></div>
+</div>
+</li>
+</ul>
+<p>Hints:</p>
+<ul class="simple">
+<li>Please, notice that the OverviewPolicy enum provide a method to get the default policy for
+overviews. The method is getDefaultPolicy().</li>
+</ul>
+</div>
+<div class="section" id="coverageutilities-and-featureutilities">
+<h3>CoverageUtilities and FeatureUtilities<a class="headerlink" href="#coverageutilities-and-featureutilities" title="Permalink to this headline">¶</a></h3>
+<p>Deprecated methods have been remove from coverage utilities classes&amp;nbsp;</p>
+<p>We have removed deprecated methods from classes:</p>
+<ul class="simple">
+<li>CoverageUtilities.java</li>
+<li>FeatureUtilities.java</li>
+</ul>
+<p>Existing code should change as follows:</p>
+<ul>
+<li><p class="first">BEFORE:</p>
+<div class="highlight-python"><div class="highlight"><pre>final FeatureCollection&lt;SimpleFeatureType, SimpleFeature&gt; fc=FeatureUtilities.wrapGridCoverageReader(reader)
+</pre></div>
+</div>
+</li>
+<li><p class="first">AFTER:</p>
+<div class="highlight-python"><div class="highlight"><pre>final GeneralParameterValue[] params=...
+
+final FeatureCollection&lt;SimpleFeatureType, SimpleFeature&gt; fc=FeatureUtilities.wrapGridCoverageReader(reader,params)
+</pre></div>
+</div>
+</li>
+</ul>
+<p>Hints:</p>
+<ul class="simple">
+<li>This change allows us to store basic parameters to control how we will perform subsequent
+reads from this reader. The&amp;nbsp; AbstractGridFormat READ_GRIDGEOMETRY2D parameter will be
+always overriden during a subsequent read.</li>
+</ul>
+</div>
+<div class="section" id="coverage-processing-classes">
+<h3>Coverage Processing Classes<a class="headerlink" href="#coverage-processing-classes" title="Permalink to this headline">¶</a></h3>
+<p>Deprecated methods have been remove from coverage processing classes:</p>
+<ul class="simple">
+<li>filteredSubsample(GridCoverage, int, int, float[], Interpolation, BorderExtender) has been removed</li>
+</ul>
+<p>Here is what that looks like in code:</p>
+<ul>
+<li><p class="first">BEFORE:</p>
+<div class="highlight-python"><div class="highlight"><pre>public GridCoverage filteredSubsample(final GridCoverage   source,
+                                      final int            scaleX,
+                                      final int            scaleY,
+                                      final float\[\]      qsFilter,
+                                      final Interpolation  interpolation,
+                                      final BorderExtender be) throws CoverageProcessingException {
+     return filteredSubsample(source, scaleX, scaleY, qsFilter, interpolation);
+}
+</pre></div>
+</div>
+</li>
+<li><p class="first">AFTER:</p>
+<div class="highlight-python"><div class="highlight"><pre>public GridCoverage filteredSubsample(final GridCoverage source,
+                                      final int scaleX, final int scaleY,
+                                      final float\[\] qsFilter,
+                                      final Interpolation interpolation){
+       // recolor(GridCoverage, Map\[\]) has been removed
+       ...
+}
+</pre></div>
+</div>
+</li>
+<li><p class="first">BEFORE:</p>
+<div class="highlight-python"><div class="highlight"><pre>recolor(final GridCoverage source, final Map[] colorMaps)
+</pre></div>
+</div>
+</li>
+<li><p class="first">AFTER:</p>
+<div class="highlight-python"><div class="highlight"><pre>recolor(final GridCoverage source, final ColorMap[] colorMaps);
+// scale(GridCoverage, double, double, double, double, Interpolation, BorderExtender) has been removed
+</pre></div>
+</div>
+</li>
+<li><p class="first">BEFORE:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">scale</span><span class="p">(</span><span class="n">GridCoverage</span><span class="p">,</span> <span class="n">double</span><span class="p">,</span> <span class="n">double</span><span class="p">,</span> <span class="n">double</span><span class="p">,</span> <span class="n">double</span><span class="p">,</span> <span class="n">Interpolation</span><span class="p">,</span> <span class="n">BorderExtender</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">AFTER:</p>
+<div class="highlight-python"><div class="highlight"><pre>scale(GridCoverage,double,double,double,double,Interpolation)
+// scale(GridCoverage, double, double, double, double, Interpolation, BorderExtender) has been removedBEFORE:
+</pre></div>
+</div>
+</li>
+<li><p class="first">BEFORE:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">scale</span><span class="p">(</span><span class="n">GridCoverage</span><span class="p">,</span> <span class="n">double</span><span class="p">,</span> <span class="n">double</span><span class="p">,</span> <span class="n">double</span><span class="p">,</span> <span class="n">double</span><span class="p">,</span> <span class="n">Interpolation</span><span class="p">,</span> <span class="n">BorderExtender</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">AFTER:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">scale</span><span class="p">(</span><span class="n">GridCoverage</span><span class="p">,</span><span class="n">double</span><span class="p">,</span><span class="n">double</span><span class="p">,</span><span class="n">double</span><span class="p">,</span><span class="n">double</span><span class="p">,</span><span class="n">Interpolation</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="defaultparameterdescriptor-and-parameter">
+<h3>DefaultParameterDescriptor and Parameter<a class="headerlink" href="#defaultparameterdescriptor-and-parameter" title="Permalink to this headline">¶</a></h3>
+<p>Removed deprecated constructors from DefaultParameterDescriptor and Parameter classes.</p>
+<ul>
+<li><p class="first">BEFORE:</p>
+<div class="highlight-python"><div class="highlight"><pre>DefaultParameterDescriptor(Map&lt;String,?&gt;,defaultValue,minimum, maximum, unit, required)
+DefaultParameterDescriptor(Map&lt;String,?&gt;, defaultValue, minimum, maximum, required)
+DefaultParameterDescriptor(name, defaultValue, minimum, maximum)
+DefaultParameterDescriptor(name, defaultValue, minimum, maximum, unit)
+DefaultParameterDescriptor(name, remarks, defaultValue, required)
+DefaultParameterDescriptor(name, defaultValue)
+DefaultParameterDescriptor( name, valueClass, defaultValue)
+Parameter(name, value)
+Parameter(name, value, unit)
+Parameter(name, value)
+</pre></div>
+</div>
+</li>
+<li><p class="first">AFTER:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">DefaultParameterDescriptor</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="n">Parameter</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="geotools-2-5">
+<h2>GeoTools 2.5<a class="headerlink" href="#geotools-2-5" title="Permalink to this headline">¶</a></h2>
+<div class="sidebar">
+<p class="first sidebar-title">Wiki</p>
+<ul class="simple">
+<li><a class="reference external" href="http://docs.codehaus.org/display/GEOTOOLS/2.5.x">GeoTools 2.5.0</a></li>
+</ul>
+<p class="last">You are encourged to review the change proposals for GeoTools 2.5.0 for background information
+on the following changes.</p>
+</div>
+<p>The GeoTools 2.5.0 release is a major change to the GeoTools library due to the adoption of both
+Java 5 and a new feature model.</p>
+<div class="section" id="featurecollction">
+<h3>FeatureCollction<a class="headerlink" href="#featurecollction" title="Permalink to this headline">¶</a></h3>
+<p>In transitioning your code to Java 5 please be careful not use use the <em>for each</em> loop construct.
+We still need to call FeatureCollection.close( iterator).</p>
+<p>Due to this restriction (of not using <em>for each</em> loop construct we have had to make FeatureCollection
+no longer Colection.</p>
+<ul>
+<li><p class="first">Example (GeoTools 2.5 code):</p>
+<div class="highlight-python"><div class="highlight"><pre>FeatureCollection&lt;SimpleFeatureType,SimpleFeature&gt; featureCollection = feaureSource.getFeatures();
+Iterator&lt;SimpleFeature&gt; iterator = featureCollection.iterator();
+try {
+    while( iterator.hasNext() ){
+       SimpleFeature feature = iterator.next();
+       ...
+    }
+}
+finally {
+   featureCollection.close( iterator );
+}
+</pre></div>
+</div>
+</li>
+<li><p class="first">Example (GeoTools 2.7 code)</p>
+<p>We have removed the need for the use of generics to minimize typing:</p>
+<div class="highlight-python"><div class="highlight"><pre>SimpleFeatureCollection featureCollection = feaureSource.getFeatures();
+SimpleFeatureIterator iterator = featureCollection.features();
+try {
+    while( iterator.hasNext() ){
+       SimpleFeature feature = iterator.next();
+       ...
+    }
+}
+finally {
+   iterator.close();
+}
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="jtsfactory">
+<h3>JTSFactory<a class="headerlink" href="#jtsfactory" title="Permalink to this headline">¶</a></h3>
+<p>We are cutting down on &#8220;anonymous&#8221; FactoryFinder use; creating JTSFactory to allow the
+entire GeoTools library to share a JTS GeometryFactory.</p>
+<ul>
+<li><p class="first">BEFORE (GeoTools 2.4 code):</p>
+<div class="highlight-python"><div class="highlight"><pre>GeometryFactory factory = new FactoryFinder().getGeometryFactory( null );
+</pre></div>
+</div>
+</li>
+<li><p class="first">AFTER (GeoTools 2.5 code):</p>
+<div class="highlight-python"><div class="highlight"><pre>GeometryFactory factory = JTSFactoryFinder.getGeometryFactory( null );
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="progresslistener">
+<h3>ProgressListener<a class="headerlink" href="#progresslistener" title="Permalink to this headline">¶</a></h3>
+<p>Transition to gt-opengis ProgressListener.</p>
+<ul>
+<li><p class="first">Before (GeoTools 2.2 Code):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">progress</span><span class="o">.</span><span class="n">setDescription</span><span class="p">(</span> <span class="n">message</span> <span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">After (GeoTools 2.4 Code):</p>
+<div class="highlight-python"><div class="highlight"><pre>progress.setTask( new SimpleInternationalString( message ) );
+</pre></div>
+</div>
+</li>
+</ul>
+<p>To upgrade:</p>
+<ol class="arabic">
+<li><p class="first">Search: import org.geotools.util.ProgressListener</p>
+<p>Replace: import org.opengis.util.ProgressListener</p>
+</li>
+<li><p class="first">Update:</p>
+<div class="highlight-python"><div class="highlight"><pre>setTask( new SimpleInternationalString( message ) ); // was setDescription( message );
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="simplefeature">
+<h3>SimpleFeature<a class="headerlink" href="#simplefeature" title="Permalink to this headline">¶</a></h3>
+<p>We have (finally) made the move to an improved feature model. Please take the opportunity
+to change your existing code to use <em>org.opengis.feature.simple.SimpleFeature</em>. The existing
+GeoTools Feature interface is still in use; but it has been updated in
+place to extend SimpleFeature.</p>
+<ul>
+<li><p class="first">Before (GeoTools 2.4 Code):</p>
+<div class="highlight-python"><div class="highlight"><pre>import org.geotools.feature.FeatureType;
+...
+CoordianteReferenceSystem crs = CRS.decode(&quot;EPSG:4326&quot;);
+final AttributeType GEOM =
+    AttributeTypeFactory.newAttributeType(&quot;Location&quot;,Point.class,true, null,null,crs );
+final AttributeType NAME =
+    AttributeTypeFactory.newAttributeType(&quot;Name&quot;,String.class, true );
+
+final FeatureType FLAG =
+    FeatureTypeFactory.newFeatureType(new AttributeType[] { GEOM, NAME },&quot;Flag&quot;);
+
+Feature flag1 = FLAG.create( &quot;flag.1&quot;, new Object[]{ point, &quot;Here&quot; } );
+
+AttributeType attributes[] = FLAG.getAttributeTypes();
+AttributeType location = FLAG.getAttribute(&quot;Location&quot;);
+String label = location.getName();
+Class binding = location.getType();
+Geometry geom = flag1.getDefaultGeometry();
+</pre></div>
+</div>
+</li>
+<li><p class="first">After (GeoTools 2.5 Code):</p>
+<div class="highlight-python"><div class="highlight"><pre>import org.opengis.feature.simple.SimpleFeatureType;
+...
+SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
+builder.setName( &quot;Flag&quot; );
+builder.setNamespaceURI( &quot;http://localhost/&quot; );
+builder.setCRS( &quot;EPSG:4326&quot; );
+builder.add( &quot;Location&quot;, Point.class );
+builder.add( &quot;Name&quot;, String.class );
+
+SimpleFeatureType FLAG = builder.buildFeatureType();
+
+SimpleFeature flag1 = SimpleFeatureBuilder.build( FLAG, new Object[]{ point, &quot;Here&quot;}, &quot;flag.1&quot; );
+
+List&lt;AttributeDescriptor&gt; attributes = FLAG.getAttributes();
+AttributeDescriptor location = FLAG.getAttribute(&quot;Location&quot;);
+String label = location.getLocationName();
+Class binding = location.getType().getBinding();
+Geometry geom = (Geometry) flag1.getDefaultGeometry();
+</pre></div>
+</div>
+</li>
+</ul>
+<p>Here are some steps to start you off updating your code:</p>
+<ol class="arabic">
+<li><p class="first">Search Replace</p>
+<ul class="simple">
+<li>Search: <strong>Feature</strong> replace with <strong>SimpleFeature</strong></li>
+<li>Search: <strong>FeatureType</strong> replace with <strong>SimpleFeatureType</strong></li>
+</ul>
+</li>
+<li><p class="first">Fix the imports</p>
+<ul class="simple">
+<li>Control-Shift-O in Eclipse IDE</li>
+<li>Add casts as required for getDefaultGeometry()</li>
+</ul>
+</li>
+<li><p class="first">FeatureType.create has been replaced with SimpleFeatureBuilder</p>
+<p>There is a static method to make the transition easier:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">SimpleFeatureFeatureBuilder</span><span class="o">.</span><span class="n">build</span><span class="p">(</span> <span class="n">schema</span><span class="p">,</span> <span class="n">attributes</span><span class="p">,</span> <span class="n">fid</span> <span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">For more code examples please see:</p>
+<ul class="simple">
+<li><a class="reference internal" href="../library/main/feature.html"><em>Feature</em></a></li>
+</ul>
+</li>
+</ol>
+</div>
+<div class="section" id="attributedescriptor-and-attributetype">
+<h3>AttributeDescriptor and AttributeType<a class="headerlink" href="#attributedescriptor-and-attributetype" title="Permalink to this headline">¶</a></h3>
+<p>The concept of an AttributeType has been split into two now (allowing you to reuse common types).</p>
+<ul>
+<li><p class="first">BEFORE (GeoTools 2.4 Code):</p>
+<div class="highlight-python"><div class="highlight"><pre>import org.geotools.feature.AttributeType;
+...
+GeometryAttributeType att =
+          (GeometryAttributeType) AttributeTypeBuilder.newAttributeDescriptor(geomTypeName,
+                                                                              targetGeomType,
+                                                                              isNillable,
+                                                                              Integer.MAX_VALUE,
+                                                                              Collections.EMPTY_LIST,
+                                                                              crs );
+</pre></div>
+</div>
+</li>
+<li><p class="first">AFTER (GeoTools 2.5 Code):</p>
+<div class="highlight-python"><div class="highlight"><pre>import org.geotools.feature.AttributeTypeBuilder;
+import org.opengis.feature.type.AttributeDescriptor
+...
+AttributeTypeBuilder build = new AttributeTypeBuilder();
+build.setName( geomTypeName );
+build.setBinding( targetGeomType );
+build.setNillable(true);
+build.setCRS(crs);
+GeometryType type = build.buildGeometryType();
+GeometryDescriptor attribute = build.buildDescriptor( geomTypeName, type );
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="name">
+<h3>Name<a class="headerlink" href="#name" title="Permalink to this headline">¶</a></h3>
+<p>In order to better support app-schema work we can no longer assume names are a simple String. The
+<strong>Name</strong> class has been introduced to make this easier and is availble
+throughout the library: example FeatureSource.getName().</p>
+<ul>
+<li><p class="first">BEFORE  (GeoTools 2.4 Code):</p>
+<div class="highlight-python"><div class="highlight"><pre>DataStore ds = ...
+String []typeNames = ds.getTypeNames();
+SimpleFeatureType type = ds.getSchema(typeNames[0]);
+assert type.getTypeName() == typeNames[0];
+FeatureSource source = ds.getFeatureSource(type.getTypeName());
+</pre></div>
+</div>
+</li>
+<li><p class="first">AFTER  (GeoTools 2.5 Code):</p>
+<div class="highlight-python"><div class="highlight"><pre>import org.opengis.feature.type.Name;
+...
+
+DataStore ds = ...
+List&lt;Name&gt; featureNames = ds.getNames();
+SimpleFeatureType type = ds.getSchema(featureNames.get(0));
+// type.getName() may or may not be equal to featureNames.get(0), assume not. If they&#39;re its just an implementation detail.
+FeatureSource source = ds.getFeatureSource(featureNames.get(0));
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="datastore">
+<h3>DataStore<a class="headerlink" href="#datastore" title="Permalink to this headline">¶</a></h3>
+<p>Transition to use of Java 5 Generics with DataStore API.</p>
+<ul>
+<li><p class="first">BEFORE  (GeoTools 2.4 Code):</p>
+<div class="highlight-python"><div class="highlight"><pre>DataStore ds = ...
+FeatureSource source = ds.getSource(typeName);
+FeatureStore store = (FeatureStore)source;
+FeatureLocking locking = (FeatureLocking)source;
+
+FeatureCollection collection = source.getFeatures();
+FeatureIterator features = collection.features();
+while(features.hasNext){
+  SimpleFeature feature = features.next();
+}
+
+Transaction transaction = Transaction.AUTO_COMMIT;
+FeatureReader reader = ds.getFeatureReader(new DefaultQuery(typeName), transaction);
+FeatureWriter writer = ds.getFeatureWriter(typeName, transaction);
+</pre></div>
+</div>
+</li>
+<li><p class="first">AFTER  (GeoTools 2.5 Code):</p>
+<div class="highlight-python"><div class="highlight"><pre>DataStore ds = ...
+FeatureSource&lt;SimpleFeatureType,SimpleFeature&gt; source = ds.getSource(typeName);
+FeatureStore&lt;SimpleFeatureType,SimpleFeature&gt; store = (FeatureStore&lt;SimpleFeatureType,SimpleFeature&gt;)source;
+FeatureLocking&lt;SimpleFeatureType,SimpleFeature&gt; locking = (FeatureLocking&lt;SimpleFeatureType,SimpleFeature&gt;)source;
+
+FeatureCollection&lt;SimpleFeatureType,SimpleFeature&gt; collection = source.getFeatures();
+FeatureIterator&lt;SimpleFeatureType,SimpleFeature&gt; features = collection.features();
+while(features.hasNext){
+   SimpleFeature feature = features.next();
+}
+Transaction transaction = Transaction.AUTO_COMMIT;
+FeatureReader&lt;SimpleFeatureType,SimpleFeature&gt; reader = ds.getFeatureReader(new DefaultQuery(typeName), transaction);
+FeatureWriter&lt;SimpleFeatureType,SimpleFeature&gt; writer = ds.getFeatureWriter(typeName, transaction);
+</pre></div>
+</div>
+</li>
+<li><p class="first">AFTER (GeoTools 2.7 Code):</p>
+<div class="highlight-python"><div class="highlight"><pre>DataStore ds = ...
+SimpleFeatureSource&lt;SimpleFeatureType,SimpleFeature&gt; source = ds.getSource(typeName);
+SimpleFeatureStore store = (SimpleFeatureStore) source;
+SimpleFeatureLocking locking = (SimpleFeatureLocking) source;
+
+SimpleFeatureCollection collection = source.getFeatures();
+SimpleFeatureIterator features = collection.features();
+while(features.hasNext){
+   SimpleFeature feature = features.next();
+}
+Transaction transaction = Transaction.AUTO_COMMIT;
+FeatureReader&lt;SimpleFeatureType,SimpleFeature&gt; reader = ds.getFeatureReader(new DefaultQuery(typeName), transaction);
+FeatureWriter&lt;SimpleFeatureType,SimpleFeature&gt; writer = ds.getFeatureWriter(typeName, transaction);
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="dataaccess-and-datastore">
+<h3>DataAccess and DataStore<a class="headerlink" href="#dataaccess-and-datastore" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p class="first">The DataAcess super class has been introduced, leaving DataStore to <em>only</em> work with SimpleFeature
+capable implementations.:</p>
+<div class="highlight-python"><div class="highlight"><pre>import org.opengis.feature.type.Name;
+...
+
+java.util.Map paramsMap = ...
+DataStore ds = DataStoreFinder.getDataStore(paramsMap);
+Name featureName = new org.geotools.feature.Name(namespace, localName);
+FeatureSource&lt;SimpleFeatureType, SimpleFeature&gt; source = ds.getSource(featureName);
+FeatureStore&lt;SimpleFeatureType, SimpleFeature&gt; store = (FeatureStore)source;
+FeatureLocking&lt;SimpleFeatureType, SimpleFeature&gt; locking = (FeatureLocking)source;
+
+FeatureCollection&lt;SimpleFeatureType, SimpleFeature&gt; collection = source.getFeatures();
+FeatureIterator&lt;SimpleFeature&gt; features = collection.features();
+while(features.hasNext){
+ SimpleFeature feature = features.next();
+}
+
+Transaction transaction = Transaction.AUTO_COMMIT;
+FeatureReader&lt;SimpleFeatureType, SimpleFeature&gt; reader = ds.getFeatureReader(new DefaultQuery(typeName), transaction);
+FeatureWriter&lt;SimpleFeatureType, SimpleFeature&gt; writer = ds.getFeatureWriter(typeName, transaction);
+</pre></div>
+</div>
+</li>
+<li><p class="first">DataAccess: works both with SimpleFeature and normal Feature capable implementations:</p>
+<div class="highlight-python"><div class="highlight"><pre>import org.opengis.feature.FeatureType;
+import org.opengis.feature.Feature;
+import org.opengis.feature.type.Name;
+...
+
+java.util.Map paramsMap = ...
+DataAccess&lt;FeatureType, Feature&gt; ds = DataAccessFinder.getDataAccess(paramsMap);
+Name featureName = new org.geotools.feature.Name(namespace, localName);
+FeatureSource&lt;FeatureType, Feature&gt; source = ds.getSource(featureName);
+FeatureStore&lt;FeatureType, Feature&gt; store = (FeatureStore)source;
+FeatureLocking&lt;FeatureType, Feature&gt; locking = (FeatureLocking)source;
+
+FeatureCollection&lt;FeatureType, Feature&gt; collection = source.getFeatures();
+FeatureIterator&lt;Feature&gt; features = collection.features();
+while(features.hasNext){
+ Feature feature = features.next();
+}
+//No DataAccess.getFeatureReader/Writer
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="geotools-2-4">
+<h2>GeoTools 2.4<a class="headerlink" href="#geotools-2-4" title="Permalink to this headline">¶</a></h2>
+<div class="sidebar">
+<p class="first sidebar-title">Wiki</p>
+<ul class="simple">
+<li><a class="reference external" href="http://docs.codehaus.org/display/GEOTOOLS/2.4.x">GeoTools 2.4.0</a></li>
+</ul>
+<p class="last">You are encourged to review the change proposals for GeoTools 2.4.0 for background information
+on the following changes.</p>
+</div>
+<p>The GeoTools 2.4.0 release is a major change to the GeoTools library due to the adoption of geoapi
+Filter model. This new fileter model is immutable making it impossible to modify filters that
+have already been constructed; in trade it is threadsafe.</p>
+<p>The following is needed when upgrading to 2.4.</p>
+<div class="section" id="referencingfactoryfinder">
+<h3>ReferencingFactoryFinder<a class="headerlink" href="#referencingfactoryfinder" title="Permalink to this headline">¶</a></h3>
+<p>Rename FactoryFinder to ReferencingFactoryFinder</p>
+<ul>
+<li><p class="first">BEFORE (GeoTools 2.2 Code):</p>
+<div class="highlight-python"><div class="highlight"><pre>CRSFactory factory = FactoryFinder.getCSFactory( null );
+</pre></div>
+</div>
+</li>
+<li><p class="first">AFTER (GeoTools 2.4 Code):</p>
+<div class="highlight-python"><div class="highlight"><pre>CRSFactory factory = ReferencingFactoryFinder.getCSFactory( null );
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="featurestore-addfeatures">
+<h3>FeatureStore addFeatures<a class="headerlink" href="#featurestore-addfeatures" title="Permalink to this headline">¶</a></h3>
+<p>The use of FeatureReader has been revmoved from the FeatureStore API.</p>
+<ul>
+<li><p class="first">Before (GeoTools 2.2 Code):</p>
+<div class="highlight-python"><div class="highlight"><pre>featureStore.addFeatures( DataUtilities.reader( collection )); // add FeatureCollection
+featureStore.addFeatures( DataUtilities.reader(array)); // add Feature[]
+featureStore.addFeatures( DataUtilities.reader(feature )); // add Feature
+featureStore.addFeatures( reader );
+</pre></div>
+</div>
+</li>
+<li><p class="first">After (GeoTools 2.4 Code):</p>
+<div class="highlight-python"><div class="highlight"><pre>featureStore.addFeatures( collection ); // add FeatureCollection
+featureStore.addFeatures( DataUtilities.collection( array ) ); // add Feature[]
+featureStore.addFeatures( DataUtilities.collection( feature )); // add Feature
+featureStore.addFeatures( DataUtilities.collection( reader )); // add FeatureReader
+</pre></div>
+</div>
+</li>
+</ul>
+<p>Note:</p>
+<ul class="simple">
+<li>DataUtilities.collection( reader ) will currently load the contents into memory, if you have
+any volunteer time a &#8220;lazy&#8221; implementation would be helpful.</li>
+</ul>
+</div>
+<div class="section" id="featuresource-getsupportedhints">
+<h3>FeatureSource getSupportedHints<a class="headerlink" href="#featuresource-getsupportedhints" title="Permalink to this headline">¶</a></h3>
+<p>We added a getSupportedHints() method that can be used to check which Query hints are supported
+by a certain FeatureSource. If your FeatureSource does not intend to leverage query hints, just
+return an empty set.</p>
+<ul>
+<li><p class="first">After (GeoTools 2.4 Code):</p>
+<div class="highlight-python"><div class="highlight"><pre>/**
+ * By default, no Hints are supported
+ */
+public Set getSupportedHints() {
+    return Collections.EMPTY_SET;
+}
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="query-gethints">
+<h3>Query getHints<a class="headerlink" href="#query-gethints" title="Permalink to this headline">¶</a></h3>
+<p>We have added the method Query.getHints() allow users to pass in hints to control the query
+process.</p>
+<p>If you have a Query implementation other than DefaultQuery you&#8217;ll need to add the getHints() method.
+The default implementation, if you don&#8217;t plan to leverage hints, can just return an
+empty Hints object.</p>
+<ul>
+<li><p class="first">After (GeoTools 2.4 Code):</p>
+<div class="highlight-python"><div class="highlight"><pre>/**
+ * Returns an empty Hints set
+ */
+public Hints getHints() {
+    return new Hints(Collections.EMPTY_MAP);
+}
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="id4">
+<h3>Filter<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<p>We have completed the transition to GeoAPI Filter.</p>
+<ul>
+<li><p class="first">Before (GeoTools 2.2 Code):</p>
+<div class="highlight-python"><div class="highlight"><pre>package org.geotools.filter;
+
+import junit.framework.TestCase;
+
+import org.geotools.filter.LogicFilter;
+import org.geotools.filter.FilterFactory;
+import org.geotools.filter.Filter;
+
+public class FilterFactoryBeforeTest extends TestCase {
+
+    public void testBefore() throws Exception {
+        FilterFactory ff = FilterFactoryFinder.createFilterFactory();
+
+        CompareFilter filter = ff.createCompareFilter(Filter.COMPARE_GREATER_THAN);
+        filter.addLeftValue( ff.createLiteralExpression(2));
+        filter.addRightValue( ff.createLiteralExpression(1));
+
+        assertTrue( filter.contrains( null ) );
+        assertTrue( filter.getFilterType() == FilterType.COMPARE_GREATER_THAN );
+        assertTrue( Filter.NONE != filter );
+    }
+}
+</pre></div>
+</div>
+</li>
+<li><p class="first">AFTER (Quick GeoTools 2.3 Code):</p>
+<div class="highlight-python"><div class="highlight"><pre>public void testQuick() throws Exception {
+    FilterFactory ff = FilterFactoryFinder.createFilterFactory();
+
+    CompareFilter filter = ff.createCompareFilter(FilterType.COMPARE_GREATER_THAN);
+    filter.addLeftValue( ff.createLiteralExpression(2));
+    filter.addRightValue( ff.createLiteralExpression(1));
+
+    assertTrue( filter.evaluate( null ) );
+    assertTrue( Filters.getFilterType( filter ) == FilterType.COMPARE_GREATER_THAN);
+    assertTrue( Filter.INCLUDE != filter );
+}
+</pre></div>
+</div>
+</li>
+</ul>
+<p>Here are the steps to follow to update your own code:</p>
+<ol class="arabic">
+<li><p class="first">Substitute.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="42%" />
+<col width="58%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Search</th>
+<th class="head">Replace</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>import org.geotools.filter.Filter;</td>
+<td>import org.opengis.filter.Filter;</td>
+</tr>
+<tr class="row-odd"><td>import org.geotools.filter.SortBy;</td>
+<td>import org.opengis.filter.sort.SortBy;</td>
+</tr>
+<tr class="row-even"><td>Filter.NONE</td>
+<td>Filter.INCLUDE</td>
+</tr>
+<tr class="row-odd"><td>Filter.ALL</td>
+<td>Filter.EXCLUDE</td>
+</tr>
+<tr class="row-even"><td>AbstractFilter.COMPARE</td>
+<td>FilterType.COMPARE</td>
+</tr>
+<tr class="row-odd"><td>Filter.COMPARE</td>
+<td>FilterType.COMPARE</td>
+</tr>
+<tr class="row-even"><td>Filter.GEOMETRY</td>
+<td>FilterType.GEOMETRY</td>
+</tr>
+<tr class="row-odd"><td>Filter.LOGIC</td>
+<td>FilterType.LOGIC</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first">FilterType is no longer supported directly.</p>
+<p>BEFORE:</p>
+<blockquote>
+<div><p>int type = filter.getFilterType();</p>
+</div></blockquote>
+<p>AFTER:</p>
+<blockquote>
+<div><p>int type = Filters.getFilterType( filter );</p>
+</div></blockquote>
+</li>
+<li><p class="first">You can no longer chain filters together.</p>
+<p>BEFORE:</p>
+<div class="highlight-python"><div class="highlight"><pre>filter = filter.and( other )
+</pre></div>
+</div>
+<p>AFTER:</p>
+<div class="highlight-python"><div class="highlight"><pre>filter = filterFactory.and( filter, other );
+</pre></div>
+</div>
+</li>
+<li><p class="first">We have provided an adaptor for your old filter visitors.</p>
+<p>BEFORE:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nb">filter</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span> <span class="n">visitor</span> <span class="p">)</span>
+</pre></div>
+</div>
+<p>AFTER:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Filters</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span> <span class="nb">filter</span><span class="p">,</span> <span class="n">visitor</span> <span class="p">);</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<ol class="arabic" start="3">
+<li><p class="first">Update your code to use the new factory methods.</p>
+<p>BEFORE:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nb">filter</span> <span class="o">=</span> <span class="n">filterFactory</span><span class="o">.</span><span class="n">createCompareFilter</span><span class="p">(</span><span class="n">FilterType</span><span class="o">.</span><span class="n">COMPARE_EQUALS</span><span class="p">)</span>
+<span class="nb">filter</span><span class="o">.</span><span class="n">setLeftGeoemtry</span><span class="p">(</span> <span class="n">expr1</span> <span class="p">);</span>
+<span class="nb">filter</span><span class="o">.</span><span class="n">setRightGeometry</span><span class="p">(</span> <span class="n">expr3</span> <span class="p">);</span>
+</pre></div>
+</div>
+<p>AFTER:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nb">filter</span> <span class="o">=</span> <span class="n">FilterFactory</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="n">expr1</span><span class="p">,</span><span class="n">expr</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Literals cannot be modified once created.</p>
+<p>BEFORE:</p>
+<div class="highlight-python"><div class="highlight"><pre>Literal literal = filterFactory.createLiteral();
+literal.setLiteral( obj );
+</pre></div>
+</div>
+<p>AFTER:</p>
+<div class="highlight-python"><div class="highlight"><pre>Filter filter = filterFactory.literal( obj );
+</pre></div>
+</div>
+</li>
+<li><p class="first">Property name support.</p>
+<p>BEFORE:</p>
+<div class="highlight-python"><div class="highlight"><pre>filter = = filterFac.createAttributeExpression(schema, &quot;name&quot;);
+</pre></div>
+</div>
+<p>AFTER:</p>
+<div class="highlight-python"><div class="highlight"><pre>Filter filter = filterFactory.property(name);
+</pre></div>
+</div>
+</li>
+</ol>
+<p>h4. After (GeoTools 2.4 Code):</p>
+<div class="highlight-python"><div class="highlight"><pre>public void testAfter() throws Exception {
+    FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+
+    Expression left = ff.literal(2);
+    Expression right = ff.literal(2);
+    PropertyIsGreaterThan filter = ff.greater( left, right );
+
+    assertTrue( filter.evaluate( null ) );
+    assertTrue( Fitler.INCLUDE != filter );
+}
+</pre></div>
+</div>
+<ol class="arabic">
+<li><p class="first">Substitute</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="48%" />
+<col width="52%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Search</th>
+<th class="head">Replace</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>import org.geotools.filter.FilterFactory;</td>
+<td>import org.opengis.filter.FilterFactory;</td>
+</tr>
+<tr class="row-odd"><td>FilterFactoryFinder.createFilterFactory()</td>
+<td>CommonFactoryFinder.getFilterFactory(null);</td>
+</tr>
+<tr class="row-even"><td>import org.geotools.filter.FilterFactoryFinder;</td>
+<td>import org.geotools.factory.CommonFactoryFinder</td>
+</tr>
+<tr class="row-odd"><td>import org.geotools.filter.CompareFilter;</td>
+<td>import org.geoapi.spatial.BinaryComparisonOperator</td>
+</tr>
+<tr class="row-even"><td>CompareFilter</td>
+<td>BinaryComparisonOperator</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first">Update code to use evaulate.</p>
+<p>BEFORE:</p>
+<div class="highlight-python"><div class="highlight"><pre>if( filter.contains( feature ){
+</pre></div>
+</div>
+<p>AFTER:</p>
+<div class="highlight-python"><div class="highlight"><pre>if( filter.evaluate( feature ){
+</pre></div>
+</div>
+</li>
+<li><p class="first">Update code to use instanceof checks.</p>
+<p>BEFORE:</p>
+<div class="highlight-python"><div class="highlight"><pre>if( filter.getFilterType() == FilterType.GEOMETRY_CONTAIN ) {
+</pre></div>
+</div>
+<p>AFTER:</p>
+<div class="highlight-python"><div class="highlight"><pre>if( filter instanceof Contains ){
+</pre></div>
+</div>
+</li>
+</ol>
+<p>Note regarding different Geometries</p>
+<ul>
+<li><p class="first">Geotools was formally limited to only JTS Geometry</p>
+</li>
+<li><p class="first">GeoTools filter nows can take either JTS Geometry or ISO Geometry</p>
+</li>
+<li><p class="first">If you need to convert from one to the other:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">JTSUtils</span><span class="o">.</span><span class="n">jtsToGo1</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">CRS</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&quot;EPSG:4326&quot;</span><span class="p">));</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="feature-getparent-removed">
+<h3>Feature.getParent removed<a class="headerlink" href="#feature-getparent-removed" title="Permalink to this headline">¶</a></h3>
+<p>The feature.getParent() method have been deprecated as a mistake and has now been removed.</p>
+<ul>
+<li><p class="first">BEFORE (GeoTools 2.0 Code):</p>
+<div class="highlight-python"><div class="highlight"><pre>public void example( FeatureSource source ){
+    FeatureCollection features = source.getFeatures();
+    Iterator i = features.iterator();
+    try {
+        while( i.hasNext() ){
+              Feature feature = (Feature) i.next();
+              System.out.println( precentBoxed( feature ));
+        }
+    }
+    finally {
+        features.close( i );
+    }
+}
+private double precentBoxed( Feature feature ){
+     Envelope context = feature.getParent().getBounds();
+     Envelope bbox = feature.getBounds();
+     double boxedContext = context.width * context.height;
+     double boxed = bbox.width * bbox.height;
+     return (boxed / boxedContext) * 100.0
+}
+</pre></div>
+</div>
+</li>
+<li><p class="first">AFTER (GeoTools 2.2 Code):</p>
+<div class="highlight-python"><div class="highlight"><pre>public void example( FeatureSource source ){
+    FeatureCollection features = source.getFeatures();
+    Iterator i = features.iterator();
+    try {
+        while( i.hasNext() ){
+              Feature feature = (Feature) i.next();
+              System.out.println( precentBoxed( feature, features ));
+        }
+    }
+    finally {
+        features.close( i );
+    }
+}
+private double precentBoxed( Feature feature, FeatureCollection parent ){
+     Envelope context = parent.getBounds();
+     Envelope bbox = feature.getBounds();
+     double boxedContext = context.width * context.height;
+     double boxed = bbox.width * bbox.height;
+     return (boxed / boxedContext) * 100.0
+}
+</pre></div>
+</div>
+</li>
+</ul>
+<p>Notes:</p>
+<ul class="simple">
+<li>you will have to make API changes to pass the intended parent collection in</li>
+</ul>
+<p>This is a mistake with the previous feature model (for a feature can exist in more then one
+collection) and we appologize for the inconvience.</p>
+<p>Split Classification Expressions</p>
+<p>The biggest user of the feature.getParent() mistake was the implementation of classificaiton
+functions. You will now need to split up these expressions into two parts.</p>
+<ul>
+<li><p class="first">BEFORE (GeoTools 2.3):</p>
+<ol class="arabic simple">
+<li>equal_interval( SPEED, 12 )</li>
+<li>uses getParent() internally to produce classification on feature collection;</li>
+<li>then checks which category each feature falls into</li>
+</ol>
+<p>Notes:</p>
+<ul class="simple">
+<li>please note the above code depends on getParent(), so it is not safe even for GeoTools 2.3 (as some features have a null parent).</li>
+</ul>
+</li>
+<li><p class="first">AFTER (GeoTools 2.4):</p>
+<p>Apply the aggregation function to the feature collection:</p>
+<ol class="arabic">
+<li><p class="first">equalInterval( SPEED, 12 )</p>
+</li>
+<li><p class="first">produce classification on provided feature collection</p>
+</li>
+<li><p class="first">Construct a slot expression using the resulting literal:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">classify</span><span class="p">(</span> <span class="n">SPEED</span><span class="p">,</span> <span class="p">{</span><span class="mi">0</span><span class="p">}</span> <span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">uses literal classification from step one</p>
+</li>
+</ol>
+</li>
+</ul>
+</div>
+<div class="section" id="gtrenderer">
+<h3>GTRenderer<a class="headerlink" href="#gtrenderer" title="Permalink to this headline">¶</a></h3>
+<p>The GTRender interface was produced as a nuetral ground for client code; traditional users of
+LiteRenderer and LiteRenderer2 are asked to move to the implementation of GTRenderer called
+StreamingRenderer.</p>
+<ul>
+<li><p class="first">BEFORE (GeoTools 2.1):</p>
+<p>How to paint to an <em>outputArea</em> Rectangle:</p>
+<div class="highlight-python"><div class="highlight"><pre>LiteRenderer2 draw = new LiteRenderer2(map);
+
+Envelope dataArea = map.getLayerBounds();
+AffineTransform transform = renderer.worldToScreenTransform(dataArea, outputArea);
+
+draw.paint(g2d, outputArea, transform);
+</pre></div>
+</div>
+</li>
+<li><p class="first">QUICK (GeoTools 2.2)</p>
+<p>How to paint to an <em>outputArea</em> Rectangle:</p>
+<div class="highlight-python"><div class="highlight"><pre>StreamingRenderer draw = new StreamingRenderer();
+draw.setContext(map);
+
+draw.paint(g2d, outputArea, map.getLayerBounds() );
+</pre></div>
+</div>
+</li>
+<li><p class="first">BEST PRACTICE (GeoTools 2.2):</p>
+<div class="highlight-python"><div class="highlight"><pre>GTRenderer draw = new StreamingRenderer();
+draw.setContext(map);
+
+draw.paint(g2d, outputArea, map.getLayerBounds() );
+</pre></div>
+</div>
+<p>By letting your code depend only on the GTRenderer interface you can experiment with
+alternative implementations to find the best fit.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="jts">
+<h3>JTS<a class="headerlink" href="#jts" title="Permalink to this headline">¶</a></h3>
+<p>Swap moved to JTS utility class.</p>
+<ul>
+<li><p class="first">BEFORE (GeoTools 2.1):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">org.geotools.geometry.JTS</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.geometry.JTS.ReferencedEnvelope</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">AFTER (GeoTools 2.2):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">org.geotools.geometry.jts.JTS</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.geometry.jts.ReferencedEnvelope</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="jts-to-shape-converters">
+<h3>JTS to Shape converters<a class="headerlink" href="#jts-to-shape-converters" title="Permalink to this headline">¶</a></h3>
+<p>Swap to moved Renderer JTS-to-Shape converters.</p>
+<ul>
+<li><p class="first">BEFORE (GeoTools 2.3):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">org.geotools.renderer.lite.LiteShape</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.renderer.lite.LiteShape2</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.renderer.lite.PackedLineIterator</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.renderer.lite.PointIterator</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.renderer.lite.PolygonIterator</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.renderer.lite.LineIterator</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.renderer.lite.LineIterator2</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.renderer.lite.Decimator</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.renderer.lite.AbstractLiteIterator</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.renderer.lite.TransformedShape</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.renderer.lite.LiteCoordinateSequence</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.renderer.lite.LiteCoordinateSequenceFactory</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.renderer.lite.LiteCoordinateSequence</span><span class="p">;</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">AFTER (GeoTools 2.4):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">org.geotools.geometry.jts.LiteShape</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.geometry.jts.LiteShape2</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.geometry.jts.PackedLineIterator</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.geometry.jts.PointIterator</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.geometry.jts.PolygonIterator</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.geometry.jts.LineIterator</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.geometry.jts.LineIterator2</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.geometry.jts.Decimator</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.geometry.jts.AbstractLiteIterator</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.geometry.jts.TransformedShape</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.geometry.jts.LiteCoordinateSequence</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.geometry.jts.LiteCoordinateSequenceFactory</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.geometry.jts.LiteCoordinateSequence</span><span class="p">;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="coverage-utility-classes">
+<h3>Coverage utility classes<a class="headerlink" href="#coverage-utility-classes" title="Permalink to this headline">¶</a></h3>
+<p>Swap to moved Coverage utility classes.</p>
+<ul>
+<li><p class="first">BEFORE (GeoTools 2.3):</p>
+<div class="highlight-python"><div class="highlight"><pre>import org.geotools.data.coverage.grid.*
+import org.geotools.image.imageio.*
+</pre></div>
+</div>
+<p>Wrapping a GridCoverage into a feature in 2.3:</p>
+<div class="highlight-python"><div class="highlight"><pre>org.geotools.data.DataUtilities#wrapGc(GridCoverage gridCoverage)
+org.geotools.data.DataUtilities#wrapGcReader(
+            AbstractGridCoverage2DReader gridCoverageReader,
+            GeneralParameterValue[] params)
+</pre></div>
+</div>
+<p>GridCoverageExchange Utility classes in 2.3:</p>
+<div class="highlight-python"><div class="highlight"><pre>org.geotools.data.coverage.grid.file.*
+org.geotools.data.coverage.grid.stream .*
+</pre></div>
+</div>
+<p>org.geotools.coverage.io classes in 2.3:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">org</span><span class="o">.</span><span class="n">geotools</span><span class="o">.</span><span class="n">coverage</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">AbstractGridCoverageReader</span><span class="o">.</span><span class="n">java</span><span class="p">,</span>
+<span class="n">org</span><span class="o">.</span><span class="n">geotools</span><span class="o">.</span><span class="n">coverage</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">AmbiguousMetadataException</span><span class="o">.</span><span class="n">java</span><span class="p">,</span>
+<span class="n">org</span><span class="o">.</span><span class="n">geotools</span><span class="o">.</span><span class="n">coverage</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">ExoreferencedGridCoverageReader</span><span class="o">.</span><span class="n">java</span><span class="p">,</span>
+<span class="n">org</span><span class="o">.</span><span class="n">geotools</span><span class="o">.</span><span class="n">coverage</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">MetadataBuilder</span><span class="o">.</span><span class="n">java</span><span class="p">,</span>
+<span class="n">org</span><span class="o">.</span><span class="n">geotools</span><span class="o">.</span><span class="n">coverage</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">MetadataException</span><span class="o">.</span><span class="n">java</span><span class="p">,</span>
+<span class="n">org</span><span class="o">.</span><span class="n">geotools</span><span class="o">.</span><span class="n">coverage</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">MissingMetadataException</span><span class="o">.</span><span class="n">java</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">AFTER (GeoTools 2.4):</p>
+<div class="highlight-python"><div class="highlight"><pre>import org.geotools.coverage.grid.io.*
+import  org.geotools.coverage.grid.io.imageio.*
+</pre></div>
+</div>
+<p>Wrapping a GridCoverage into a feature in 2.4:</p>
+<div class="highlight-python"><div class="highlight"><pre>org.geotools.resources.coverage.CoverageUtilities #wrapGc(GridCoverage gridCoverage)
+org.geotools.resources.coverage.CoverageUtilities #wrapGcReader(
+            AbstractGridCoverage2DReader gridCoverageReader,
+            GeneralParameterValue[] params)
+</pre></div>
+</div>
+<p>GridCoverageExchange Utility classes in 2.4.</p>
+<p>The classes have been dismissed since apparently nobody was using. If needed
+we can reintroduce them as deprecated.</p>
+<p>org.geotools.coverage.io classes in 2.4.</p>
+<p>These classes have been moved to spike/exoreferenced waiting for Martin to review and merge into
+org.geotools.coverage.grid.io package</p>
+</li>
+</ul>
+</div>
+<div class="section" id="spatialschema">
+<h3>spatialschema<a class="headerlink" href="#spatialschema" title="Permalink to this headline">¶</a></h3>
+<p>Renamed spatialschema to geometry.</p>
+<ul>
+<li><p class="first">Do you know what <strong>spatialschema</strong> was? We did not find it clear either.</p>
+<p>Renamed to <strong>geometry</strong>?</p>
+</li>
+<li><p class="first">BEFORE:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">org.opengis.spatialschema.geometry</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.opengis.spatialschema.geometry.aggregate</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.opengis.spatialschema.geometry.complex</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.opengis.spatialschema.geometry.geometry</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.opengis.spatialschema.geometry.primitive</span><span class="p">;</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">AFTER:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">org.opengis.geometry</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.opengis.geometry.aggregate</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.opengis.geometry.complex</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.opengis.geometry.coordinate</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.opengis.geometry.primitive</span><span class="p">;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="repackage-arcsde">
+<h3>Repackage ArcSDE<a class="headerlink" href="#repackage-arcsde" title="Permalink to this headline">¶</a></h3>
+<p>Repackage arcsde datastore.</p>
+<ul>
+<li><p class="first">BEFORE:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">org.geotools.data.arcsde.ArcSDEDataStoreFactory</span><span class="p">;</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">AFTER:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">org.geotools.arcsde.ArcSDEDataStoreFactory</span><span class="p">;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="worldimage">
+<h3>WorldImage<a class="headerlink" href="#worldimage" title="Permalink to this headline">¶</a></h3>
+<p>Sets of WorldImage extensions. Changed from a single String to a Set&lt;String&gt; .. because
+one wld is not enough?</p>
+<ul>
+<li><p class="first">BEFORE:</p>
+<div class="highlight-python"><div class="highlight"><pre>private File toWorldFile(String fileRoot, String fileExt){
+    File worldFile = new File( fileRoot + &quot;.wld&quot; );
+    if( worldFile.exists() ){
+        return worldFile;
+    }
+    String ext = WorldImageFormat.getWorldExtension( fileExt );
+    File otherWorldFile = new File( fileRoot + ext );
+    if( otherWorldFile.exists() ){
+        return otherWorldFile;
+    }
+    return null;
+}
+</pre></div>
+</div>
+</li>
+<li><p class="first">AFTER:</p>
+<div class="highlight-python"><div class="highlight"><pre> private File toWorldFile(String fileRoot, String fileExt){
+    Set&lt;String&gt; other = WorldImageFormat.getWorldExtension( fileExt );
+    File worldFile = new File( fileRoot + &quot;.wld&quot; );
+    if( worldFile.exists() ){
+        return worldFile;
+    }
+    for( String ext : other ){
+        File otherWorldFile = new File( fileRoot + ext );
+        if( otherWorldFile.exists() ){
+            return otherWorldFile;
+        }
+    }
+    return null;
+}
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="integration.html" title="Integration"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="standards.html" title="Use of Standards"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="index.html" >Welcome</a> &raquo;</li>
+        <li><a href="#">Upgrade</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

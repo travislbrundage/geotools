@@ -1,0 +1,327 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Internal &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../index.html" />
+    <link rel="up" title="Process" href="index.html" />
+    <link rel="next" title="Process" href="process.html" />
+    <link rel="prev" title="Process" href="index.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Unsupported</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Process</a> &raquo;</li>
+        <li><a href="#">Internal</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Internal</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#process">Process</a></li>
+<li><a class="reference internal" href="#processfactory">ProcessFactory</a></li>
+<li><a class="reference internal" href="#parameter">Parameter</a></li>
+<li><a class="reference internal" href="#process-executor">Process Executor</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Process</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="process.html"
+                        title="next chapter">Process</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/unsupported/process/internal.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="internal">
+<h1>Internal<a class="headerlink" href="#internal" title="Permalink to this headline">¶</a></h1>
+<p>Now that we have looked at how much fun the Process Module is for users here
+is some background information on how to hook your own work into the process module.</p>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>A Process defines an operation that can be executed. Each process has a list of input parameters specific to its operation, as well as a list of results that it will return.</p>
+<p>An example would be a buffer process which accepts a geometry and a buffer value as input parameters, and returns a new geometry that has been buffered as the result.</p>
+<p>The purpose of the Process API is to allow developers to easily wrap up an algorithm for reuse. Processes can then be used within various contexts, such as Web Process Services (WPS Plugin).</p>
+<p>This API allows developers to:</p>
+<ul class="simple">
+<li>find and create all process implementations</li>
+<li>execute processes</li>
+<li>track the progress of an executing process</li>
+</ul>
+<p>This API allows implementors to:</p>
+<ul class="simple">
+<li>define what the input parameters are (with a map of parameters)</li>
+<li>define what the output parameters are (with a map of results)</li>
+<li>implement processes without regard for all the scheduling stuff</li>
+</ul>
+<p>A main design goal of this module is to make a process quick and easy to implement. The following sections will show the design of this module, how to implement a new process, and how to use the processes within a GUI application.</p>
+</div>
+<div class="section" id="process">
+<h2>Process<a class="headerlink" href="#process" title="Permalink to this headline">¶</a></h2>
+<p>The Process interface is used to define a process. Making a new process is simple and only requires implementing the execute method (which is where the work is done to actually run a process). This method accepts the inputs and a ProgressListener. It is up to the implementor to update this listener with the progress of the process execution. There is also a SimpleProcess abstract class that simple processes can extend when they are so quick to execute that updating the progress is not necessary.</p>
+<p>BufferProcess example:</p>
+<div class="highlight-python"><div class="highlight"><pre>class BufferProcess extends AbstractProcess {
+    private boolean started = false;
+
+    public BufferProcess( BufferFactory bufferFactory ) {
+    super( bufferFactory );
+    }
+
+    public ProcessFactory getFactory() {
+    return factory;
+    }
+
+    public Map&lt;String,Object&gt; execute(Map&lt;String,Object&gt; input, ProgressListener monitor){
+        if (started) throw new IllegalStateException(&quot;Process can only be run once&quot;);
+        started = true;
+
+        if( monitor == null ) monitor = new NullProgressListener();
+
+        try {
+            monitor.started();
+            monitor.setTask( Text.text(&quot;Grabbing arguments&quot;) );
+            monitor.progress( 10.0f );
+            Geometry geom1 = (Geometry) input.get( BufferFactory.GEOM1.key );
+            Double buffer = (Double) input.get( BufferFactory.BUFFER.key );
+
+            monitor.setTask( Text.text(&quot;Processing Buffer&quot;) );
+            monitor.progress( 25.0f );
+
+            if( monitor.isCanceled() ){
+            return null; // user has canceled this operation
+            }
+
+            Geometry resultGeom = geom1.buffer(buffer);
+
+            monitor.setTask( Text.text(&quot;Encoding result&quot; ));
+            monitor.progress( 90.0f );
+
+            Map&lt;String,Object&gt; result = new HashMap&lt;String, Object&gt;();
+            result.put( BufferFactory.RESULT.key, resultGeom );
+            monitor.complete(); // same as 100.0f
+
+            return result;
+        }
+        catch (Exception eek){
+            monitor.exceptionOccurred(eek);
+            return null;
+        }
+        finally {
+            monitor.dispose();
+        }
+        }
+}
+</pre></div>
+</div>
+</div>
+<div class="section" id="processfactory">
+<h2>ProcessFactory<a class="headerlink" href="#processfactory" title="Permalink to this headline">¶</a></h2>
+<p>To advertise (and describe) a process implementation (like buffer above) we will need to create a ProcessFactory.</p>
+<p>The ProcessFactory interface is used to describe a process and its parameters, and for creating new instances of those processes. Typically, a ProcessFactory will be found and created using the Processors FactoryFinder. Below is an example of an implemented ProcessFactory.</p>
+<p>The process factory includes other implementation (like name and version) to allow user interfaces and WPS implementations to make this service available in a controlled manner.</p>
+<p>BufferFactory Example:</p>
+<div class="highlight-python"><div class="highlight"><pre>public class BufferFactory extends AbstractProcessFactory {
+    // making parameters available as static constants to help java programmers
+    /** Geometry for operation */
+    static final Parameter&lt;Geometry&gt; GEOM1 =
+    new Parameter&lt;Geometry&gt;(&quot;geom1&quot;, Geometry.class, Text.text(&quot;Geometry&quot;), Text.text(&quot;Geometry to buffer&quot;) );
+
+    /** Buffer amount */
+    static final Parameter&lt;Double&gt; BUFFER =
+    new Parameter&lt;Double&gt;(&quot;buffer&quot;, Double.class, Text.text(&quot;Buffer Amount&quot;), Text.text(&quot;Amount to buffer the geometry by&quot;) );
+
+    /**
+    * Map used for getParameterInfo; used to describe operation requirements for user
+    * interface creation.
+    */
+    static final Map&lt;String,Parameter&lt;?&gt;&gt; prameterInfo = new TreeMap&lt;String,Parameter&lt;?&gt;&gt;();
+    static {
+    prameterInfo.put( GEOM1.key, GEOM1 );
+    prameterInfo.put( BUFFER.key, BUFFER );
+    }
+
+    static final Parameter&lt;Geometry&gt; RESULT =
+    new Parameter&lt;Geometry&gt;(&quot;result&quot;, Geometry.class, Text.text(&quot;Result&quot;), Text.text(&quot;Result of Geometry.getBuffer( Buffer )&quot;) );
+
+    /**
+    * Map used to describe operation results.
+    */
+    static final Map&lt;String,Parameter&lt;?&gt;&gt; resultInfo = new TreeMap&lt;String,Parameter&lt;?&gt;&gt;();
+    static {
+    resultInfo.put( RESULT.key, RESULT );
+    }
+
+    public Process create(Map&lt;String, Object&gt; parameters)
+            throws IllegalArgumentException {
+        return new BufferProcess( this );
+    }
+
+    public InternationalString getDescription() {
+        return Text.text(&quot;Buffer a geometry&quot;);
+    }
+
+    public Map&lt;String, Parameter&lt;?&gt;&gt; getParameterInfo() {
+        return Collections.unmodifiableMap( prameterInfo );
+    }
+
+    public Map&lt;String, Parameter&lt;?&gt;&gt; getResultInfo(
+            Map&lt;String, Object&gt; parameters) throws IllegalArgumentException {
+        return Collections.unmodifiableMap( resultInfo );
+    }
+
+    public InternationalString getTitle() {
+        // please note that this is a title for display purposes only
+        // finding an specific implementation by name is not possible
+        return Text.text(&quot;Buffer&quot;);
+    }
+
+    public Process create() throws IllegalArgumentException {
+        return new BufferProcess( this );
+    }
+
+    public String getName() {
+        return &quot;buffer&quot;;
+    }
+
+    public boolean supportsProgress() {
+        return true;
+    }
+
+    public String getVersion() {
+        return &quot;1.0.0&quot;;
+    }
+
+}
+</pre></div>
+</div>
+</div>
+<div class="section" id="parameter">
+<h2>Parameter<a class="headerlink" href="#parameter" title="Permalink to this headline">¶</a></h2>
+<p>Every Process contains a map of input parameters and a map of results which are also defined as parameters.</p>
+<p>The Parameter interface provides a way to define these objects. This interface contains required information and optional metadata about the parameter, such as its name, description, class type, whether it is required or not, how many are required, and so on. There are a few constructors for creating a Parameter, depending on how much optional metadata you want to set on the object.</p>
+<p>The Parameter interface is part of the 04 API module and is used to define connection parameters for data access.</p>
+<p>Here is an example of asking the user to supply a &#8220;geomIn&#8221; parameter:</p>
+<div class="highlight-python"><div class="highlight"><pre>Parameter&lt;Geometry&gt; geomInput = new Parameter&lt;Geometry&gt;(&quot;geomIn&quot;, Geometry.class, Text.text(&quot;Geometry&quot;),
+    Text.text(&quot;Geometry input parameter&quot;),  true, 2, -1, null, null);
+</pre></div>
+</div>
+<p>In a similar manner you can indicate the result you produce:</p>
+<div class="highlight-python"><div class="highlight"><pre>Parameter&lt;Geometry&gt; geomResult = new Parameter&lt;Geometry&gt;(&quot;geomOut&quot;, Geometry.class, Text.text(&quot;Geometry&quot;), Text.text(&quot;Geometry result&quot;));
+</pre></div>
+</div>
+</div>
+<div class="section" id="process-executor">
+<h2>Process Executor<a class="headerlink" href="#process-executor" title="Permalink to this headline">¶</a></h2>
+<p>The ProcessExecutor provides methods to manage process executions and for tracking asynchronous tasks. By implementing the submit method that returns a Progress object, the process execution can be tracked or terminated. Below is an example of a very simple implementation of the ProcessExecutor interface.</p>
+<p>You may wish to implement the Process Executor class if you are backing onto an existing scheduling facility such as that provided by a workflow engine.</p>
+<p>ThreadPoolProcessExecutor Example:</p>
+<div class="highlight-python"><div class="highlight"><pre>public class ThreadPoolProcessExecutor extends ThreadPoolExecutor
+    implements ProcessExecutor {
+
+
+    public ThreadPoolProcessExecutor( int nThreads, ThreadFactory threadFactory ) {
+        super( nThreads, nThreads, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue&lt;Runnable&gt;(), threadFactory );
+    }
+
+    public Progress submit( Process task, Map&lt;String,Object&gt; input ) {
+        if (task == null) throw new NullPointerException();
+        ProgressTask ftask = new ProgressTask(task, input );
+        execute(ftask);
+        return ftask;
+    }
+
+}
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="process.html" title="Process"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="index.html" title="Process"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Unsupported</a> &raquo;</li>
+          <li><a href="index.html" >Process</a> &raquo;</li>
+        <li><a href="#">Internal</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

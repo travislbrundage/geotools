@@ -1,0 +1,424 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Envelope &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../index.html" />
+    <link rel="up" title="API" href="index.html" />
+    <link rel="next" title="JTS Utility Class" href="jts.html" />
+    <link rel="prev" title="Parameter" href="parameter.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">API</a> &raquo;</li>
+        <li><a href="#">Envelope</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Envelope</a><ul>
+<li><a class="reference internal" href="#referencedenvelope">ReferencedEnvelope</a></li>
+<li><a class="reference internal" href="#referencedenvelope3d">ReferencedEnvelope3D</a></li>
+<li><a class="reference internal" href="#opengis-envelope">OpenGIS Envelope</a></li>
+<li><a class="reference internal" href="#jts-envelope">JTS Envelope</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="parameter.html"
+                        title="previous chapter">Parameter</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="jts.html"
+                        title="next chapter">JTS Utility Class</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/library/api/envelope.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="envelope">
+<h1>Envelope<a class="headerlink" href="#envelope" title="Permalink to this headline">¶</a></h1>
+<p>Envelopes are used to represent the bounds of a geometry, and are used very frequently as a way to quickly check if a geometry is in the area you are interested in.</p>
+<img alt="../../_images/envelope.PNG" src="../../_images/envelope.PNG" />
+<p>GeoTools, through virtue of reusing code, has two &#8220;Envelope&#8221; implementations to contend with:</p>
+<ul class="simple">
+<li>Java Rectangle2D - we have <strong>Envelope2D</strong> which is spatial extension of the Java Rectangle2D class. Our implementation makes use of doubles to store coordinates and holds on to a CoordinateReferenceSystem allowing us to tell where the coordinates are located.</li>
+<li>JTS Envelope - we have <em>ReferencedEnvelope</em> which is adds a CoordinateReferenceSystem to a traditional JTS Envelope. A subclass of ReferencedEnvelope is <em>ReferencedEnvelope3D</em> which supports a third dimension on top of the regular two dimensions.</li>
+</ul>
+<p>As you can see <strong>ReferencedEnvelope</strong> and <strong>ReferencedEnvelope3D</strong> are a bit of a olive branch between the JTS Geometry model and ISO Geometry model.</p>
+<p>You will find other &#8220;Rectangles&#8221; around as you make use of GeoTools in a real world application.</p>
+<ul>
+<li><p class="first">Java Rectangles</p>
+<p>Java Rectangles record x,y,w,h:</p>
+</li>
+<li><p class="first">Rectangle2D</p>
+<ul class="simple">
+<li>Rectangle2D.Double rectangle working with doubles</li>
+<li>Rectangle2D.Float rectangle working with floats</li>
+</ul>
+</li>
+<li><p class="first">Envelope2D we have a spatial specific version of Rectangle2D that implements ISO Geometry Envelope</p>
+</li>
+<li><p class="first">Rectangle the original rectangle for working on the screen, measured in integers</p>
+</li>
+</ul>
+<div class="section" id="referencedenvelope">
+<h2>ReferencedEnvelope<a class="headerlink" href="#referencedenvelope" title="Permalink to this headline">¶</a></h2>
+<p>ReferencedEnvelope is all of these:</p>
+<ul class="simple">
+<li><strong>com.vividsolutions.jts.geom.Envelope</strong> - as defined by the JTS Topology System ( a Simple Feature for SQL concept)</li>
+<li><strong>org.opengis.geometry.BoundingBox</strong> - 2D bounds as defined by the ISO 19107 Geometry</li>
+<li><strong>org.opengis.geometry.Envelope</strong> - captures 3D bounds as defined by ISO 19107 Geometry.</li>
+</ul>
+<p>Note that in order to support 3D bounds (and use a 3D Coordinate Reference System) we must create an instance of the child class <strong>ReferencedEnvelope3D</strong> (see below).</p>
+<p>In short this is the class to use when you want to represent a bounds in GeoTools. The only other thing of note is the that the constructor expects the input in xMin,xMax,yMin,yMax order and expects a (2D) crs:</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="n">ReferencedEnvelope</span> <span class="n">envelope</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ReferencedEnvelope</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="mi">10</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">20</span><span class="o">,</span> <span class="n">DefaultGeographicCRS</span><span class="o">.</span><span class="na">WGS84</span><span class="o">);</span>
+    
+    <span class="kt">double</span> <span class="n">xMin</span> <span class="o">=</span> <span class="n">envelope</span><span class="o">.</span><span class="na">getMinX</span><span class="o">();</span>
+    <span class="kt">double</span> <span class="n">yMin</span> <span class="o">=</span> <span class="n">envelope</span><span class="o">.</span><span class="na">getMinY</span><span class="o">();</span>
+    
+    <span class="kt">double</span> <span class="n">xMax</span> <span class="o">=</span> <span class="n">envelope</span><span class="o">.</span><span class="na">getMaxX</span><span class="o">();</span>
+    <span class="kt">double</span> <span class="n">yMax</span> <span class="o">=</span> <span class="n">envelope</span><span class="o">.</span><span class="na">getMaxY</span><span class="o">();</span>
+    
+    <span class="kt">double</span> <span class="n">width</span> <span class="o">=</span> <span class="n">envelope</span><span class="o">.</span><span class="na">getWidth</span><span class="o">();</span>
+    <span class="kt">double</span> <span class="n">height</span> <span class="o">=</span> <span class="n">envelope</span><span class="o">.</span><span class="na">getHeight</span><span class="o">();</span>
+    
+    <span class="kt">double</span> <span class="n">xCenter</span> <span class="o">=</span> <span class="n">envelope</span><span class="o">.</span><span class="na">getMedian</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+    <span class="kt">double</span> <span class="n">yCenter</span> <span class="o">=</span> <span class="n">envelope</span><span class="o">.</span><span class="na">getMedian</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
+    
+    <span class="n">CoordinateReferenceSystem</span> <span class="n">crs</span> <span class="o">=</span> <span class="n">envelope</span><span class="o">.</span><span class="na">getCoordinateReferenceSystem</span><span class="o">();</span>
+    <span class="kt">int</span> <span class="n">dimension</span> <span class="o">=</span> <span class="n">envelope</span><span class="o">.</span><span class="na">getDimension</span><span class="o">();</span>
+    
+    <span class="c1">// Direct access to internal upper and lower positions</span>
+    <span class="n">DirectPosition</span> <span class="n">lower</span> <span class="o">=</span> <span class="n">envelope</span><span class="o">.</span><span class="na">getLowerCorner</span><span class="o">();</span>
+    <span class="n">DirectPosition</span> <span class="n">upper</span> <span class="o">=</span> <span class="n">envelope</span><span class="o">.</span><span class="na">getUpperCorner</span><span class="o">();</span>
+    
+    <span class="c1">// expand to include 15, 30</span>
+    <span class="n">envelope</span><span class="o">.</span><span class="na">include</span><span class="o">(</span><span class="mi">15</span><span class="o">,</span> <span class="mi">30</span><span class="o">);</span>
+    
+    <span class="n">envelope</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">();</span> <span class="c1">// check if storing width and height are 0</span>
+    
+    <span class="n">envelope</span><span class="o">.</span><span class="na">isNull</span><span class="o">();</span> <span class="c1">// check if &quot;null&quot; (not storing anything)</span>
+    <span class="n">envelope</span><span class="o">.</span><span class="na">setToNull</span><span class="o">();</span>
+    
+</pre></div>
+</div>
+<p>ReferencedEnvelope does one thing very well; it is an Envelope that has a CoordinateReferenceSystem. Because it has a CoordinateReferenceSystem you can quickly transform it between projections.:</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="n">CoordinateReferenceSystem</span> <span class="n">sourceCRS</span> <span class="o">=</span> <span class="n">CRS</span><span class="o">.</span><span class="na">decode</span><span class="o">(</span><span class="s">&quot;EPSG:4326&quot;</span><span class="o">);</span>
+    <span class="n">ReferencedEnvelope</span> <span class="n">envelope</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ReferencedEnvelope</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="mi">10</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">20</span><span class="o">,</span> <span class="n">sourceCRS</span><span class="o">);</span>
+    
+    <span class="c1">// Transform using 10 sample points around the envelope</span>
+    <span class="n">CoordinateReferenceSystem</span> <span class="n">targetCRS</span> <span class="o">=</span> <span class="n">CRS</span><span class="o">.</span><span class="na">decode</span><span class="o">(</span><span class="s">&quot;EPSG:23032&quot;</span><span class="o">);</span>
+    <span class="n">ReferencedEnvelope</span> <span class="n">result</span> <span class="o">=</span> <span class="n">envelope</span><span class="o">.</span><span class="na">transform</span><span class="o">(</span><span class="n">targetCRS</span><span class="o">,</span> <span class="kc">true</span><span class="o">,</span> <span class="mi">10</span><span class="o">);</span>
+</pre></div>
+</div>
+<p><strong>ReferencedEnvelope</strong> is used in a lot of GeoTools interfaces, basically anywhere we can get away
+with it. Using a raw JTS Envelope without knowing the the CoordinateReferenceSystem is difficult to
+use as the information is incomplete forcing client code to make assumptions. Some code assumes
+the envelope is in WGS84 while other code assumes it is in the same Coordinate Reference System as
+the data being worked on.</p>
+<p>Some of our older interfaces that you are forced to read the javadocs in order to figure out the
+CoordinateReferenceSystem for a returned Envelope.</p>
+<ul>
+<li><p class="first">Using a FeatureSource without ReferencedEnvelope example:</p>
+<div class="highlight-python"><div class="highlight"><pre>Envelope bounds = featureSource.getBounds();
+
+CoordinateReferenceSystem crs = featureSource.getSchema().getDefaultGeometry().getCoordinateSystem();
+</pre></div>
+</div>
+</li>
+<li><p class="first">Using a FeatureSource with ReferencedEnvelope:</p>
+<div class="highlight-python"><div class="highlight"><pre>ReferencedEnvelope bounds = (ReferencedEnvelope) featureSource.getBounds();
+
+CoordinateReferenceSystem crs = bounds.getCoordinateReferenceSystem();
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="referencedenvelope3d">
+<h2>ReferencedEnvelope3D<a class="headerlink" href="#referencedenvelope3d" title="Permalink to this headline">¶</a></h2>
+<p>ReferencedEnvelope3D is all of these:</p>
+<ul class="simple">
+<li><strong>ReferencedEnvelope</strong> including all parent classes and interfaces</li>
+<li><strong>org.opengis.geometry.BoundingBox3D</strong> - 3D bounds as defined by the ISO 19107 Geometry</li>
+</ul>
+<p>This is the class to use when you want to represent a 3D bounds in GeoTools. The constructor expects the input in xMin,xMax,yMin,yMax,zMin,zMax order and expects a 3D crs:</p>
+<div class="highlight-java"><div class="highlight"><pre> <span class="n">ReferencedEnvelope3D</span> <span class="n">envelope</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ReferencedEnvelope3D</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="mi">10</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">20</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">30</span><span class="o">,</span> <span class="n">DefaultGeographicCRS</span><span class="o">.</span><span class="na">WGS84_3D</span><span class="o">);</span>
+ 
+ <span class="kt">double</span> <span class="n">xMin</span> <span class="o">=</span> <span class="n">envelope</span><span class="o">.</span><span class="na">getMinX</span><span class="o">();</span>
+ <span class="kt">double</span> <span class="n">yMin</span> <span class="o">=</span> <span class="n">envelope</span><span class="o">.</span><span class="na">getMinY</span><span class="o">();</span>
+ <span class="kt">double</span> <span class="n">zMin</span> <span class="o">=</span> <span class="n">envelope</span><span class="o">.</span><span class="na">getMinZ</span><span class="o">();</span>
+ 
+ <span class="kt">double</span> <span class="n">xMax</span> <span class="o">=</span> <span class="n">envelope</span><span class="o">.</span><span class="na">getMaxX</span><span class="o">();</span>
+ <span class="kt">double</span> <span class="n">yMax</span> <span class="o">=</span> <span class="n">envelope</span><span class="o">.</span><span class="na">getMaxY</span><span class="o">();</span>
+ <span class="kt">double</span> <span class="n">zMax</span> <span class="o">=</span> <span class="n">envelope</span><span class="o">.</span><span class="na">getMaxZ</span><span class="o">();</span>
+ 
+ <span class="kt">double</span> <span class="n">width</span> <span class="o">=</span> <span class="n">envelope</span><span class="o">.</span><span class="na">getWidth</span><span class="o">();</span>
+ <span class="kt">double</span> <span class="n">height</span> <span class="o">=</span> <span class="n">envelope</span><span class="o">.</span><span class="na">getHeight</span><span class="o">();</span>
+ <span class="kt">double</span> <span class="n">depth</span> <span class="o">=</span> <span class="n">envelope</span><span class="o">.</span><span class="na">getDepth</span><span class="o">();</span>
+ 
+ <span class="kt">double</span> <span class="n">xCenter</span> <span class="o">=</span> <span class="n">envelope</span><span class="o">.</span><span class="na">getMedian</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+ <span class="kt">double</span> <span class="n">yCenter</span> <span class="o">=</span> <span class="n">envelope</span><span class="o">.</span><span class="na">getMedian</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
+ <span class="kt">double</span> <span class="n">zCenter</span> <span class="o">=</span> <span class="n">envelope</span><span class="o">.</span><span class="na">getMedian</span><span class="o">(</span><span class="mi">2</span><span class="o">);</span>
+ 
+ <span class="n">CoordinateReferenceSystem</span> <span class="n">crs</span> <span class="o">=</span> <span class="n">envelope</span><span class="o">.</span><span class="na">getCoordinateReferenceSystem</span><span class="o">();</span>
+ <span class="kt">int</span> <span class="n">dimension</span> <span class="o">=</span> <span class="n">envelope</span><span class="o">.</span><span class="na">getDimension</span><span class="o">();</span>
+ 
+ <span class="c1">// Direct access to internal upper and lower positions</span>
+ <span class="n">DirectPosition</span> <span class="n">lower</span> <span class="o">=</span> <span class="n">envelope</span><span class="o">.</span><span class="na">getLowerCorner</span><span class="o">();</span>
+ <span class="n">DirectPosition</span> <span class="n">upper</span> <span class="o">=</span> <span class="n">envelope</span><span class="o">.</span><span class="na">getUpperCorner</span><span class="o">();</span>
+ 
+ <span class="c1">// expand to include 15, 30, 40</span>
+ <span class="n">envelope</span><span class="o">.</span><span class="na">include</span><span class="o">(</span><span class="mi">15</span><span class="o">,</span> <span class="mi">30</span><span class="o">,</span> <span class="mi">40</span><span class="o">);</span>
+ 
+ <span class="n">envelope</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">();</span> <span class="c1">// check if storing width and height are 0</span>
+ 
+ <span class="n">envelope</span><span class="o">.</span><span class="na">isNull</span><span class="o">();</span> <span class="c1">// check if &quot;null&quot; (not storing anything)</span>
+ <span class="n">envelope</span><span class="o">.</span><span class="na">setToNull</span><span class="o">();</span>
+ 
+</pre></div>
+</div>
+<p>As explained above, when using a 3D CRS we must create an instance of ReferencedEnvelope3D and not of its parent class. If we are not sure what dimension we are dealing with,
+there are safe ways to create, copy, convert or reference ReferencedEnvelope instances:</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="n">ReferencedEnvelope</span> <span class="n">env</span><span class="o">;</span> <span class="c1">// can hold both regular ReferencedEnvelope as well as ReferencedEnvelope3D</span>
+    <span class="n">ReferencedEnvelope</span> <span class="n">original</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span> <span class="c1">// can be instance of ReferencedEnvelope3D;    </span>
+    <span class="n">CoordinateReferenceSystem</span> <span class="n">crs</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span> <span class="c1">//can be 2D or 3D</span>
+    <span class="n">org</span><span class="o">.</span><span class="na">opengis</span><span class="o">.</span><span class="na">geometry</span><span class="o">.</span><span class="na">Envelope</span> <span class="n">opengis_env</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span> <span class="c1">//can be instance of ReferencedEnvelope(3D)</span>
+    <span class="n">com</span><span class="o">.</span><span class="na">vividsolutions</span><span class="o">.</span><span class="na">jts</span><span class="o">.</span><span class="na">geom</span><span class="o">.</span><span class="na">Envelope</span> <span class="n">jts_env</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span> <span class="c1">//can be instance of ReferencedEnvelope(3D)</span>
+    <span class="n">BoundingBox</span> <span class="n">bbox</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span> <span class="c1">//can be instance of ReferencedEnvelope(3D)</span>
+        
+    <span class="c1">//safely copy ReferencedEnvelope, uses type of original to determine type</span>
+    <span class="n">env</span> <span class="o">=</span> <span class="n">ReferencedEnvelope</span><span class="o">.</span><span class="na">create</span><span class="o">(</span> <span class="n">original</span> <span class="o">);</span>
+    
+    <span class="c1">//safely create ReferencedEnvelope from CRS, uses dimension to determine type</span>
+    <span class="n">env</span> <span class="o">=</span> <span class="n">ReferencedEnvelope</span><span class="o">.</span><span class="na">create</span><span class="o">(</span> <span class="n">crs</span> <span class="o">);</span>
+    
+    <span class="c1">//safely create ReferencedEnvelope from org.opengis.geometry.Envelope, uses dimension in Envelope to determine type</span>
+    <span class="n">env</span> <span class="o">=</span> <span class="n">ReferencedEnvelope</span><span class="o">.</span><span class="na">create</span><span class="o">(</span> <span class="n">opengis_env</span><span class="o">,</span> <span class="n">crs</span> <span class="o">);</span>
+    
+    <span class="c1">//safely create ReferencedEnvelope from com.vividsolutions.jts.geom.Envelope, uses dimension in Envelope to determine type</span>
+    <span class="n">env</span> <span class="o">=</span> <span class="n">ReferencedEnvelope</span><span class="o">.</span><span class="na">create</span><span class="o">(</span> <span class="n">jts_env</span><span class="o">,</span> <span class="n">crs</span> <span class="o">);</span>
+    
+    <span class="c1">//safely reference org.opengis.geometry.Envelope as ReferencedEnvelope</span>
+    <span class="c1">//--&gt; if it is a ReferencedEnvelope(3D), simply cast it; if not, create a conversion</span>
+    <span class="n">env</span> <span class="o">=</span> <span class="n">ReferencedEnvelope</span><span class="o">.</span><span class="na">reference</span> <span class="o">(</span> <span class="n">opengis_env</span><span class="o">);</span>
+    
+    <span class="c1">//safely reference com.vividsolutions.jts.geom.Envelope as ReferencedEnvelope</span>
+    <span class="c1">//--&gt; if it is a ReferencedEnvelope(3D), simply cast it; if not, create a conversion</span>
+    <span class="n">env</span> <span class="o">=</span> <span class="n">ReferencedEnvelope</span><span class="o">.</span><span class="na">reference</span> <span class="o">(</span> <span class="n">jts_env</span><span class="o">);</span>
+    
+    <span class="c1">//safely reference BoundingBox as ReferencedEnvelope</span>
+    <span class="c1">//--&gt; if it is a ReferencedEnvelope(3D), simply cast it; if not, create a conversion</span>
+    <span class="n">env</span> <span class="o">=</span> <span class="n">ReferencedEnvelope</span><span class="o">.</span><span class="na">reference</span> <span class="o">(</span> <span class="n">bbox</span><span class="o">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="opengis-envelope">
+<h2>OpenGIS Envelope<a class="headerlink" href="#opengis-envelope" title="Permalink to this headline">¶</a></h2>
+<p>OpenGIS records a &#8220;rectangle&#8221; as a bounds along the axis mentioned by the CoordinateReferneceSystem object. You can use this idea to record a simple rectangle in space, a height range and and a range in time as needed.</p>
+<img alt="../../_images/envelope2.PNG" src="../../_images/envelope2.PNG" />
+<ul class="simple">
+<li>Envelope2D - was introduced above; used to bridge to Java2D</li>
+<li>ReferencedEnvelope - was introduced above; used to bridge to JTS Geometry</li>
+<li>GeneralEnvelope - allows you to record spans in multiple dimensions (think depth, height or time)</li>
+</ul>
+<p>Since <strong>Envelope</strong> is just and interface, so we will use <strong>RefernecedEnvelope</strong> for the example:</p>
+<blockquote>
+<div><div class="highlight-java"><div class="highlight"><pre>    <span class="n">CoordinateReferenceSystem</span> <span class="n">wsg84</span> <span class="o">=</span> <span class="n">CRS</span><span class="o">.</span><span class="na">decode</span><span class="o">(</span><span class="s">&quot;EPSG:4326&quot;</span><span class="o">);</span>
+    <span class="n">org</span><span class="o">.</span><span class="na">opengis</span><span class="o">.</span><span class="na">geometry</span><span class="o">.</span><span class="na">Envelope</span> <span class="n">envelope</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ReferencedEnvelope</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="mi">10</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">20</span><span class="o">,</span> <span class="n">wsg84</span><span class="o">);</span>
+    
+    <span class="kt">double</span> <span class="n">xMin</span> <span class="o">=</span> <span class="n">envelope</span><span class="o">.</span><span class="na">getMinimum</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+    <span class="kt">double</span> <span class="n">yMin</span> <span class="o">=</span> <span class="n">envelope</span><span class="o">.</span><span class="na">getMinimum</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
+    
+    <span class="kt">double</span> <span class="n">xMax</span> <span class="o">=</span> <span class="n">envelope</span><span class="o">.</span><span class="na">getMaximum</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+    <span class="kt">double</span> <span class="n">yMax</span> <span class="o">=</span> <span class="n">envelope</span><span class="o">.</span><span class="na">getMaximum</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
+    
+    <span class="kt">double</span> <span class="n">width</span> <span class="o">=</span> <span class="n">envelope</span><span class="o">.</span><span class="na">getSpan</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+    <span class="kt">double</span> <span class="n">height</span> <span class="o">=</span> <span class="n">envelope</span><span class="o">.</span><span class="na">getSpan</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
+    
+    <span class="kt">double</span> <span class="n">xCenter</span> <span class="o">=</span> <span class="n">envelope</span><span class="o">.</span><span class="na">getMedian</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+    <span class="kt">double</span> <span class="n">yCenter</span> <span class="o">=</span> <span class="n">envelope</span><span class="o">.</span><span class="na">getMedian</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
+    
+    <span class="n">CoordinateReferenceSystem</span> <span class="n">crs</span> <span class="o">=</span> <span class="n">envelope</span><span class="o">.</span><span class="na">getCoordinateReferenceSystem</span><span class="o">();</span>
+    
+    <span class="c1">// Direct access to internal upper and lower positions</span>
+    <span class="n">DirectPosition</span> <span class="n">lower</span> <span class="o">=</span> <span class="n">envelope</span><span class="o">.</span><span class="na">getLowerCorner</span><span class="o">();</span>
+    <span class="n">DirectPosition</span> <span class="n">upper</span> <span class="o">=</span> <span class="n">envelope</span><span class="o">.</span><span class="na">getUpperCorner</span><span class="o">();</span>
+    
+    <span class="c1">// expand to include 15, 30</span>
+    <span class="n">upper</span><span class="o">.</span><span class="na">setOrdinate</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="n">Math</span><span class="o">.</span><span class="na">max</span><span class="o">(</span><span class="n">upper</span><span class="o">.</span><span class="na">getOrdinate</span><span class="o">(</span><span class="mi">0</span><span class="o">),</span> <span class="mi">15</span><span class="o">));</span>
+    <span class="n">upper</span><span class="o">.</span><span class="na">setOrdinate</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="n">Math</span><span class="o">.</span><span class="na">max</span><span class="o">(</span><span class="n">upper</span><span class="o">.</span><span class="na">getOrdinate</span><span class="o">(</span><span class="mi">1</span><span class="o">),</span> <span class="mi">30</span><span class="o">));</span>
+    <span class="n">lower</span><span class="o">.</span><span class="na">setOrdinate</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="n">Math</span><span class="o">.</span><span class="na">min</span><span class="o">(</span><span class="n">lower</span><span class="o">.</span><span class="na">getOrdinate</span><span class="o">(</span><span class="mi">0</span><span class="o">),</span> <span class="mi">15</span><span class="o">));</span>
+    <span class="n">lower</span><span class="o">.</span><span class="na">setOrdinate</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="n">Math</span><span class="o">.</span><span class="na">min</span><span class="o">(</span><span class="n">lower</span><span class="o">.</span><span class="na">getOrdinate</span><span class="o">(</span><span class="mi">1</span><span class="o">),</span> <span class="mi">30</span><span class="o">));</span>
+    
+</pre></div>
+</div>
+</div></blockquote>
+<p>You can see even in a simple example we should be looking at the CRS to figure out what the axis is actually measuring.</p>
+<p>If you are super confident that you are working with data in X/Y order you can directly make use of BoundingBox box. BoundingBox is an extension of Envelope for working with 2D data, and it has been made method compatible with JTS Envelope where possible.</p>
+<p>Since <strong>BoundingBox</strong> is just an interface, so we will use <strong>RefernecedEnvelope</strong>
+for this example:</p>
+<blockquote>
+<div><div class="highlight-java"><div class="highlight"><pre>    <span class="n">CoordinateReferenceSystem</span> <span class="n">wsg84</span> <span class="o">=</span> <span class="n">CRS</span><span class="o">.</span><span class="na">decode</span><span class="o">(</span><span class="s">&quot;EPSG:4326&quot;</span><span class="o">);</span>
+    <span class="n">org</span><span class="o">.</span><span class="na">opengis</span><span class="o">.</span><span class="na">geometry</span><span class="o">.</span><span class="na">BoundingBox</span> <span class="n">bbox</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ReferencedEnvelope</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="mi">10</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">20</span><span class="o">,</span> <span class="n">wsg84</span><span class="o">);</span>
+    
+    <span class="kt">double</span> <span class="n">xMin</span> <span class="o">=</span> <span class="n">bbox</span><span class="o">.</span><span class="na">getMinX</span><span class="o">();</span>
+    <span class="kt">double</span> <span class="n">yMin</span> <span class="o">=</span> <span class="n">bbox</span><span class="o">.</span><span class="na">getMinY</span><span class="o">();</span>
+    
+    <span class="kt">double</span> <span class="n">xMax</span> <span class="o">=</span> <span class="n">bbox</span><span class="o">.</span><span class="na">getMaxX</span><span class="o">();</span>
+    <span class="kt">double</span> <span class="n">yMax</span> <span class="o">=</span> <span class="n">bbox</span><span class="o">.</span><span class="na">getMaxY</span><span class="o">();</span>
+    
+    <span class="kt">double</span> <span class="n">width</span> <span class="o">=</span> <span class="n">bbox</span><span class="o">.</span><span class="na">getWidth</span><span class="o">();</span>
+    <span class="kt">double</span> <span class="n">height</span> <span class="o">=</span> <span class="n">bbox</span><span class="o">.</span><span class="na">getHeight</span><span class="o">();</span>
+    
+    <span class="kt">double</span> <span class="n">xCenter</span> <span class="o">=</span> <span class="n">bbox</span><span class="o">.</span><span class="na">getMedian</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+    <span class="kt">double</span> <span class="n">yCenter</span> <span class="o">=</span> <span class="n">bbox</span><span class="o">.</span><span class="na">getMedian</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
+    
+    <span class="n">CoordinateReferenceSystem</span> <span class="n">crs</span> <span class="o">=</span> <span class="n">bbox</span><span class="o">.</span><span class="na">getCoordinateReferenceSystem</span><span class="o">();</span>
+    
+    <span class="c1">// Direct access to internal upper and lower positions</span>
+    <span class="n">DirectPosition</span> <span class="n">lower</span> <span class="o">=</span> <span class="n">bbox</span><span class="o">.</span><span class="na">getLowerCorner</span><span class="o">();</span>
+    <span class="n">DirectPosition</span> <span class="n">upper</span> <span class="o">=</span> <span class="n">bbox</span><span class="o">.</span><span class="na">getUpperCorner</span><span class="o">();</span>
+    
+    <span class="c1">// expand to include 15, 30</span>
+    <span class="n">bbox</span><span class="o">.</span><span class="na">include</span><span class="o">(</span><span class="mi">15</span><span class="o">,</span> <span class="mi">30</span><span class="o">);</span>
+    
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="jts-envelope">
+<h2>JTS Envelope<a class="headerlink" href="#jts-envelope" title="Permalink to this headline">¶</a></h2>
+<p>The JTS Topology Suite has the concept of an Envelope recorded in x1,x2, y1,y2 order.</p>
+<p>You can see that the use of JTS Envelope has the same &#8220;assumptions&#8221; as the use of BoundingBox above.:</p>
+<blockquote>
+<div><div class="highlight-java"><div class="highlight"><pre>    <span class="n">com</span><span class="o">.</span><span class="na">vividsolutions</span><span class="o">.</span><span class="na">jts</span><span class="o">.</span><span class="na">geom</span><span class="o">.</span><span class="na">Envelope</span> <span class="n">envelope</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Envelope</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="mi">10</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">20</span><span class="o">);</span>
+    <span class="kt">double</span> <span class="n">xMin</span> <span class="o">=</span> <span class="n">envelope</span><span class="o">.</span><span class="na">getMinX</span><span class="o">();</span>
+    <span class="kt">double</span> <span class="n">yMin</span> <span class="o">=</span> <span class="n">envelope</span><span class="o">.</span><span class="na">getMinY</span><span class="o">();</span>
+    
+    <span class="kt">double</span> <span class="n">xMax</span> <span class="o">=</span> <span class="n">envelope</span><span class="o">.</span><span class="na">getMaxX</span><span class="o">();</span>
+    <span class="kt">double</span> <span class="n">yMax</span> <span class="o">=</span> <span class="n">envelope</span><span class="o">.</span><span class="na">getMaxY</span><span class="o">();</span>
+    
+    <span class="kt">double</span> <span class="n">width</span> <span class="o">=</span> <span class="n">envelope</span><span class="o">.</span><span class="na">getWidth</span><span class="o">();</span> <span class="c1">// assuming axis 0 is easting</span>
+    <span class="kt">double</span> <span class="n">height</span> <span class="o">=</span> <span class="n">envelope</span><span class="o">.</span><span class="na">getHeight</span><span class="o">();</span> <span class="c1">// assuming axis 1 is nothing</span>
+    
+    <span class="c1">// Expand an existing envelope</span>
+    <span class="n">Envelope</span> <span class="n">bbox</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Envelope</span><span class="o">();</span>
+    <span class="n">envelope</span><span class="o">.</span><span class="na">expandToInclude</span><span class="o">(</span> <span class="n">bbox</span> <span class="o">);</span>
+    
+    <span class="c1">// Use</span>
+    <span class="n">envelope</span><span class="o">.</span><span class="na">covers</span><span class="o">(</span><span class="mi">5</span><span class="o">,</span> <span class="mi">10</span><span class="o">);</span> <span class="c1">// inside or on edge!</span>
+    <span class="n">envelope</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="mi">5</span><span class="o">,</span> <span class="mi">10</span><span class="o">);</span> <span class="c1">// inside only</span>
+    
+    <span class="c1">// Null</span>
+    <span class="n">envelope</span><span class="o">.</span><span class="na">isNull</span><span class="o">();</span> <span class="c1">// check if &quot;null&quot; (not storing anything)</span>
+    <span class="n">envelope</span><span class="o">.</span><span class="na">setToNull</span><span class="o">();</span>
+    
+</pre></div>
+</div>
+</div></blockquote>
+<p>Transform an Envelope using the JTS Utility class:</p>
+<blockquote>
+<div><div class="highlight-java"><div class="highlight"><pre>    <span class="n">CoordinateReferenceSystem</span> <span class="n">sourceCRS</span> <span class="o">=</span> <span class="n">CRS</span><span class="o">.</span><span class="na">decode</span><span class="o">(</span><span class="s">&quot;EPSG:4326&quot;</span><span class="o">);</span>
+    <span class="n">CoordinateReferenceSystem</span> <span class="n">targetCRS</span> <span class="o">=</span> <span class="n">CRS</span><span class="o">.</span><span class="na">decode</span><span class="o">(</span><span class="s">&quot;EPSG:23032&quot;</span><span class="o">);</span>
+    
+    <span class="n">Envelope</span> <span class="n">envelope</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Envelope</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="mi">10</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">20</span><span class="o">);</span>
+    
+    <span class="n">MathTransform</span> <span class="n">transform</span> <span class="o">=</span> <span class="n">CRS</span><span class="o">.</span><span class="na">findMathTransform</span><span class="o">(</span><span class="n">sourceCRS</span><span class="o">,</span> <span class="n">targetCRS</span><span class="o">);</span>
+    
+    <span class="n">Envelope</span> <span class="n">quick</span> <span class="o">=</span> <span class="n">JTS</span><span class="o">.</span><span class="na">transform</span><span class="o">(</span><span class="n">envelope</span><span class="o">,</span> <span class="n">transform</span><span class="o">);</span>
+    
+    <span class="c1">// Sample 10 points around the envelope</span>
+    <span class="n">Envelope</span> <span class="n">better</span> <span class="o">=</span> <span class="n">JTS</span><span class="o">.</span><span class="na">transform</span><span class="o">(</span><span class="n">envelope</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="n">transform</span><span class="o">,</span> <span class="mi">10</span><span class="o">);</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="jts.html" title="JTS Utility Class"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="parameter.html" title="Parameter"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" >API</a> &raquo;</li>
+        <li><a href="#">Envelope</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

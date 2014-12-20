@@ -1,0 +1,139 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Brewer FAQ &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../index.html" />
+    <link rel="up" title="Brewer" href="index.html" />
+    <link rel="next" title="Classifier" href="classifier.html" />
+    <link rel="prev" title="Brewer" href="index.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Extensions</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Brewer</a> &raquo;</li>
+        <li><a href="#">Brewer FAQ</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Brewer FAQ</a><ul>
+<li><a class="reference internal" href="#q-i-have-47-classes-to-represent-and-colorbrewer-only-goes-up-to-12">Q: I have 47 classes to represent and ColorBrewer only goes up to 12!</a></li>
+<li><a class="reference internal" href="#q-but-why-does-it-only-go-up-to-12">Q: But why does it only go up to 12?</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Brewer</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="classifier.html"
+                        title="next chapter">Classifier</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/extension/brewer/faq.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="brewer-faq">
+<h1>Brewer FAQ<a class="headerlink" href="#brewer-faq" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="q-i-have-47-classes-to-represent-and-colorbrewer-only-goes-up-to-12">
+<h2>Q: I have 47 classes to represent and ColorBrewer only goes up to 12!<a class="headerlink" href="#q-i-have-47-classes-to-represent-and-colorbrewer-only-goes-up-to-12" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div>Feel free to create your own Color[] for use with StyleGenerator.</div></blockquote>
+</div>
+<div class="section" id="q-but-why-does-it-only-go-up-to-12">
+<h2>Q: But why does it only go up to 12?<a class="headerlink" href="#q-but-why-does-it-only-go-up-to-12" title="Permalink to this headline">¶</a></h2>
+<p>This is a surprisingly common question!</p>
+<p>Have a look at the <a class="reference external" href="http://colorbrewer2.org/">http://colorbrewer2.org/</a> website above; the point of the research is that the
+human eye cannot tell very many colours apart. Indeed the number goes down depending on what
+you are trying communicate (ie that the things shown are of equal importance, or do they form a smooth spread of values?).</p>
+<p>In other words you are free to create a pretty map with more than 12 colours; but you should not
+be surprised if that is too complicated for people to understand.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="classifier.html" title="Classifier"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="index.html" title="Brewer"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Extensions</a> &raquo;</li>
+          <li><a href="index.html" >Brewer</a> &raquo;</li>
+        <li><a href="#">Brewer FAQ</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

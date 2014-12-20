@@ -1,0 +1,1712 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Frequently Asked Questions &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="index.html" />
+    <link rel="next" title="Building" href="build/index.html" />
+    <link rel="prev" title="Java EE" href="welcome/javaEE.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+        <li><a href="#">Frequently Asked Questions</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Frequently Asked Questions</a><ul>
+<li><a class="reference internal" href="#geotools-faq">GeoTools FAQ</a><ul>
+<li><a class="reference internal" href="#q-what-is-geotools">Q: What is GeoTools ?</a></li>
+<li><a class="reference internal" href="#q-how-do-i-search-the-archives-of-the-geotools-mailing-lists">Q: How do I search the archives of the GeoTools mailing lists?</a></li>
+<li><a class="reference internal" href="#q-what-are-the-features-of-the-geotools-library">Q: What are the features of the GeoTools Library?</a></li>
+<li><a class="reference internal" href="#q-okay-what-data-formats-does-geotools-support">Q: Okay what data formats does GeoTools support?</a></li>
+<li><a class="reference internal" href="#geotools-versions">GeoTools versions</a><ul>
+<li><a class="reference internal" href="#q-how-are-geotools-versions-organized">Q. How are GeoTools versions organized?</a></li>
+<li><a class="reference internal" href="#q-what-is-a-snapshot-version-and-how-do-i-use-it">Q. What is a SNAPSHOT version and how do I use it?</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#common-license-questions">Common License Questions</a><ul>
+<li><a class="reference internal" href="#q-what-licence-does-geotools-use">Q: What licence does GeoTools use?</a></li>
+<li><a class="reference internal" href="#q-can-i-use-geotools-in-my-commercial-project">Q: Can I use GeoTools in my Commercial Project?</a></li>
+<li><a class="reference internal" href="#q-can-i-use-geotools-in-my-gpl-project">Q: Can I use GeoTools in my GPL Project?</a></li>
+<li><a class="reference internal" href="#q-what-restrictions-are-there-on-my-use-of-geotools">Q: What restrictions are there on my use of GeoTools?</a></li>
+<li><a class="reference internal" href="#q-what-restrictions-are-there-on-my-re-distribution-of-geotools">Q: What restrictions are there on my re-distribution of GeoTools?</a></li>
+<li><a class="reference internal" href="#q-what-should-i-do-if-i-am-still-unsure-what-i-am-allowed-to-do">Q: What should I do if I am still unsure what I am allowed to do?</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#q-why-can-t-i-find-module-x-in-the-geotools-distribution-or-javadocs">Q: Why can&#8217;t I find module X in the GeoTools distribution or javadocs?</a></li>
+<li><a class="reference internal" href="#q-what-is-an-unsupported-module">Q: What is an unsupported module?</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#opengis-faq">OpenGIS FAQ</a><ul>
+<li><a class="reference internal" href="#q-relationship-with-geoapi">Q: Relationship with &#8220;GeoAPI&#8221;?</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#jts-faq">JTS FAQ</a><ul>
+<li><a class="reference internal" href="#q-what-is-the-relationship-between-jts-and-geotools">Q: What is the relationship between JTS and GeoTools?</a></li>
+<li><a class="reference internal" href="#q-what-geometry-specifications">Q: What Geometry Specifications?</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#api-faq">API FAQ</a><ul>
+<li><a class="reference internal" href="#q-what-does-api-mean">Q: What does API mean?</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#metadata-faq">Metadata FAQ</a><ul>
+<li><a class="reference internal" href="#q-utility-classes">Q: Utility Classes?</a></li>
+<li><a class="reference internal" href="#q-where-are-the-interfaces-for-metadata">Q: Where are the Interfaces for Metadata?</a></li>
+<li><a class="reference internal" href="#q-why-did-you-implement-this-class-it-is-in-java-6">Q: Why did you implement this class it is in Java 6?</a></li>
+<li><a class="reference internal" href="#q-why-are-these-utility-classes-in-the-metadata-module">Q: Why are these utility classes in the Metadata Module?</a></li>
+<li><a class="reference internal" href="#q-why-does-gt-metadata-contain-all-this-factory-stuff">Q: Why does gt-metadata contain all this factory stuff?</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#referencing-faq">Referencing FAQ</a><ul>
+<li><a class="reference internal" href="#q-why-can-t-i-display-shapefile-over-a-wms-layer">Q: Why can&#8217;t I display shapefile over a WMS layer?</a></li>
+<li><a class="reference internal" href="#q-how-to-choose-an-epsg-authority">Q: How to choose an EPSG Authority?</a></li>
+<li><a class="reference internal" href="#q-are-other-authorities-other-than-epsg-supported">Q: Are other authorities other than EPSG supported?</a></li>
+<li><a class="reference internal" href="#q-what-jars-does-gt-referencing-need">Q: What Jars does gt-referencing need?</a></li>
+<li><a class="reference internal" href="#q-bursa-wolf-parameters-required">Q: Bursa-Wolf Parameters Required?</a></li>
+<li><a class="reference internal" href="#q-what-does-gt-referencing-do">Q: What does gt-referencing do?</a></li>
+<li><a class="reference internal" href="#q-can-i-just-use-referencing-without-the-rest-of-geotools">Q: Can I just use Referencing without the rest of GeoTools?</a></li>
+<li><a class="reference internal" href="#q-i-cannot-find-an-epsg-code">Q: I cannot find an EPSG Code?</a></li>
+<li><a class="reference internal" href="#q-i-cannot-re-project-my-shapefile-missing-bursa-wolf-parameters">Q: I cannot re-project my shapefile (missing &#8220;Bursa wolf parameters&#8221;)?</a></li>
+<li><a class="reference internal" href="#q-how-do-i-transform">Q: How do I Transform?</a></li>
+<li><a class="reference internal" href="#q-how-to-transform-a-geometry">Q: How to Transform a Geometry?</a></li>
+<li><a class="reference internal" href="#q-how-to-transform-an-envelope">Q: How to Transform an Envelope?</a></li>
+<li><a class="reference internal" href="#q-how-to-transform-a-gridcoverage">Q: How to Transform a GridCoverage?</a></li>
+<li><a class="reference internal" href="#q-how-do-i-extend-the-system-with-my-own-custom-crs">Q: How do I extend the system with my own custom CRS?</a></li>
+<li><a class="reference internal" href="#q-how-to-i-add-my-own-epsg-codes">Q: How to I add my own EPSG Codes?</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#coverage-faq">Coverage FAQ</a><ul>
+<li><a class="reference internal" href="#q-relationship-with-iso-coverage">Q: Relationship with ISO Coverage?</a></li>
+<li><a class="reference internal" href="#q-how-is-raster-data-supported">Q: How is raster data supported?</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#main-faq">Main FAQ</a><ul>
+<li><a class="reference internal" href="#q-what-is-gt-main-responsible-for">Q: What is gt-main responsible for?</a></li>
+<li><a class="reference internal" href="#q-how-do-i-make-a-featuretype">Q: How do I make a FeatureType?</a></li>
+<li><a class="reference internal" href="#q-how-do-i-modify-a-featuretype">Q: How do I modify a FeatureType?</a></li>
+<li><a class="reference internal" href="#q-how-to-get-featurecollection-to-work-with-a-for-each-loop">Q: How to get FeatureCollection to work with a &#8216;for each&#8217; loop?</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#jdbc-faq">JDBC FAQ</a><ul>
+<li><a class="reference internal" href="#q-how-to-access-a-database-from-java-enterprise-edition">Q: How to access a database from Java Enterprise Edition?</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#cql-faq">CQL FAQ</a><ul>
+<li><a class="reference internal" href="#q-what-is-cql-used-for">Q: What is CQL used for?</a></li>
+<li><a class="reference internal" href="#q-what-version-of-cql-is-implemented">Q: What version of CQL is implemented?</a></li>
+<li><a class="reference internal" href="#q-can-i-just-try-cql-out">Q: Can I just try CQL out?</a></li>
+<li><a class="reference internal" href="#q-what-does-ecql-offer">Q: What does ECQL offer?</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#xml-faq">XML FAQ</a><ul>
+<li><a class="reference internal" href="#q-what-parser-does-geotools-use">Q: What parser does GeoTools use?</a></li>
+<li><a class="reference internal" href="#q-what-is-sax">Q: What is SAX?</a></li>
+<li><a class="reference internal" href="#q-what-is-dom">Q: What is DOM?</a></li>
+<li><a class="reference internal" href="#q-what-is-xml-transform">Q: What is XML Transform?</a></li>
+<li><a class="reference internal" href="#q-schema-assisted-did-you-make-that-up">Q: Schema Assisted -did you make that up?</a></li>
+<li><a class="reference internal" href="#q-xdo">Q: XDO?</a></li>
+<li><a class="reference internal" href="#q-gtxml">Q: GTXML?</a></li>
+<li><a class="reference internal" href="#q-why-doesn-t-geotools-use-jaxb">Q: Why doesn&#8217;t GeoTools use JAXB?</a></li>
+<li><a class="reference internal" href="#q-for-wfs-why-does-parser-return-a-map">Q: For WFS why does Parser return a Map?</a></li>
+<li><a class="reference internal" href="#q-i-am-in-a-restricted-environment-how-to-configure-schemalocator">Q: I am in a restricted environment, how to configure SchemaLocator?</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#render-faq">Render FAQ</a><ul>
+<li><a class="reference internal" href="#how-do-i-display-a-shapefile">How do I display a shapefile?</a></li>
+<li><a class="reference internal" href="#q-what-is-sld">Q: What is SLD?</a></li>
+<li><a class="reference internal" href="#q-what-is-a-mapcontent">Q: What is a MapContent?</a></li>
+<li><a class="reference internal" href="#q-what-about-the-widget">Q: What about the Widget?</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#brewer-faq">Brewer FAQ</a><ul>
+<li><a class="reference internal" href="#q-i-have-47-classes-to-represent-and-colorbrewer-only-goes-up-to-12">Q: I have 47 classes to represent and ColorBrewer only goes up to 12!</a></li>
+<li><a class="reference internal" href="#q-but-why-does-it-only-go-up-to-12">Q: But why does it only go up to 12?</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#wms-faq">WMS FAQ</a><ul>
+<li><a class="reference internal" href="#q-scrambled-png-images">Q: Scrambled PNG Images?</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#swing-faq">Swing FAQ</a><ul>
+<li><a class="reference internal" href="#q-what-is-jmappane-for">Q: What is JMapPane for?</a></li>
+<li><a class="reference internal" href="#q-what-is-the-best-way-to-simulate-a-car-moving-on-a-map">Q: What is the best way to simulate a car moving on a map?</a></li>
+<li><a class="reference internal" href="#q-jmappane-is-slow-how-do-i-make-it-faster">Q: JMapPane is Slow how do I make it faster?</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#building-faq">Building FAQ</a><ul>
+<li><a class="reference internal" href="#what-version-of-jdk">What version of JDK?</a></li>
+<li><a class="reference internal" href="#how-do-i-build-from-source-code">How do I build from source code?</a></li>
+<li><a class="reference internal" href="#why-is-maven-3-slower">Why is Maven 3 Slower?</a></li>
+<li><a class="reference internal" href="#what-the-fastest-build">What the fastest build?</a></li>
+<li><a class="reference internal" href="#how-do-i-create-an-executable-jar-for-my-geotools-app">How do I create an executable jar for my GeoTools app?</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="welcome/javaEE.html"
+                        title="previous chapter">Java EE</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="build/index.html"
+                        title="next chapter">Building</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/faq.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="frequently-asked-questions">
+<span id="faq"></span><h1>Frequently Asked Questions<a class="headerlink" href="#frequently-asked-questions" title="Permalink to this headline">¶</a></h1>
+<p>This page brings together the individual <strong>faq</strong> pages for each module. This allows you to search
+for an answer even if you are not sure exactly what module is responsible.</p>
+<p>Please direct any comments or suggestions about this page to the <a class="reference external" href="https://lists.sourceforge.net/lists/listinfo/geotools-gt2-users">GeoTools user list</a>.</p>
+<div class="section" id="geotools-faq">
+<h2>GeoTools FAQ<a class="headerlink" href="#geotools-faq" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="q-what-is-geotools">
+<h3>Q: What is GeoTools ?<a class="headerlink" href="#q-what-is-geotools" title="Permalink to this headline">¶</a></h3>
+<p>GeoTools is a free, open source Java geospatial toolkit for working with both vector and raster data. It is made up of a
+large number of modules that allow you to:</p>
+<blockquote>
+<div><ul class="simple">
+<li>access GIS data in many file formats and spatial databases</li>
+<li>work with an extensive range of map projections</li>
+<li>filter and analyze data in terms of spatial and non-spatial attributes</li>
+<li>compose and display maps with complex styling</li>
+<li>create and analyze graphs and networks</li>
+</ul>
+</div></blockquote>
+<p>GeoTools implements specifications of the <a class="reference external" href="http://www.osgeo.org/">Open Geospatial Consortium</a> including:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Simple Features</li>
+<li>GridCoverage</li>
+<li>Styled Layer Descriptor</li>
+<li>Filter Encoding</li>
+</ul>
+</div></blockquote>
+<p>GeoTools can be readily extended by adding new modules, either for custom applications or as contributions to the
+library.</p>
+</div>
+<div class="section" id="q-how-do-i-search-the-archives-of-the-geotools-mailing-lists">
+<h3>Q: How do I search the archives of the GeoTools mailing lists?<a class="headerlink" href="#q-how-do-i-search-the-archives-of-the-geotools-mailing-lists" title="Permalink to this headline">¶</a></h3>
+<p>Go to <a class="reference external" href="http://n2.nabble.com/GeoTools-the-java-GIS-toolkit-f1936684.html">this page</a>.</p>
+</div>
+<div class="section" id="q-what-are-the-features-of-the-geotools-library">
+<h3>Q: What are the features of the GeoTools Library?<a class="headerlink" href="#q-what-are-the-features-of-the-geotools-library" title="Permalink to this headline">¶</a></h3>
+<p>That is a hard question to answer as GeoTools is a general purpose geospatial library.</p>
+<p>Here is a sample of some of the great features in the library today:</p>
+<ul class="simple">
+<li>Supports OGC Grid Coverage implementation</li>
+<li>Coordinate reference system and transformation support</li>
+<li>Symbology using OGC Styled Layer Descriptor (SLD) specification</li>
+<li>Attribute and spatial filters using OGC Filter Encoding specification</li>
+<li>Supports graphs and networks</li>
+<li>Java Topology Suite (JTS) - with support for the OGC Simple Features Specification - used as the geometry model for vector features.</li>
+<li>A stateless, low memory renderer, particularly useful in server-side environments</li>
+<li>Powerful &#8220;schema asisted&#8221; parsing technology using XML Schema to bind to GML content</li>
+<li>Interact with OGC web services with both Web Map Server and Web Feature Server support</li>
+<li>Open plug-in system allowing you to teach the library additional formats</li>
+<li>Plug-ins for the ImageIO-EXT project allowing GeoTools to read additional raster formats from GDAL</li>
+</ul>
+</div>
+<div class="section" id="q-okay-what-data-formats-does-geotools-support">
+<h3>Q: Okay what data formats does GeoTools support?<a class="headerlink" href="#q-okay-what-data-formats-does-geotools-support" title="Permalink to this headline">¶</a></h3>
+<p>GeoTools supports additional formats through the use of plug-ins. You can control the formats supported
+by your application by only including the plug-ins you requrie.</p>
+<ul class="simple">
+<li>arcgrid</li>
+<li>arcsde</li>
+<li>db2</li>
+<li>raster formats<ul>
+<li>geotiff</li>
+<li>grassraster</li>
+<li>gtopo30</li>
+<li>image - world plus image files using common image formats such as JPEG, TIFF, GIF and PNG</li>
+<li>imageio-ext-gdal (allows access to additional GDAL formats thanks to the ImageIO project)</li>
+<li>imagemoasaic</li>
+<li>imagepyramid</li>
+<li>JP2K</li>
+</ul>
+</li>
+<li>Database &#8220;jdbc-ng&#8221; support<ul>
+<li>h2</li>
+<li>mysql</li>
+<li>oracle</li>
+<li>postgis</li>
+<li>spatialite</li>
+<li>sqlserver</li>
+</ul>
+</li>
+<li>postgis</li>
+<li>property - simple text file format often used for testing</li>
+<li>shapefile</li>
+</ul>
+<p>Perhaps one of the unsupported modules or plugins may have what you need. These modules
+are supplied by the community and do not yet meet the quality expected by the library:</p>
+<p>There are also some &#8220;unsupported&#8221; formats that are either popular or under development:</p>
+<ul class="simple">
+<li>app-schema (under development) - allows the remapping and combining of one or more data sources into a provided application schema</li>
+<li>dfx</li>
+<li>edigeo</li>
+<li>geojson</li>
+<li>wfs</li>
+</ul>
+<p>The current authoritative list of plugins is of course the source code:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://svn.osgeo.org/geotools/trunk/modules/plugin/">http://svn.osgeo.org/geotools/trunk/modules/plugin/</a></li>
+<li><a class="reference external" href="http://svn.osgeo.org/geotools/trunk/modules/unsupported/">http://svn.osgeo.org/geotools/trunk/modules/unsupported/</a></li>
+</ul>
+</div>
+<div class="section" id="geotools-versions">
+<h3>GeoTools versions<a class="headerlink" href="#geotools-versions" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="q-how-are-geotools-versions-organized">
+<h4>Q. How are GeoTools versions organized?<a class="headerlink" href="#q-how-are-geotools-versions-organized" title="Permalink to this headline">¶</a></h4>
+<p>Like many open source projects, GeoTools has a <em>development</em> version and one or more <em>stable</em> versions active at any
+given time. By active, we mean that the project developers are working on new features, improvements and bug fixes.</p>
+<p>Source code for the stable branch(es) can be found in the <em>branches</em> folder of the GeoTools subversion repository. For
+example, at the time of writing the active stable branch is <a class="reference external" href="http://svn.osgeo.org/geotools/branches/2.7.x/">branches/2.7.x</a>.</p>
+<p>Formal releases are based on a stable branch. The source code for a formal release is archived in the <em>tags</em> folder of
+the subversion repository. For example, the version 2.7.1 sources can be found in
+<a class="reference external" href="http://svn.osgeo.org/geotools/tags/2.7.1/">tags/2.7.1</a>.</p>
+<p>Source code for the development version are in the <a class="reference external" href="http://svn.osgeo.org/geotools/trunk/">trunk</a> folder. This is the
+bleeding edge code where the latest features are being worked on. Eventually this code will become the next stable
+branch.</p>
+<p>Commencing with GeoTools version 8, a major.minor.patch numbering system applies.</p>
+<dl class="docutils">
+<dt>major</dt>
+<dd>An increment of the major identifier (e.g. from version 8.x.y to 9.0.0) indicates substantial changes that can break
+binary compatibility with previous versions.</dd>
+<dt>minor</dt>
+<dd>An increment in the minor identifier (e.g. from version 8.0.y to 8.1.y) indicates new features and/or improvements
+that do not break binary compatibility with the previous version.</dd>
+<dt>patch</dt>
+<dd>An increment in the patch identifier (e.g. from version 8.0.0 to 8.0.1) indicates fixes and minor tweaks since the
+previous version.</dd>
+</dl>
+</div>
+<div class="section" id="q-what-is-a-snapshot-version-and-how-do-i-use-it">
+<h4>Q. What is a SNAPSHOT version and how do I use it?<a class="headerlink" href="#q-what-is-a-snapshot-version-and-how-do-i-use-it" title="Permalink to this headline">¶</a></h4>
+<p>A snapshot is the GeoTools code that the developers are actively working on. Usually there will be two active snapshots:
+one associated with the most recent formal release (e.g GeoTools 2.7-SNAPSHOT) and a second for the development version
+(e.g. GeoTools 8-SNAPSHOT). At times there will also be snapshot releases for an earlier stable branch that is still
+being maintained (e.g. GeoTools 2.6-SNAPSHOT).</p>
+<p>New snapshot jars are built nightly and deployed to a repository separate from the one used for formal releases. If you
+are using Maven as your build tool you can work with a snapshot release by adding the following to your pom.xml:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;repository&gt;
+    &lt;id&gt;opengeo&lt;/id&gt;
+    &lt;name&gt;OpenGeo Maven Repository&lt;/name&gt;
+    &lt;url&gt;http://repo.opengeo.org/&lt;/url&gt;
+    &lt;snapshots&gt;
+        &lt;enabled&gt;true&lt;/enabled&gt;
+    &lt;/snapshots&gt;
+&lt;/repository&gt;
+</pre></div>
+</div>
+<p>You can now build your project against a snapshot release by setting it as the your version property as shown here:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;properties&gt;
+    &lt;geotools.version&gt;8-SNAPSHOT&lt;/geotools.version&gt;
+&lt;/properties&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="common-license-questions">
+<h3>Common License Questions<a class="headerlink" href="#common-license-questions" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="q-what-licence-does-geotools-use">
+<h4>Q: What licence does GeoTools use?<a class="headerlink" href="#q-what-licence-does-geotools-use" title="Permalink to this headline">¶</a></h4>
+<p>All GeoTools modules are released under the GNU Lesser General Public License (LGPL). GeoTools can be used for
+commercial applications, any changes made to GeoTools need to be made available to your customers.</p>
+<p>An easy way to do this is to contribute the changes back to the GeoTools project (but this is not required).</p>
+</div>
+<div class="section" id="q-can-i-use-geotools-in-my-commercial-project">
+<h4>Q: Can I use GeoTools in my Commercial Project?<a class="headerlink" href="#q-can-i-use-geotools-in-my-commercial-project" title="Permalink to this headline">¶</a></h4>
+<p>Yes. This is one of the reasons we chose the LGPL license. You can build a
+Commercial application which uses GeoTools as a library and re-distribute your
+application under any license you choose. Your users will get a license to your
+application under the terms of your license and a license to the GeoTools
+library under the terms of the LGPL. You only need to give your users some way
+to get the source code of the GeoTools library, most easily by pointing your
+users to the servers of the GeoTools project.</p>
+<p>However, if you choose to modify the GeoTools library itself, then you have to
+publish the source code to those changes to the users of your application.</p>
+<p>The easiest way to do that will be to submit those changes back to the GeoTools
+project so the changes can be incorporated into the core source code.</p>
+</div>
+<div class="section" id="q-can-i-use-geotools-in-my-gpl-project">
+<h4>Q: Can I use GeoTools in my GPL Project?<a class="headerlink" href="#q-can-i-use-geotools-in-my-gpl-project" title="Permalink to this headline">¶</a></h4>
+<p>Yes. This is one of the reasons we chose the LGPL license. You can build a free
+software application which uses GeoTools as a library and re-distribute your
+application under the GPL license. Your users will get a license to your
+application under the terms of the GPL and a license to the GeoTools library
+under the terms of the LGPL. You only need to give your users some way to get
+the source code of the GeoTools library, either by pointing your users to the
+servers of the GeoTools project or by giving them the GeoTools code in the same
+way you give them the code to your GPL application.</p>
+<p>However, if you choose to modify the GeoTools library itself, then you have to
+publish the source code to those changes to your users.</p>
+<p>The easiest way to do that will be to submit those changes back to the GeoTools
+project so the changes can be incorporated into the core source code.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This means you can use GeoTools as a library but you cannot
+incorporate GeoTools code directly into your GLP application. Legally, the
+latter amounts to re-licensing GeoTools under a new license and you do not have
+the right to do so.</p>
+</div>
+</div>
+<div class="section" id="q-what-restrictions-are-there-on-my-use-of-geotools">
+<h4>Q: What restrictions are there on my use of GeoTools?<a class="headerlink" href="#q-what-restrictions-are-there-on-my-use-of-geotools" title="Permalink to this headline">¶</a></h4>
+<p>None. You can read, run, copy, or do anything else you want to do with the
+GeoTools code. This is one of the four core freedoms of free software which we
+grant you under the LGPL: the freedom to use the software for any purpose you
+choose.</p>
+<p>The only restrictions of the LGPL come when you are re-distributing GeoTools,
+that is when you are passing it on to someone else either on its own or as part
+of a larger product, such as when you share it or sell it.</p>
+</div>
+<div class="section" id="q-what-restrictions-are-there-on-my-re-distribution-of-geotools">
+<h4>Q: What restrictions are there on my re-distribution of GeoTools?<a class="headerlink" href="#q-what-restrictions-are-there-on-my-re-distribution-of-geotools" title="Permalink to this headline">¶</a></h4>
+<p>Technically, you have to provide everyone who receives a copy of GeoTools from
+you with some way to get the source code to the library. In practice, pointing
+those users to the Geotools project itself is considered an adequate solution.</p>
+<p>However, if you are re-distributing a modified version of GeoTools then you
+need to provide users with access to the modified code. This means that you
+must give your users some way to get the modified code such as by publishing it
+yourself. An alternative way to provide your users with the modifications would
+be to work with us to get your changes integrated into the GeoTools library&#8211;
+-you could then use the new library directly. The best way to do this would be
+to open a change request on our issue tracker and add to that request a code
+patch containing your changes.</p>
+</div>
+<div class="section" id="q-what-should-i-do-if-i-am-still-unsure-what-i-am-allowed-to-do">
+<h4>Q: What should I do if I am still unsure what I am allowed to do?<a class="headerlink" href="#q-what-should-i-do-if-i-am-still-unsure-what-i-am-allowed-to-do" title="Permalink to this headline">¶</a></h4>
+<p>You can clarify any questions you have by sending us questions to the user
+mailing list:</p>
+<ul class="simple">
+<li><a class="reference external" href="mailto:geotools-gt2-users&#37;&#52;&#48;lists&#46;sourceforge&#46;net">geotools-gt2-users<span>&#64;</span>lists<span>&#46;</span>sourceforge<span>&#46;</span>net</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="q-why-can-t-i-find-module-x-in-the-geotools-distribution-or-javadocs">
+<h3>Q: Why can&#8217;t I find module X in the GeoTools distribution or javadocs?<a class="headerlink" href="#q-why-can-t-i-find-module-x-in-the-geotools-distribution-or-javadocs" title="Permalink to this headline">¶</a></h3>
+<p>If you&#8217;re working with a recent GeoTools release then chances are the module that you&#8217;re looking for is an
+<a class="reference internal" href="unsupported/index.html"><em>unsupported module</em></a>. These modules not part of the standard GeoTools distribution but are
+available from the <a class="reference external" href="http://svn.osgeo.org/geotools">Subversion repository</a> in the <strong>modules/unsupported</strong> folder. If
+you are using Maven as your build tool you can include a dependency for an unsupported module as you would any other
+GeoTools module.</p>
+</div>
+<div class="section" id="q-what-is-an-unsupported-module">
+<h3>Q: What is an unsupported module?<a class="headerlink" href="#q-what-is-an-unsupported-module" title="Permalink to this headline">¶</a></h3>
+<p>Unsupported modules are those found in the <strong>modules/unsupported</strong> folder of each GeoTools version in the <a class="reference external" href="http://svn.osgeo.org/geotools">Subversion
+repository</a>. They are not part of the standard GeoTools distribution but are still
+available for use via Subversion, Maven and manual download.</p>
+<p>A module can be unsupported for one or more of the following reasons:</p>
+<ul class="simple">
+<li>It is under development and has not yet met all of the criteria for usability, test coverage, documentation etc to be
+included in the general GeoTools distribution.</li>
+<li>It lacks a module maintainer.</li>
+<li>It has been superseded by another module and dropped from the general distribution, but still has enough useful bits
+or active users to make it worth keeping (at least for a while).</li>
+</ul>
+<p>Unsupported modules are a mixed bag: some are reliable and regularly used while others are in various states of
+development or decay. The best way to find out the status of any particular module is to look in the <a class="reference external" href="http://n2.nabble.com/geotools-gt2-users-f1936685.html">user list archives</a> and then, if you want to check further, post a question to the
+list.</p>
+</div>
+</div>
+<div class="section" id="opengis-faq">
+<h2>OpenGIS FAQ<a class="headerlink" href="#opengis-faq" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="q-relationship-with-geoapi">
+<h3>Q: Relationship with &#8220;GeoAPI&#8221;?<a class="headerlink" href="#q-relationship-with-geoapi" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>GeoAPI was started in 2002 James McGill (who also set up GeoTools). The aim at that time was to provide common API for independent projects like GeoTools, deegree and OpenJump, allowing the easy exchange of code.</li>
+<li>Later on, the Open Geospatial consortium started the &#8220;GO-1&#8221; project with a similar goal. The &#8220;Geospatial Object&#8221; project was led  Polexis which was at the time based in the United States.</li>
+<li>Givin the similarity between GO-1 and GeoAPI goals, we got in touch each other and managed to merge the two projects.</li>
+<li>Polexis produces the following official OGC specification based on GeoAPI 2.0: <a class="reference external" href="http://www.opengeospatial.org/standards/go">http://www.opengeospatial.org/standards/go</a></li>
+<li>Later Polexis was bough by Sys Technology, with the new owner and priorites their investment in GeoAPI / GO-1 stopped.</li>
+<li>The GO-1 / GeoAPI working group at OGC was dissolved du to lack of activity.</li>
+<li>GeoTools contributors gradually over the GeoAPI project and in GeoTools 2.7 folded these interfaces back into the GeoTools OpenGIS module</li>
+</ul>
+</div>
+</div>
+<div class="section" id="jts-faq">
+<h2>JTS FAQ<a class="headerlink" href="#jts-faq" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="q-what-is-the-relationship-between-jts-and-geotools">
+<h3>Q: What is the relationship between JTS and GeoTools?<a class="headerlink" href="#q-what-is-the-relationship-between-jts-and-geotools" title="Permalink to this headline">¶</a></h3>
+<p>We make use of the Java Topology Suite to represent &#8220;Simple&#8221; Geometry, and the OpenGIS interfaces to represent everything else. We have been forced to define an API module of our own in a few cases, like data access, where something &#8220;standard&#8221; is not available.</p>
+<p>You will be using JTS a lot as it literally is the &#8220;shape&#8221; of GeoTools. It captures shapes using constructs like Coordinate, Point, Polygon and LineString.</p>
+<ul class="simple">
+<li>Do keep in mind that JTS is pure topology and the Geometry objects are pure shapes with no meaning. For the meaning, placing that shape on the earth, you will need to consult a CoordinateReferenceSystem.</li>
+<li>JTS topologic operations work in a two dimensional cartesian plane. With this in mind three dimensional shapes can be represented, but not calculated with.</li>
+<li>JTS focuses on <em>linear</em> topology, you will need to represent curves as a LineString with many little segments.</li>
+</ul>
+<p>With those notes it may sound like JTS is limited; it is instead focused on the task at hand - Geographic Information Systems. While 3D and curves may be common in CAD systems we will need a lot of funding and raw science to make it work for GIS. Some of that work is happening in GeoTools with ISO Geometry.</p>
+</div>
+<div class="section" id="q-what-geometry-specifications">
+<h3>Q: What Geometry Specifications?<a class="headerlink" href="#q-what-geometry-specifications" title="Permalink to this headline">¶</a></h3>
+<p>JTS is an implementation of the OGC Simple Features for SQL Specification (ie SFSQL). It covers 2D constructs like Point, Line and Polygon. JTS is willing to carry a 3rd point around but does not use it for calculations - making it a 2.5D solution for cartesian space.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="36%" />
+<col width="18%" />
+<col width="46%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Specification</th>
+<th class="head">Supports</th>
+<th class="head">Implementation</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Simple Features for SQL</td>
+<td>2.5D, linear</td>
+<td>Java Topology Suite</td>
+</tr>
+<tr class="row-odd"><td>ISO Geometry</td>
+<td>3D, curves</td>
+<td>OpenGIS ISO Geoemtry interfaces</td>
+</tr>
+</tbody>
+</table>
+<p>GeoTools makes a point of working with both implementations, but frankly the ISO Geometry implementations are not ready yet.</p>
+</div>
+</div>
+<div class="section" id="api-faq">
+<h2>API FAQ<a class="headerlink" href="#api-faq" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="q-what-does-api-mean">
+<h3>Q: What does API mean?<a class="headerlink" href="#q-what-does-api-mean" title="Permalink to this headline">¶</a></h3>
+<p>An &#8220;Application Program Interface&#8221; (API) is is a contract
+that GeoTools commits to using to make functionality available to your
+application.</p>
+<p>The interfaces in <strong>gt-opengis</strong> and <strong>gt-api</strong> represent the formal
+GeoTools interfaces advertises to your application defining concepts
+ideas and data structures.</p>
+<p>Additional public methods and classes are added by other modules, but
+they are focused on doing rather than defining.</p>
+<p>For more information review welcome <a class="reference internal" href="welcome/use.html"><em>How to Use GeoTools</em></a> page.</p>
+</div>
+</div>
+<div class="section" id="metadata-faq">
+<h2>Metadata FAQ<a class="headerlink" href="#metadata-faq" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="q-utility-classes">
+<h3>Q: Utility Classes?<a class="headerlink" href="#q-utility-classes" title="Permalink to this headline">¶</a></h3>
+<p>GeoTools also includes utility classes used to support the implementation of GeoTools.</p>
+<p>For the most part these classes are considered internal, as an example to iron out differences between Java versions.</p>
+</div>
+<div class="section" id="q-where-are-the-interfaces-for-metadata">
+<h3>Q: Where are the Interfaces for Metadata?<a class="headerlink" href="#q-where-are-the-interfaces-for-metadata" title="Permalink to this headline">¶</a></h3>
+<p>The interfaces are in the <a class="reference internal" href="library/opengis/index.html"><em>gt-opengis</em></a> module.</p>
+<p>If you don&#8217;t have access to the ISO documentation (who does?)
+just reading the javadocs is a great place to start.</p>
+</div>
+<div class="section" id="q-why-did-you-implement-this-class-it-is-in-java-6">
+<h3>Q: Why did you implement this class it is in Java 6?<a class="headerlink" href="#q-why-did-you-implement-this-class-it-is-in-java-6" title="Permalink to this headline">¶</a></h3>
+<p>If you are running Java 6 feel free to use Java 6 facilities.</p>
+<p>Some of the utility classes are just here to get the job done in Java 1.4 - they
+have nothing to do with spatial anything. You will find examples of checked
+collections (yes I know that is available in Java 5); an implementation of an
+object cache (there is a JSR for that); and so on ...</p>
+</div>
+<div class="section" id="q-why-are-these-utility-classes-in-the-metadata-module">
+<h3>Q: Why are these utility classes in the Metadata Module?<a class="headerlink" href="#q-why-are-these-utility-classes-in-the-metadata-module" title="Permalink to this headline">¶</a></h3>
+<p>Because metadata is the &#8220;lowest&#8221; implementation jar in our software stack; needed by
+everyone else. These classes really are not interesting enough to separate out into
+their own module.</p>
+</div>
+<div class="section" id="q-why-does-gt-metadata-contain-all-this-factory-stuff">
+<h3>Q: Why does gt-metadata contain all this factory stuff?<a class="headerlink" href="#q-why-does-gt-metadata-contain-all-this-factory-stuff" title="Permalink to this headline">¶</a></h3>
+<p>The gt-metadata module introduces some of the &#8220;glue code&#8221; needed used to hook up GeoTools to services
+provided by your project. You will find pages here covering logging and JNDI integration.</p>
+<p>For a more detailed discussion of how to integrate GeoTools into your application please
+review the advanced section on integration.</p>
+</div>
+</div>
+<div class="section" id="referencing-faq">
+<h2>Referencing FAQ<a class="headerlink" href="#referencing-faq" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="q-why-can-t-i-display-shapefile-over-a-wms-layer">
+<h3>Q: Why can&#8217;t I display shapefile over a WMS layer?<a class="headerlink" href="#q-why-can-t-i-display-shapefile-over-a-wms-layer" title="Permalink to this headline">¶</a></h3>
+<p>This can happen when the axis definition (ie. which way is X ?) differs between the coordinate reference system used by
+the shapefile and that used by the WMS layer.  It can be fixed by requesting GeoTools to enforce lon - lat axis order by
+including this statement in your code prior to displaying layers...</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="n">Hints</span><span class="o">.</span><span class="na">putSystemDefault</span><span class="o">(</span><span class="n">Hints</span><span class="o">.</span><span class="na">FORCE_LONGITUDE_FIRST_AXIS_ORDER</span><span class="o">,</span> <span class="n">Boolean</span><span class="o">.</span><span class="na">TRUE</span><span class="o">);</span>
+</pre></div>
+</div>
+<p>If this doesn&#8217;t work you can try this more brutal, System wide approach...</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="n">System</span><span class="o">.</span><span class="na">setProperty</span><span class="o">(</span><span class="s">&quot;org.geotools.referencing.forceXY&quot;</span><span class="o">,</span> <span class="s">&quot;true&quot;</span><span class="o">);</span>
+</pre></div>
+</div>
+<p>See also:</p>
+<ul class="simple">
+<li><a class="reference internal" href="library/referencing/order.html"><em>Axis Order</em></a></li>
+<li>A <a class="reference external" href="http://jira.codehaus.org/browse/GEOT-2995">Jira issue</a> discussing this problem</li>
+</ul>
+</div>
+<div class="section" id="q-how-to-choose-an-epsg-authority">
+<h3>Q: How to choose an EPSG Authority?<a class="headerlink" href="#q-how-to-choose-an-epsg-authority" title="Permalink to this headline">¶</a></h3>
+<dl class="docutils">
+<dt>The referencing module does not do very much out of the box - it needs someone</dt>
+<dd>to tell it what all the funny codes mean (such as &#8220;EPSG:4326&#8221;).</dd>
+</dl>
+<p>You need to choose a single &#8220;epsg&#8221; jar to have on your classpath; if you have
+several epsg jars on your classpath you will get a FactoryException.</p>
+<p>For most needs just use the <strong>gt-epsg-hsql</strong> plugin:</p>
+<ul class="simple">
+<li><strong>gt-epsgh-hsql</strong>: will unpack an hsql database containing the official epsg
+database into a temp directory, a great solution for desktop applications.</li>
+</ul>
+<p>There are several alternatives:</p>
+<ul class="simple">
+<li><strong>gt-epsg-wkt</strong>: uses an internal property file and is lightweight rather than
+official and correct. A great solution for applets</li>
+<li><strong>gt-epsg-postgres</strong>: uses the official epsg database which you have to load
+into PostgreSQL yourself. A great solution for Java EE applications.</li>
+<li><strong>gt-epsg-access</strong>: irectly use an the official epsg database as distributed.
+A great solution for windows users that need the latest official database.</li>
+</ul>
+<p>Unsupported:</p>
+<ul class="simple">
+<li><strong>gt-epsg-oracle</strong>: Load the official epsg database into oracle to use this plugin</li>
+<li><strong>gt-epsgh-h2</strong>: use this popular pure java database</li>
+</ul>
+</div>
+<div class="section" id="q-are-other-authorities-other-than-epsg-supported">
+<h3>Q: Are other authorities other than EPSG supported?<a class="headerlink" href="#q-are-other-authorities-other-than-epsg-supported" title="Permalink to this headline">¶</a></h3>
+<p>The main module includes definitions of AUTO and AUTO2 and several other OGC
+inspired ideas.</p>
+</div>
+<div class="section" id="q-what-jars-does-gt-referencing-need">
+<h3>Q: What Jars does gt-referencing need?<a class="headerlink" href="#q-what-jars-does-gt-referencing-need" title="Permalink to this headline">¶</a></h3>
+<p>As an example to use <strong>gt-epsg-hsql</strong> you will need:</p>
+<div class="highlight-python"><div class="highlight"><pre>C:\geotools\trunk\modules\plugin\epsg-hsql&gt;mvn dependency:tree
+...
+------------------------------------------------------------------------
+Building EPSG Authority Service using HSQL database
+   task-segment: [dependency:tree]
+------------------------------------------------------------------------
+[dependency:tree]
+org.geotools:gt2-epsg-hsql:jar:2.5-SNAPSHOT
++- junit:junit:jar:3.8.1:test
++- javax.media:jai_core:jar:1.1.3:provided
++- org.geotools:gt2-referencing:jar:2.5-SNAPSHOT:compile
+|  +- java3d:vecmath:jar:1.3.1:compile
+|  +- commons-pool:commons-pool:jar:1.3:compile
+|  \- org.geotools:gt2-metadata:jar:2.5-SNAPSHOT:compile
+|     +- org.opengis:geoapi:jar:2.2-SNAPSHOT:compile
+|     +- javax.units:jsr108:jar:0.01:compile
+|     \- edu.oswego:concurrent:jar:1.3.4:compile
++- org.geotools:gt2-sample-data:jar:2.5-SNAPSHOT:test
++- hsqldb:hsqldb:jar:1.8.0.7:compile
++- net.sourceforge.groboutils:groboutils-core:jar:5:test
+\- commons-dbcp:commons-dbcp:jar:1.2.2:test
+------------------------------------------------------------------------
+</pre></div>
+</div>
+</div>
+<div class="section" id="q-bursa-wolf-parameters-required">
+<h3>Q: Bursa-Wolf Parameters Required?<a class="headerlink" href="#q-bursa-wolf-parameters-required" title="Permalink to this headline">¶</a></h3>
+<p>GeoTools performs datum shift using Bursa-Wolf parameters at this time. If
+these cannot be determined from your CoordinateReferenceSystem we will be
+unable to sort out a transform.</p>
+<p>Most of the time this does not matter as users work with their information in
+the same datum it was collected in.</p>
+<ul>
+<li><p class="first">A: Lenient</p>
+<p>A quick fix involves setting &#8220;lenient &#8221; to true when searching for a
+MathTransform.:</p>
+<div class="highlight-python"><div class="highlight"><pre>MathTransform transform = CRS.findMathTransform(sourceCRS, targetCRS, true);
+</pre></div>
+</div>
+<p>This approach is good enough for display, but not recommended for editing or
+careful analysis work.</p>
+</li>
+<li><p class="first">A: Match your PRJ file</p>
+<p>Usually this occurs when you have loaded a CoordinateReferenceSystem from a
+&#8220;prj&#8221; file included with your shapefile.</p>
+<p>To fix look up the complete definition in the EPSG database using the CRS
+utility class. The EPSG database contains more information than can be
+Expressed in your &#8220;prj&#8221; file.</p>
+</li>
+<li><p class="first">A: Datum shift by Grid</p>
+<p>Finally in the rare case of a Datum shift backed by grids are only partially
+implemented. Rueben Shulz has implemented data shift backed by grids for
+NADCON with the following limitations:</p>
+<ul class="simple">
+<li>Use of NADCON grids has not been integrated with
+DefaultCoordinateOperationFactory (so you would need to set it up by hand)</li>
+<li>The general case of a Datum shift provided by a grid is not covered, for
+example Spanish Datum Changes ED50-ETRS89 will not work</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="q-what-does-gt-referencing-do">
+<h3>Q: What does gt-referencing do?<a class="headerlink" href="#q-what-does-gt-referencing-do" title="Permalink to this headline">¶</a></h3>
+<p>You will eventually care about this as it defines how 2D data actually means 3D
+data.</p>
+<p>You can take a measurement (ie a coordinate) plus a coordinate reference system (the
+meaning) and figure out where a position on the earth is in 3D space.</p>
+<p>It is easy to assume that Coordinates are recorded in double[] as repeating x/y values
+as is often done in CAD programs.</p>
+<p>In a GIS application we can only wish they are X,Y. They are actually LAT/LONG or
+LONG/LAT or angle,angle,angle or something crazy like time.</p>
+<p>Given two CoordinateReferenceSystems you can make a math transform from one to the
+other. So you could take angle/angle/angle and munch it into something you like for
+3D or 2D display.</p>
+<p>We will get into this again when you actually have some data - the CoordinateReferenceSystem will tells you what the data &#8220;means&#8221;.</p>
+<blockquote>
+<div>Much like 3.0 and &#8220;three meters&#8221;. The first is a number, and the second one means a length.</div></blockquote>
+</div>
+<div class="section" id="q-can-i-just-use-referencing-without-the-rest-of-geotools">
+<h3>Q: Can I just use Referencing without the rest of GeoTools?<a class="headerlink" href="#q-can-i-just-use-referencing-without-the-rest-of-geotools" title="Permalink to this headline">¶</a></h3>
+<p>Yes, you will need to use the metadata module, and one of the epsg modules. Along with
+their dependencies such as units.</p>
+</div>
+<div class="section" id="q-i-cannot-find-an-epsg-code">
+<h3>Q: I cannot find an EPSG Code?<a class="headerlink" href="#q-i-cannot-find-an-epsg-code" title="Permalink to this headline">¶</a></h3>
+<p>You need to have one, and only one, of the epsg plugins on your CLASSPATH. We
+recommend epsg-hsql for most uses.</p>
+</div>
+<div class="section" id="q-i-cannot-re-project-my-shapefile-missing-bursa-wolf-parameters">
+<h3>Q: I cannot re-project my shapefile (missing &#8220;Bursa wolf parameters&#8221;)?<a class="headerlink" href="#q-i-cannot-re-project-my-shapefile-missing-bursa-wolf-parameters" title="Permalink to this headline">¶</a></h3>
+<p>This error occurs when you try to re-project a shapefile with a custom coordinate
+reference system:</p>
+<div class="highlight-python"><div class="highlight"><pre>MathTransform transform = CRS.findMathTransform(DefaultGeographicCRS.WGS84, moroccoCRS);
+</pre></div>
+</div>
+<p>This problem often occurs when working with a custom coordinate reference system, if
+you look in your shapefile&#8217;s prj file you will see that the contents is normal &#8220;well
+known text&#8221;.</p>
+<p>The &#8220;Bursa-Wolf parameters&#8221; define the relationship (and a transformation) between the
+spheroid being used by your shapefile and the normal WGS84 spheroid.</p>
+<p>The opengis javadocs has some help for you here:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://docs.geotools.org/stable/javadocs/org/opengis/referencing/doc-files/WKT.html#TOWGS84">http://docs.geotools.org/stable/javadocs/org/opengis/referencing/doc-files/WKT.html#TOWGS84</a></li>
+</ul>
+<p>Your best bet is to look up the normal EPSG code for your area; and update your &#8220;prj&#8221;
+file to include the official definition.</p>
+</div>
+<div class="section" id="q-how-do-i-transform">
+<h3>Q: How do I Transform?<a class="headerlink" href="#q-how-do-i-transform" title="Permalink to this headline">¶</a></h3>
+<p>The MathTransform interface is used to transform (or &#8220;re-project&#8221;) one DirectPosition
+at a time.</p>
+<p>You can also use the utility class <strong>JTS</strong> which has helper methods to transform
+a Geometry.</p>
+</div>
+<div class="section" id="q-how-to-transform-a-geometry">
+<h3>Q: How to Transform a Geometry?<a class="headerlink" href="#q-how-to-transform-a-geometry" title="Permalink to this headline">¶</a></h3>
+<p>You can use the JTS utility class to create a new geometry in the desired projection:</p>
+<div class="highlight-python"><div class="highlight"><pre>MathTransform transform = CRS.findMathTransform(sourceCRS, targetCRS, false);
+Geometry targetGeometry = JTS.transform( sourceGeometry, transform);
+</pre></div>
+</div>
+</div>
+<div class="section" id="q-how-to-transform-an-envelope">
+<h3>Q: How to Transform an Envelope?<a class="headerlink" href="#q-how-to-transform-an-envelope" title="Permalink to this headline">¶</a></h3>
+<p>For a referenced envelope you can transform directly:</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="n">CoordinateReferenceSystem</span> <span class="n">sourceCRS</span> <span class="o">=</span> <span class="n">CRS</span><span class="o">.</span><span class="na">decode</span><span class="o">(</span><span class="s">&quot;EPSG:4326&quot;</span><span class="o">);</span>
+    <span class="n">ReferencedEnvelope</span> <span class="n">envelope</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ReferencedEnvelope</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="mi">10</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">20</span><span class="o">,</span> <span class="n">sourceCRS</span><span class="o">);</span>
+    
+    <span class="c1">// Transform using 10 sample points around the envelope</span>
+    <span class="n">CoordinateReferenceSystem</span> <span class="n">targetCRS</span> <span class="o">=</span> <span class="n">CRS</span><span class="o">.</span><span class="na">decode</span><span class="o">(</span><span class="s">&quot;EPSG:23032&quot;</span><span class="o">);</span>
+    <span class="n">ReferencedEnvelope</span> <span class="n">result</span> <span class="o">=</span> <span class="n">envelope</span><span class="o">.</span><span class="na">transform</span><span class="o">(</span><span class="n">targetCRS</span><span class="o">,</span> <span class="kc">true</span><span class="o">,</span> <span class="mi">10</span><span class="o">);</span>
+</pre></div>
+</div>
+<p>For a JTS Envelope use the <strong>JTS</strong> utility class:</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="n">CoordinateReferenceSystem</span> <span class="n">sourceCRS</span> <span class="o">=</span> <span class="n">CRS</span><span class="o">.</span><span class="na">decode</span><span class="o">(</span><span class="s">&quot;EPSG:4326&quot;</span><span class="o">);</span>
+    <span class="n">CoordinateReferenceSystem</span> <span class="n">targetCRS</span> <span class="o">=</span> <span class="n">CRS</span><span class="o">.</span><span class="na">decode</span><span class="o">(</span><span class="s">&quot;EPSG:23032&quot;</span><span class="o">);</span>
+    
+    <span class="n">Envelope</span> <span class="n">envelope</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Envelope</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="mi">10</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">20</span><span class="o">);</span>
+    
+    <span class="n">MathTransform</span> <span class="n">transform</span> <span class="o">=</span> <span class="n">CRS</span><span class="o">.</span><span class="na">findMathTransform</span><span class="o">(</span><span class="n">sourceCRS</span><span class="o">,</span> <span class="n">targetCRS</span><span class="o">);</span>
+    
+    <span class="n">Envelope</span> <span class="n">quick</span> <span class="o">=</span> <span class="n">JTS</span><span class="o">.</span><span class="na">transform</span><span class="o">(</span><span class="n">envelope</span><span class="o">,</span> <span class="n">transform</span><span class="o">);</span>
+    
+    <span class="c1">// Sample 10 points around the envelope</span>
+    <span class="n">Envelope</span> <span class="n">better</span> <span class="o">=</span> <span class="n">JTS</span><span class="o">.</span><span class="na">transform</span><span class="o">(</span><span class="n">envelope</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="n">transform</span><span class="o">,</span> <span class="mi">10</span><span class="o">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="q-how-to-transform-a-gridcoverage">
+<h3>Q: How to Transform a GridCoverage?<a class="headerlink" href="#q-how-to-transform-a-gridcoverage" title="Permalink to this headline">¶</a></h3>
+<p>You can use a resample operation to produce a GridCoverage in the desired projection.</p>
+</div>
+<div class="section" id="q-how-do-i-extend-the-system-with-my-own-custom-crs">
+<h3>Q: How do I extend the system with my own custom CRS?<a class="headerlink" href="#q-how-do-i-extend-the-system-with-my-own-custom-crs" title="Permalink to this headline">¶</a></h3>
+<p>If you wish to act as your own authority you can register an additional factory with
+the system.</p>
+<p>This is often used by those working with a national standards body that maintains its
+own set of official codes.</p>
+<p>You can use the <strong>gt-epsg-wkt</strong> plugin as an example of the following options:</p>
+<ul>
+<li><p class="first">Through a property file and programatic registration of the factory</p>
+<p>You can create a file with your CRS in the WKT format, instantiate a
+PropertyAuthorityFactory with that CRS:</p>
+<ol class="arabic simple">
+<li>Create a property file with your CRS definitions in Well-Known Text (WKT) format.</li>
+<li>Each line of the file should be &#8220;someUniqueCodeValue = crsInWKT&#8221;.</li>
+<li>Place that file as a resource available from your code at run time</li>
+<li>Create a org.geotools.referencing.factory.PropertyAuthorityFactory with a custom
+code for the authority such as &#8220;CUSTOM&#8221; and a URI to your file</li>
+<li>Register your factory with the ReferencingFactoryFinder.addAuthorityFactory(..)
+method</li>
+</ol>
+<p>After that, the desired CRS can be invoked as &#8220;CUSTOM:someUniqueCodeValue&#8221; so, for
+example, a CRS object can be created using the CRS.decode(..) method with the string
+nomenclature of authority-colon-code. The CRS&#8217;s defined in this way will also be taken
+into consideration by the rest of the referencing subsystem.</p>
+</li>
+<li><p class="first">Through a property file and automatic registration of the factory</p>
+<p>A more sophisticated approach changes step 3 to create a new class which both extends
+PropertyAuthorityFactory and has a no argument constructor which calls the parent
+with the right URI argument. Such a class will be picked up automatically when the
+factory system is initialized so step 4 in the list above is no longer necessary.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="q-how-to-i-add-my-own-epsg-codes">
+<h3>Q: How to I add my own EPSG Codes?<a class="headerlink" href="#q-how-to-i-add-my-own-epsg-codes" title="Permalink to this headline">¶</a></h3>
+<p>The gt-epsg-wkt plugin is intended to be used on its own and should not be combined
+with any of the other gt-epsg-h2, or gt-epsg-hsql plugins as they will end up in
+conflict.</p>
+<p>If you want to add a few more definitions over and above those provided by the
+official database (ie epsg-hsql or epsg-h2) please use the following (taken from the
+uDig application):</p>
+<div class="highlight-python"><div class="highlight"><pre>URL url = new URL(url, &quot;epsg.properties&quot;);
+// application directory or user directory?
+// where you are looking for epsg.properties
+if (&quot;file&quot;.equals(proposed.getProtocol())) {
+    File file = new File(proposed.toURI());
+    if (file.exists()) {
+        epsg = file.toURI().toURL();
+    }
+}
+// you may try several locations...
+if (epsg != null) {
+    Hints hints = new Hints(Hints.CRS_AUTHORITY_FACTORY, PropertyAuthorityFactory.class);
+    ReferencingFactoryContainer referencingFactoryContainer =
+               ReferencingFactoryContainer.instance(hints);
+
+   PropertyAuthorityFactory factory = new PropertyAuthorityFactory(
+                      referencingFactoryContainer, Citations.fromName(&quot;EPSG&quot;), epsg);
+
+   ReferencingFactoryFinder.addAuthorityFactory(factory);
+   ReferencingFactoryFinder.scanForPlugins(); // hook everything up
+}
+</pre></div>
+</div>
+<p>Here is an example ::download::<cite>epsg.properties &lt;/artifacts/epsg.properties&gt;</cite>. file used by uDig:</p>
+<blockquote>
+<div><div class="highlight-python"><div class="highlight"><pre><span class="mi">18001</span><span class="o">=</span><span class="n">PROJCS</span><span class="p">[</span><span class="s">&quot;Geoscience Australia Standard National Scale Lambert Projection&quot;</span><span class="p">,</span><span class="n">GEOGCS</span><span class="p">[</span><span class="s">&quot;WGS 84&quot;</span><span class="p">,</span><span class="n">DATUM</span><span class="p">[</span><span class="s">&quot;WGS_1984&quot;</span><span class="p">,</span><span class="n">SPHEROID</span><span class="p">[</span><span class="s">&quot;WGS_1978&quot;</span><span class="p">,</span><span class="mi">6378135</span><span class="p">,</span><span class="mf">298.26</span><span class="p">],</span><span class="n">TOWGS84</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]],</span><span class="n">PRIMEM</span><span class="p">[</span><span class="s">&quot;Greenwich&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;Decimal_Degree&quot;</span><span class="p">,</span><span class="mf">0.0174532925199433</span><span class="p">]],</span><span class="n">PROJECTION</span><span class="p">[</span><span class="s">&quot;Lambert_Conformal_Conic_2SP&quot;</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;central_meridian&quot;</span><span class="p">,</span><span class="mf">134.0</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;latitude_of_origin&quot;</span><span class="p">,</span><span class="mf">0.0</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;standard_parallel_1&quot;</span><span class="p">,</span><span class="o">-</span><span class="mf">18.0</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;standard_parallel_2&quot;</span><span class="p">,</span><span class="o">-</span><span class="mf">36.0</span><span class="p">],</span><span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;Meter&quot;</span><span class="p">,</span><span class="mi">1</span><span class="p">]]</span>
+<span class="mi">41001</span><span class="o">=</span><span class="n">PROJCS</span><span class="p">[</span><span class="s">&quot;WGS84 / Simple Mercator&quot;</span><span class="p">,</span><span class="n">GEOGCS</span><span class="p">[</span><span class="s">&quot;WGS 84&quot;</span><span class="p">,</span><span class="n">DATUM</span><span class="p">[</span><span class="s">&quot;WGS_1984&quot;</span><span class="p">,</span><span class="n">SPHEROID</span><span class="p">[</span><span class="s">&quot;WGS_1984&quot;</span><span class="p">,</span><span class="mi">6378137</span><span class="p">,</span><span class="mf">298.257223563</span><span class="p">]],</span><span class="n">PRIMEM</span><span class="p">[</span><span class="s">&quot;Greenwich&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;Decimal_Degree&quot;</span><span class="p">,</span><span class="mf">0.0174532925199433</span><span class="p">]],</span><span class="n">PROJECTION</span><span class="p">[</span><span class="s">&quot;Mercator_1SP&quot;</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;central_meridian&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;Meter&quot;</span><span class="p">,</span><span class="mi">1</span><span class="p">]]</span>
+<span class="mi">42101</span><span class="o">=</span><span class="n">PROJCS</span><span class="p">[</span><span class="s">&quot;WGS 84 / LCC Canada&quot;</span><span class="p">,</span><span class="n">GEOGCS</span><span class="p">[</span><span class="s">&quot;WGS 84&quot;</span><span class="p">,</span><span class="n">DATUM</span><span class="p">[</span><span class="s">&quot;WGS_1984&quot;</span><span class="p">,</span><span class="n">SPHEROID</span><span class="p">[</span><span class="s">&quot;WGS_1984&quot;</span><span class="p">,</span><span class="mi">6378137</span><span class="p">,</span><span class="mf">298.257223563</span><span class="p">]],</span><span class="n">PRIMEM</span><span class="p">[</span><span class="s">&quot;Greenwich&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;Decimal_Degree&quot;</span><span class="p">,</span><span class="mf">0.0174532925199433</span><span class="p">]],</span><span class="n">PROJECTION</span><span class="p">[</span><span class="s">&quot;Lambert_Conformal_Conic_2SP&quot;</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;central_meridian&quot;</span><span class="p">,</span><span class="o">-</span><span class="mf">95.0</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;latitude_of_origin&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;standard_parallel_1&quot;</span><span class="p">,</span><span class="mf">49.0</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;standard_parallel_2&quot;</span><span class="p">,</span><span class="mf">77.0</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;false_northing&quot;</span><span class="p">,</span><span class="o">-</span><span class="mf">8000000.0</span><span class="p">],</span><span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;Meter&quot;</span><span class="p">,</span><span class="mi">1</span><span class="p">]]</span>
+<span class="mi">42102</span><span class="o">=</span><span class="n">PROJCS</span><span class="p">[</span><span class="s">&quot;BC_Albers&quot;</span><span class="p">,</span><span class="n">GEOGCS</span><span class="p">[</span><span class="s">&quot;GCS_North_American_1983&quot;</span><span class="p">,</span><span class="n">DATUM</span><span class="p">[</span><span class="s">&quot;North_American_Datum_1983&quot;</span><span class="p">,</span><span class="n">SPHEROID</span><span class="p">[</span><span class="s">&quot;GRS_1980&quot;</span><span class="p">,</span><span class="mi">6378137</span><span class="p">,</span><span class="mf">298.257222101</span><span class="p">],</span><span class="n">TOWGS84</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]],</span><span class="n">PRIMEM</span><span class="p">[</span><span class="s">&quot;Greenwich&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;Degree&quot;</span><span class="p">,</span><span class="mf">0.017453292519943295</span><span class="p">]],</span><span class="n">PROJECTION</span><span class="p">[</span><span class="s">&quot;Albers_Conic_Equal_Area&quot;</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;False_Easting&quot;</span><span class="p">,</span><span class="mi">1000000</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;Central_Meridian&quot;</span><span class="p">,</span><span class="o">-</span><span class="mi">126</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;Standard_Parallel_1&quot;</span><span class="p">,</span><span class="mi">50</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;Standard_Parallel_2&quot;</span><span class="p">,</span><span class="mf">58.5</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;Latitude_Of_Origin&quot;</span><span class="p">,</span><span class="mi">45</span><span class="p">],</span><span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;Meter&quot;</span><span class="p">,</span><span class="mi">1</span><span class="p">]]</span>
+<span class="mi">42103</span><span class="o">=</span><span class="n">PROJCS</span><span class="p">[</span><span class="s">&quot;WGS 84 / LCC USA&quot;</span><span class="p">,</span><span class="n">GEOGCS</span><span class="p">[</span><span class="s">&quot;WGS 84&quot;</span><span class="p">,</span><span class="n">DATUM</span><span class="p">[</span><span class="s">&quot;WGS_1984&quot;</span><span class="p">,</span><span class="n">SPHEROID</span><span class="p">[</span><span class="s">&quot;WGS_1978&quot;</span><span class="p">,</span><span class="mi">6378135</span><span class="p">,</span><span class="mf">298.26</span><span class="p">]],</span><span class="n">PRIMEM</span><span class="p">[</span><span class="s">&quot;Greenwich&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;Decimal_Degree&quot;</span><span class="p">,</span><span class="mf">0.0174532925199433</span><span class="p">]],</span><span class="n">PROJECTION</span><span class="p">[</span><span class="s">&quot;Lambert_Conformal_Conic_2SP&quot;</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;central_meridian&quot;</span><span class="p">,</span><span class="o">-</span><span class="mf">100.0</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;latitude_of_origin&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;standard_parallel_1&quot;</span><span class="p">,</span><span class="mf">33.0</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;standard_parallel_2&quot;</span><span class="p">,</span><span class="mf">45.0</span><span class="p">],</span><span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;Meter&quot;</span><span class="p">,</span><span class="mi">1</span><span class="p">]]</span>
+<span class="mi">42104</span><span class="o">=</span><span class="n">PROJCS</span><span class="p">[</span><span class="s">&quot;NAD83 / MTM zone 8 Québec&quot;</span><span class="p">,</span><span class="n">GEOGCS</span><span class="p">[</span><span class="s">&quot;GRS80&quot;</span><span class="p">,</span><span class="n">DATUM</span><span class="p">[</span><span class="s">&quot;GRS_1980&quot;</span><span class="p">,</span><span class="n">SPHEROID</span><span class="p">[</span><span class="s">&quot;GRS_1980&quot;</span><span class="p">,</span><span class="mi">6378137</span><span class="p">,</span><span class="mf">298.257222101</span><span class="p">]],</span><span class="n">PRIMEM</span><span class="p">[</span><span class="s">&quot;Greenwich&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;Decimal_Degree&quot;</span><span class="p">,</span><span class="mf">0.0174532925199433</span><span class="p">]],</span><span class="n">PROJECTION</span><span class="p">[</span><span class="s">&quot;Transverse_Mercator&quot;</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;latitude_of_origin&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;central_meridian&quot;</span><span class="p">,</span><span class="o">-</span><span class="mf">73.5</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;scale_factor&quot;</span><span class="p">,</span><span class="mf">0.9999</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;false_easting&quot;</span><span class="p">,</span><span class="mi">304800</span><span class="p">],</span><span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;Meter&quot;</span><span class="p">,</span><span class="mi">1</span><span class="p">]]</span>
+<span class="mi">42105</span><span class="o">=</span><span class="n">PROJCS</span><span class="p">[</span><span class="s">&quot;WGS84 / Merc NorthAm&quot;</span><span class="p">,</span><span class="n">GEOGCS</span><span class="p">[</span><span class="s">&quot;WGS 84&quot;</span><span class="p">,</span><span class="n">DATUM</span><span class="p">[</span><span class="s">&quot;WGS_1984&quot;</span><span class="p">,</span><span class="n">SPHEROID</span><span class="p">[</span><span class="s">&quot;WGS_1984&quot;</span><span class="p">,</span><span class="mi">6378137</span><span class="p">,</span><span class="mf">298.257223563</span><span class="p">]],</span><span class="n">PRIMEM</span><span class="p">[</span><span class="s">&quot;Greenwich&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;Decimal_Degree&quot;</span><span class="p">,</span><span class="mf">0.0174532925199433</span><span class="p">]],</span><span class="n">PROJECTION</span><span class="p">[</span><span class="s">&quot;Mercator_1SP&quot;</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;central_meridian&quot;</span><span class="p">,</span><span class="o">-</span><span class="mi">96</span><span class="p">],</span><span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;Meter&quot;</span><span class="p">,</span><span class="mi">1</span><span class="p">]]</span>
+<span class="mi">42106</span><span class="o">=</span><span class="n">PROJCS</span><span class="p">[</span><span class="s">&quot;WGS84 / Lambert Azim Mozambique&quot;</span><span class="p">,</span><span class="n">GEOGCS</span><span class="p">[</span><span class="s">&quot;WGS 84&quot;</span><span class="p">,</span><span class="n">DATUM</span><span class="p">[</span><span class="s">&quot;WGS_1984&quot;</span><span class="p">,</span><span class="n">SPHEROID</span><span class="p">[</span><span class="s">&quot;WGS_1984&quot;</span><span class="p">,</span><span class="mi">6378137</span><span class="p">,</span><span class="mf">298.257223563</span><span class="p">]],</span><span class="n">PRIMEM</span><span class="p">[</span><span class="s">&quot;Greenwich&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;Decimal_Degree&quot;</span><span class="p">,</span><span class="mf">0.0174532925199433</span><span class="p">]],</span><span class="n">PROJECTION</span><span class="p">[</span><span class="s">&quot;Lambert_Azimuthal_Equal_Area&quot;</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;latitude_of_origin&quot;</span><span class="p">,</span><span class="mi">5</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;central_meridian&quot;</span><span class="p">,</span><span class="mi">20</span><span class="p">],</span><span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;Meter&quot;</span><span class="p">,</span><span class="mi">1</span><span class="p">]]</span>
+<span class="mi">42301</span><span class="o">=</span><span class="n">PROJCS</span><span class="p">[</span><span class="s">&quot;NAD27 / Polar Stereographic / CM=-98&quot;</span><span class="p">,</span><span class="n">GEOGCS</span><span class="p">[</span><span class="s">&quot;NAD27&quot;</span><span class="p">,</span><span class="n">DATUM</span><span class="p">[</span><span class="s">&quot;North_American_Datum_1927&quot;</span><span class="p">,</span><span class="n">SPHEROID</span><span class="p">[</span><span class="s">&quot;Clarke 1866&quot;</span><span class="p">,</span><span class="mf">6378206.4</span><span class="p">,</span><span class="mf">294.978698213901</span><span class="p">],</span><span class="n">TOWGS84</span><span class="p">[</span><span class="o">-</span><span class="mi">9</span><span class="p">,</span><span class="mi">151</span><span class="p">,</span><span class="mi">185</span><span class="p">]],</span><span class="n">PRIMEM</span><span class="p">[</span><span class="s">&quot;Greenwich&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;degree&quot;</span><span class="p">,</span><span class="mf">0.0174532925199433</span><span class="p">]],</span><span class="n">PROJECTION</span><span class="p">[</span><span class="s">&quot;Stereographic&quot;</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;latitude_of_origin&quot;</span><span class="p">,</span><span class="mi">90</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;central_meridian&quot;</span><span class="p">,</span><span class="o">-</span><span class="mf">98.0</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;scale_factor&quot;</span><span class="p">,</span><span class="mf">0.9996</span><span class="p">],</span><span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;Meter&quot;</span><span class="p">,</span><span class="mi">1</span><span class="p">]]</span>
+<span class="mi">42302</span><span class="o">=</span><span class="n">PROJCS</span><span class="p">[</span><span class="s">&quot;JapanOrtho.09 09&quot;</span><span class="p">,</span><span class="n">GEOGCS</span><span class="p">[</span><span class="s">&quot;Lon/Lat.Tokyo Datum&quot;</span><span class="p">,</span><span class="n">DATUM</span><span class="p">[</span><span class="s">&quot;Tokyo Datum&quot;</span><span class="p">,</span><span class="n">SPHEROID</span><span class="p">[</span><span class="s">&quot;anon&quot;</span><span class="p">,</span><span class="mf">6377397.155</span><span class="p">,</span><span class="mf">299.15281310608</span><span class="p">]],</span><span class="n">PRIMEM</span><span class="p">[</span><span class="s">&quot;Greenwich&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;Degree&quot;</span><span class="p">,</span><span class="mf">0.0174532925199433</span><span class="p">]],</span><span class="n">PROJECTION</span><span class="p">[</span><span class="s">&quot;Transverse_Mercator&quot;</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;Central_Meridian&quot;</span><span class="p">,</span><span class="mf">139.833333333333</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;Latitude_of_Origin&quot;</span><span class="p">,</span><span class="mi">36</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;Scale_Factor&quot;</span><span class="p">,</span><span class="mf">0.9999</span><span class="p">],</span><span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;Meter&quot;</span><span class="p">,</span><span class="mi">1</span><span class="p">]]</span>
+<span class="mi">42303</span><span class="o">=</span><span class="n">PROJCS</span><span class="p">[</span><span class="s">&quot;NAD83 / Albers NorthAm&quot;</span><span class="p">,</span><span class="n">GEOGCS</span><span class="p">[</span><span class="s">&quot;NAD83&quot;</span><span class="p">,</span><span class="n">DATUM</span><span class="p">[</span><span class="s">&quot;North_American_Datum_1983&quot;</span><span class="p">,</span><span class="n">SPHEROID</span><span class="p">[</span><span class="s">&quot;GRS_1980&quot;</span><span class="p">,</span><span class="mi">6378137</span><span class="p">,</span><span class="mf">298.257222101</span><span class="p">],</span><span class="n">TOWGS84</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]],</span><span class="n">PRIMEM</span><span class="p">[</span><span class="s">&quot;Greenwich&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;Decimal_Degree&quot;</span><span class="p">,</span><span class="mf">0.0174532925199433</span><span class="p">]],</span><span class="n">PROJECTION</span><span class="p">[</span><span class="s">&quot;Albers_conic_equal_area&quot;</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;central_meridian&quot;</span><span class="p">,</span><span class="o">-</span><span class="mf">96.0</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;latitude_of_origin&quot;</span><span class="p">,</span><span class="mi">23</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;standard_parallel_1&quot;</span><span class="p">,</span><span class="mf">29.5</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;standard_parallel_2&quot;</span><span class="p">,</span><span class="mf">45.5</span><span class="p">],</span><span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;Meter&quot;</span><span class="p">,</span><span class="mi">1</span><span class="p">]]</span>
+<span class="mi">42304</span><span class="o">=</span><span class="n">PROJCS</span><span class="p">[</span><span class="s">&quot;NAD83 / NRCan LCC Canada&quot;</span><span class="p">,</span><span class="n">GEOGCS</span><span class="p">[</span><span class="s">&quot;NAD83&quot;</span><span class="p">,</span><span class="n">DATUM</span><span class="p">[</span><span class="s">&quot;North_American_Datum_1983&quot;</span><span class="p">,</span><span class="n">SPHEROID</span><span class="p">[</span><span class="s">&quot;GRS_1980&quot;</span><span class="p">,</span><span class="mi">6378137</span><span class="p">,</span><span class="mf">298.257222101</span><span class="p">],</span><span class="n">TOWGS84</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]],</span><span class="n">PRIMEM</span><span class="p">[</span><span class="s">&quot;Greenwich&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;Decimal_Degree&quot;</span><span class="p">,</span><span class="mf">0.0174532925199433</span><span class="p">]],</span><span class="n">PROJECTION</span><span class="p">[</span><span class="s">&quot;Lambert_Conformal_Conic_2SP&quot;</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;central_meridian&quot;</span><span class="p">,</span><span class="o">-</span><span class="mf">95.0</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;latitude_of_origin&quot;</span><span class="p">,</span><span class="mf">49.0</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;standard_parallel_1&quot;</span><span class="p">,</span><span class="mf">49.0</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;standard_parallel_2&quot;</span><span class="p">,</span><span class="mf">77.0</span><span class="p">],</span><span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;Meter&quot;</span><span class="p">,</span><span class="mi">1</span><span class="p">]]</span>
+<span class="mi">42305</span><span class="o">=</span><span class="n">PROJCS</span><span class="p">[</span><span class="s">&quot;France_II&quot;</span><span class="p">,</span><span class="n">GEOGCS</span><span class="p">[</span><span class="s">&quot;GCS_NTF_Paris&quot;</span><span class="p">,</span><span class="n">DATUM</span><span class="p">[</span><span class="s">&quot;Nouvelle_Triangulation_Francaise&quot;</span><span class="p">,</span><span class="n">SPHEROID</span><span class="p">[</span><span class="s">&quot;Clarke_1880_IGN&quot;</span><span class="p">,</span><span class="mf">6378249.2</span><span class="p">,</span><span class="mf">293.46602</span><span class="p">]],</span><span class="n">PRIMEM</span><span class="p">[</span><span class="s">&quot;Paris&quot;</span><span class="p">,</span><span class="mf">2.337229166666667</span><span class="p">],</span><span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;degree&quot;</span><span class="p">,</span><span class="mf">0.0174532925199433</span><span class="p">]],</span><span class="n">PROJECTION</span><span class="p">[</span><span class="s">&quot;Lambert_Conformal_Conic_2SP&quot;</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;False_Easting&quot;</span><span class="p">,</span><span class="mi">600000</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;False_Northing&quot;</span><span class="p">,</span><span class="mi">2200000</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;Central_Meridian&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;Standard_Parallel_1&quot;</span><span class="p">,</span><span class="mf">45.898918964419</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;Standard_Parallel_2&quot;</span><span class="p">,</span><span class="mf">47.696014502038</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;Latitude_Of_Origin&quot;</span><span class="p">,</span><span class="mf">46.8</span><span class="p">],</span><span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;Meter&quot;</span><span class="p">,</span><span class="mi">1</span><span class="p">]]</span>
+<span class="mi">42306</span><span class="o">=</span><span class="n">PROJCS</span><span class="p">[</span><span class="s">&quot;NAD83/QC_LCC&quot;</span><span class="p">,</span><span class="n">GEOGCS</span><span class="p">[</span><span class="s">&quot;NAD83&quot;</span><span class="p">,</span><span class="n">DATUM</span><span class="p">[</span><span class="s">&quot;North_American_Datum_1983&quot;</span><span class="p">,</span><span class="n">SPHEROID</span><span class="p">[</span><span class="s">&quot;GRS_1980&quot;</span><span class="p">,</span><span class="mi">6378137</span><span class="p">,</span><span class="mf">298.257222101</span><span class="p">],</span><span class="n">TOWGS84</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]],</span><span class="n">PRIMEM</span><span class="p">[</span><span class="s">&quot;Greenwich&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;Decimal_Degree&quot;</span><span class="p">,</span><span class="mf">0.0174532925199433</span><span class="p">]],</span><span class="n">PROJECTION</span><span class="p">[</span><span class="s">&quot;Lambert_Conformal_Conic_2SP&quot;</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;central_meridian&quot;</span><span class="p">,</span><span class="o">-</span><span class="mf">68.5</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;latitude_of_origin&quot;</span><span class="p">,</span><span class="mi">44</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;standard_parallel_1&quot;</span><span class="p">,</span><span class="mi">46</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;standard_parallel_2&quot;</span><span class="p">,</span><span class="mi">60</span><span class="p">],</span><span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;Meter&quot;</span><span class="p">,</span><span class="mi">1</span><span class="p">]]</span>
+<span class="mi">42307</span><span class="o">=</span><span class="n">PROJCS</span><span class="p">[</span><span class="s">&quot;NAD83 / Texas Central - feet&quot;</span><span class="p">,</span><span class="n">GEOGCS</span><span class="p">[</span><span class="s">&quot;NAD83&quot;</span><span class="p">,</span><span class="n">DATUM</span><span class="p">[</span><span class="s">&quot;North_American_Datum_1983&quot;</span><span class="p">,</span><span class="n">SPHEROID</span><span class="p">[</span><span class="s">&quot;GRS 1980&quot;</span><span class="p">,</span><span class="mi">6378137</span><span class="p">,</span><span class="mf">298.257222101</span><span class="p">],</span><span class="n">TOWGS84</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]],</span><span class="n">PRIMEM</span><span class="p">[</span><span class="s">&quot;Greenwich&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;degree&quot;</span><span class="p">,</span><span class="mf">0.0174532925199433</span><span class="p">]],</span><span class="n">PROJECTION</span><span class="p">[</span><span class="s">&quot;Lambert_Conformal_Conic_2SP&quot;</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;standard_parallel_1&quot;</span><span class="p">,</span><span class="mf">31.8833333333333</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;standard_parallel_2&quot;</span><span class="p">,</span><span class="mf">30.1166666666667</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;latitude_of_origin&quot;</span><span class="p">,</span><span class="mf">29.6666666666667</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;central_meridian&quot;</span><span class="p">,</span><span class="o">-</span><span class="mf">100.333333333333</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;false_easting&quot;</span><span class="p">,</span><span class="mf">2296583.33333333333333</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;false_northing&quot;</span><span class="p">,</span><span class="mi">9842500</span><span class="p">],</span><span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;US_Foot&quot;</span><span class="p">,</span><span class="mf">0.30480060960121924</span><span class="p">]]</span>
+<span class="mi">42308</span><span class="o">=</span><span class="n">PROJCS</span><span class="p">[</span><span class="s">&quot;NAD27 / California Albers&quot;</span><span class="p">,</span><span class="n">GEOGCS</span><span class="p">[</span><span class="s">&quot;NAD27&quot;</span><span class="p">,</span><span class="n">DATUM</span><span class="p">[</span><span class="s">&quot;North_American_Datum_1927&quot;</span><span class="p">,</span><span class="n">SPHEROID</span><span class="p">[</span><span class="s">&quot;Clarke 1866&quot;</span><span class="p">,</span><span class="mf">6378206.4</span><span class="p">,</span><span class="mf">294.978698213901</span><span class="p">],</span><span class="n">TOWGS84</span><span class="p">[</span><span class="o">-</span><span class="mi">9</span><span class="p">,</span><span class="mi">151</span><span class="p">,</span><span class="mi">185</span><span class="p">]],</span><span class="n">PRIMEM</span><span class="p">[</span><span class="s">&quot;Greenwich&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;degree&quot;</span><span class="p">,</span><span class="mf">0.0174532925199433</span><span class="p">]],</span><span class="n">PROJECTION</span><span class="p">[</span><span class="s">&quot;Albers_conic_equal_area&quot;</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;central_meridian&quot;</span><span class="p">,</span><span class="o">-</span><span class="mf">120.0</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;latitude_of_origin&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;standard_parallel_1&quot;</span><span class="p">,</span><span class="mi">34</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;standard_parallel_2&quot;</span><span class="p">,</span><span class="mf">40.5</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;false_northing&quot;</span><span class="p">,</span><span class="o">-</span><span class="mi">4000000</span><span class="p">],</span><span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;Meter&quot;</span><span class="p">,</span><span class="mi">1</span><span class="p">]]</span>
+<span class="mi">42309</span><span class="o">=</span><span class="n">PROJCS</span><span class="p">[</span><span class="s">&quot;NAD 83 / LCC Canada AVHRR-2&quot;</span><span class="p">,</span><span class="n">GEOGCS</span><span class="p">[</span><span class="s">&quot;NAD83&quot;</span><span class="p">,</span><span class="n">DATUM</span><span class="p">[</span><span class="s">&quot;North_American_Datum_1983&quot;</span><span class="p">,</span><span class="n">SPHEROID</span><span class="p">[</span><span class="s">&quot;GRS 1980&quot;</span><span class="p">,</span><span class="mi">6378137</span><span class="p">,</span><span class="mf">298.257222101</span><span class="p">],</span><span class="n">TOWGS84</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]],</span><span class="n">PRIMEM</span><span class="p">[</span><span class="s">&quot;Greenwich&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;degree&quot;</span><span class="p">,</span><span class="mf">0.0174532925199433</span><span class="p">]],</span><span class="n">PROJECTION</span><span class="p">[</span><span class="s">&quot;Lambert_Conformal_Conic_2SP&quot;</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;central_meridian&quot;</span><span class="p">,</span><span class="o">-</span><span class="mf">95.0</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;latitude_of_origin&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;standard_parallel_1&quot;</span><span class="p">,</span><span class="mf">49.0</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;standard_parallel_2&quot;</span><span class="p">,</span><span class="mf">77.0</span><span class="p">],</span><span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;Meter&quot;</span><span class="p">,</span><span class="mi">1</span><span class="p">]]</span>
+<span class="mi">42310</span><span class="o">=</span><span class="n">PROJCS</span><span class="p">[</span><span class="s">&quot;WGS84+GRS80 / Mercator&quot;</span><span class="p">,</span><span class="n">GEOGCS</span><span class="p">[</span><span class="s">&quot;WGS 84&quot;</span><span class="p">,</span><span class="n">DATUM</span><span class="p">[</span><span class="s">&quot;WGS_1984&quot;</span><span class="p">,</span><span class="n">SPHEROID</span><span class="p">[</span><span class="s">&quot;GRS 1980&quot;</span><span class="p">,</span><span class="mi">6378137</span><span class="p">,</span><span class="mf">298.257222101</span><span class="p">],</span><span class="n">TOWGS84</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]],</span><span class="n">PRIMEM</span><span class="p">[</span><span class="s">&quot;Greenwich&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;Decimal_Degree&quot;</span><span class="p">,</span><span class="mf">0.0174532925199433</span><span class="p">]],</span><span class="n">PROJECTION</span><span class="p">[</span><span class="s">&quot;Mercator_1SP&quot;</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;central_meridian&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;Meter&quot;</span><span class="p">,</span><span class="mi">1</span><span class="p">]]</span>
+<span class="mi">42311</span><span class="o">=</span><span class="n">PROJCS</span><span class="p">[</span><span class="s">&quot;NAD83 / LCC Statcan&quot;</span><span class="p">,</span><span class="n">GEOGCS</span><span class="p">[</span><span class="s">&quot;NAD83&quot;</span><span class="p">,</span><span class="n">DATUM</span><span class="p">[</span><span class="s">&quot;North_American_Datum_1983&quot;</span><span class="p">,</span><span class="n">SPHEROID</span><span class="p">[</span><span class="s">&quot;GRS_1980&quot;</span><span class="p">,</span><span class="mi">6378137</span><span class="p">,</span><span class="mf">298.257222101</span><span class="p">],</span><span class="n">TOWGS84</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]],</span><span class="n">PRIMEM</span><span class="p">[</span><span class="s">&quot;Greenwich&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;Decimal_Degree&quot;</span><span class="p">,</span><span class="mf">0.0174532925199433</span><span class="p">]],</span><span class="n">PROJECTION</span><span class="p">[</span><span class="s">&quot;Lambert_Conformal_Conic_2SP&quot;</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;central_meridian&quot;</span><span class="p">,</span><span class="o">-</span><span class="mf">91.866667</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;latitude_of_origin&quot;</span><span class="p">,</span><span class="mf">63.390675</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;standard_parallel_1&quot;</span><span class="p">,</span><span class="mi">49</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;standard_parallel_2&quot;</span><span class="p">,</span><span class="mi">77</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;false_easting&quot;</span><span class="p">,</span><span class="mi">6200000</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;false_northing&quot;</span><span class="p">,</span><span class="mi">3000000</span><span class="p">],</span><span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;Meter&quot;</span><span class="p">,</span><span class="mi">1</span><span class="p">]]</span>
+<span class="mi">45555</span><span class="o">=</span><span class="n">PROJCS</span><span class="p">[</span><span class="s">&quot;WRF_Lambert_Conformal_Conic 2&quot;</span><span class="p">,</span><span class="n">GEOGCS</span><span class="p">[</span><span class="s">&quot;GCS_North_American_1983&quot;</span><span class="p">,</span><span class="n">DATUM</span><span class="p">[</span><span class="s">&quot;D_WGS_1984&quot;</span><span class="p">,</span><span class="n">SPHEROID</span><span class="p">[</span><span class="s">&quot;WGS_1984&quot;</span><span class="p">,</span><span class="mi">6378137</span><span class="p">,</span><span class="mf">298.25722356300003</span><span class="p">]],</span><span class="n">PRIMEM</span><span class="p">[</span><span class="s">&quot;Greenwich&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;Degree&quot;</span><span class="p">,</span><span class="mf">0.017453292519943299</span><span class="p">]],</span><span class="n">PROJECTION</span><span class="p">[</span><span class="s">&quot;Lambert_Conformal_Conic_2SP&quot;</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;False_Easting&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;False_Northing&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;Central_Meridian&quot;</span><span class="p">,</span><span class="o">-</span><span class="mi">97</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;Standard_Parallel_1&quot;</span><span class="p">,</span><span class="mi">33</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;Standard_Parallel_2&quot;</span><span class="p">,</span><span class="mi">60</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;Latitude_Of_Origin&quot;</span><span class="p">,</span><span class="mf">40.003338</span><span class="p">],</span><span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;Meter&quot;</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span><span class="n">AUTHORITY</span><span class="p">[</span><span class="s">&quot;EPSG&quot;</span><span class="p">,</span><span class="s">&quot;45555&quot;</span><span class="p">]]</span>
+<span class="mi">45556</span><span class="o">=</span><span class="n">PROJCS</span><span class="p">[</span><span class="s">&quot;Albers Equal area&quot;</span><span class="p">,</span><span class="n">GEOGCS</span><span class="p">[</span><span class="s">&quot;WGS 84&quot;</span><span class="p">,</span> <span class="n">DATUM</span><span class="p">[</span><span class="s">&quot;World Geodetic System 1984&quot;</span><span class="p">,</span> <span class="n">SPHEROID</span><span class="p">[</span><span class="s">&quot;WGS 84&quot;</span><span class="p">,</span> <span class="mf">6378137.0</span><span class="p">,</span> <span class="mf">298.257223563</span><span class="p">,</span> <span class="n">AUTHORITY</span><span class="p">[</span><span class="s">&quot;EPSG&quot;</span><span class="p">,</span><span class="s">&quot;7030&quot;</span><span class="p">]],</span> <span class="n">AUTHORITY</span><span class="p">[</span><span class="s">&quot;EPSG&quot;</span><span class="p">,</span><span class="s">&quot;6326&quot;</span><span class="p">]],</span> <span class="n">PRIMEM</span><span class="p">[</span><span class="s">&quot;Greenwich&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">AUTHORITY</span><span class="p">[</span><span class="s">&quot;EPSG&quot;</span><span class="p">,</span><span class="s">&quot;8901&quot;</span><span class="p">]],</span> <span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;degree&quot;</span><span class="p">,</span> <span class="mf">0.017453292519943295</span><span class="p">],</span> <span class="n">AUTHORITY</span><span class="p">[</span><span class="s">&quot;EPSG&quot;</span><span class="p">,</span><span class="s">&quot;4326&quot;</span><span class="p">]],</span> <span class="n">PROJECTION</span><span class="p">[</span><span class="s">&quot;Albers Equal Area&quot;</span><span class="p">,</span> <span class="n">AUTHORITY</span><span class="p">[</span><span class="s">&quot;EPSG&quot;</span><span class="p">,</span><span class="s">&quot;9822&quot;</span><span class="p">]],</span> <span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;central_meridian&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mf">96.0</span><span class="p">],</span> <span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;latitude_of_origin&quot;</span><span class="p">,</span> <span class="mf">37.5</span><span class="p">],</span> <span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;standard_parallel_1&quot;</span><span class="p">,</span> <span class="mf">29.833333333333336</span><span class="p">],</span> <span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;false_easting&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;false_northing&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;standard_parallel_2&quot;</span><span class="p">,</span> <span class="mf">45.833333333333336</span><span class="p">],</span> <span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;m&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="n">AUTHORITY</span><span class="p">[</span><span class="s">&quot;EPSG&quot;</span><span class="p">,</span><span class="s">&quot;45556&quot;</span><span class="p">]]</span>
+<span class="mi">54004</span><span class="o">=</span><span class="n">PROJCS</span><span class="p">[</span><span class="s">&quot;WGS84 / Simple Mercator&quot;</span><span class="p">,</span> <span class="n">GEOGCS</span><span class="p">[</span><span class="s">&quot;WGS 84&quot;</span><span class="p">,</span> <span class="n">DATUM</span><span class="p">[</span><span class="s">&quot;WGS_1984&quot;</span><span class="p">,</span> <span class="n">SPHEROID</span><span class="p">[</span><span class="s">&quot;WGS_1984&quot;</span><span class="p">,</span> <span class="mf">6378137.0</span><span class="p">,</span> <span class="mf">298.257223563</span><span class="p">]],</span> <span class="n">PRIMEM</span><span class="p">[</span><span class="s">&quot;Greenwich&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;degree&quot;</span><span class="p">,</span> <span class="mf">0.017453292519943295</span><span class="p">]],</span> <span class="n">PROJECTION</span><span class="p">[</span><span class="s">&quot;Mercator_1SP_Google&quot;</span><span class="p">],</span> <span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;latitude_of_origin&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;central_meridian&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;scale_factor&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;false_easting&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;false_northing&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;m&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="n">AXIS</span><span class="p">[</span><span class="s">&quot;x&quot;</span><span class="p">,</span> <span class="n">EAST</span><span class="p">],</span> <span class="n">AXIS</span><span class="p">[</span><span class="s">&quot;y&quot;</span><span class="p">,</span> <span class="n">NORTH</span><span class="p">],</span> <span class="n">AUTHORITY</span><span class="p">[</span><span class="s">&quot;EPSG&quot;</span><span class="p">,</span><span class="s">&quot;54004&quot;</span><span class="p">]]</span>
+<span class="mi">100001</span><span class="o">=</span><span class="n">GEOGCS</span><span class="p">[</span><span class="s">&quot;NAD83 / NFIS Seconds&quot;</span><span class="p">,</span><span class="n">DATUM</span><span class="p">[</span><span class="s">&quot;North_American_Datum_1983&quot;</span><span class="p">,</span><span class="n">SPHEROID</span><span class="p">[</span><span class="s">&quot;GRS 1980&quot;</span><span class="p">,</span><span class="mi">6378137</span><span class="p">,</span><span class="mf">298.257222101</span><span class="p">],</span><span class="n">TOWGS84</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]],</span><span class="n">PRIMEM</span><span class="p">[</span><span class="s">&quot;Greenwich&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;Decimal_Second&quot;</span><span class="p">,</span><span class="mf">4.84813681109536e-06</span><span class="p">]]</span>
+<span class="mi">100002</span><span class="o">=</span><span class="n">PROJCS</span><span class="p">[</span><span class="s">&quot;NAD83 / Austin&quot;</span><span class="p">,</span><span class="n">GEOGCS</span><span class="p">[</span><span class="s">&quot;NAD83&quot;</span><span class="p">,</span><span class="n">DATUM</span><span class="p">[</span><span class="s">&quot;North_American_Datum_1983&quot;</span><span class="p">,</span><span class="n">SPHEROID</span><span class="p">[</span><span class="s">&quot;GRS 1980&quot;</span><span class="p">,</span><span class="mi">6378137</span><span class="p">,</span><span class="mf">298.257222101</span><span class="p">],</span><span class="n">TOWGS84</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]],</span><span class="n">PRIMEM</span><span class="p">[</span><span class="s">&quot;Greenwich&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;degree&quot;</span><span class="p">,</span><span class="mf">0.0174532925199433</span><span class="p">]],</span><span class="n">PROJECTION</span><span class="p">[</span><span class="s">&quot;Lambert_Conformal_Conic_2SP&quot;</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;standard_parallel_1&quot;</span><span class="p">,</span><span class="mf">31.8833333333333</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;standard_parallel_2&quot;</span><span class="p">,</span><span class="mf">30.1166666666667</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;latitude_of_origin&quot;</span><span class="p">,</span><span class="mf">29.6666666666667</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;central_meridian&quot;</span><span class="p">,</span><span class="o">-</span><span class="mf">100.333333333333</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;false_easting&quot;</span><span class="p">,</span><span class="mf">2296583.333333</span><span class="p">],</span><span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;false_northing&quot;</span><span class="p">,</span><span class="mf">9842500.0000000</span><span class="p">],</span><span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;Meter&quot;</span><span class="p">,</span><span class="mi">1</span><span class="p">]]</span>
+<span class="mi">100003</span><span class="o">=</span><span class="n">PROJCS</span><span class="p">[</span><span class="s">&quot;WGS84 / Google Mercator&quot;</span><span class="p">,</span> <span class="n">GEOGCS</span><span class="p">[</span><span class="s">&quot;WGS 84&quot;</span><span class="p">,</span> <span class="n">DATUM</span><span class="p">[</span><span class="s">&quot;World Geodetic System 1984&quot;</span><span class="p">,</span> <span class="n">SPHEROID</span><span class="p">[</span><span class="s">&quot;WGS 84&quot;</span><span class="p">,</span> <span class="mf">6378137.0</span><span class="p">,</span> <span class="mf">298.257223563</span><span class="p">,</span> <span class="n">AUTHORITY</span><span class="p">[</span><span class="s">&quot;EPSG&quot;</span><span class="p">,</span><span class="s">&quot;7030&quot;</span><span class="p">]],</span> <span class="n">AUTHORITY</span><span class="p">[</span><span class="s">&quot;EPSG&quot;</span><span class="p">,</span><span class="s">&quot;6326&quot;</span><span class="p">]],</span> <span class="n">PRIMEM</span><span class="p">[</span><span class="s">&quot;Greenwich&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">AUTHORITY</span><span class="p">[</span><span class="s">&quot;EPSG&quot;</span><span class="p">,</span><span class="s">&quot;8901&quot;</span><span class="p">]],</span> <span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;degree&quot;</span><span class="p">,</span> <span class="mf">0.017453292519943295</span><span class="p">],</span> <span class="n">AUTHORITY</span><span class="p">[</span><span class="s">&quot;EPSG&quot;</span><span class="p">,</span><span class="s">&quot;4326&quot;</span><span class="p">]],</span> <span class="n">PROJECTION</span><span class="p">[</span><span class="s">&quot;Mercator (1SP)&quot;</span><span class="p">,</span> <span class="n">AUTHORITY</span><span class="p">[</span><span class="s">&quot;EPSG&quot;</span><span class="p">,</span><span class="s">&quot;9804&quot;</span><span class="p">]],</span> <span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;semi_major&quot;</span><span class="p">,</span> <span class="mf">6378137.0</span><span class="p">],</span> <span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;semi_minor&quot;</span><span class="p">,</span> <span class="mf">6378137.0</span><span class="p">],</span> <span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;latitude_of_origin&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;central_meridian&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;scale_factor&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;false_easting&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;false_northing&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;m&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="n">AUTHORITY</span><span class="p">[</span><span class="s">&quot;EPSG&quot;</span><span class="p">,</span><span class="s">&quot;900913&quot;</span><span class="p">]]</span>
+<span class="mi">900913</span><span class="o">=</span><span class="n">PROJCS</span><span class="p">[</span><span class="s">&quot;WGS84 / Google Mercator&quot;</span><span class="p">,</span> <span class="n">GEOGCS</span><span class="p">[</span><span class="s">&quot;WGS 84&quot;</span><span class="p">,</span> <span class="n">DATUM</span><span class="p">[</span><span class="s">&quot;World Geodetic System 1984&quot;</span><span class="p">,</span> <span class="n">SPHEROID</span><span class="p">[</span><span class="s">&quot;WGS 84&quot;</span><span class="p">,</span> <span class="mf">6378137.0</span><span class="p">,</span> <span class="mf">298.257223563</span><span class="p">,</span> <span class="n">AUTHORITY</span><span class="p">[</span><span class="s">&quot;EPSG&quot;</span><span class="p">,</span><span class="s">&quot;7030&quot;</span><span class="p">]],</span> <span class="n">AUTHORITY</span><span class="p">[</span><span class="s">&quot;EPSG&quot;</span><span class="p">,</span><span class="s">&quot;6326&quot;</span><span class="p">]],</span> <span class="n">PRIMEM</span><span class="p">[</span><span class="s">&quot;Greenwich&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">AUTHORITY</span><span class="p">[</span><span class="s">&quot;EPSG&quot;</span><span class="p">,</span><span class="s">&quot;8901&quot;</span><span class="p">]],</span> <span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;degree&quot;</span><span class="p">,</span> <span class="mf">0.017453292519943295</span><span class="p">],</span> <span class="n">AUTHORITY</span><span class="p">[</span><span class="s">&quot;EPSG&quot;</span><span class="p">,</span><span class="s">&quot;4326&quot;</span><span class="p">]],</span> <span class="n">PROJECTION</span><span class="p">[</span><span class="s">&quot;Mercator (1SP)&quot;</span><span class="p">,</span> <span class="n">AUTHORITY</span><span class="p">[</span><span class="s">&quot;EPSG&quot;</span><span class="p">,</span><span class="s">&quot;9804&quot;</span><span class="p">]],</span> <span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;semi_major&quot;</span><span class="p">,</span> <span class="mf">6378137.0</span><span class="p">],</span> <span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;semi_minor&quot;</span><span class="p">,</span> <span class="mf">6378137.0</span><span class="p">],</span> <span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;latitude_of_origin&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;central_meridian&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;scale_factor&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;false_easting&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;false_northing&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;m&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span>  <span class="n">AUTHORITY</span><span class="p">[</span><span class="s">&quot;EPSG&quot;</span><span class="p">,</span><span class="s">&quot;900913&quot;</span><span class="p">]]</span>
+<span class="mi">30031000</span><span class="o">=</span><span class="n">PROJCS</span><span class="p">[</span><span class="s">&quot;Monte Mario / Italy zone 1 - Peninsular Part/Accuracy 3-4m&quot;</span><span class="p">,</span> <span class="n">GEOGCS</span><span class="p">[</span><span class="s">&quot;Monte Mario&quot;</span><span class="p">,</span> <span class="n">DATUM</span><span class="p">[</span><span class="s">&quot;Monte Mario&quot;</span><span class="p">,</span> <span class="n">SPHEROID</span><span class="p">[</span><span class="s">&quot;International 1924&quot;</span><span class="p">,</span> <span class="mf">6378388.0</span><span class="p">,</span> <span class="mf">297.0</span><span class="p">,</span> <span class="n">AUTHORITY</span><span class="p">[</span><span class="s">&quot;EPSG&quot;</span><span class="p">,</span><span class="s">&quot;7022&quot;</span><span class="p">]],</span> <span class="n">TOWGS84</span><span class="p">[</span><span class="o">-</span><span class="mf">104.1</span><span class="p">,</span> <span class="o">-</span><span class="mf">49.1</span><span class="p">,</span> <span class="o">-</span><span class="mf">9.9</span><span class="p">,</span> <span class="mf">0.971</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.917</span><span class="p">,</span> <span class="mf">0.714</span><span class="p">,</span> <span class="o">-</span><span class="mf">11.68</span><span class="p">],</span> <span class="n">AUTHORITY</span><span class="p">[</span><span class="s">&quot;EPSG&quot;</span><span class="p">,</span><span class="s">&quot;6265&quot;</span><span class="p">]],</span> <span class="n">PRIMEM</span><span class="p">[</span><span class="s">&quot;Greenwich&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">AUTHORITY</span><span class="p">[</span><span class="s">&quot;EPSG&quot;</span><span class="p">,</span><span class="s">&quot;8901&quot;</span><span class="p">]],</span> <span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;degree&quot;</span><span class="p">,</span> <span class="mf">0.017453292519943295</span><span class="p">],</span> <span class="n">AXIS</span><span class="p">[</span><span class="s">&quot;Geodetic longitude&quot;</span><span class="p">,</span> <span class="n">EAST</span><span class="p">],</span> <span class="n">AXIS</span><span class="p">[</span><span class="s">&quot;Geodetic latitude&quot;</span><span class="p">,</span> <span class="n">NORTH</span><span class="p">],</span> <span class="n">AUTHORITY</span><span class="p">[</span><span class="s">&quot;EPSG&quot;</span><span class="p">,</span><span class="s">&quot;4265&quot;</span><span class="p">]],</span> <span class="n">PROJECTION</span><span class="p">[</span><span class="s">&quot;Transverse_Mercator&quot;</span><span class="p">],</span> <span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;central_meridian&quot;</span><span class="p">,</span> <span class="mf">9.0</span><span class="p">],</span> <span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;latitude_of_origin&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;scale_factor&quot;</span><span class="p">,</span> <span class="mf">0.9996</span><span class="p">],</span> <span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;false_easting&quot;</span><span class="p">,</span> <span class="mf">1500000.0</span><span class="p">],</span> <span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;false_northing&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;m&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="n">AXIS</span><span class="p">[</span><span class="s">&quot;Easting&quot;</span><span class="p">,</span> <span class="n">EAST</span><span class="p">],</span> <span class="n">AXIS</span><span class="p">[</span><span class="s">&quot;Northing&quot;</span><span class="p">,</span> <span class="n">NORTH</span><span class="p">],</span> <span class="n">AUTHORITY</span><span class="p">[</span><span class="s">&quot;EPSG&quot;</span><span class="p">,</span><span class="s">&quot;30031000&quot;</span><span class="p">]]</span>
+<span class="mi">30031001</span><span class="o">=</span><span class="n">PROJCS</span><span class="p">[</span><span class="s">&quot;Monte Mario / Italy zone 1 - Sardinia/Accuracy 3-4m&quot;</span><span class="p">,</span> <span class="n">GEOGCS</span><span class="p">[</span><span class="s">&quot;Monte Mario&quot;</span><span class="p">,</span> <span class="n">DATUM</span><span class="p">[</span><span class="s">&quot;Monte Mario&quot;</span><span class="p">,</span> <span class="n">SPHEROID</span><span class="p">[</span><span class="s">&quot;International 1924&quot;</span><span class="p">,</span> <span class="mf">6378388.0</span><span class="p">,</span> <span class="mf">297.0</span><span class="p">,</span> <span class="n">AUTHORITY</span><span class="p">[</span><span class="s">&quot;EPSG&quot;</span><span class="p">,</span><span class="s">&quot;7022&quot;</span><span class="p">]],</span> <span class="n">TOWGS84</span><span class="p">[</span><span class="o">-</span><span class="mf">168.6</span><span class="p">,</span><span class="o">-</span><span class="mf">34.0</span><span class="p">,</span><span class="mf">38.6</span><span class="p">,</span><span class="o">-</span><span class="mf">0.374</span><span class="p">,</span><span class="o">-</span><span class="mf">0.679</span><span class="p">,</span><span class="o">-</span><span class="mf">1.379</span><span class="p">,</span><span class="o">-</span><span class="mf">9.48</span><span class="p">],</span> <span class="n">AUTHORITY</span><span class="p">[</span><span class="s">&quot;EPSG&quot;</span><span class="p">,</span><span class="s">&quot;6265&quot;</span><span class="p">]],</span> <span class="n">PRIMEM</span><span class="p">[</span><span class="s">&quot;Greenwich&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">AUTHORITY</span><span class="p">[</span><span class="s">&quot;EPSG&quot;</span><span class="p">,</span><span class="s">&quot;8901&quot;</span><span class="p">]],</span> <span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;degree&quot;</span><span class="p">,</span> <span class="mf">0.017453292519943295</span><span class="p">],</span> <span class="n">AXIS</span><span class="p">[</span><span class="s">&quot;Geodetic longitude&quot;</span><span class="p">,</span> <span class="n">EAST</span><span class="p">],</span> <span class="n">AXIS</span><span class="p">[</span><span class="s">&quot;Geodetic latitude&quot;</span><span class="p">,</span> <span class="n">NORTH</span><span class="p">],</span> <span class="n">AUTHORITY</span><span class="p">[</span><span class="s">&quot;EPSG&quot;</span><span class="p">,</span><span class="s">&quot;4265&quot;</span><span class="p">]],</span> <span class="n">PROJECTION</span><span class="p">[</span><span class="s">&quot;Transverse_Mercator&quot;</span><span class="p">],</span> <span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;central_meridian&quot;</span><span class="p">,</span> <span class="mf">9.0</span><span class="p">],</span> <span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;latitude_of_origin&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;scale_factor&quot;</span><span class="p">,</span> <span class="mf">0.9996</span><span class="p">],</span> <span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;false_easting&quot;</span><span class="p">,</span> <span class="mf">1500000.0</span><span class="p">],</span> <span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;false_northing&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;m&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="n">AXIS</span><span class="p">[</span><span class="s">&quot;Easting&quot;</span><span class="p">,</span> <span class="n">EAST</span><span class="p">],</span> <span class="n">AXIS</span><span class="p">[</span><span class="s">&quot;Northing&quot;</span><span class="p">,</span> <span class="n">NORTH</span><span class="p">],</span> <span class="n">AUTHORITY</span><span class="p">[</span><span class="s">&quot;EPSG&quot;</span><span class="p">,</span><span class="s">&quot;30031001&quot;</span><span class="p">]]</span>
+<span class="mi">30031002</span><span class="o">=</span><span class="n">PROJCS</span><span class="p">[</span><span class="s">&quot;Monte Mario / Italy zone 1 - Sicily/Accuracy 3-4m&quot;</span><span class="p">,</span> <span class="n">GEOGCS</span><span class="p">[</span><span class="s">&quot;Monte Mario&quot;</span><span class="p">,</span> <span class="n">DATUM</span><span class="p">[</span><span class="s">&quot;Monte Mario&quot;</span><span class="p">,</span> <span class="n">SPHEROID</span><span class="p">[</span><span class="s">&quot;International 1924&quot;</span><span class="p">,</span> <span class="mf">6378388.0</span><span class="p">,</span> <span class="mf">297.0</span><span class="p">,</span> <span class="n">AUTHORITY</span><span class="p">[</span><span class="s">&quot;EPSG&quot;</span><span class="p">,</span><span class="s">&quot;7022&quot;</span><span class="p">]],</span> <span class="n">TOWGS84</span><span class="p">[</span><span class="o">-</span><span class="mf">50.2</span><span class="p">,</span><span class="o">-</span><span class="mf">50.4</span><span class="p">,</span><span class="mf">84.8</span><span class="p">,</span><span class="o">-</span><span class="mf">0.690</span><span class="p">,</span><span class="o">-</span><span class="mf">2.012</span><span class="p">,</span><span class="mf">0.459</span><span class="p">,</span><span class="o">-</span><span class="mf">28.08</span><span class="p">],</span> <span class="n">AUTHORITY</span><span class="p">[</span><span class="s">&quot;EPSG&quot;</span><span class="p">,</span><span class="s">&quot;6265&quot;</span><span class="p">]],</span> <span class="n">PRIMEM</span><span class="p">[</span><span class="s">&quot;Greenwich&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">AUTHORITY</span><span class="p">[</span><span class="s">&quot;EPSG&quot;</span><span class="p">,</span><span class="s">&quot;8901&quot;</span><span class="p">]],</span> <span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;degree&quot;</span><span class="p">,</span> <span class="mf">0.017453292519943295</span><span class="p">],</span> <span class="n">AXIS</span><span class="p">[</span><span class="s">&quot;Geodetic longitude&quot;</span><span class="p">,</span> <span class="n">EAST</span><span class="p">],</span> <span class="n">AXIS</span><span class="p">[</span><span class="s">&quot;Geodetic latitude&quot;</span><span class="p">,</span> <span class="n">NORTH</span><span class="p">],</span> <span class="n">AUTHORITY</span><span class="p">[</span><span class="s">&quot;EPSG&quot;</span><span class="p">,</span><span class="s">&quot;4265&quot;</span><span class="p">]],</span> <span class="n">PROJECTION</span><span class="p">[</span><span class="s">&quot;Transverse_Mercator&quot;</span><span class="p">],</span> <span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;central_meridian&quot;</span><span class="p">,</span> <span class="mf">9.0</span><span class="p">],</span> <span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;latitude_of_origin&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;scale_factor&quot;</span><span class="p">,</span> <span class="mf">0.9996</span><span class="p">],</span> <span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;false_easting&quot;</span><span class="p">,</span> <span class="mf">1500000.0</span><span class="p">],</span> <span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;false_northing&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;m&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="n">AXIS</span><span class="p">[</span><span class="s">&quot;Easting&quot;</span><span class="p">,</span> <span class="n">EAST</span><span class="p">],</span> <span class="n">AXIS</span><span class="p">[</span><span class="s">&quot;Northing&quot;</span><span class="p">,</span> <span class="n">NORTH</span><span class="p">],</span> <span class="n">AUTHORITY</span><span class="p">[</span><span class="s">&quot;EPSG&quot;</span><span class="p">,</span><span class="s">&quot;30031002&quot;</span><span class="p">]]</span>
+<span class="mi">30041000</span><span class="o">=</span><span class="n">PROJCS</span><span class="p">[</span><span class="s">&quot;Monte Mario / Italy zone 2 - Peninsular Part/Accuracy 3-4m&quot;</span><span class="p">,</span> <span class="n">GEOGCS</span><span class="p">[</span><span class="s">&quot;Monte Mario&quot;</span><span class="p">,</span> <span class="n">DATUM</span><span class="p">[</span><span class="s">&quot;Monte_Mario&quot;</span><span class="p">,</span> <span class="n">SPHEROID</span><span class="p">[</span><span class="s">&quot;International 1924&quot;</span><span class="p">,</span> <span class="mf">6378388.0</span><span class="p">,</span> <span class="mf">297.0</span><span class="p">,</span> <span class="n">AUTHORITY</span><span class="p">[</span><span class="s">&quot;EPSG&quot;</span><span class="p">,</span><span class="s">&quot;7022&quot;</span><span class="p">]],</span> <span class="n">TOWGS84</span><span class="p">[</span><span class="o">-</span><span class="mf">104.1</span><span class="p">,</span> <span class="o">-</span><span class="mf">49.1</span><span class="p">,</span> <span class="o">-</span><span class="mf">9.9</span><span class="p">,</span> <span class="mf">0.971</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.917</span><span class="p">,</span> <span class="mf">0.714</span><span class="p">,</span> <span class="o">-</span><span class="mf">11.68</span><span class="p">],</span> <span class="n">AUTHORITY</span><span class="p">[</span><span class="s">&quot;EPSG&quot;</span><span class="p">,</span><span class="s">&quot;6265&quot;</span><span class="p">]],</span> <span class="n">PRIMEM</span><span class="p">[</span><span class="s">&quot;Greenwich&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">AUTHORITY</span><span class="p">[</span><span class="s">&quot;EPSG&quot;</span><span class="p">,</span><span class="s">&quot;8901&quot;</span><span class="p">]],</span> <span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;degree&quot;</span><span class="p">,</span> <span class="mf">0.017453292519943295</span><span class="p">],</span> <span class="n">AXIS</span><span class="p">[</span><span class="s">&quot;Lon&quot;</span><span class="p">,</span> <span class="n">EAST</span><span class="p">],</span> <span class="n">AXIS</span><span class="p">[</span><span class="s">&quot;Lat&quot;</span><span class="p">,</span> <span class="n">NORTH</span><span class="p">],</span> <span class="n">AUTHORITY</span><span class="p">[</span><span class="s">&quot;EPSG&quot;</span><span class="p">,</span><span class="s">&quot;4265&quot;</span><span class="p">]],</span> <span class="n">PROJECTION</span><span class="p">[</span><span class="s">&quot;Transverse_Mercator&quot;</span><span class="p">],</span> <span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;central_meridian&quot;</span><span class="p">,</span> <span class="mf">15.0</span><span class="p">],</span> <span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;latitude_of_origin&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;scale_factor&quot;</span><span class="p">,</span> <span class="mf">0.9996</span><span class="p">],</span> <span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;false_easting&quot;</span><span class="p">,</span> <span class="mf">2520000.0</span><span class="p">],</span> <span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;false_northing&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;m&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="n">AXIS</span><span class="p">[</span><span class="s">&quot;x&quot;</span><span class="p">,</span> <span class="n">EAST</span><span class="p">],</span> <span class="n">AXIS</span><span class="p">[</span><span class="s">&quot;y&quot;</span><span class="p">,</span> <span class="n">NORTH</span><span class="p">],</span> <span class="n">AUTHORITY</span><span class="p">[</span><span class="s">&quot;EPSG&quot;</span><span class="p">,</span><span class="s">&quot;30041000&quot;</span><span class="p">]]</span> 
+<span class="mi">30041001</span><span class="o">=</span><span class="n">PROJCS</span><span class="p">[</span><span class="s">&quot;Monte Mario / Italy zone 2 - Sardinia/Accuracy 3-4m&quot;</span><span class="p">,</span> <span class="n">GEOGCS</span><span class="p">[</span><span class="s">&quot;Monte Mario&quot;</span><span class="p">,</span> <span class="n">DATUM</span><span class="p">[</span><span class="s">&quot;Monte_Mario&quot;</span><span class="p">,</span> <span class="n">SPHEROID</span><span class="p">[</span><span class="s">&quot;International 1924&quot;</span><span class="p">,</span> <span class="mf">6378388.0</span><span class="p">,</span> <span class="mf">297.0</span><span class="p">,</span> <span class="n">AUTHORITY</span><span class="p">[</span><span class="s">&quot;EPSG&quot;</span><span class="p">,</span><span class="s">&quot;7022&quot;</span><span class="p">]],</span> <span class="n">TOWGS84</span><span class="p">[</span><span class="o">-</span><span class="mf">168.6</span><span class="p">,</span><span class="o">-</span><span class="mf">34.0</span><span class="p">,</span><span class="mf">38.6</span><span class="p">,</span><span class="o">-</span><span class="mf">0.374</span><span class="p">,</span><span class="o">-</span><span class="mf">0.679</span><span class="p">,</span><span class="o">-</span><span class="mf">1.379</span><span class="p">,</span><span class="o">-</span><span class="mf">9.48</span><span class="p">],</span> <span class="n">AUTHORITY</span><span class="p">[</span><span class="s">&quot;EPSG&quot;</span><span class="p">,</span><span class="s">&quot;6265&quot;</span><span class="p">]],</span> <span class="n">PRIMEM</span><span class="p">[</span><span class="s">&quot;Greenwich&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">AUTHORITY</span><span class="p">[</span><span class="s">&quot;EPSG&quot;</span><span class="p">,</span><span class="s">&quot;8901&quot;</span><span class="p">]],</span> <span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;degree&quot;</span><span class="p">,</span> <span class="mf">0.017453292519943295</span><span class="p">],</span> <span class="n">AXIS</span><span class="p">[</span><span class="s">&quot;Lon&quot;</span><span class="p">,</span> <span class="n">EAST</span><span class="p">],</span> <span class="n">AXIS</span><span class="p">[</span><span class="s">&quot;Lat&quot;</span><span class="p">,</span> <span class="n">NORTH</span><span class="p">],</span> <span class="n">AUTHORITY</span><span class="p">[</span><span class="s">&quot;EPSG&quot;</span><span class="p">,</span><span class="s">&quot;4265&quot;</span><span class="p">]],</span> <span class="n">PROJECTION</span><span class="p">[</span><span class="s">&quot;Transverse_Mercator&quot;</span><span class="p">],</span> <span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;central_meridian&quot;</span><span class="p">,</span> <span class="mf">15.0</span><span class="p">],</span> <span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;latitude_of_origin&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;scale_factor&quot;</span><span class="p">,</span> <span class="mf">0.9996</span><span class="p">],</span> <span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;false_easting&quot;</span><span class="p">,</span> <span class="mf">2520000.0</span><span class="p">],</span> <span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;false_northing&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;m&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="n">AXIS</span><span class="p">[</span><span class="s">&quot;x&quot;</span><span class="p">,</span> <span class="n">EAST</span><span class="p">],</span> <span class="n">AXIS</span><span class="p">[</span><span class="s">&quot;y&quot;</span><span class="p">,</span> <span class="n">NORTH</span><span class="p">],</span> <span class="n">AUTHORITY</span><span class="p">[</span><span class="s">&quot;EPSG&quot;</span><span class="p">,</span><span class="s">&quot;30041001&quot;</span><span class="p">]]</span> 
+<span class="mi">30041002</span><span class="o">=</span><span class="n">PROJCS</span><span class="p">[</span><span class="s">&quot;Monte Mario / Italy zone 2 - Sicily/Accuracy 3-4m&quot;</span><span class="p">,</span> <span class="n">GEOGCS</span><span class="p">[</span><span class="s">&quot;Monte Mario&quot;</span><span class="p">,</span> <span class="n">DATUM</span><span class="p">[</span><span class="s">&quot;Monte_Mario&quot;</span><span class="p">,</span> <span class="n">SPHEROID</span><span class="p">[</span><span class="s">&quot;International 1924&quot;</span><span class="p">,</span> <span class="mf">6378388.0</span><span class="p">,</span> <span class="mf">297.0</span><span class="p">,</span> <span class="n">AUTHORITY</span><span class="p">[</span><span class="s">&quot;EPSG&quot;</span><span class="p">,</span><span class="s">&quot;7022&quot;</span><span class="p">]],</span> <span class="n">TOWGS84</span><span class="p">[</span><span class="o">-</span><span class="mf">50.2</span><span class="p">,</span><span class="o">-</span><span class="mf">50.4</span><span class="p">,</span><span class="mf">84.8</span><span class="p">,</span><span class="o">-</span><span class="mf">0.690</span><span class="p">,</span><span class="o">-</span><span class="mf">2.012</span><span class="p">,</span><span class="mf">0.459</span><span class="p">,</span><span class="o">-</span><span class="mf">28.08</span><span class="p">],</span> <span class="n">AUTHORITY</span><span class="p">[</span><span class="s">&quot;EPSG&quot;</span><span class="p">,</span><span class="s">&quot;6265&quot;</span><span class="p">]],</span> <span class="n">PRIMEM</span><span class="p">[</span><span class="s">&quot;Greenwich&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">AUTHORITY</span><span class="p">[</span><span class="s">&quot;EPSG&quot;</span><span class="p">,</span><span class="s">&quot;8901&quot;</span><span class="p">]],</span> <span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;degree&quot;</span><span class="p">,</span> <span class="mf">0.017453292519943295</span><span class="p">],</span> <span class="n">AXIS</span><span class="p">[</span><span class="s">&quot;Lon&quot;</span><span class="p">,</span> <span class="n">EAST</span><span class="p">],</span> <span class="n">AXIS</span><span class="p">[</span><span class="s">&quot;Lat&quot;</span><span class="p">,</span> <span class="n">NORTH</span><span class="p">],</span> <span class="n">AUTHORITY</span><span class="p">[</span><span class="s">&quot;EPSG&quot;</span><span class="p">,</span><span class="s">&quot;4265&quot;</span><span class="p">]],</span> <span class="n">PROJECTION</span><span class="p">[</span><span class="s">&quot;Transverse_Mercator&quot;</span><span class="p">],</span> <span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;central_meridian&quot;</span><span class="p">,</span> <span class="mf">15.0</span><span class="p">],</span> <span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;latitude_of_origin&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;scale_factor&quot;</span><span class="p">,</span> <span class="mf">0.9996</span><span class="p">],</span> <span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;false_easting&quot;</span><span class="p">,</span> <span class="mf">2520000.0</span><span class="p">],</span> <span class="n">PARAMETER</span><span class="p">[</span><span class="s">&quot;false_northing&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="n">UNIT</span><span class="p">[</span><span class="s">&quot;m&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="n">AXIS</span><span class="p">[</span><span class="s">&quot;x&quot;</span><span class="p">,</span> <span class="n">EAST</span><span class="p">],</span> <span class="n">AXIS</span><span class="p">[</span><span class="s">&quot;y&quot;</span><span class="p">,</span> <span class="n">NORTH</span><span class="p">],</span> <span class="n">AUTHORITY</span><span class="p">[</span><span class="s">&quot;EPSG&quot;</span><span class="p">,</span><span class="s">&quot;30041002&quot;</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="coverage-faq">
+<h2>Coverage FAQ<a class="headerlink" href="#coverage-faq" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="q-relationship-with-iso-coverage">
+<h3>Q: Relationship with ISO Coverage?<a class="headerlink" href="#q-relationship-with-iso-coverage" title="Permalink to this headline">¶</a></h3>
+<p>Within GeoTools, the coverage module exists below the main module (where Feature is defined) and therefore a GeoTools GridCoverage is not a feature.</p>
+<p>This is in opposition to the ISO Coverage model (where Coverage extends Feature) provided by ISO 19123 specification.</p>
+<p>GeoTools &#8216;Coverage&#8217; objects emerged from an earlier specification published by the OpenGeospatial Consortium (OGC) called &#8220;Grid Coverage Services Implementation&#8221; (OGC 01-004).</p>
+</div>
+<div class="section" id="q-how-is-raster-data-supported">
+<h3>Q: How is raster data supported?<a class="headerlink" href="#q-how-is-raster-data-supported" title="Permalink to this headline">¶</a></h3>
+<p>The design of the coverage modules follows closely the design of image handling in Java. Java provides three major subsystems in their Java media API&#8217;s which are used and extended in GeoTools.</p>
+<dl class="docutils">
+<dt>Image I/O system</dt>
+<dd>To access files with image content. This provides code to access many
+standard image formats.</dd>
+<dt>Java Advanced Imaging (JAI) system</dt>
+<dd>which provides a powerful approach for performing operations on images.
+Not only does JAI provide efficient code for performing lots of
+operations, but it creates a system through which a user can create
+chains of operations which can be applied repeatedly to an image or
+applied to a whole slew of images.</dd>
+<dt>JAI Image I/O system</dt>
+<dd>Combines the two other systems by treating image access as one of the
+JAI operations allowing for differed access and enabling the treatment
+of file access as a standard step in an operation chain. The module
+also provides access to additional file formats.</dd>
+</dl>
+<p>When combined, these subsystems provide immense power to the GeoTools coverage module but this dependency does require that programmers who wish to use and extend the module must learn to use these other Java modules.</p>
+<p>To get the most out of the gt-coverage module developers should be familiar with the underlying mathematical ideas. Knowledge of ideas such as an Affine Transforms (for rotating and scaling) is required to work effectively with the coverage module. Affines are explained any computer graphics textbooks, and on many web sites, if you need a refresher.</p>
+</div>
+</div>
+<div class="section" id="main-faq">
+<h2>Main FAQ<a class="headerlink" href="#main-faq" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="q-what-is-gt-main-responsible-for">
+<h3>Q: What is gt-main responsible for?<a class="headerlink" href="#q-what-is-gt-main-responsible-for" title="Permalink to this headline">¶</a></h3>
+<p>The gt-main module is responsible for the default implementations of the formal interfaces provided by gt-api and gt-opengis. This includes the default implementations for the feature model, filter support, and style definition.</p>
+<p>The gt-main module makes this functionality available through the plug-in system allowing you to make use of CommonFactoryFinder rather than directly depend on the default implementations provided here.</p>
+</div>
+<div class="section" id="q-how-do-i-make-a-featuretype">
+<h3>Q: How do I make a FeatureType?<a class="headerlink" href="#q-how-do-i-make-a-featuretype" title="Permalink to this headline">¶</a></h3>
+<p>You can make a feature type quickly using using the DataUtilities class:</p>
+<blockquote>
+<div>SimpleFeatureType lineType = DataUtilities.createType(&#8220;LINE&#8221;, &#8220;centerline:LineString,name:&#8221;&#8221;,id:0&#8221;);</div></blockquote>
+<p>For greater control consider direct use of a FeatureTypeBuilder:</p>
+<div class="highlight-python"><div class="highlight"><pre>SimpleFeatureTypeBuilder b = new SimpleFeatureTypeBuilder();
+
+//set the name
+b.setName( &quot;Flag&quot; );
+
+//add some properties
+b.add( &quot;name&quot;, String.class );
+b.add( &quot;classification&quot;, Integer.class );
+b.add( &quot;height&quot;, Double.class );
+
+//add a geometry property
+b.setCRS( DefaultGeographicCRS.WSG84 ); // set crs first
+b.add( &quot;location&quot;, Point.class ); // then add geometry
+
+//build the type
+final SimpleFeatureType FLAG = b.buildFeatureType();
+</pre></div>
+</div>
+</div>
+<div class="section" id="q-how-do-i-modify-a-featuretype">
+<h3>Q: How do I modify a FeatureType?<a class="headerlink" href="#q-how-do-i-modify-a-featuretype" title="Permalink to this headline">¶</a></h3>
+<p>You cannot modify a feature type directly as it is considered immutable and not subject to change.</p>
+<p>You can however use a FeatureTypeBuilder to create a modified copy:</p>
+<div class="highlight-python"><div class="highlight"><pre>SimpleFeatureType lineType = DataUtilities.createType(&quot;LINE&quot;, &quot;geom:LineString,name:\&quot;\&quot;,id:0&quot;);
+SimpleFeatureTypeBuilder b = new SimpleFeatureTypeBuilder();
+b.init( lineType );
+b.setName(&quot;POINT&quot;);
+b.add(0, &quot;geom&quot;, Point.class );
+SimpleFeatureType pointType = b.buildFeatureType();
+</pre></div>
+</div>
+</div>
+<div class="section" id="q-how-to-get-featurecollection-to-work-with-a-for-each-loop">
+<h3>Q: How to get FeatureCollection to work with a &#8216;for each&#8217; loop?<a class="headerlink" href="#q-how-to-get-featurecollection-to-work-with-a-for-each-loop" title="Permalink to this headline">¶</a></h3>
+<p>Feature collection is a wrapper around a live data stream; as such we need to be sure to <em>close</em>
+the iterator after we are through with it:</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="n">SimpleFeatureIterator</span> <span class="n">iterator</span> <span class="o">=</span> <span class="n">featureCollection</span><span class="o">.</span><span class="na">features</span><span class="o">();</span>
+    <span class="k">try</span> <span class="o">{</span>
+        <span class="k">while</span><span class="o">(</span> <span class="n">iterator</span><span class="o">.</span><span class="na">hasNext</span><span class="o">()</span> <span class="o">){</span>
+            <span class="n">SimpleFeature</span> <span class="n">feature</span> <span class="o">=</span> <span class="n">iterator</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
+            <span class="c1">// process feature</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="k">finally</span> <span class="o">{</span>
+        <span class="n">iterator</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+    <span class="o">}</span>
+</pre></div>
+</div>
+<p>This requirement prevents us implementing Collection (and being compatible with &#8216;for each&#8217; syntax.
+I am afraid this is a fundamental limitation of Java and not something that can or should be
+addressed in a future release.</p>
+</div>
+</div>
+<div class="section" id="jdbc-faq">
+<h2>JDBC FAQ<a class="headerlink" href="#jdbc-faq" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="q-how-to-access-a-database-from-java-enterprise-edition">
+<h3>Q: How to access a database from Java Enterprise Edition?<a class="headerlink" href="#q-how-to-access-a-database-from-java-enterprise-edition" title="Permalink to this headline">¶</a></h3>
+<p>Depending on your application container (and organisational polices) you may be restricted to only using database connection pools under control of your administrator.</p>
+<p>Your administrator will register the database connection
+pool with the application server and configure your application with the Java Naming and Directory Interface (JNDI) reference.</p>
+<p>To use GeoTools with a JNDI name:</p>
+<div class="highlight-python"><div class="highlight"><pre>Map map = new HashMap();
+map.put( &quot;dbtype&quot;, &quot;postgis&quot;);
+map.put( &quot;jndiReferenceName&quot;, &quot;java:comp/env/jdbc/geotools&quot;);
+
+DataStore store =  DataStoreFinder.getDataStore(map);
+</pre></div>
+</div>
+<p>The specific &#8220;dbtype&#8221; marks the plugin you will use to communicate with the database.</p>
+</div>
+</div>
+<div class="section" id="cql-faq">
+<h2>CQL FAQ<a class="headerlink" href="#cql-faq" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="q-what-is-cql-used-for">
+<h3>Q: What is CQL used for?<a class="headerlink" href="#q-what-is-cql-used-for" title="Permalink to this headline">¶</a></h3>
+<p>The <strong>CQL</strong> utility class has static methods to parse an input String into either a <strong>Filter</strong>
+or an <strong>Expression</strong>.</p>
+<p>Here is the most common use for the CQL class - asking for Features:</p>
+<div class="highlight-java"><div class="highlight"><pre>        <span class="n">Filter</span> <span class="n">filter</span> <span class="o">=</span> <span class="n">CQL</span><span class="o">.</span><span class="na">toFilter</span><span class="o">(</span><span class="s">&quot;population &gt;= 10000000&quot;</span><span class="o">);</span>
+</pre></div>
+</div>
+<p>The CQL utility class produced is a Filter; you can create Filters by hand (using a FilterFactory) but this is much easier.</p>
+</div>
+<div class="section" id="q-what-version-of-cql-is-implemented">
+<h3>Q: What version of CQL is implemented?<a class="headerlink" href="#q-what-version-of-cql-is-implemented" title="Permalink to this headline">¶</a></h3>
+<p>The input string defining the query predicate that CQL accepts has to respond to the grammar
+of the OGC Common Query Language, defined in the Catalog Service for Web, v2.0.1, from the OGC.</p>
+<p>We&#8217;ve added a couple extensions and fixes to that grammar in order to fix a bug in the definition
+of temporal expressions and to leverage its use in the GeoTools library.</p>
+</div>
+<div class="section" id="q-can-i-just-try-cql-out">
+<h3>Q: Can I just try CQL out?<a class="headerlink" href="#q-can-i-just-try-cql-out" title="Permalink to this headline">¶</a></h3>
+<p>If you&#8217;re developing with GeoTools, you can easily try out the CQL parser by depending on the <strong>gt-cql</strong>
+jar and running the <strong>CQL</strong> class as a normal Java application.</p>
+<p>It will present a prompt on the console (standard input) from where you can input cql strings and
+will get back the corresponding Filter in xml encoding.:</p>
+<div class="highlight-python"><div class="highlight"><pre>Expression Tester (&quot;quit&quot; to finish)
+&gt;attr &gt; 10
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;ogc:PropertyIsGreaterThan xmlns=&quot;http://www.opengis.net/ogc&quot;
+                           xmlns:ogc=&quot;http://www.opengis.net/ogc&quot;
+                           xmlns:gml=&quot;http://www.opengis.net/gml&quot;&gt;
+  &lt;ogc:PropertyName&gt;attr&lt;/ogc:PropertyName&gt;
+  &lt;ogc:Literal&gt;10&lt;/ogc:Literal&gt;
+&lt;/ogc:PropertyIsGreaterThan&gt;
+
+&gt;quit
+Bye!
+</pre></div>
+</div>
+</div>
+<div class="section" id="q-what-does-ecql-offer">
+<h3>Q: What does ECQL offer?<a class="headerlink" href="#q-what-does-ecql-offer" title="Permalink to this headline">¶</a></h3>
+<p>The ECQL class offers an extension of the basic CQL language, it is backward compatable so
+the following still works:</p>
+<div class="highlight-java"><div class="highlight"><pre>        <span class="n">Filter</span> <span class="n">filter</span> <span class="o">=</span> <span class="n">ECQL</span><span class="o">.</span><span class="na">toFilter</span><span class="o">(</span><span class="s">&quot;POPULTATION &gt;= 1000&quot;</span><span class="o">);</span>
+</pre></div>
+</div>
+<p>The ECQL has a syntax more flexible and nearest to the natural language.
+By example, ECQL allows to use an expression in the left hand of comparison
+as is showed in the following example</p>
+<div class="highlight-java"><div class="highlight"><pre>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="xml-faq">
+<h2>XML FAQ<a class="headerlink" href="#xml-faq" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="q-what-parser-does-geotools-use">
+<h3>Q: What parser does GeoTools use?<a class="headerlink" href="#q-what-parser-does-geotools-use" title="Permalink to this headline">¶</a></h3>
+<p>We have a range of tools to help you with parsing and encoding XML. As a
+general purpose library GeoTools does not have the luxury of choosing a
+parser to work with.</p>
+<p>The following parsers are based on W3C APIs (SAX, DOM, and XML Transform).
+You can choose the most appropriate solution for the system you want to
+use GeoTools in.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="17%" />
+<col width="7%" />
+<col width="7%" />
+<col width="12%" />
+<col width="13%" />
+<col width="43%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Technology</th>
+<th class="head">SAX</th>
+<th class="head">DOM</th>
+<th class="head">Encode</th>
+<th class="head">Support</th>
+<th class="head">Notes</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>SAX</td>
+<td>sax</td>
+<td>dom</td>
+<td>&nbsp;</td>
+<td>Filter
+GML
+SLD</td>
+<td>Hard to trace through, parse
+not easily extended</td>
+</tr>
+<tr class="row-odd"><td>DOM</td>
+<td>&nbsp;</td>
+<td>dom</td>
+<td>&nbsp;</td>
+<td>Filter
+GML
+SLD</td>
+<td>Forgiving and easy to trace
+through and debug, memory
+limitation for GIS data</td>
+</tr>
+<tr class="row-even"><td>Transform</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>XML</td>
+<td>Filter
+GML2
+SLD</td>
+<td>Easy to trace through and
+debug, difficult to
+configure for specific data</td>
+</tr>
+<tr class="row-odd"><td>JABX</td>
+<td>sax</td>
+<td>dom</td>
+<td>XML</td>
+<td>n/a</td>
+<td>Fast but not suitable for
+dynamic data, precomplied</td>
+</tr>
+<tr class="row-even"><td>Pull</td>
+<td>sax</td>
+<td>dom</td>
+<td>&nbsp;</td>
+<td>n/a</td>
+<td>Should combine the ease of
+DOM with the streaming
+performance of XDO and GTXML</td>
+</tr>
+<tr class="row-odd"><td>XDO</td>
+<td>sax</td>
+<td>dom</td>
+<td>XML</td>
+<td>Filter
+GML
+SLD
+WMS
+WFS1.0
+XSD</td>
+<td>Proof of concept of schema
+assisted parsing allowing
+streaming into Java Objects.
+Code is fast and well tested
+but is hard to trace through</td>
+</tr>
+<tr class="row-even"><td>GTXML</td>
+<td>sax</td>
+<td>dom</td>
+<td>XML</td>
+<td>Filter
+GML
+SLD
+WMS
+WFS1.0
+WFS1.1
+WPS
+XSD</td>
+<td><p class="first">Schema assisted parsing
+backed by Eclipse XSD
+to represent schema.</p>
+<p>Easier to trace through but
+still not straight forward</p>
+<p class="last">Allows streaming for large
+GIS data volumes.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The XDO and GTXML solutions are configuration based. You set up a configuration
+matching the data you wish to work with and the technology will make use of
+any XML schema available to assist in parsing or encoding your content correctly.</p>
+<p>The JAXB library from Java is a little different in that you start from an
+XML schema and generate a parser or encoder class for use. This solution
+performs well but cannot be used for dynamic content such as GML.</p>
+</div>
+<div class="section" id="q-what-is-sax">
+<h3>Q: What is SAX?<a class="headerlink" href="#q-what-is-sax" title="Permalink to this headline">¶</a></h3>
+<p>SAX is a W3C technology from the early days of XML. SAX Parsers work using
+callbacks, they pass control between several hard coded implementations. For
+basic use you create your own SAX Parser (say responding to a new Geometry being
+parsed) and pass control off to the GeoTools implementations and wait for it
+to call you.</p>
+<ul class="simple">
+<li>Allows streaming for large content.</li>
+<li>Rather tricky to set up</li>
+<li>Reuse of a SAX parser is possible, but is very tricky to reuse</li>
+</ul>
+<p>As a result SAX parsers are rather &#8220;brittle&#8221; and difficult to maintain
+are currently hardcoded to pass control between themselves, making support for
+new specifications tricky.</p>
+<p>Example: while parsing a Filter control will be need to be handed over to
+a Geometry parser if the expression contains a literal Geometry.</p>
+<p>The later Schema Assisted parsers are an attempt to let mere mortals create a
+tree of handlers on the fly (they use the schema document to do a bunch of the
+grunt work) that is hard coded for the SAX Parsers.</p>
+</div>
+<div class="section" id="q-what-is-dom">
+<h3>Q: What is DOM?<a class="headerlink" href="#q-what-is-dom" title="Permalink to this headline">¶</a></h3>
+<p>The W3C Document Object Model (DOM) is most popularly used to represent the
+the contents of a web page as a series of <strong>Nodes</strong>. These notes form a
+tree structure and can be used to represent the contents of an XML document
+in memory.</p>
+<p>As a result the GeoTools DOM parsers are functions that can wander through an
+in memory DOM doing their best to extract content.</p>
+<p>Delegation is hard coded in much the same way as with the SAX parsers.</p>
+<ul class="simple">
+<li>accessible easy to understand technology</li>
+<li>very nice for quick examples</li>
+<li>obvious how to use the parser</li>
+<li>solution does not scale to large content as steaming not available</li>
+<li>can only handle direct use of GML</li>
+<li>additional coding is always required to parse your own content</li>
+</ul>
+</div>
+<div class="section" id="q-what-is-xml-transform">
+<h3>Q: What is XML Transform?<a class="headerlink" href="#q-what-is-xml-transform" title="Permalink to this headline">¶</a></h3>
+<p>Traditional XML generation, traverse your data structure and call methods
+to generate as you go.</p>
+<ul class="simple">
+<li>very fast, so fast we use it for GeoServer even though it is hard to maintain</li>
+<li>scalable (does not load features into memory)</li>
+<li>not open ended</li>
+<li>need to carefully provide hints before use</li>
+<li>may revisit data several times (for bounding box and then content)</li>
+</ul>
+</div>
+<div class="section" id="q-schema-assisted-did-you-make-that-up">
+<h3>Q: Schema Assisted -did you make that up?<a class="headerlink" href="#q-schema-assisted-did-you-make-that-up" title="Permalink to this headline">¶</a></h3>
+<p>Yes we did.</p>
+<p>This idea of &#8220;Schema Assisted&#8221; parsers is a GeoTools specific piece of
+technology. Then general idea is to makes use of XML Schema information to
+minimise the amount of code you need to write.</p>
+<p>A parser is supplied a configuration of bindings; each binding maps an XML
+elements or XML attributes to Java class.</p>
+<p>While this sounds similar to other XML parsing technologies we do have a
+couple of key differences:</p>
+<ul class="simple">
+<li>taking special care to pay attention to the schema at runtime (so we can parse
+new documents using the &#8220;best&#8221; binding available rather than fail)</li>
+<li>Ensure that data is not loaded into memory; allowing us to &#8220;stream&#8221; the XML
+document through an application.</li>
+<li>We are on our third generation schema assisted parser.</li>
+</ul>
+</div>
+<div class="section" id="q-xdo">
+<h3>Q: XDO?<a class="headerlink" href="#q-xdo" title="Permalink to this headline">¶</a></h3>
+<p>XML Data Objects (XDO) is the third generation of our schema
+assisted parser idea (where the SAX bindings are referenced by the XMLSchema
+rather then directly hard coded). This is fast scalable solution that supports
+reading and writing.</p>
+<ul class="simple">
+<li>fast and proven solution for geospatial data</li>
+<li>ability to handle MASSIVE content like FeatureCollections</li>
+<li>how to create new bindings is not obvious</li>
+</ul>
+</div>
+<div class="section" id="q-gtxml">
+<h3>Q: GTXML?<a class="headerlink" href="#q-gtxml" title="Permalink to this headline">¶</a></h3>
+<p>GeoTools XML (GTXML) is the forth generation schema assisted parser, using the
+XML Schema data structure (rather then hard coding) to figure out what binding to
+call. The XSD is used to hold our representation of the schema at runtime.</p>
+<ul class="simple">
+<li>schema aware allowing use of new content without additional coding</li>
+<li>code generator for making custom bindings</li>
+<li>streaming content for MASSIVE content like feature collections</li>
+<li>support for content generation</li>
+<li>hard to debug and trace through the parsing or encoding process</li>
+<li>code generator available to jump start the development of bindings</li>
+<li>examples how how to use Eclipse Modeling Objects (EMF) based bindings to
+work directly from the schema</li>
+</ul>
+</div>
+<div class="section" id="q-why-doesn-t-geotools-use-jaxb">
+<h3>Q: Why doesn&#8217;t GeoTools use JAXB?<a class="headerlink" href="#q-why-doesn-t-geotools-use-jaxb" title="Permalink to this headline">¶</a></h3>
+<p>JAXB is a set of Java technologies (now included as part of Java 6) that are able
+to generate a parser form an XML schema.</p>
+<p>A couple of groups have used JAXB have bind things such as OGC Filter. In general
+works well; however it does have trouble responding to content that is
+negotiated dynamically ... such as GML.</p>
+</div>
+<div class="section" id="q-for-wfs-why-does-parser-return-a-map">
+<h3>Q: For WFS why does Parser return a Map?<a class="headerlink" href="#q-for-wfs-why-does-parser-return-a-map" title="Permalink to this headline">¶</a></h3>
+<p>This shows up as the following error:</p>
+<ul class="simple">
+<li>ClassCastException &#8220;java.util.HashMap cannot be cast to FeatureCollection&#8221;.</li>
+</ul>
+<p>To understand this error please remember that the GML returned by a WFS GetFeatures
+request is a normal XML file, with a reference to an XML schema at the top.</p>
+<p>For a WFS GetFeature response the schema reference is usually a DescribeFeatureType call that returns
+an XML Schema.</p>
+<p>If this schema is incorrectly configured (common with MapServer) or cannot be reached (common with restricted
+environments) our Parser will give up guessing what is a Feature and just return the values in a HashMap.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>If you are using the GML utility class it will perform a bit of analysis and create an ad-hoc
+FeatureType in order to return you Features.</p>
+<ul class="simple">
+<li>looking at the HashMaps returned</li>
+<li>building a feature type that matches that kind of contents</li>
+<li>building features that match that FeatureType</li>
+</ul>
+<p>This is similar to the approach taken by OGR; OGR figures out where the &#8220;geometry&#8221; is; and then
+goes up two levels and assumes those things are features.</p>
+<p class="last">Both of these approaches are strictly a work around for a common problem of misconfigured WFS servers.</p>
+</div>
+<p>Here is how to review the configuration of your WFS Server:</p>
+<ol class="arabic">
+<li><p class="first">If you are having a problem with a HashMap being returned when you expect a Feature, you should check
+GetCapabilities responses for remote server e.g. with browser:</p>
+<div class="highlight-python"><div class="highlight"><pre>http://{URL}?SERVICE=WFS&amp;VERSION=1.1.0&amp;REQUEST=GetCapabilities
+</pre></div>
+</div>
+</li>
+<li><p class="first">After that, ensure that &lt;ows:Operation&gt; elements contain urls that actually work</p>
+</li>
+<li><p class="first">In particular check that DescribeFeatureType responds with the expected XML Schema</p>
+</li>
+</ol>
+</div>
+<div class="section" id="q-i-am-in-a-restricted-environment-how-to-configure-schemalocator">
+<h3>Q: I am in a restricted environment, how to configure SchemaLocator?<a class="headerlink" href="#q-i-am-in-a-restricted-environment-how-to-configure-schemalocator" title="Permalink to this headline">¶</a></h3>
+<p>You can configure the Parser with a SchemaLocator (we use this internally to force the parser
+to a copy of the GML schema included in the GeoTools jars; rather than force the Parser to download
+the GML schema each time).</p>
+<ol class="arabic">
+<li><p class="first">To customise how XML Schemas are located in a restricted environment (such as web portal for multiple
+WFS services that require authorization, or require the use of an HTTP proxy for schema requests).</p>
+</li>
+<li><p class="first">Create custom SchemaLocator we start with configuration like so:</p>
+<div class="highlight-python"><div class="highlight"><pre>GMLConfiguration configuration = new GMLConfiguration() {
+    public void configureContext(final MutablePicoContainer container) {
+        super.configureContext(container);
+        String username = &quot;geotools user&quot;;
+        String password = &quot;support osgeo&quot;;
+        Boolean useProxy = true;
+        XSDSchemaLocator locator = new CachingSchemaLocator(username, password, useProxy);
+        QName key = new QName(&quot;mycustom&quot;, &quot;schemaLocator&quot;);
+        container.registerComponentInstance(key, locator);
+    }
+};
+</pre></div>
+</div>
+</li>
+<li><p class="first">In the above code, CachingSchemaLocator is a custom XSDSchemaLocator:</p>
+<div class="highlight-python"><div class="highlight"><pre>public class CachingSchemaLocator implements XSDSchemaLocator {
+    public XSDSchema locateSchema(XSDSchema schema, String namespaceURI, String rawSchemaLocationURI, String resolvedSchemaLocationURI) {
+
+         ... Implementation ...
+
+    }
+}
+</pre></div>
+</div>
+</li>
+<li><p class="first">Set up a configuration for use with the Parser:</p>
+<div class="highlight-python"><div class="highlight"><pre>Parser parser = new Parser(configuration);
+
+parser.setValidating(false);
+parser.setFailOnValidationError(false);
+parser.setStrict(false);
+FeatureCollection&lt;SimpleFeatureType, SimpleFeature&gt; features = parser.parse(... WFS response InputStream Here ...);
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="section" id="render-faq">
+<h2>Render FAQ<a class="headerlink" href="#render-faq" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="how-do-i-display-a-shapefile">
+<h3>How do I display a shapefile?<a class="headerlink" href="#how-do-i-display-a-shapefile" title="Permalink to this headline">¶</a></h3>
+<p>Have a look at <a class="reference internal" href="tutorial/index.html"><em>Tutorials</em></a> which provides a quickstart showing how to do this.</p>
+</div>
+<div class="section" id="q-what-is-sld">
+<h3>Q: What is SLD?<a class="headerlink" href="#q-what-is-sld" title="Permalink to this headline">¶</a></h3>
+<p>Style Layer Descriptor Specification (SLD) is an OGC standard
+defining styles used when drawing maps. Think of it as CSS for maps.</p>
+<p>GeoTools rendering is based around the Style Layer Descriptor standard,
+for details please see the gt-opengis  module.</p>
+<p>This standard is divided into two parts:</p>
+<ul class="simple">
+<li>Style Layer Descriptor 1.1 covers the integration of styles
+with a web map server.</li>
+<li>Symbology Encoding 1.1 covers the definition of a feature type style
+controlling how a rendering engine draws features.</li>
+</ul>
+</div>
+<div class="section" id="q-what-is-a-mapcontent">
+<h3>Q: What is a MapContent?<a class="headerlink" href="#q-what-is-a-mapcontent" title="Permalink to this headline">¶</a></h3>
+<p>A MapContent object holds one or more Layers which are rendered in the
+order that they were added.</p>
+<p>This is not part of the formal gt-opengis module because it is not
+considered finished, done, or complete. The GeoTools community is
+actively looking to collaborate with other projects (such as OpenJUMP,
+uDig and deegree) in order to collaborate on these ideas. If open
+source collaboration fails we will look to traditional collaboration
+with a standards body in the form of the the OGC working group on &#8220;Open
+Web Context&#8221; documents.</p>
+</div>
+<div class="section" id="q-what-about-the-widget">
+<h3>Q: What about the Widget?<a class="headerlink" href="#q-what-about-the-widget" title="Permalink to this headline">¶</a></h3>
+<p>This module only draws into a Graphics2D context (so printer or image
+buffer). You can use this functionality in your own Swing widget in
+order to draw something on screen.</p>
+<ul>
+<li><p class="first">gt-swing</p>
+<p>GeoTools does not provide comprehensive GUI components but there is a
+basic Swing widget JMapFrame in the <strong>gt-swing</strong> module which is used
+in GeoTools example code. This can be used directly in your
+applications or it could form the starting point for writing your own
+Swing components. See JMapFrame for more details.</p>
+</li>
+<li><p class="first">gt-swt</p>
+<p>The gt-swing JMapFrame has been ported to an SWT widget as an
+unsupported module.</p>
+</li>
+<li><p class="first">udig</p>
+<p>uDig is an application and SDK built around the Eclipse platform,
+please consider this a real world solution suitable for desktop
+applications. It makes use of the SWT toolkit so while you can use it
+as an example of how to do really fast rendering you will not be able
+to directly use the code in a swing application.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="brewer-faq">
+<h2>Brewer FAQ<a class="headerlink" href="#brewer-faq" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="q-i-have-47-classes-to-represent-and-colorbrewer-only-goes-up-to-12">
+<h3>Q: I have 47 classes to represent and ColorBrewer only goes up to 12!<a class="headerlink" href="#q-i-have-47-classes-to-represent-and-colorbrewer-only-goes-up-to-12" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div>Feel free to create your own Color[] for use with StyleGenerator.</div></blockquote>
+</div>
+<div class="section" id="q-but-why-does-it-only-go-up-to-12">
+<h3>Q: But why does it only go up to 12?<a class="headerlink" href="#q-but-why-does-it-only-go-up-to-12" title="Permalink to this headline">¶</a></h3>
+<p>This is a surprisingly common question!</p>
+<p>Have a look at the <a class="reference external" href="http://colorbrewer2.org/">http://colorbrewer2.org/</a> website above; the point of the research is that the
+human eye cannot tell very many colours apart. Indeed the number goes down depending on what
+you are trying communicate (ie that the things shown are of equal importance, or do they form a smooth spread of values?).</p>
+<p>In other words you are free to create a pretty map with more than 12 colours; but you should not
+be surprised if that is too complicated for people to understand.</p>
+</div>
+</div>
+<div class="section" id="wms-faq">
+<h2>WMS FAQ<a class="headerlink" href="#wms-faq" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="q-scrambled-png-images">
+<h3>Q: Scrambled PNG Images?<a class="headerlink" href="#q-scrambled-png-images" title="Permalink to this headline">¶</a></h3>
+<p>A couple versions of Java ship with broken native PNG support (gasp!).
+If you find your WMS image scrambled you can try the following:</p>
+<div class="highlight-python"><div class="highlight"><pre>ImageUtilities.allowNativeCodec(&quot;png&quot;, ImageReaderSpi.class, false);
+</pre></div>
+</div>
+<p>This code fragments disables the native PNG reader (the pure java one
+is fine; and in some platforms faster).</p>
+</div>
+</div>
+<div class="section" id="swing-faq">
+<h2>Swing FAQ<a class="headerlink" href="#swing-faq" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="q-what-is-jmappane-for">
+<h3>Q: What is JMapPane for?<a class="headerlink" href="#q-what-is-jmappane-for" title="Permalink to this headline">¶</a></h3>
+<p>The JMapPane class is primiarly used as a teaching aid for the
+<a class="reference internal" href="tutorial/index.html"><em>tutorials</em></a> used to explore the GeoTools library.</p>
+<p>It is developed in collaboration with the user list, and while not a intended as a
+GIS application it is a good starting point for trying out your ideas.</p>
+</div>
+<div class="section" id="q-what-is-the-best-way-to-simulate-a-car-moving-on-a-map">
+<h3>Q: What is the best way to simulate a car moving on a map?<a class="headerlink" href="#q-what-is-the-best-way-to-simulate-a-car-moving-on-a-map" title="Permalink to this headline">¶</a></h3>
+<p>There is a flying saucers demo you can review; but the real answer is to set up a second
+raster to draw your moving car into; and draw that over top of the map rendered by gt-renderer.</p>
+<p>Remember that JMapPane is just a demo showing how you can use StreamingRenderer to draw into a
+BufferedImage. You can do the same thing in your own code; and have one buffered image for the
+map and a second one for your &#8220;overlays&#8221; including the moving car.</p>
+</div>
+<div class="section" id="q-jmappane-is-slow-how-do-i-make-it-faster">
+<h3>Q: JMapPane is Slow how do I make it faster?<a class="headerlink" href="#q-jmappane-is-slow-how-do-i-make-it-faster" title="Permalink to this headline">¶</a></h3>
+<p>This really comes down to how you use the GeoTools renderer. Remember that the GeoTools renderer
+is doing a lot of calculation and data access; not what you want in the middle of animation.</p>
+<p>The gt-renderer is optimised for memory use; it does not loading your data into memory
+(it is drawing from disk, or database, each time). You can experiment with loading your data
+into memory (specifically into a spatial index) if you want faster performance out of it.</p>
+<p>For raster rendering you have a great deal of control over performance using JAI TileCache settings
+in addition to convering your rasters into an efficient format (anything is better than jpeg).</p>
+<p>Referneces:</p>
+<ul class="simple">
+<li><a class="reference external" href="/library/main/collection">FeatureCollection Performance</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="building-faq">
+<h2>Building FAQ<a class="headerlink" href="#building-faq" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="what-version-of-jdk">
+<h3>What version of JDK?<a class="headerlink" href="#what-version-of-jdk" title="Permalink to this headline">¶</a></h3>
+<p>Our policy is waiting for the majority of our users before migrating to a new version of the Java
+language. In general we are held up by the slow migration of Java Enterprise Edition environments
+such as websphere.</p>
+<p>GeoTools 8 uses Java 6.</p>
+</div>
+<div class="section" id="how-do-i-build-from-source-code">
+<h3>How do I build from source code?<a class="headerlink" href="#how-do-i-build-from-source-code" title="Permalink to this headline">¶</a></h3>
+<p>Complete build instructions are provided in the user guide:</p>
+<ul class="simple">
+<li><a class="reference internal" href="build/index.html"><em>Building</em></a></li>
+</ul>
+<p>GeoTools makes use of the maven build system (in part to help us reused code from
+a number of other java projects).</p>
+<p>To build all the modules:</p>
+<div class="highlight-python"><div class="highlight"><pre>mvn install -Dall
+</pre></div>
+</div>
+<p>To load the modules into the eclipse IDE.</p>
+<ol class="arabic">
+<li><p class="first">Use <em class="menuselection">Windows ‣ Preferences</em> to open the Preference Dialog.
+Using the tree on the left navigate to the Java &gt; Build path &gt; Classpath Variables preference
+Page.</p>
+</li>
+<li><p class="first">Add an <strong>M2_REPO</strong> classpath variable pointing to your local repository
+where maven downloads jars.</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="24%" />
+<col width="76%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">PLATFORM</th>
+<th class="head">LOCAL REPOSITORY</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Windows XP:</td>
+<td><code class="file docutils literal"><span class="pre">C:\Documents</span> <span class="pre">and</span> <span class="pre">Settings\Jody\.m2\repository</span></code></td>
+</tr>
+<tr class="row-odd"><td>Windows:</td>
+<td><code class="file docutils literal"><span class="pre">C:\Users\Jody.m2\repository</span></code></td>
+</tr>
+<tr class="row-even"><td>Linux and Mac:</td>
+<td><code class="file docutils literal"><span class="pre">~/.m2/repository</span></code></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</li>
+</ol>
+<ol class="arabic" start="2">
+<li><p class="first">Generate the .project and .classpath files needed for eclipse:</p>
+<div class="highlight-python"><div class="highlight"><pre>mvn eclipse:eclipse -Dall
+</pre></div>
+</div>
+</li>
+</ol>
+<ol class="arabic simple" start="4">
+<li>You can now use the eclipse import wizard to load existing projects.</li>
+</ol>
+</div>
+<div class="section" id="why-is-maven-3-slower">
+<h3>Why is Maven 3 Slower?<a class="headerlink" href="#why-is-maven-3-slower" title="Permalink to this headline">¶</a></h3>
+<p>Maven 3 is not faster out of the box with the default settings.</p>
+<p>Gowever what is new is that you can ask it to use more than one core:</p>
+<div class="highlight-python"><div class="highlight"><pre>mvn install -Dall -T 2C
+</pre></div>
+</div>
+<p>The above asks the build to go in &#8220;threaded&#8221; mode; using two threads for each core.</p>
+</div>
+<div class="section" id="what-the-fastest-build">
+<h3>What the fastest build?<a class="headerlink" href="#what-the-fastest-build" title="Permalink to this headline">¶</a></h3>
+<p>This is the fastest build on my machine:</p>
+<div class="highlight-python"><div class="highlight"><pre>mvn install -DskipTests -o -T 2C
+</pre></div>
+</div>
+<p>The above options:</p>
+<ul class="simple">
+<li>install (without clean) only recompiles modified code</li>
+<li>no profiles or flags are used to build optional code; onlt the core library is built</li>
+<li>skipTests - the tests are still built; they are just not run</li>
+<li>o - allows the build to work &#8220;offline&#8221; (thus no external servers are checked during the build)</li>
+<li>T 2C - builds with two threads per core</li>
+</ul>
+<p>I use this configuration to quickly push all local changes into my local maven repository so I can
+test in a downstream application such as uDig or GeoServer.</p>
+</div>
+<div class="section" id="how-do-i-create-an-executable-jar-for-my-geotools-app">
+<h3>How do I create an executable jar for my GeoTools app?<a class="headerlink" href="#how-do-i-create-an-executable-jar-for-my-geotools-app" title="Permalink to this headline">¶</a></h3>
+<p>If you&#8217;re familiar with Maven you might have used the <a class="reference external" href="http://maven.apache.org/plugins/maven-assembly-plugin/">assembly plugin</a> to create self-contained, executable jars. The bad news is
+that this generally won&#8217;t work with GeoTools. The problem is that GeoTools modules often define one or more files in its
+META-INF/services directory with the same names as files defined in other modules.  The assembly plugin just copies
+files with the same name over the top of each other rather than merging their contents.</p>
+<p>The good news is that the <a class="reference external" href="http://maven.apache.org/plugins/maven-shade-plugin/index.html">Maven shade plugin</a> can be
+used instead and it will correctly merge the META-INF/services files from each of the GeoTools modules used by your
+application.</p>
+<p>The POM below will create an executable jar for the GeoTools <a class="reference internal" href="tutorial/quickstart/index.html"><em>Quickstart</em></a> module which includes all of the required
+GeoTools modules and their dependencies.</p>
+<div class="highlight-xml"><div class="highlight"><pre><span class="nt">&lt;project</span> <span class="na">xmlns=</span><span class="s">&quot;http://maven.apache.org/POM/4.0.0&quot;</span> <span class="na">xmlns:xsi=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span>
+       <span class="na">xsi:schemaLocation=</span><span class="s">&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;modelVersion&gt;</span>4.0.0<span class="nt">&lt;/modelVersion&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>org.geotools.demo<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>quickstart<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;packaging&gt;</span>jar<span class="nt">&lt;/packaging&gt;</span>
+  <span class="nt">&lt;version&gt;</span>1.0<span class="nt">&lt;/version&gt;</span>
+  <span class="nt">&lt;name&gt;</span>GeoTools Quickstart example<span class="nt">&lt;/name&gt;</span>
+  <span class="nt">&lt;url&gt;</span>http://geotools.org<span class="nt">&lt;/url&gt;</span>
+
+  <span class="nt">&lt;properties&gt;</span>
+      <span class="nt">&lt;geotools.version&gt;</span>2.6.2<span class="nt">&lt;/geotools.version&gt;</span>
+  <span class="nt">&lt;/properties&gt;</span>
+
+  <span class="nt">&lt;build&gt;</span>
+      <span class="nt">&lt;plugins&gt;</span>
+          <span class="nt">&lt;plugin&gt;</span>
+              <span class="nt">&lt;artifactId&gt;</span>maven-compiler-plugin<span class="nt">&lt;/artifactId&gt;</span>
+              <span class="nt">&lt;configuration&gt;</span>
+                  <span class="nt">&lt;encoding&gt;</span>UTF-8<span class="nt">&lt;/encoding&gt;</span>
+                  <span class="nt">&lt;target&gt;</span>1.5<span class="nt">&lt;/target&gt;</span>
+                  <span class="nt">&lt;source&gt;</span>1.5<span class="nt">&lt;/source&gt;</span>
+              <span class="nt">&lt;/configuration&gt;</span>
+          <span class="nt">&lt;/plugin&gt;</span>
+          <span class="nt">&lt;plugin&gt;</span>
+              <span class="nt">&lt;groupId&gt;</span>org.apache.maven.plugins<span class="nt">&lt;/groupId&gt;</span>
+              <span class="nt">&lt;artifactId&gt;</span>maven-shade-plugin<span class="nt">&lt;/artifactId&gt;</span>
+              <span class="nt">&lt;version&gt;</span>1.3.1<span class="nt">&lt;/version&gt;</span>
+              <span class="nt">&lt;executions&gt;</span>
+                  <span class="nt">&lt;execution&gt;</span>
+                      <span class="nt">&lt;phase&gt;</span>package<span class="nt">&lt;/phase&gt;</span>
+                      <span class="nt">&lt;goals&gt;</span>
+                          <span class="nt">&lt;goal&gt;</span>shade<span class="nt">&lt;/goal&gt;</span>
+                      <span class="nt">&lt;/goals&gt;</span>
+                      <span class="nt">&lt;configuration&gt;</span>
+                          <span class="nt">&lt;transformers&gt;</span>
+                              <span class="c">&lt;!-- This bit sets the main class for the executable jar as you otherwise --&gt;</span>
+                              <span class="c">&lt;!-- would with the assembly plugin                                       --&gt;</span>
+                              <span class="nt">&lt;transformer</span> <span class="na">implementation=</span><span class="s">&quot;org.apache.maven.plugins.shade.resource.ManifestResourceTransformer&quot;</span><span class="nt">&gt;</span>
+                                  <span class="nt">&lt;manifestEntries&gt;</span>
+                                      <span class="nt">&lt;Main-Class&gt;</span>org.geotools.demo.Quickstart<span class="nt">&lt;/Main-Class&gt;</span>
+                                  <span class="nt">&lt;/manifestEntries&gt;</span>
+                              <span class="nt">&lt;/transformer&gt;</span>
+                              <span class="c">&lt;!-- This bit merges the various GeoTools META-INF/services files         --&gt;</span>
+                              <span class="nt">&lt;transformer</span> <span class="na">implementation=</span><span class="s">&quot;org.apache.maven.plugins.shade.resource.ServicesResourceTransformer&quot;</span><span class="nt">/&gt;</span>
+                          <span class="nt">&lt;/transformers&gt;</span>
+                      <span class="nt">&lt;/configuration&gt;</span>
+                  <span class="nt">&lt;/execution&gt;</span>
+              <span class="nt">&lt;/executions&gt;</span>
+          <span class="nt">&lt;/plugin&gt;</span>
+      <span class="nt">&lt;/plugins&gt;</span>
+  <span class="nt">&lt;/build&gt;</span>
+
+  <span class="nt">&lt;dependencies&gt;</span>
+      <span class="nt">&lt;dependency&gt;</span>
+          <span class="nt">&lt;groupId&gt;</span>org.geotools<span class="nt">&lt;/groupId&gt;</span>
+          <span class="nt">&lt;artifactId&gt;</span>gt-shapefile<span class="nt">&lt;/artifactId&gt;</span>
+          <span class="nt">&lt;version&gt;</span>${geotools.version}<span class="nt">&lt;/version&gt;</span>
+      <span class="nt">&lt;/dependency&gt;</span>
+      <span class="nt">&lt;dependency&gt;</span>
+          <span class="nt">&lt;groupId&gt;</span>org.geotools<span class="nt">&lt;/groupId&gt;</span>
+          <span class="nt">&lt;artifactId&gt;</span>gt-epsg-hsql<span class="nt">&lt;/artifactId&gt;</span>
+          <span class="nt">&lt;version&gt;</span>${geotools.version}<span class="nt">&lt;/version&gt;</span>
+      <span class="nt">&lt;/dependency&gt;</span>
+      <span class="nt">&lt;dependency&gt;</span>
+          <span class="nt">&lt;groupId&gt;</span>org.geotools<span class="nt">&lt;/groupId&gt;</span>
+          <span class="nt">&lt;artifactId&gt;</span>gt-swing<span class="nt">&lt;/artifactId&gt;</span>
+          <span class="nt">&lt;version&gt;</span>${geotools.version}<span class="nt">&lt;/version&gt;</span>
+      <span class="nt">&lt;/dependency&gt;</span>
+      <span class="nt">&lt;dependency&gt;</span>
+          <span class="nt">&lt;groupId&gt;</span>junit<span class="nt">&lt;/groupId&gt;</span>
+          <span class="nt">&lt;artifactId&gt;</span>junit<span class="nt">&lt;/artifactId&gt;</span>
+          <span class="nt">&lt;version&gt;</span>4.5<span class="nt">&lt;/version&gt;</span>
+          <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
+      <span class="nt">&lt;/dependency&gt;</span>
+  <span class="nt">&lt;/dependencies&gt;</span>
+<span class="nt">&lt;/project&gt;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="build/index.html" title="Building"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="welcome/javaEE.html" title="Java EE"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+        <li><a href="#">Frequently Asked Questions</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

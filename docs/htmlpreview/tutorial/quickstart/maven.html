@@ -1,0 +1,568 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Maven Quickstart &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../index.html" />
+    <link rel="up" title="Quickstart" href="index.html" />
+    <link rel="next" title="Feature Tutorial" href="../feature/csv2shp.html" />
+    <link rel="prev" title="Netbeans Quickstart" href="netbeans.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Tutorials</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Quickstart</a> &raquo;</li>
+        <li><a href="#">Maven Quickstart</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Maven Quickstart</a><ul>
+<li><a class="reference internal" href="#welcome">Welcome</a></li>
+<li><a class="reference internal" href="#java-install">Java Install</a></li>
+<li><a class="reference internal" href="#maven-and-why-it-s-not-so-bad">Maven (and why it&#8217;s not so bad)</a><ul>
+<li><a class="reference internal" href="#installing-maven">Installing Maven</a></li>
+<li><a class="reference internal" href="#creating-a-new-project">Creating a new project</a></li>
+<li><a class="reference internal" href="#creating-the-quickstart-application">Creating the Quickstart application</a></li>
+<li><a class="reference internal" href="#running-the-application">Running the application</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#things-to-try">Things to Try</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="netbeans.html"
+                        title="previous chapter">Netbeans Quickstart</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../feature/csv2shp.html"
+                        title="next chapter">Feature Tutorial</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/tutorial/quickstart/maven.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="maven-quickstart">
+<h1>Maven Quickstart<a class="headerlink" href="#maven-quickstart" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="welcome">
+<h2>Welcome<a class="headerlink" href="#welcome" title="Permalink to this headline">¶</a></h2>
+<p>This tutorial is for those who prefer the pleasant company of a text editor and a trusty command
+prompt. Even if you routinely use an IDE, you will find that it&#8217;s often quicker and easier to
+compile, test and install your applications from the command line. We&#8217;ll be using Maven
+(<a class="reference external" href="http://maven.apache.org/">http://maven.apache.org/</a>) to manage the large number of jars that a GeoTools projects depend on.
+Don&#8217;t worry if you&#8217;re not familiar with Maven because we will explain everything step by step.</p>
+<p>The example application is the same one used for the NetBeans and Eclipse Quickstart tutorials: a
+simple program to load and display a shapefile.</p>
+<p>We would like thank members of the <a class="reference external" href="https://lists.sourceforge.net/lists/listinfo/geotools-gt2-users">GeoTools User mailing list</a> for their feedback while we were
+preparing the course material, with special thanks to Eva Shon for testing/reviewing early drafts. If you have any questions or comments about this tutorial, please post them to the user list.</p>
+</div>
+<div class="section" id="java-install">
+<h2>Java Install<a class="headerlink" href="#java-install" title="Permalink to this headline">¶</a></h2>
+<p>We are going to be making use of Java so if you don&#8217;t have a Java Development Kit (JDK) installed now is the time to do so.</p>
+<ol class="arabic">
+<li><p class="first">Download the latest Java 7 JDK (Java SE Development Kit):</p>
+<ul class="simple">
+<li>Oracle JDK: <a class="reference external" href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">http://www.oracle.com/technetwork/java/javase/downloads/index.html</a></li>
+<li>OpenJDK: <a class="reference external" href="http://openjdk.java.net">http://openjdk.java.net</a></li>
+</ul>
+</li>
+<li><p class="first">At the time of writing the latest Java 7 release was:</p>
+<ul class="simple">
+<li>jdk-7u67-windows-i586.exe</li>
+</ul>
+<p>GeoTools is not yet tested with Java 8, we are limited by build infrastructure and volunteers.</p>
+</li>
+<li><p class="first">Click through the installer you will need to set an acceptance a license agreement and so forth.
+By default this will install to:</p>
+<p><code class="file docutils literal"><span class="pre">C:\Program</span> <span class="pre">Files</span> <span class="pre">(x86)\Javajdk1.7.0_67</span></code></p>
+</li>
+</ol>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In this tutorial we refer to file and directory paths as used by Windows. If you are fortunate
+enough to be using another operating system such as Linux or OSX all of the commands and source
+code below will work, just modify the paths to suit.</p>
+</div>
+</div>
+<div class="section" id="maven-and-why-it-s-not-so-bad">
+<h2>Maven (and why it&#8217;s not so bad)<a class="headerlink" href="#maven-and-why-it-s-not-so-bad" title="Permalink to this headline">¶</a></h2>
+<p>Maven is a widely-used build tool which works by describing the contents of a project. This is a
+different approach than that used by the Make or Ant tools which list the steps required to build.</p>
+<p>It takes a while to get used to Maven and, for some, it remains a love-hate relationship, but it
+definitely makes working with GeoTools much easier:</p>
+<ul class="simple">
+<li>You only download as much of GeoTools as your application requires.</li>
+<li>Jars are downloaded into a single location in your home directory (e.g. C:\Documents and
+Settings&lt;user&gt;\.m2\ on Windows). This is your <em>local repository</em>.</li>
+<li>The correct versions of all of the third-party jars required by GeoTools will be downloaded for
+you. This helps you to avoid obscure errors than can be caused by mis-matched dependencies which
+can be very difficult to track down.</li>
+<li>The single <em>local repository</em> makes it easier to work on other multiple open source projects.</li>
+</ul>
+<div class="section" id="installing-maven">
+<h3>Installing Maven<a class="headerlink" href="#installing-maven" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic">
+<li><p class="first">Download Maven from <a class="reference external" href="http://maven.apache.org/download.html">http://maven.apache.org/download.html</a></p>
+<p>In this tutorial we refer to Maven version 3.2.3, we have had relatively little trouble with Maven version 3.</p>
+</li>
+<li><p class="first">Unzip the file apache-maven-3.2.3-bin.zip</p>
+</li>
+<li><p class="first">You need to have a couple of environmental variables set for maven to work. Navigate to
+<em class="menuselection">Control Panel ‣ System ‣ Advanced</em>. Change to the <em class="guilabel">Advanced</em> tab and click <em class="guilabel">Environmental Variables</em> button.</p>
+<ul class="simple">
+<li>JAVA_HOME = <code class="file docutils literal"><span class="pre">C:\Program</span> <span class="pre">Files</span> <span class="pre">(x86)\Java\jdk1.7.0_67</span></code></li>
+<li>M2_HOME = <code class="file docutils literal"><span class="pre">C:\java\apache-maven-3.2.3</span></code></li>
+<li>PATH = <code class="file docutils literal"><span class="pre">%JAVA_HOME%\bin;%M2_HOME%\bin</span></code></li>
+</ul>
+<a class="reference internal image-reference" href="../../_images/env-variables.png"><img alt="../../_images/env-variables.png" src="../../_images/env-variables.png" style="width: 291.0px; height: 264.6px;" /></a>
+</li>
+<li><p class="first">Open up a commands prompt <em class="menuselection">Accessories ‣ Command Prompt</em></p>
+</li>
+<li><p class="first">Type the following command to confirm you are set up correctly:</p>
+<div class="highlight-python"><div class="highlight"><pre>C:java&gt; mvn --version
+</pre></div>
+</div>
+</li>
+<li><p class="first">This should produce something similar to the following output:</p>
+<div class="highlight-python"><div class="highlight"><pre>C:\java&gt;mvn -version
+Apache Maven 3.2.3 (33f8c3e1027c3ddde99d3cdebad2656a31e8fdf4; 2014-08-11T13:58:10-07:00)
+Maven home: C:\java\apache-maven-3.2.3
+Java version: 1.7.0_67, vendor: Oracle Corporation
+Java home: C:\Program Files (x86)\Java\jdk1.7.0_67\jre
+Default locale: en_US, platform encoding: Cp1252
+OS name: &quot;windows 7&quot;, version: &quot;6.1&quot;, arch: &quot;x86&quot;, family: &quot;windows&quot;
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../../_images/maven-version.png"><img alt="../../_images/maven-version.png" src="../../_images/maven-version.png" style="width: 598.2px; height: 111.6px;" /></a>
+</li>
+</ol>
+</div>
+<div class="section" id="creating-a-new-project">
+<h3>Creating a new project<a class="headerlink" href="#creating-a-new-project" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic">
+<li><p class="first">We can now create our project with:</p>
+<div class="highlight-python"><div class="highlight"><pre>C:&gt;cd C:\java
+C:java&gt; mvn archetype:create -DgroupId=org.geotools -DartifactId=tutorial
+</pre></div>
+</div>
+</li>
+<li><p class="first">The above command creates the following files and directories:</p>
+<div class="highlight-python"><div class="highlight"><pre>tutorial
+tutorial\pom.xml
+tutorial\src
+tutorial\src\main
+tutorial\src\main\java
+tutorial\src\main\java\org
+tutorial\src\main\java\org\geotools
+tutorial\src\main\java\org\geotools\App.java
+tutorial\src\test
+tutorial\src\test\java
+tutorial\src\test\java\org
+tutorial\src\test\java\org\geotools
+tutorial\src\test\java\org\geotools\AppTest.java
+</pre></div>
+</div>
+<p>App.java and AppTest.java are just placeholder files not used in this tutorial.</p>
+</li>
+<li><p class="first">During the build process your local maven repository will be used to store both
+downloaded jars, and those you build locally.</p>
+<p>Your local Maven repository is located in your home folder.</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="24%" />
+<col width="76%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">PLATFORM</th>
+<th class="head">LOCAL REPOSITORY</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Windows XP:</td>
+<td><code class="file docutils literal"><span class="pre">C:\Documents</span> <span class="pre">and</span> <span class="pre">Settings\You\.m2\repository</span></code></td>
+</tr>
+<tr class="row-odd"><td>Windows:</td>
+<td><code class="file docutils literal"><span class="pre">C:\Users\You.m2\repository</span></code></td>
+</tr>
+<tr class="row-even"><td>Linux and Mac:</td>
+<td><code class="file docutils literal"><span class="pre">~/.m2/repository</span></code></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</li>
+<li><p class="first">Open the <strong>pom.xml</strong> file in your favourite text editor. If your editor has an XML syntax mode
+switch into that now because it will make it a lot easier to find errors such as mis-matched
+brackets. Some editors, such as <a class="reference external" href="http://www.vim.org/">vim</a>, will do this automatically on
+loading the file.</p>
+</li>
+<li><p class="first">We are going to start by defining the version number of GeoTools we wish to use. This workbook
+was written for 13-SNAPSHOT although you may wish to try a different version.</p>
+<p>For production a stable release is recommended:</p>
+<div class="highlight-xml"><div class="highlight"><pre>    <span class="nt">&lt;properties&gt;</span>
+        <span class="nt">&lt;project.build.sourceEncoding&gt;</span>UTF-8<span class="nt">&lt;/project.build.sourceEncoding&gt;</span>
+        <span class="nt">&lt;geotools.version&gt;</span>12-RC1<span class="nt">&lt;/geotools.version&gt;</span>
+    <span class="nt">&lt;/properties&gt;</span>
+</pre></div>
+</div>
+<p>To make use of a nightly build set the <cite>geotools.version</cite> property to 13-SNAPSHOT .</p>
+<div class="highlight-xml"><div class="highlight"><pre>    <span class="nt">&lt;properties&gt;</span>
+        <span class="nt">&lt;project.build.sourceEncoding&gt;</span>UTF-8<span class="nt">&lt;/project.build.sourceEncoding&gt;</span>
+        <span class="c">&lt;!-- use the latest snapshot --&gt;</span>
+        <span class="nt">&lt;geotools.version&gt;</span>13-SNAPSHOT<span class="nt">&lt;/geotools.version&gt;</span>
+    <span class="nt">&lt;/properties&gt;</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">We specify the following dependencies (GeoTools modules which your application will need):</p>
+<div class="highlight-xml"><div class="highlight"><pre>    <span class="nt">&lt;dependencies&gt;</span>
+        <span class="nt">&lt;dependency&gt;</span>
+            <span class="nt">&lt;groupId&gt;</span>junit<span class="nt">&lt;/groupId&gt;</span>
+            <span class="nt">&lt;artifactId&gt;</span>junit<span class="nt">&lt;/artifactId&gt;</span>
+            <span class="nt">&lt;version&gt;</span>4.11<span class="nt">&lt;/version&gt;</span>
+            <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
+        <span class="nt">&lt;/dependency&gt;</span>
+        <span class="nt">&lt;dependency&gt;</span>
+            <span class="nt">&lt;groupId&gt;</span>org.geotools<span class="nt">&lt;/groupId&gt;</span>
+            <span class="nt">&lt;artifactId&gt;</span>gt-shapefile<span class="nt">&lt;/artifactId&gt;</span>
+            <span class="nt">&lt;version&gt;</span>${geotools.version}<span class="nt">&lt;/version&gt;</span>
+        <span class="nt">&lt;/dependency&gt;</span>
+        <span class="nt">&lt;dependency&gt;</span>
+            <span class="nt">&lt;groupId&gt;</span>org.geotools<span class="nt">&lt;/groupId&gt;</span>
+            <span class="nt">&lt;artifactId&gt;</span>gt-swing<span class="nt">&lt;/artifactId&gt;</span>
+            <span class="nt">&lt;version&gt;</span>${geotools.version}<span class="nt">&lt;/version&gt;</span>
+        <span class="nt">&lt;/dependency&gt;</span>
+    <span class="nt">&lt;/dependencies&gt;</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Finally, we tell maven which repositories to download jars from:</p>
+<div class="highlight-xml"><div class="highlight"><pre>    <span class="nt">&lt;repositories&gt;</span>
+        <span class="nt">&lt;repository&gt;</span>
+            <span class="nt">&lt;id&gt;</span>maven2-repository.dev.java.net<span class="nt">&lt;/id&gt;</span>
+            <span class="nt">&lt;name&gt;</span>Java.net repository<span class="nt">&lt;/name&gt;</span>
+            <span class="nt">&lt;url&gt;</span>http://download.java.net/maven/2<span class="nt">&lt;/url&gt;</span>
+        <span class="nt">&lt;/repository&gt;</span>
+        <span class="nt">&lt;repository&gt;</span>
+            <span class="nt">&lt;id&gt;</span>osgeo<span class="nt">&lt;/id&gt;</span>
+            <span class="nt">&lt;name&gt;</span>Open Source Geospatial Foundation Repository<span class="nt">&lt;/name&gt;</span>
+            <span class="nt">&lt;url&gt;</span>http://download.osgeo.org/webdav/geotools/<span class="nt">&lt;/url&gt;</span>
+        <span class="nt">&lt;/repository&gt;</span>
+    <span class="nt">&lt;/repositories&gt;</span>
+</pre></div>
+</div>
+<p>If you are using a nightly build (such as 13-SNAPSHOT) and add a reference to the snapshot repository.</p>
+<div class="highlight-xml"><div class="highlight"><pre>    <span class="nt">&lt;repositories&gt;</span>
+        <span class="nt">&lt;repository&gt;</span>
+            <span class="nt">&lt;id&gt;</span>maven2-repository.dev.java.net<span class="nt">&lt;/id&gt;</span>
+            <span class="nt">&lt;name&gt;</span>Java.net repository<span class="nt">&lt;/name&gt;</span>
+            <span class="nt">&lt;url&gt;</span>http://download.java.net/maven/2<span class="nt">&lt;/url&gt;</span>
+        <span class="nt">&lt;/repository&gt;</span>
+        <span class="nt">&lt;repository&gt;</span>
+            <span class="nt">&lt;id&gt;</span>osgeo<span class="nt">&lt;/id&gt;</span>
+            <span class="nt">&lt;name&gt;</span>Open Source Geospatial Foundation Repository<span class="nt">&lt;/name&gt;</span>
+            <span class="nt">&lt;url&gt;</span>http://download.osgeo.org/webdav/geotools/<span class="nt">&lt;/url&gt;</span>
+        <span class="nt">&lt;/repository&gt;</span>
+        <span class="nt">&lt;repository&gt;</span>
+          <span class="nt">&lt;snapshots&gt;</span>
+            <span class="nt">&lt;enabled&gt;</span>true<span class="nt">&lt;/enabled&gt;</span>
+          <span class="nt">&lt;/snapshots&gt;</span>
+          <span class="nt">&lt;id&gt;</span>boundless<span class="nt">&lt;/id&gt;</span>
+          <span class="nt">&lt;name&gt;</span>Boundless Maven Repository<span class="nt">&lt;/name&gt;</span>
+          <span class="nt">&lt;url&gt;</span>http://repo.boundlessgeo.com/main<span class="nt">&lt;/url&gt;</span>
+        <span class="nt">&lt;/repository&gt;</span>
+    <span class="nt">&lt;/repositories&gt;</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Return to the command line and get maven to download the required jars for your project with this
+command:</p>
+<div class="highlight-python"><div class="highlight"><pre>C:\java\example&gt; mvn install
+</pre></div>
+</div>
+</li>
+<li><p class="first">If maven has trouble downloading any jar, you can always try again. A national mirror is often faster than the default maven central.</p>
+</li>
+</ol>
+</div>
+<div class="section" id="creating-the-quickstart-application">
+<h3>Creating the Quickstart application<a class="headerlink" href="#creating-the-quickstart-application" title="Permalink to this headline">¶</a></h3>
+<p>Now we are ready to create the application.</p>
+<ol class="arabic">
+<li><p class="first">Crete the <em>org.geotools.tutorial.quickstart</em> package by navigating to the directory
+<code class="file docutils literal"><span class="pre">tutorial</span></code> and create the directory <code class="file docutils literal"><span class="pre">src\main\java\org\geotools\tutorial\quickstart</span></code></p>
+</li>
+<li><p class="first">In the new sub-directory, create a new file <strong>Quickstart.java</strong> using your text editor.</p>
+</li>
+<li><p class="first">Fill in the following code:</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="kn">package</span> <span class="nn">org.geotools.tutorial.quickstart</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.io.File</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.geotools.data.FileDataStore</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.data.FileDataStoreFinder</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.data.simple.SimpleFeatureSource</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.map.FeatureLayer</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.map.Layer</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.map.MapContent</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.styling.SLD</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.styling.Style</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.swing.JMapFrame</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.swing.data.JFileDataStoreChooser</span><span class="o">;</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Prompts the user for a shapefile and displays the contents on the screen in a map frame.</span>
+<span class="cm"> * &lt;p&gt;</span>
+<span class="cm"> * This is the GeoTools Quickstart application used in documentationa and tutorials. *</span>
+<span class="cm"> */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Quickstart</span> <span class="o">{</span>
+
+    <span class="cm">/**</span>
+<span class="cm">     * GeoTools Quickstart demo application. Prompts the user for a shapefile and displays its</span>
+<span class="cm">     * contents on the screen in a map frame</span>
+<span class="cm">     */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+        <span class="c1">// display a data store file chooser dialog for shapefiles</span>
+        <span class="n">File</span> <span class="n">file</span> <span class="o">=</span> <span class="n">JFileDataStoreChooser</span><span class="o">.</span><span class="na">showOpenFile</span><span class="o">(</span><span class="s">&quot;shp&quot;</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">file</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span><span class="o">;</span>
+        <span class="o">}</span>
+
+        <span class="n">FileDataStore</span> <span class="n">store</span> <span class="o">=</span> <span class="n">FileDataStoreFinder</span><span class="o">.</span><span class="na">getDataStore</span><span class="o">(</span><span class="n">file</span><span class="o">);</span>
+        <span class="n">SimpleFeatureSource</span> <span class="n">featureSource</span> <span class="o">=</span> <span class="n">store</span><span class="o">.</span><span class="na">getFeatureSource</span><span class="o">();</span>
+
+        <span class="c1">// Create a map content and add our shapefile to it</span>
+        <span class="n">MapContent</span> <span class="n">map</span> <span class="o">=</span> <span class="k">new</span> <span class="n">MapContent</span><span class="o">();</span>
+        <span class="n">map</span><span class="o">.</span><span class="na">setTitle</span><span class="o">(</span><span class="s">&quot;Quickstart&quot;</span><span class="o">);</span>
+        
+        <span class="n">Style</span> <span class="n">style</span> <span class="o">=</span> <span class="n">SLD</span><span class="o">.</span><span class="na">createSimpleStyle</span><span class="o">(</span><span class="n">featureSource</span><span class="o">.</span><span class="na">getSchema</span><span class="o">());</span>
+        <span class="n">Layer</span> <span class="n">layer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FeatureLayer</span><span class="o">(</span><span class="n">featureSource</span><span class="o">,</span> <span class="n">style</span><span class="o">);</span>
+        <span class="n">map</span><span class="o">.</span><span class="na">addLayer</span><span class="o">(</span><span class="n">layer</span><span class="o">);</span>
+
+        <span class="c1">// Now display the map</span>
+        <span class="n">JMapFrame</span><span class="o">.</span><span class="na">showMap</span><span class="o">(</span><span class="n">map</span><span class="o">);</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Go back to the top project directory (the one that contains your pom.xml file) and build the
+application with the command:</p>
+<div class="highlight-python"><div class="highlight"><pre>mvn clean install
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="running-the-application">
+<h3>Running the application<a class="headerlink" href="#running-the-application" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic">
+<li><p class="first">If you need some shapefiles to work with you will find a selection of data at the
+<a class="reference external" href="http://www.naturalearthdata.com/">http://www.naturalearthdata.com/</a> project which is supported by the North American Cartographic
+Information Society. Head to the link below and download some cultural vectors. You can use the &#8216;Download all 50m cultural themes&#8217; at top.</p>
+<ul class="simple">
+<li><a class="reference external" href="http://www.naturalearthdata.com/downloads/50m-cultural-vectors/">1:50m Cultural Vectors</a></li>
+</ul>
+<p>Unzip the above data into a location you can find easily such as the desktop.</p>
+</li>
+<li><p class="first">You can run the application using Maven on the command line:</p>
+<div class="highlight-python"><div class="highlight"><pre>mvn exec:java -Dexec.mainClass=org.geotools.tutorial.quickstart.Quickstart
+</pre></div>
+</div>
+</li>
+<li><p class="first">The application will connect to your shapefile, produce a map context, and display the shapefile.</p>
+<a class="reference internal image-reference" href="../../_images/QuickstartMap.png"><img alt="../../_images/QuickstartMap.png" src="../../_images/QuickstartMap.png" style="width: 300.0px; height: 300.0px;" /></a>
+</li>
+<li><p class="first">A couple of things to note about the code example:</p>
+</li>
+</ol>
+<ul class="simple">
+<li>The shapefile is not loaded into memory. Instead it is read from disk each and every time it is needed.
+This approach allows you to work with data sets larger than available memory.</li>
+<li>We are using a very basic display style here that just shows feature outlines. In the examples
+that follow we will see how to specify more sophisticated styles.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="things-to-try">
+<h2>Things to Try<a class="headerlink" href="#things-to-try" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first">Try out the different sample data sets.</p>
+</li>
+<li><p class="first">You can zoom in, zoom out and show the full extent and use the info tool to examine individual
+countries in the sample countries.shp file.</p>
+</li>
+<li><p class="first">Download the largest shapefile you can find and see how quickly it can be rendered. You should
+find that the very first time it will take a while as a spatial index is generated. After that
+rendering will become much faster.</p>
+</li>
+<li><p class="first">Fast: We know that one of the ways people select a spatial library is based on speed. By design
+GeoTools does not load the above shapefile into memory (instead it streams it off of disk
+each time it is drawn using a spatial index to only bring the content required for display).</p>
+<p>If you would like to ask GeoTools to cache the shapefile in memory try the following code:</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="cm">/**</span>
+<span class="cm">     * This method demonstrates using a memory-based cache to speed up the display (e.g. when</span>
+<span class="cm">     * zooming in and out).</span>
+<span class="cm">     * </span>
+<span class="cm">     * There is just one line extra compared to the main method, where we create an instance of</span>
+<span class="cm">     * CachingFeatureStore.</span>
+<span class="cm">     */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+        <span class="c1">// display a data store file chooser dialog for shapefiles</span>
+        <span class="n">File</span> <span class="n">file</span> <span class="o">=</span> <span class="n">JFileDataStoreChooser</span><span class="o">.</span><span class="na">showOpenFile</span><span class="o">(</span><span class="s">&quot;shp&quot;</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">file</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span><span class="o">;</span>
+        <span class="o">}</span>
+
+        <span class="n">FileDataStore</span> <span class="n">store</span> <span class="o">=</span> <span class="n">FileDataStoreFinder</span><span class="o">.</span><span class="na">getDataStore</span><span class="o">(</span><span class="n">file</span><span class="o">);</span>
+        <span class="n">SimpleFeatureSource</span> <span class="n">featureSource</span> <span class="o">=</span> <span class="n">store</span><span class="o">.</span><span class="na">getFeatureSource</span><span class="o">();</span>
+        
+        <span class="c1">// CachingFeatureSource is deprecated as experimental (not yet production ready)</span>
+        <span class="n">CachingFeatureSource</span> <span class="n">cache</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CachingFeatureSource</span><span class="o">(</span><span class="n">featureSource</span><span class="o">);</span>
+
+        <span class="c1">// Create a map content and add our shapefile to it</span>
+        <span class="n">MapContent</span> <span class="n">map</span> <span class="o">=</span> <span class="k">new</span> <span class="n">MapContent</span><span class="o">();</span>
+        <span class="n">map</span><span class="o">.</span><span class="na">setTitle</span><span class="o">(</span><span class="s">&quot;Using cached features&quot;</span><span class="o">);</span>
+        <span class="n">Style</span> <span class="n">style</span> <span class="o">=</span> <span class="n">SLD</span><span class="o">.</span><span class="na">createSimpleStyle</span><span class="o">(</span><span class="n">featureSource</span><span class="o">.</span><span class="na">getSchema</span><span class="o">());</span>
+        <span class="n">Layer</span> <span class="n">layer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FeatureLayer</span><span class="o">(</span><span class="n">cache</span><span class="o">,</span> <span class="n">style</span><span class="o">);</span>
+        <span class="n">map</span><span class="o">.</span><span class="na">addLayer</span><span class="o">(</span><span class="n">layer</span><span class="o">);</span>
+
+        <span class="c1">// Now display the map</span>
+        <span class="n">JMapFrame</span><span class="o">.</span><span class="na">showMap</span><span class="o">(</span><span class="n">map</span><span class="o">);</span>
+    <span class="o">}</span>
+</pre></div>
+</div>
+<p>You will also need to add this import statement:</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">org.geotools.data.CachingFeatureSource</span><span class="o">;</span>
+</pre></div>
+</div>
+<div class="admonition hint">
+<p class="first admonition-title">Hint</p>
+<p class="last">When working in a text editor instead of an IDE use the <a class="reference external" href="http://docs.geotools.org/latest/javadocs/">GeoTools javadocs</a> to work out what import statements are required
+in your source. The javadocs also list the GeoTools module in which each class is found.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">When building you may see a message that CachingFeatureSource is deprecated. It&#8217;s ok to ignore
+it, it&#8217;s just a warning. The class is still under test but usable.</p>
+</div>
+</li>
+</ul>
+<ul class="simple">
+<li>Try and sort out what all the different &#8220;side car&#8221; files are - and what they are for. The sample
+data set includes &#8220;shp&#8221;, &#8220;dbf&#8221; and &#8220;shx&#8221;. How many other side car files are there?</li>
+</ul>
+<ul class="simple">
+<li>Advanced: The use of FileDataStoreFinder allows us to work easily with files. The other way to do
+things is with a map of connection parameters. This techniques gives us a little more control over
+how we work with a shapefile and also allows us to connect to databases and web feature servers.</li>
+</ul>
+<div class="highlight-java"><div class="highlight"><pre>        <span class="n">File</span> <span class="n">file</span> <span class="o">=</span> <span class="n">JFileDataStoreChooser</span><span class="o">.</span><span class="na">showOpenFile</span><span class="o">(</span><span class="s">&quot;shp&quot;</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
+        
+        <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span><span class="n">Object</span><span class="o">&gt;</span> <span class="n">params</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span><span class="n">Object</span><span class="o">&gt;();</span>
+        <span class="n">params</span><span class="o">.</span><span class="na">put</span><span class="o">(</span> <span class="s">&quot;url&quot;</span><span class="o">,</span> <span class="n">file</span><span class="o">.</span><span class="na">toURI</span><span class="o">().</span><span class="na">toURL</span><span class="o">()</span> <span class="o">);</span>
+        <span class="n">params</span><span class="o">.</span><span class="na">put</span><span class="o">(</span> <span class="s">&quot;create spatial index&quot;</span><span class="o">,</span> <span class="kc">false</span> <span class="o">);</span>
+        <span class="n">params</span><span class="o">.</span><span class="na">put</span><span class="o">(</span> <span class="s">&quot;memory mapped buffer&quot;</span><span class="o">,</span> <span class="kc">false</span> <span class="o">);</span>
+        <span class="n">params</span><span class="o">.</span><span class="na">put</span><span class="o">(</span> <span class="s">&quot;charset&quot;</span><span class="o">,</span> <span class="s">&quot;ISO-8859-1&quot;</span> <span class="o">);</span>
+        
+        <span class="n">DataStore</span> <span class="n">store</span> <span class="o">=</span> <span class="n">DataStoreFinder</span><span class="o">.</span><span class="na">getDataStore</span><span class="o">(</span> <span class="n">params</span> <span class="o">);</span>
+        <span class="n">SimpleFeatureSource</span> <span class="n">featureSource</span> <span class="o">=</span> <span class="n">store</span><span class="o">.</span><span class="na">getFeatureSource</span><span class="o">(</span> <span class="n">store</span><span class="o">.</span><span class="na">getTypeNames</span><span class="o">()[</span><span class="mi">0</span><span class="o">]</span> <span class="o">);</span>
+</pre></div>
+</div>
+<ul>
+<li><p class="first">So what jars did maven actually use for the Quickstart application? Try the following on the
+command line:</p>
+<p>mvn dependency:tree</p>
+<p>We will be making use of some of the project in greater depth in the remaining tutorials.</p>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="../feature/csv2shp.html" title="Feature Tutorial"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="netbeans.html" title="Netbeans Quickstart"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Tutorials</a> &raquo;</li>
+          <li><a href="index.html" >Quickstart</a> &raquo;</li>
+        <li><a href="#">Maven Quickstart</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

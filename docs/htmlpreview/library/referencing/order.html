@@ -1,0 +1,231 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Axis Order &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../index.html" />
+    <link rel="up" title="Referencing" href="index.html" />
+    <link rel="next" title="Comparing CoordinateReferenceSystem" href="compare.html" />
+    <link rel="prev" title="Axis" href="axis.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Referencing</a> &raquo;</li>
+        <li><a href="#">Axis Order</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Axis Order</a><ul>
+<li><a class="reference internal" href="#history">History</a></li>
+<li><a class="reference internal" href="#the-problem">The problem</a></li>
+<li><a class="reference internal" href="#geotools-solution">GeoTools Solution</a></li>
+<li><a class="reference internal" href="#writing-code">Writing Code</a></li>
+<li><a class="reference internal" href="#urn-syntax">URN Syntax</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="axis.html"
+                        title="previous chapter">Axis</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="compare.html"
+                        title="next chapter">Comparing CoordinateReferenceSystem</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/library/referencing/order.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="axis-order">
+<h1>Axis Order<a class="headerlink" href="#axis-order" title="Permalink to this headline">¶</a></h1>
+<p>Computer scientists and geographers disagree about one of the basic tenants of geography. Rather then decide who is right, as a library GeoTools gives your application a chance to match your users communities expectations.</p>
+<p><strong>Eeek</strong></p>
+<p>Chances are you have been referred to this page from the GeoTools user list. There is a lot of text on this page - and you are busy.</p>
+<p>Add the following line to your application main method:</p>
+<div class="highlight-python"><div class="highlight"><pre>// Setting the system-wide default at startup time
+System.setProperty(&quot;org.geotools.referencing.forceXY&quot;, &quot;true&quot;);
+</pre></div>
+</div>
+<p>Now that your program is working you can read the rest of this page.</p>
+<div class="section" id="history">
+<h2>History<a class="headerlink" href="#history" title="Permalink to this headline">¶</a></h2>
+<p>When the OGC defined the WMS specification, they were very much focused on making things simple for web developers. So they basically decided that all images would appear &#8220;correctly&#8221; as far as appearance on the screen was concerned. Computer guys understand that to be x first, and then y (the same assumption is used by the JTS geometries in Geotools). The geographically empowered understand this to be easting and then northing.</p>
+<p>This was a great idea in the short term, WMS is a great success. However this was not a good idea as we moved over to working with data. How should things appear when we are looking at Antarctica? Which way is north? More specifically we have problem with the most common data latitude and longitude. The screen order would be (east, north) axis order, but the geographers would expect it the other way around.</p>
+<p>The reasons this matters is that geographers define the Coordinate Reference Systems we use to understand what is going on. The most common &#8220;authority&#8221; on Coordinate Reference Systems is the European Petroleum Survey Group (EPSG) who defines a database every year or so mapping a magic &#8220;code&#8221; to a definition of a CRS.</p>
+<p>Here are some EPSG example codes and what they mean:</p>
+<ul class="simple">
+<li>4326 - world coordinates</li>
+<li>3006 - BC Albert&#8217;s equal area projection</li>
+</ul>
+</div>
+<div class="section" id="the-problem">
+<h2>The problem<a class="headerlink" href="#the-problem" title="Permalink to this headline">¶</a></h2>
+<p>In the EPSG database, 4326 maps to a geographic CRS with (latitude, longitude) axis order. However, most software in the field understand EPSG:4326 as a geographic CRS with (longitude, latitude) axis order, because legacy OGC specifications were designed that way. The problem is not limited to EPSG:4326; it applies to most geographic CRS defined in the EPSG database. The axis order understood by currently existing software is in violation with what the EPSG database said.</p>
+<p>Prior to the June 2005 meetings, there was considerable email dialogue between OGC members regarding axis order and coordinate reference systems. After some discussion, the members in attendance agreed that going forward, for new specifications, coordinate values shall be listed in the axis order specified by the referenced coordinate reference system (CRS). However no clarification was ever gained on what the situation with existing specifications was. The reality-on-the-ground is that every WFS 1.0 implementation tested that advertised EPSG:4326 as its CRS returned data on (longitude, latitude) order.</p>
+<p>Starting in WMS 1.1, the specification actually explicitly states that the EPSG axis order is to be used, while making a special case exception for EPSG:4326, which was to be in (longitude, latitude) order. Oddly, they did not make exceptions for all geographic coordinate systems (like, say EPSG:4269) just for EPSG:4326. Finally in WMS 1.3, that exception was dropped as well, to consternation all around. From WMS 1.3.0 / ISO 19128:2005, published by ISO on 2005-11-23:</p>
+<ul class="simple">
+<li>EXAMPLE: EPSG:4326 refers to WGS 84 geographic latitude, then longitude. That is, in this CRS the x axis corresponds to latitude, and the y axis to longitude.</li>
+</ul>
+<p>The GeoTools referencing module can not guess by itself when to returns a coordinate reference system (CRS) exactly as specified in the EPSG database, and when to returns a CRS with axis order forced to (longitude, latitude) no matter what the database said. The decision is left to the users or to the DataStore implementers. The choice may changes among different versions of the same standard.</p>
+<p>Because GeoTools is designed for handling data from different sources, users need to choose between &#8220;strict EPSG axis order&#8221; and &#8220;modified axis order&#8221; on a case-by-case basis. A consequence is that a running Java Virtual Machine may contains two different instances of a CRS, one with (latitude, longitude) axis order and the other one with (longitude, latitude) axis order, and both claiming to be EPSG:4326. Experience has show that the coexistence of such conflicting CRS in the same application can lead to some error like StackOverflowError in non-cautious code.</p>
+</div>
+<div class="section" id="geotools-solution">
+<h2>GeoTools Solution<a class="headerlink" href="#geotools-solution" title="Permalink to this headline">¶</a></h2>
+<p>This problem do not requires any change in opengis interfaces or with usage of CoordinateReferenceSystem or CoordinateOperationFactory classes in client code. The problem can be seen as strictly limited to using the right instance of CRSAuthorityFactory by DataStores. For the GeoTools referencing module however, it has the following implications:</p>
+<ul class="simple">
+<li>GeoTools must be robust to the coexistence of different CRS with the same authority code (e.g. EPSG:4326) but different axis order. In other words, GeoTools must not trust blindly the authority code and performs paranoiac checks when possible.</li>
+<li>GeoTools must be able to force the axis order from an arbitrary authority factory to the (longitude, latitude) axis order on user&#8217;s request.</li>
+<li>If the user do not request explicitly a (longitude, latitude) axis order, the default order is as specified in the authority factory.</li>
+</ul>
+<p>Example of using Hints:</p>
+<div class="highlight-python"><div class="highlight"><pre>Hints hints = new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE);
+CRSAuthorityFactory factory = ReferencingFactoryFinder.getCRSAuthorityFactory(&quot;EPSG&quot;, hints);
+CoordinateReferenceSystem crs = factory.createCoordinateReferenceSystem(&quot;EPSG:4326&quot;);
+</pre></div>
+</div>
+<p>If the FORCE_LONGITUDE_FIRST_AXIS_ORDER hint is not provided, then the default value is FALSE. The simple CRS class can also be used to specify an authority factory with (longitude, latitude) axis order, with the CRS.getAuthorityFactory(boolean longitudeFirst):</p>
+<p>CRS class example:</p>
+<div class="highlight-python"><div class="highlight"><pre>CRSAuthorityFactory   factory = CRS.getAuthorityFactory(true);
+CoordinateReferenceSystem crs = factory.createCoordinateReferenceSystem(&quot;EPSG:4326&quot;);
+</pre></div>
+</div>
+<p>To help older applications make the transition, the default value for the FORCE_LONGITUDE_FIRST_AXIS_ORDER hint can be forced to TRUE by setting the <strong>org.geotools.referencing.forceXY</strong> system property. This property can be set by an application usually at startup time, but in all cases before the first request for a CRS factory, as below:</p>
+<p>Setting the system-wide default at startup time:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">System</span><span class="o">.</span><span class="n">setProperty</span><span class="p">(</span><span class="s">&quot;org.geotools.referencing.forceXY&quot;</span><span class="p">,</span> <span class="s">&quot;true&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>If the application code can&#8217;t be modified, an alternative is to specify this property when invoking java on the command line. The first example below displays all registered referencing factories. Note the &#8220;CRSAuthorityFactory&#8221; box: its content has a different order when the system property is set to true. The second command line demonstrates that the EPSG:4326 is really forced to (longitude, latitude) axis order when this property is set.</p>
+<p>Setting the system-wide default from the command line:</p>
+<div class="highlight-python"><div class="highlight"><pre>java -Dorg.geotools.referencing.forceXY=true org.geotools.referencing.FactoryFinder
+java -Dorg.geotools.referencing.forceXY=true org.geotools.referencing.factory.epsg.DefaultFactory 4326
+</pre></div>
+</div>
+<p>Note that the FORCE_LONGITUDE_FIRST_AXIS_ORDER hint has precedence over the org.geotools.referencing.forceXY system property. This means that if the hint is provided with value FALSE, then (latitude, longitude) axis order will be used even if the system property was set to true. This allow axis order control on particular well-known CRS authority factories, and keep the system-wide property as the default value only for cases where axis order is unspecified.</p>
+</div>
+<div class="section" id="writing-code">
+<h2>Writing Code<a class="headerlink" href="#writing-code" title="Permalink to this headline">¶</a></h2>
+<p>Here are some guidelines we ask GeoTools API developers to follow. The goal here is to allow GeoTools to work correctly
+and let your application make decisions based on your knowledge of your users.</p>
+<p>Guidelines for CRS handling in GeoTools:</p>
+<ul class="simple">
+<li>Work with CoordinateReferenceSystem objects when defining an API (not magic strings).</li>
+<li>Believe the CoordinateReferenceSystem your user gave you! Trust them, they may built it by hand.</li>
+</ul>
+<p>In turn here is what we would like you to do when writing your application.</p>
+<ul>
+<li><p class="first">Please provide us with a CRS that correctly represents your data:</p>
+</li>
+<li><p class="first">If you are in charge of your own data collection, please follow the EPSG database directly.</p>
+</li>
+<li><p class="first">If using (longitude, latitude) ordered data all the time, then:</p>
+<ul class="simple">
+<li>Geotools 2.2: use the epsg-wkt plugin to the referencing system.</li>
+<li>Geotools 2.3: use the epsg-hsql plugin and set the org.geotools.referencing.forceXY system property to true.</li>
+</ul>
+</li>
+<li><p class="first">If using (latitude,longitude) ordered data all the time, then use the epsg-hsql plugin to the referencing system.</p>
+</li>
+<li><p class="first">If using mixed data, then please configure the CRSAuthorityFactory used by your DataStore with assumptions matching your data requirements. The CRS
+factory can be configured using the FORCE_LONGITUDE_FIRST_AXIS_ORDER hint on a feature source basis. Note that it may not be necessary to pass a fully
+constructed CRSAuthorityFactory object; the above-cited hint will suffise in some cases (depending on DataStore implementation).</p>
+<p>The last recommendation applies especially to DataStore implementers. We recommend to set the FORCE_LONGITUDE_FIRST_AXIS_ORDER hint every time the axis
+order is well known, even if the value is FALSE. Do not rely on the default value since it may be system-wide settings dependent.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="urn-syntax">
+<h2>URN Syntax<a class="headerlink" href="#urn-syntax" title="Permalink to this headline">¶</a></h2>
+<p>You can make use of the OGC supplied urn syntax (ie <a class="reference external" href="urn:x-ogc:def:crs:EPSG">urn:x-ogc:def:crs:EPSG</a>:&lt;version&gt;:&lt;code&gt;) rather than just an EPSG code:</p>
+<div class="highlight-python"><div class="highlight"><pre>CoordinateReferenceSystem crs = factory.createCoordinateReferenceSystem(&quot;urn:x-ogc:def:crs:EPSG:4326&quot;);
+</pre></div>
+</div>
+<p>If possible use the URI authority syntax where possible, as it does not suffer from the axis order problem.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="compare.html" title="Comparing CoordinateReferenceSystem"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="axis.html" title="Axis"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" >Referencing</a> &raquo;</li>
+        <li><a href="#">Axis Order</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

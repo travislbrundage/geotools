@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ContentDataStore Tutorial &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../index.html" />
+    <link rel="up" title="Tutorials" href="../index.html" />
+    <link rel="next" title="Introducing CSVDataStore" href="intro.html" />
+    <link rel="prev" title="AbstractDataStore Tutorial" href="../abstractdatastore.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Tutorials</a> &raquo;</li>
+        <li><a href="#">ContentDataStore Tutorial</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../abstractdatastore.html"
+                        title="previous chapter">AbstractDataStore Tutorial</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="intro.html"
+                        title="next chapter">Introducing CSVDataStore</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/tutorial/datastore/index.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="contentdatastore-tutorial">
+<h1>ContentDataStore Tutorial<a class="headerlink" href="#contentdatastore-tutorial" title="Permalink to this headline">¶</a></h1>
+<p>The GeoTools project strives to support as many geographical data formats as possible. This tutorial is provided to help you hook your data directly into the GeoTools API. In order to transform
+a data format into the GeoTools feature representation one must write an implementation of
+the <strong>DataStore</strong> interface.</p>
+<p>Once a DataStore implementation is written, any information written in that format becomes available
+not only for GeoTools users, but also for projects built on top of GeoTools such as GeoServer, GeoMajas, GeoScript and uDig.</p>
+<p>Writing a new DataStore for GeoTools is one of the best ways to get involved in the project, as
+writing it will make clear many of the core concepts of the API. The modular nature of GeoTools allows new DataStores to quickly become part of the next release, so that new formats are can
+quickly be distributed to to all GeoTools users.</p>
+<p><strong>Contents</strong></p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introducing CSVDataStore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="source.html">Implementing FeatureSource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="read.html">Using FeatureSource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="store.html">Implementing FeatureStore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="write.html">Using FeatureStore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="optimisation.html">Optimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qa.html">Quality Assurance</a></li>
+</ul>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>AbstractDataStore is the original GeoTools 2.0 class; since that time we have learned
+a number of tricks and have a much easier starting point for you in the form of
+<strong>ContentDataStore</strong>.</p>
+<p class="last">Thus far JDBCDataStore, ShapefileDataStore and WFSDataStore have each migrated to a <em>ng</em> (for next generation) implementation based on ContentDataStore. Anyone else still using AbstractDataStore should make migration plans now!</p>
+</div>
+<p><strong>Workshop</strong></p>
+<p>This is an intermediate workshop -if you are unfamiliar with mapping concepts you may wish to try the tutorials on features, geometries and coordinate reference systems first.</p>
+<p>Due to the length of this workshop we will create our data store in stages, trying out the functionality as we implement.</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="intro.html" title="Introducing CSVDataStore"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="../abstractdatastore.html" title="AbstractDataStore Tutorial"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Tutorials</a> &raquo;</li>
+        <li><a href="#">ContentDataStore Tutorial</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

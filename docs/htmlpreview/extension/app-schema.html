@@ -1,0 +1,318 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Application Schema Support &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../index.html" />
+    <link rel="up" title="Extensions" href="index.html" />
+    <link rel="next" title="Brewer" href="brewer/index.html" />
+    <link rel="prev" title="Extensions" href="index.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Extensions</a> &raquo;</li>
+        <li><a href="#">Application Schema Support</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Application Schema Support</a><ul>
+<li><a class="reference internal" href="#application-schema-dataaccess">Application Schema DataAccess</a><ul>
+<li><a class="reference internal" href="#creating-an-appschemadataaccess">Creating an AppSchemaDataAccess</a></li>
+<li><a class="reference internal" href="#resource-management">Resource Management</a></li>
+<li><a class="reference internal" href="#schema-download">Schema download</a></li>
+<li><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#application-schema-resolver">Application Schema Resolver</a><ul>
+<li><a class="reference internal" href="#appschemaconfiguration">AppSchemaConfiguration</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#sample-dataaccess">Sample DataAccess</a></li>
+<li><a class="reference internal" href="#application-schema-packages">Application Schema Packages</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Extensions</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="brewer/index.html"
+                        title="next chapter">Brewer</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/extension/app-schema.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="application-schema-support">
+<h1>Application Schema Support<a class="headerlink" href="#application-schema-support" title="Permalink to this headline">¶</a></h1>
+<p>The Application Schema Support (app-schema) family of modules support the delivery of complex feature types defined by a GML application schema. Key to the configuration of the app-schema module is the <em>mapping file</em>; because this is user input data, it is documented in the GeoServer User Manual:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://docs.geoserver.org/latest/en/user/data/app-schema/index.html">Application Schema Support section of the GeoServer User Manual</a></li>
+</ul>
+<div class="section" id="application-schema-dataaccess">
+<h2>Application Schema DataAccess<a class="headerlink" href="#application-schema-dataaccess" title="Permalink to this headline">¶</a></h2>
+<p>Application schema support is provided by the <code class="docutils literal"><span class="pre">gt-app-schema</span></code> module.</p>
+<div class="section" id="creating-an-appschemadataaccess">
+<h3>Creating an AppSchemaDataAccess<a class="headerlink" href="#creating-an-appschemadataaccess" title="Permalink to this headline">¶</a></h3>
+<p>Like other data stores, an instance of <code class="docutils literal"><span class="pre">AppSchemaDataAccess</span></code> is constructed by supplying parameters to <code class="docutils literal"><span class="pre">DataAccessFinder.getDataStore</span></code>. The parameters map must contain the following:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">dbtype</span></code> set to the string <code class="docutils literal"><span class="pre">&quot;app-schema&quot;</span></code></li>
+<li><code class="docutils literal"><span class="pre">url</span></code> set to a string containing a <code class="docutils literal"><span class="pre">file:</span></code> or <code class="docutils literal"><span class="pre">jar:file:</span></code> URL for a mapping file</li>
+</ul>
+</div>
+<div class="section" id="resource-management">
+<h3>Resource Management<a class="headerlink" href="#resource-management" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Like all other <code class="docutils literal"><span class="pre">DataAccess</span></code> implementations (including <code class="docutils literal"><span class="pre">DataStore</span></code> implementations), <code class="docutils literal"><span class="pre">AppSchemaDataAccess</span></code> has a <code class="docutils literal"><span class="pre">dispose</span></code> method that must be called to release resources associated with the <code class="docutils literal"><span class="pre">DataAccess</span></code>. These may include JDBC connections.</li>
+<li>To implement <em>feature chaining</em>, in which properties of features are features themselves, all <code class="docutils literal"><span class="pre">AppSchemaDataAccess</span></code> instances are registered in <code class="docutils literal"><span class="pre">DataAccessRegistry</span></code> so that they can locate each other. As a consequence, when a feature type has been defined once, it cannot be redefined. When calling <code class="docutils literal"><span class="pre">dispose</span></code> on an <code class="docutils literal"><span class="pre">AppSchemaDataAccess</span></code> it is automatically removed from the registry. To dispose and remove all <code class="docutils literal"><span class="pre">AppSchemaDataAccess</span></code> instances from the registry at once, call <code class="docutils literal"><span class="pre">DataAccessRegistry.unregisterAndDisposeAll()</span></code>.</li>
+<li>Parsed schemas are cached by <code class="docutils literal"><span class="pre">AppSchemaXSDRegistry</span></code>. To clear the cache, call <code class="docutils literal"><span class="pre">AppSchemaXSDRegistry.getInstance().dispose()</span></code>.</li>
+</ul>
+</div>
+<div class="section" id="schema-download">
+<h3>Schema download<a class="headerlink" href="#schema-download" title="Permalink to this headline">¶</a></h3>
+<p>To enable automatic schema download and caching, create a directory <code class="docutils literal"><span class="pre">app-schema-cache</span></code> in the same directory as the mapping file, or one of its parent directories.</p>
+</div>
+<div class="section" id="example">
+<h3>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h3>
+<p>This example can be found in the the <code class="docutils literal"><span class="pre">app-schema-example</span></code> module.</p>
+<p>The following code uses a mapping file to create three complex features from a property file:</p>
+<div class="highlight-python"><div class="highlight"><pre>Map&lt;String, Serializable&gt; params = new HashMap&lt;String, Serializable&gt;();
+params.put(&quot;dbtype&quot;, &quot;app-schema&quot;);
+params.put(&quot;url&quot;, AppSchemaExample.class.getResource(&quot;/gsml_MappedFeature.xml&quot;).toURI()
+        .toString());
+DataAccess&lt;FeatureType, Feature&gt; dataAccess = null;
+try {
+    dataAccess = DataAccessFinder.getDataStore(params);
+    FeatureSource&lt;FeatureType, Feature&gt; source = dataAccess.getFeatureSource(new NameImpl(
+            &quot;urn:cgi:xmlns:CGI:GeoSciML:2.0&quot;, &quot;MappedFeature&quot;));
+    FeatureCollection&lt;FeatureType, Feature&gt; features = source.getFeatures();
+    FeatureIterator&lt;Feature&gt; iterator = features.features();
+    try {
+        while (iterator.hasNext()) {
+            Feature f = iterator.next();
+            System.out.println(&quot;Feature &quot;
+                    + f.getIdentifier().toString()
+                    + &quot; has gml:name = &quot;
+                    + ((ComplexAttribute) f.getProperty(new NameImpl(GML.name)))
+                            .getProperty(&quot;simpleContent&quot;).getValue());
+        }
+    } finally {
+        iterator.close();
+    }
+} finally {
+    if (dataAccess != null) {
+        dataAccess.dispose();
+    }
+}
+</pre></div>
+</div>
+<p>The mapping file <code class="docutils literal"><span class="pre">gsml_MappedFeature.xml</span></code> used in the example code above:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;as:AppSchemaDataAccess xmlns:as=&quot;http://www.geotools.org/app-schema&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:schemaLocation=&quot;http://www.geotools.org/app-schema AppSchemaDataAccess.xsd&quot;&gt;
+    &lt;namespaces&gt;
+        &lt;Namespace&gt;
+            &lt;prefix&gt;gml&lt;/prefix&gt;
+            &lt;uri&gt;http://www.opengis.net/gml&lt;/uri&gt;
+        &lt;/Namespace&gt;
+        &lt;Namespace&gt;
+            &lt;prefix&gt;gsml&lt;/prefix&gt;
+            &lt;uri&gt;urn:cgi:xmlns:CGI:GeoSciML:2.0&lt;/uri&gt;
+        &lt;/Namespace&gt;
+    &lt;/namespaces&gt;
+    &lt;sourceDataStores&gt;
+        &lt;DataStore&gt;
+            &lt;id&gt;datastore&lt;/id&gt;
+            &lt;parameters&gt;
+                &lt;Parameter&gt;
+                    &lt;name&gt;directory&lt;/name&gt;
+                    &lt;value&gt;file:./&lt;/value&gt;
+                &lt;/Parameter&gt;
+            &lt;/parameters&gt;
+        &lt;/DataStore&gt;
+    &lt;/sourceDataStores&gt;
+    &lt;targetTypes&gt;
+        &lt;FeatureType&gt;
+            &lt;schemaUri&gt;http://www.geosciml.org/geosciml/2.0/xsd/geosciml.xsd&lt;/schemaUri&gt;
+        &lt;/FeatureType&gt;
+    &lt;/targetTypes&gt;
+    &lt;typeMappings&gt;
+        &lt;FeatureTypeMapping&gt;
+            &lt;sourceDataStore&gt;datastore&lt;/sourceDataStore&gt;
+            &lt;sourceType&gt;gsml_MappedFeature&lt;/sourceType&gt;
+            &lt;targetElement&gt;gsml:MappedFeature&lt;/targetElement&gt;
+            &lt;attributeMappings&gt;
+                &lt;AttributeMapping&gt;
+                    &lt;targetAttribute&gt;
+                        gsml:MappedFeature
+                    &lt;/targetAttribute&gt;
+                    &lt;idExpression&gt;
+                        &lt;OCQL&gt;getId()&lt;/OCQL&gt;
+                    &lt;/idExpression&gt;
+                &lt;/AttributeMapping&gt;
+                &lt;AttributeMapping&gt;
+                    &lt;targetAttribute&gt;
+                        gml:name
+                    &lt;/targetAttribute&gt;
+                    &lt;sourceExpression&gt;
+                        &lt;OCQL&gt;NAME&lt;/OCQL&gt;
+                    &lt;/sourceExpression&gt;
+                &lt;/AttributeMapping&gt;
+                &lt;AttributeMapping&gt;
+                    &lt;targetAttribute&gt;
+                        gsml:shape
+                    &lt;/targetAttribute&gt;
+                    &lt;sourceExpression&gt;
+                        &lt;OCQL&gt;SHAPE&lt;/OCQL&gt;
+                    &lt;/sourceExpression&gt;
+                &lt;/AttributeMapping&gt;
+                &lt;AttributeMapping&gt;
+                    &lt;targetAttribute&gt;gsml:observationMethod/gsml:CGI_TermValue/gsml:value&lt;/targetAttribute&gt;
+                    &lt;sourceExpression&gt;
+                        &lt;OCQL&gt;METHOD&lt;/OCQL&gt;
+                    &lt;/sourceExpression&gt;
+                &lt;/AttributeMapping&gt;
+            &lt;/attributeMappings&gt;
+        &lt;/FeatureTypeMapping&gt;
+    &lt;/typeMappings&gt;
+&lt;/as:AppSchemaDataAccess&gt;
+</pre></div>
+</div>
+<p>The property file <code class="docutils literal"><span class="pre">gsml_MappedFeature.properties</span></code> used in the above mapping file (specified in the <code class="docutils literal"><span class="pre">sourceType</span></code> element):</p>
+<div class="highlight-python"><div class="highlight"><pre>_=NAME:String,METHOD:String,SHAPE:Geometry:srid=4283
+mf.25699=Some basalt|Unknown|POLYGON((143.561948 -38.532217, 143.561012 -38.533360, 143.549986 -38.526470, 143.561948 -38.532217))
+mf.25764=More basalt|Estimate|POLYGON((143.566412 -38.492157, 143.569803 -38.488559, 143.571572 -38.486718, 143.566412 -38.492157))
+mf.26106=Some mudstone|Seismic|POLYGON((143.496091 -38.800309, 143.496241 -38.799286, 143.496136 -38.797775, 143.497646 -38.800192, 143.496091 -38.800309))
+</pre></div>
+</div>
+<p>This example requires <code class="docutils literal"><span class="pre">gt-app-schema</span></code>, <code class="docutils literal"><span class="pre">gt-property</span></code>, <code class="docutils literal"><span class="pre">gt-epsg-hsql</span></code>, and their dependencies. <strong>Create a directory called app-schema-cache in the same directory as the mapping file to enable automatic schema download.</strong></p>
+</div>
+</div>
+<div class="section" id="application-schema-resolver">
+<h2>Application Schema Resolver<a class="headerlink" href="#application-schema-resolver" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal"><span class="pre">gt-app-schema-resolver</span></code> module supports resolution of GML application schemas obtained from an OASIS Catalog, the Java classpath, or cached network download, or all three.</p>
+<p>This is done using classes from the <code class="docutils literal"><span class="pre">gt-xml</span></code> module, in particular: <code class="docutils literal"><span class="pre">SchemaResolver</span></code>, <code class="docutils literal"><span class="pre">SchemaCache</span></code> and <code class="docutils literal"><span class="pre">SchemaCatalog</span></code>.</p>
+<div class="section" id="appschemaconfiguration">
+<h3>AppSchemaConfiguration<a class="headerlink" href="#appschemaconfiguration" title="Permalink to this headline">¶</a></h3>
+<p>Once you have configured your <code class="docutils literal"><span class="pre">SchemaResolver</span></code>, you can use it to build an <code class="docutils literal"><span class="pre">AppSchemaConfiguration</span></code> that you can use to configure the GeoTools <code class="docutils literal"><span class="pre">Encoder</span></code>:</p>
+<div class="highlight-python"><div class="highlight"><pre>Configuration configuration = new AppSchemaConfiguration(
+    &quot;urn:cgi:xmlns:CGI:GeoSciML:2.0&quot;,
+    &quot;http://www.geosciml.org/geosciml/2.0/xsd/geosciml.xsd&quot;,
+    resolver);
+// add a GML Configuration
+configuration.addDependency(new GMLConfiguration());
+</pre></div>
+</div>
+<ul class="simple">
+<li>If you do not add a GMLConfiguration dependency, Java bindings for GML types will not be found and encoding will not succeed.</li>
+<li>For an example of how to determine which GML version to use, see <code class="docutils literal"><span class="pre">EmfAppSchemaReader</span></code> in <code class="docutils literal"><span class="pre">gt-app-schema</span></code>.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="sample-dataaccess">
+<h2>Sample DataAccess<a class="headerlink" href="#sample-dataaccess" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal"><span class="pre">gt-sample-data-access</span></code> module supports testing of complex feature support without introducing a dependency on the <code class="docutils literal"><span class="pre">gt-app-schema</span></code> module itself:</p>
+<div class="highlight-python"><div class="highlight"><pre>DataAccess&lt;FeatureType, Feature&gt; dataAccess = DataAccessFinder
+        .getDataStore(SampleDataAccessFactory.PARAMS);
+FeatureSource&lt;FeatureType, Feature&gt; featureSource = dataAccess
+        .getFeatureSource(SampleDataAccessData.MAPPEDFEATURE_TYPE_NAME);
+FeatureCollection&lt;FeatureType, Feature&gt; featureCollection = featureSource.getFeatures();
+int count = 0;
+for (FeatureIterator&lt;Feature&gt; iterator = featureCollection.features(); iterator.hasNext(); iterator
+        .next()) {
+    count++;
+}
+</pre></div>
+</div>
+</div>
+<div class="section" id="application-schema-packages">
+<h2>Application Schema Packages<a class="headerlink" href="#application-schema-packages" title="Permalink to this headline">¶</a></h2>
+<p>The Application Schema Packages collection in <code class="docutils literal"><span class="pre">app-schema-packages</span></code> contains GML application schemas that have been packaged into Maven artifacts to support offline testing. These are manually published to the <code class="docutils literal"><span class="pre">osgeo</span></code> Maven repository. Configuring your Maven project to depend on one of these packages will cause <code class="docutils literal"><span class="pre">SchemaResolver</span></code> to resolve references to these schemas on the classpath.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="brewer/index.html" title="Brewer"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="index.html" title="Extensions"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="index.html" >Extensions</a> &raquo;</li>
+        <li><a href="#">Application Schema Support</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

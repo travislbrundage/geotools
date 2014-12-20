@@ -1,0 +1,207 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Text &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../index.html" />
+    <link rel="up" title="Metadata" href="index.html" />
+    <link rel="next" title="Referencing" href="../referencing/index.html" />
+    <link rel="prev" title="Range" href="range.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Metadata</a> &raquo;</li>
+        <li><a href="#">Text</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="range.html"
+                        title="previous chapter">Range</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../referencing/index.html"
+                        title="next chapter">Referencing</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/library/metadata/text.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="text">
+<h1>Text<a class="headerlink" href="#text" title="Permalink to this headline">¶</a></h1>
+<p>The <strong>Text</strong> utility class helps your code access GeoTools text
+facilities.:</p>
+<blockquote>
+<div><div class="highlight-java"><div class="highlight"><pre>    
+    <span class="n">InternationalString</span> <span class="n">greeting</span><span class="o">;</span>
+    
+    <span class="c1">// simple text place holder</span>
+    <span class="n">greeting</span> <span class="o">=</span> <span class="n">Text</span><span class="o">.</span><span class="na">text</span><span class="o">(</span><span class="s">&quot;hello world&quot;</span><span class="o">);</span>
+    
+    <span class="c1">// translated text for an internationalized application</span>
+    <span class="c1">// useful as message.properties, message_fr.properties etc can be translated</span>
+    <span class="c1">// outside of your application</span>
+    <span class="n">greeting</span> <span class="o">=</span> <span class="n">Text</span><span class="o">.</span><span class="na">text</span><span class="o">(</span><span class="s">&quot;greeting&quot;</span><span class="o">,</span> <span class="s">&quot;message.properties&quot;</span><span class="o">);</span>
+    
+    <span class="c1">// the next method is good for quickly doing things as a developer</span>
+    <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">translations</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span><span class="n">String</span><span class="o">&gt;();</span>
+    <span class="n">translations</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&quot;greeting&quot;</span><span class="o">,</span> <span class="s">&quot;Hello World&quot;</span><span class="o">);</span>
+    <span class="n">translations</span><span class="o">.</span><span class="na">put</span><span class="o">(</span> <span class="s">&quot;greeting_it&quot;</span><span class="o">,</span> <span class="s">&quot;ciao mondo&quot;</span><span class="o">);</span>
+    
+    <span class="n">greeting</span> <span class="o">=</span> <span class="n">Text</span><span class="o">.</span><span class="na">text</span><span class="o">(</span><span class="s">&quot;greeting&quot;</span><span class="o">,</span> <span class="n">translations</span> <span class="o">);</span>
+    
+    <span class="c1">// you can actually use the same map to configure several international strings</span>
+    <span class="c1">// (each string will only pick up the entries with a matching key)</span>
+    <span class="c1">//</span>
+    <span class="c1">// With that in mind we make a special effort to allow you to use properties</span>
+    <span class="n">Properties</span> <span class="n">properties</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Properties</span><span class="o">();</span>
+    <span class="n">properties</span><span class="o">.</span><span class="na">load</span><span class="o">(</span> <span class="k">new</span> <span class="n">FileInputStream</span><span class="o">(</span><span class="s">&quot;message.properties&quot;</span><span class="o">)</span> <span class="o">);</span>
+    
+    <span class="n">InternationalString</span> <span class="n">title</span> <span class="o">=</span> <span class="n">Text</span><span class="o">.</span><span class="na">text</span><span class="o">(</span> <span class="s">&quot;title&quot;</span><span class="o">,</span> <span class="n">properties</span> <span class="o">);</span>
+    <span class="n">InternationalString</span> <span class="n">description</span> <span class="o">=</span> <span class="n">Text</span><span class="o">.</span><span class="na">text</span><span class="o">(</span> <span class="s">&quot;description&quot;</span><span class="o">,</span> <span class="n">properties</span> <span class="o">);</span>
+    
+</pre></div>
+</div>
+</div></blockquote>
+<p>The idea of an InternationalString comes from the gt-opengis module.</p>
+<p>The above class is backed by a couple of implementations provided by gt-metadata:</p>
+<ul>
+<li><p class="first">ResourceInternationalString</p>
+<p>Used to set up an InternationalString based on a resource
+bundle.</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="n">ResourceInternationalString</span> <span class="n">greeting</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ResourceInternationalString</span><span class="o">(</span><span class="s">&quot;message.properties&quot;</span><span class="o">,</span>
+            <span class="s">&quot;greeting&quot;</span><span class="o">);</span>
+    
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">greeting</span><span class="o">);</span> <span class="c1">// will output best match to current Locale</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">greeting</span><span class="o">.</span><span class="na">toString</span><span class="o">(</span><span class="n">Locale</span><span class="o">.</span><span class="na">CANADA_FRENCH</span><span class="o">));</span> <span class="c1">// should output best match</span>
+    
+    <span class="c1">// Note the &quot;messages.properties&quot; above is used with Java ResourceBundle</span>
+    <span class="c1">// In a manner similar to this</span>
+    <span class="n">ResourceBundle</span><span class="o">.</span><span class="na">getBundle</span><span class="o">(</span><span class="s">&quot;message.properties&quot;</span><span class="o">,</span> <span class="n">Locale</span><span class="o">.</span><span class="na">getDefault</span><span class="o">()).</span><span class="na">getString</span><span class="o">(</span><span class="s">&quot;greeting&quot;</span><span class="o">);</span>
+</pre></div>
+</div>
+<p>As noted above Java ResourceBundle is responsible for loading
+the correct property file for the requested String.</p>
+</li>
+<li><p class="first">SimpleInternationalString</p>
+<p>This is used when you need to quickly get back to work. You can
+replace the default english text with a real translator when a
+volunteer shows interest.</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="n">SimpleInternationalString</span> <span class="n">greeting</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SimpleInternationalString</span><span class="o">(</span><span class="s">&quot;Hello World&quot;</span><span class="o">);</span>
+    
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">greeting</span><span class="o">);</span> <span class="c1">// will output best match to current</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">greeting</span><span class="o">.</span><span class="na">toString</span><span class="o">(</span><span class="n">Locale</span><span class="o">.</span><span class="na">FRENCH</span><span class="o">));</span> <span class="c1">// but since there is only one...</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">GrowableInternaionalString</p>
+<p>The easiest one to use as a programmer; allows you to set
+up multiple translations in code.</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="n">GrowableInternationalString</span> <span class="n">greeting</span> <span class="o">=</span> <span class="k">new</span> <span class="n">GrowableInternationalString</span><span class="o">();</span>
+    
+    <span class="c1">// Make use of Locale when adding translations</span>
+    <span class="n">greeting</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">Locale</span><span class="o">.</span><span class="na">ENGLISH</span><span class="o">,</span> <span class="s">&quot;Hello World&quot;</span><span class="o">);</span>
+    <span class="n">greeting</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">Locale</span><span class="o">.</span><span class="na">FRENCH</span><span class="o">,</span> <span class="s">&quot;Bonjour tout le monde&quot;</span><span class="o">);</span>
+    <span class="n">greeting</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">&quot;fr&quot;</span><span class="o">,</span> <span class="s">&quot;greeting&quot;</span><span class="o">,</span> <span class="s">&quot;&quot;</span><span class="o">);</span>
+    
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">greeting</span><span class="o">);</span> <span class="c1">// will output best match to current Locale</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">greeting</span><span class="o">.</span><span class="na">toString</span><span class="o">(</span><span class="n">Locale</span><span class="o">.</span><span class="na">CANADA_FRENCH</span><span class="o">));</span> <span class="c1">// should output best match</span>
+    
+    <span class="c1">// You can also use strings to avoid creating Locale objects right away</span>
+    <span class="c1">// The method references a &quot;key&quot; which is handy when processing property files</span>
+    <span class="n">greeting</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">&quot;key_en&quot;</span><span class="o">,</span> <span class="s">&quot;key&quot;</span><span class="o">,</span> <span class="s">&quot;Hello World&quot;</span><span class="o">);</span>
+    <span class="n">greeting</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">&quot;key_fr&quot;</span><span class="o">,</span> <span class="s">&quot;key&quot;</span><span class="o">,</span> <span class="s">&quot;Bonjour tot le monde&quot;</span><span class="o">);</span>
+    
+    <span class="c1">// You can also quickly create an GrowableInternationalString and add to it later</span>
+    <span class="n">GrowableInternationalString</span> <span class="n">cheerfulGreeting</span> <span class="o">=</span> <span class="k">new</span> <span class="n">GrowableInternationalString</span><span class="o">(</span><span class="s">&quot;G&#39;Day&quot;</span><span class="o">);</span>
+    <span class="n">cheerfulGreeting</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">Locale</span><span class="o">.</span><span class="na">UK</span><span class="o">,</span> <span class="s">&quot;Welcome&quot;</span><span class="o">);</span>
+    <span class="n">cheerfulGreeting</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">Locale</span><span class="o">.</span><span class="na">US</span><span class="o">,</span> <span class="s">&quot;Hello&quot;</span><span class="o">);</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="../referencing/index.html" title="Referencing"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="range.html" title="Range"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" >Metadata</a> &raquo;</li>
+        <li><a href="#">Text</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,272 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Symbology Encoding &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../index.html" />
+    <link rel="up" title="OpenGIS" href="index.html" />
+    <link rel="next" title="Progress" href="progress.html" />
+    <link rel="prev" title="Coordinate Systems" href="cs.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">OpenGIS</a> &raquo;</li>
+        <li><a href="#">Symbology Encoding</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Symbology Encoding</a></li>
+<li><a class="reference internal" href="#featuretypestyle">FeatureTypeStyle</a><ul>
+<li><a class="reference internal" href="#symbolizer">Symbolizer</a></li>
+<li><a class="reference internal" href="#fill">Fill</a></li>
+<li><a class="reference internal" href="#stroke">Stroke</a></li>
+<li><a class="reference internal" href="#graphic">Graphic</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#stylevisitor">StyleVisitor</a></li>
+<li><a class="reference internal" href="#stylefactory">StyleFactory</a></li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="cs.html"
+                        title="previous chapter">Coordinate Systems</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="progress.html"
+                        title="next chapter">Progress</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/library/opengis/se.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="symbology-encoding">
+<h1>Symbology Encoding<a class="headerlink" href="#symbology-encoding" title="Permalink to this headline">¶</a></h1>
+<p>The GeoTools rendering process is controlled styling information that you provide. The data structures we use to describe styling are based on the Style Layer Descriptor (SLD) and Symbology Encoding (SE) specifications provided by the OGC.</p>
+<p>These specifications define an XML document you can use to save and load your styles on disk, we use the same data structure internally to control the rendering process.</p>
+<p>References:</p>
+<ul class="simple">
+<li><a class="reference internal" href="../../tutorial/map/style.html"><em>style</em></a> (tutorial)</li>
+<li><a class="reference internal" href="../api/sld.html"><em>gt-api sld</em></a></li>
+<li><a class="reference internal" href="../render/index.html"><em>gt-render style</em></a></li>
+<li><a class="reference external" href="http://www.opengeospatial.org/standards/sld">http://www.opengeospatial.org/standards/sld</a> (style layer descriptor)</li>
+<li><a class="reference external" href="http://www.opengeospatial.org/standards/symbol">http://www.opengeospatial.org/standards/symbol</a> (symbology encoding)</li>
+</ul>
+</div>
+<div class="section" id="featuretypestyle">
+<h1>FeatureTypeStyle<a class="headerlink" href="#featuretypestyle" title="Permalink to this headline">¶</a></h1>
+<p>The Symbology Encoding specification provides us the FeatureTypeStyle which is focused on how to draw features in a manner similar to CSS.</p>
+<img alt="../../_images/se.PNG" src="../../_images/se.PNG" />
+<p>The key concepts for symbology encoding are:</p>
+<ul class="simple">
+<li>FeatureTypeStyle: captures the recipe for drawing a specific kind of feature</li>
+<li>Rule: used to select features for drawing, using a list of symbolizers to control the actual drawing process.</li>
+<li>Symbolizer</li>
+</ul>
+<div class="section" id="symbolizer">
+<h2>Symbolizer<a class="headerlink" href="#symbolizer" title="Permalink to this headline">¶</a></h2>
+<p>A Symbolizer defines how a geometry is to be rendered in terms of pixels; selecting the geometry
+from the feature, and drawing using the information provided here.</p>
+<img alt="../../_images/symbolizer.PNG" src="../../_images/symbolizer.PNG" />
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The Symbology Encoding standard does its best to render something in all cases; thus a PointSymbolizer applied to a Polygon will draw a point in the centre, more interestingly a LineSymbolizer applied to a point will draw a small line (of a fixed size) at the indicated location.</p>
+</div>
+<p>The available symbolizers are:</p>
+<ul>
+<li><p class="first">TextSymbolizer</p>
+<p>Used to control the labelling system; labels are generated by TextSymbolizers and
+thrown into the rendering engine which detect overlaps, sorts things out according
+to priorities you have defined and decides on a final label placement.</p>
+</li>
+<li><p class="first">LineSymbolizer</p>
+<p>Used to control how lines (or edges) are drawn.</p>
+</li>
+<li><p class="first">PolygonSymbolizer</p>
+<p>Used to control how solid shapes are drawn.</p>
+</li>
+<li><p class="first">PointSymbolizer</p>
+<p>Used to draw a point location, the actual graphic drawn is referred to as a Mark with the option to use
+some well known marks (circle, square etc..) or your own external graphics such as PNG icons.</p>
+</li>
+<li><p class="first">RasterSymbolizer</p>
+<p>Used to control the rendering of raster data with full &#8220;color map&#8221; control.</p>
+</li>
+</ul>
+<p>Here is a quick example showing the creation of a PointSymbolizer:</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="c1">//</span>
+    <span class="n">org</span><span class="o">.</span><span class="na">opengis</span><span class="o">.</span><span class="na">style</span><span class="o">.</span><span class="na">StyleFactory</span> <span class="n">sf</span> <span class="o">=</span> <span class="n">CommonFactoryFinder</span><span class="o">.</span><span class="na">getStyleFactory</span><span class="o">();</span>
+    <span class="n">FilterFactory2</span> <span class="n">ff</span> <span class="o">=</span> <span class="n">CommonFactoryFinder</span><span class="o">.</span><span class="na">getFilterFactory2</span><span class="o">();</span>
+    
+    <span class="c1">//</span>
+    <span class="c1">// create the graphical mark used to represent a city</span>
+    <span class="n">Stroke</span> <span class="n">stroke</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="na">stroke</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="s">&quot;#000000&quot;</span><span class="o">),</span> <span class="kc">null</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
+    <span class="n">Fill</span> <span class="n">fill</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="na">fill</span><span class="o">(</span><span class="kc">null</span><span class="o">,</span> <span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="n">Color</span><span class="o">.</span><span class="na">BLUE</span><span class="o">),</span> <span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="mf">1.0</span><span class="o">));</span>
+    
+    <span class="c1">// OnLineResource implemented by gt-metadata - so no factory!</span>
+    <span class="n">OnLineResourceImpl</span> <span class="n">svg</span> <span class="o">=</span> <span class="k">new</span> <span class="n">OnLineResourceImpl</span><span class="o">(</span><span class="k">new</span> <span class="n">URI</span><span class="o">(</span><span class="s">&quot;file:city.svg&quot;</span><span class="o">));</span>
+    <span class="n">svg</span><span class="o">.</span><span class="na">freeze</span><span class="o">();</span> <span class="c1">// freeze to prevent modification at runtime</span>
+    
+    <span class="n">OnLineResourceImpl</span> <span class="n">png</span> <span class="o">=</span> <span class="k">new</span> <span class="n">OnLineResourceImpl</span><span class="o">(</span><span class="k">new</span> <span class="n">URI</span><span class="o">(</span><span class="s">&quot;file:city.png&quot;</span><span class="o">));</span>
+    <span class="n">png</span><span class="o">.</span><span class="na">freeze</span><span class="o">();</span> <span class="c1">// freeze to prevent modification at runtime</span>
+    
+    <span class="c1">//</span>
+    <span class="c1">// List of symbols is considered in order with the rendering engine choosing</span>
+    <span class="c1">// the first one it can handle. Allowing for svg, png, mark order</span>
+    <span class="n">List</span><span class="o">&lt;</span><span class="n">GraphicalSymbol</span><span class="o">&gt;</span> <span class="n">symbols</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">GraphicalSymbol</span><span class="o">&gt;();</span>
+    <span class="n">symbols</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">sf</span><span class="o">.</span><span class="na">externalGraphic</span><span class="o">(</span><span class="n">svg</span><span class="o">,</span> <span class="s">&quot;svg&quot;</span><span class="o">,</span> <span class="kc">null</span><span class="o">));</span> <span class="c1">// svg preferred</span>
+    <span class="n">symbols</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">sf</span><span class="o">.</span><span class="na">externalGraphic</span><span class="o">(</span><span class="n">png</span><span class="o">,</span> <span class="s">&quot;png&quot;</span><span class="o">,</span> <span class="kc">null</span><span class="o">));</span> <span class="c1">// png preferred</span>
+    <span class="n">symbols</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">sf</span><span class="o">.</span><span class="na">mark</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="s">&quot;circle&quot;</span><span class="o">),</span> <span class="n">fill</span><span class="o">,</span> <span class="n">stroke</span><span class="o">));</span> <span class="c1">// simple circle backup plan</span>
+    
+    <span class="n">Expression</span> <span class="n">opacity</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span> <span class="c1">// use default</span>
+    <span class="n">Expression</span> <span class="n">size</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="mi">10</span><span class="o">);</span>
+    <span class="n">Expression</span> <span class="n">rotation</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span> <span class="c1">// use default</span>
+    <span class="n">AnchorPoint</span> <span class="n">anchor</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span> <span class="c1">// use default</span>
+    <span class="n">Displacement</span> <span class="n">displacement</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span> <span class="c1">// use default</span>
+    
+    <span class="c1">// define a point symbolizer of a small circle</span>
+    <span class="n">Graphic</span> <span class="n">circle</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="na">graphic</span><span class="o">(</span><span class="n">symbols</span><span class="o">,</span> <span class="n">opacity</span><span class="o">,</span> <span class="n">size</span><span class="o">,</span> <span class="n">rotation</span><span class="o">,</span> <span class="n">anchor</span><span class="o">,</span> <span class="n">displacement</span><span class="o">);</span>
+    <span class="n">PointSymbolizer</span> <span class="n">pointSymbolizer</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="na">pointSymbolizer</span><span class="o">(</span><span class="s">&quot;point&quot;</span><span class="o">,</span> <span class="n">ff</span><span class="o">.</span><span class="na">property</span><span class="o">(</span><span class="s">&quot;the_geom&quot;</span><span class="o">),</span> <span class="kc">null</span><span class="o">,</span>
+            <span class="kc">null</span><span class="o">,</span> <span class="n">circle</span><span class="o">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="fill">
+<h2>Fill<a class="headerlink" href="#fill" title="Permalink to this headline">¶</a></h2>
+<p>Fill is used both to fill a polygon, and also when creating greater control over Mark appearance (where it can be used to define the interior of a Mark).</p>
+<img alt="../../_images/fill.PNG" src="../../_images/fill.PNG" />
+</div>
+<div class="section" id="stroke">
+<h2>Stroke<a class="headerlink" href="#stroke" title="Permalink to this headline">¶</a></h2>
+<p>In a similar fashion Stroke is used to render edges (either polygon edges, linestrings or the outside edge of a Mark).</p>
+<img alt="../../_images/stroke.PNG" src="../../_images/stroke.PNG" />
+</div>
+<div class="section" id="graphic">
+<h2>Graphic<a class="headerlink" href="#graphic" title="Permalink to this headline">¶</a></h2>
+<p>The idea of a Graphic is used in a number of contexts when drawing:</p>
+<ul class="simple">
+<li>Graphic: As an &#8220;icon&#8221; when rendering a point location</li>
+<li>GraphicFilter: As a pattern when filling an area</li>
+<li>GraphicStroke: As a pattern when drawing along a line</li>
+<li>GraphicLegend: As a an entry in a legend (GeoTools does not use this one yet)</li>
+</ul>
+<p>Although the symbology encoding specification defines the above destinct kinds of Graphic the GeoTools
+library does not distinguish between them at this time.</p>
+<img alt="../../_images/graphic.PNG" src="../../_images/graphic.PNG" />
+<p>The interesting part is the list of <strong>GraphicalSymbol</strong>. This list is considered in order, with
+the rendering engine selecting the first format it is able to draw allowing you to order your highest quality
+<strong>ExternalGraphic</strong> formats first (such as SVG or a true type font) and moving on to lower quality choices such as PNG files and
+finally ending with a fallback <strong>Mark</strong>.</p>
+<ul>
+<li><p class="first">ExternalGraphic</p>
+<p>In addition to allowing you the use of svg and image formats there is the interesting use of <em>inline content</em> in the form of
+a Java Icon allowing you greater control. You also have a chance to apply colour replacements (which cab be used to render a
+black and white image into a set colour as needed.</p>
+</li>
+<li><p class="first">Mark</p>
+<p>Check the javadocs for the list of well known names (such as &#8220;circle&#8221; or &#8220;square&#8221;). Of interest is the use of
+an <strong>ExternalMark</strong> in which the mark index can be used to refer to a specific character entry in a true type font.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="stylevisitor">
+<h1>StyleVisitor<a class="headerlink" href="#stylevisitor" title="Permalink to this headline">¶</a></h1>
+<p>A style visitor is defined allowing you to traverse the style data structure. For details on the use of a visitor please review
+<a class="reference internal" href="filter.html"><em>Filter</em></a> on the subject.</p>
+</div>
+<div class="section" id="stylefactory">
+<h1>StyleFactory<a class="headerlink" href="#stylefactory" title="Permalink to this headline">¶</a></h1>
+<p>Objects for symbology encoding are created using a StyleFactory:</p>
+<div class="highlight-python"><div class="highlight"><pre>org.opengis.style.StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
+FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+
+Fill fill = sf.fill(null, ff.literal(Color.BLUE), ff.literal(1.0));
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="progress.html" title="Progress"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="cs.html" title="Coordinate Systems"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" >OpenGIS</a> &raquo;</li>
+        <li><a href="#">Symbology Encoding</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

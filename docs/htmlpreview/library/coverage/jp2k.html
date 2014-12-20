@@ -1,0 +1,231 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>JP2K Plugin &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../index.html" />
+    <link rel="up" title="Coverage" href="index.html" />
+    <link rel="next" title="netCDF Plugin" href="netCDF.html" />
+    <link rel="prev" title="Image collection plug-in" href="image-collection.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Coverage</a> &raquo;</li>
+        <li><a href="#">JP2K Plugin</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">JP2K Plugin</a><ul>
+<li><a class="reference internal" href="#use-of-kakadu">Use of Kakadu</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="image-collection.html"
+                        title="previous chapter">Image collection plug-in</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="netCDF.html"
+                        title="next chapter">netCDF Plugin</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/library/coverage/jp2k.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="jp2k-plugin">
+<h1>JP2K Plugin<a class="headerlink" href="#jp2k-plugin" title="Permalink to this headline">¶</a></h1>
+<p>The JP2K plug-in allows GeoTools to make use of the JP2K format provided via the available JP2K
+image readers in the JAI ImageIO project plus an optional ImageIO plugin based on the Kakadu
+library which is activated only when the Kakadu SDK is in the path (the Kakakdu SDK is not
+Open Source but t comes with a variety of licenses).</p>
+<p>Notice that:</p>
+<ol class="arabic simple">
+<li>The Kakadu ImageIO plugin, when available, takes precedence over the standard ImageIO JP2K plugins</li>
+<li>The JP2K plugins available through GDAL, which relies on the ImageIO-Ext GDAL plugin, are separate from this plugin and leave in their own module</li>
+</ol>
+<p><strong>Maven</strong>:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;dependency&gt;
+  &lt;groupId&gt;org.geotools&lt;/groupId&gt;
+  &lt;artifactId&gt;gt-jp2k&lt;/artifactId&gt;
+  &lt;version&gt;${geotools.version}&lt;/version&gt;
+&lt;/dependency&gt;
+</pre></div>
+</div>
+<div class="section" id="use-of-kakadu">
+<h2>Use of Kakadu<a class="headerlink" href="#use-of-kakadu" title="Permalink to this headline">¶</a></h2>
+<p>Much better performances in accessing JP2K data with respect to standard JAI ImageIO and GDAL supported SDKs are obtained by directly using the Kakadu libraries in this plugin. Please, noticet that the Image I/O-Ext project contains also a plug-in built on top GDAL which in turn uses Kakadu as well, however this new plugin does not need GDAL but only the Kakadu binaries.</p>
+<p>In order to know how to build your Kakadu native libs needed to enable support for it, please, check the imageio-ext setup guide. If your Java Runtime Environment includes the Kakadu native libraries, you will be able to support the JP2K format by means of this plugin, otherwise the JP2K format data access capabilities will be provided by the SUN&#8217;s ImageIO JP2K plugin. The plugin, when Kakadu is in the path, is able to parse georeferencing information by supporting the following mechanisms:</p>
+<ol class="arabic simple">
+<li>World File + PRJ File (they take precedence over the other mechanism and therefore they can be used to override missing or improper georeferencing).</li>
+<li>Degenerated GeoTIFF Box (seems that the wording GeoJP2 cannot be used for licensing problems, but that is essentially how everybody calls this box)</li>
+<li>MSIG WorldFile Box (if presents), contained within propers UUID boxes.</li>
+</ol>
+<p>Notes:</p>
+<ul class="simple">
+<li>This plugin allows to override the georeferencing information as it is obtained
+from the internal supported JP2K Boxes. This means that if the CRS is missing
+and/or incorrect you can ovveride it via providing a PRJ file (filename.prj);
+on the same line, if you want to override the grid to world transformation you
+can do that via providing a world file(filename.j2w, filename.wld).</li>
+<li>Notice that at this time, no GMLJP2 support has been implemented even though that
+could be done relatively easily. Further information on those boxes are available here.</li>
+<li>Notice that at this time, we have tested this plugin with Kakadu 5.2.6 and 6.3,
+where the latter is much faster.</li>
+</ul>
+<p>Standard JP2K readers</p>
+<p>In case you will use the SUN&#8217;s ImageIO JP2K plugins (as an instance, in case you don&#8217;t have a copy of the Kakadu software), we have not yet implemented full support to the georeferencing information contained within the JP2K metadata. For this reason, you need to add a PRJ and a WorldFile (J2W file or WLD file) beside your JP2K dataset, in case you&#8217;d want to be able to serve it as a geospatial dataset.</p>
+<p>Format parameters</p>
+<p>A set of parameters allows to customize the way the coverage will be accesed:</p>
+<dl class="docutils">
+<dt>InputTransparentColor</dt>
+<dd>Set the transparent color for the image</dd>
+<dt>USE_JAI_IMAGEREAD</dt>
+<dd>Controls the low level mechanism to read the granules. If ‘true’ the plugin will make use of JAI ImageRead operation and its deferred loading mechanism, if ‘false’ it will perform direct ImageIO read calls which will result in immediate loading.</dd>
+<dt>USE_MULTITHREADING</dt>
+<dd>if ‘true’, the plugin will use a version of the JAI ImageRead with support for multithreading loading.</dd>
+<dt>SUGGESTED_TILE_SIZE</dt>
+<dd>Controls the tile size of the input images when using tiled read. It consists of two positive integers separated by a comma, like 512,512.</dd>
+</dl>
+<p><strong>Code Example</strong></p>
+<p>Here below we have added some code to show how to interact with the plugin to read JP2K data as GridCoverage2D. There is not much difference between this code and the code to interact with, let&#8217;s say, a GeoTiff.:</p>
+<div class="highlight-python"><div class="highlight"><pre>final File file = new File (&quot;/home/simone/data/geosolutions.jp2&quot;);
+final JP2KReader reader = new JP2KReader (file);
+
+// //
+//
+// Setting GridGeometry for reading half coverage.
+//
+// //
+final Rectangle range = ((GridEnvelope2D)reader.getOriginalGridRange()).getBounds();
+final GeneralEnvelope originalEnvelope = reader.getOriginalEnvelope();
+final GeneralEnvelope reducedEnvelope = new GeneralEnvelope(
+           new double[] {
+         originalEnvelope.getLowerCorner().getOrdinate(0),
+         originalEnvelope.getLowerCorner().getOrdinate(1)},
+        new double[] {
+            originalEnvelope.getMedian().getOrdinate(0),
+         originalEnvelope.getMedian().getOrdinate(1)});
+   reducedEnvelope.setCoordinateReferenceSystem(reader.getCrs());
+
+   final ParameterValue&lt;GridGeometry2D&gt; gg = JP2KFormat.READ_GRIDGEOMETRY2D.createValue();
+   gg.setValue(new GridGeometry2D(new GridEnvelope2D(new Rectangle(
+           0,
+           0,
+        (int) (range.width / 2.0),
+        (int) (range.height / 2.0))), reducedEnvelope)
+   );
+
+   // /////////////////////////////////////////////////////////////////////
+   //
+   // Read with subsampling and crop, using Jai and customized tilesize
+   //
+   // /////////////////////////////////////////////////////////////////////
+
+   // //
+   //
+   // Customizing Tile Size
+   //
+   // //
+   final ParameterValue&lt;String&gt; tilesize = JP2KFormat.SUGGESTED_TILE_SIZE.createValue();
+   tilesize.setValue(&quot;512,512&quot;);
+
+   // //
+   //
+   // Setting read type: use JAI ImageRead
+   //
+   // //
+   final ParameterValue&lt;Boolean&gt; useJaiRead = JP2KFormat.USE_JAI_IMAGEREAD.createValue();
+   useJaiRead.setValue(true);
+
+   final GridCoverage gc = (GridCoverage2D) reader.read(new GeneralParameterValue[] { gg,tilesize, useJaiRead });
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="netCDF.html" title="netCDF Plugin"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="image-collection.html" title="Image collection plug-in"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" >Coverage</a> &raquo;</li>
+        <li><a href="#">JP2K Plugin</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

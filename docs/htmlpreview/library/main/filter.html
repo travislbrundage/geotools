@@ -1,0 +1,982 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Filter &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../index.html" />
+    <link rel="up" title="Main" href="index.html" />
+    <link rel="next" title="Function List" href="function_list.html" />
+    <link rel="prev" title="DataUtilities" href="data.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Main</a> &raquo;</li>
+        <li><a href="#">Filter</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Filter</a><ul>
+<li><a class="reference internal" href="#create-filter">Create Filter</a><ul>
+<li><a class="reference internal" href="#using-cql">Using CQL</a></li>
+<li><a class="reference internal" href="#using-filterfactory">Using FilterFactory</a></li>
+<li><a class="reference internal" href="#from-xml">From XML</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#using-filter">Using Filter</a><ul>
+<li><a class="reference internal" href="#writing-xml">Writing XML</a></li>
+<li><a class="reference internal" href="#handling-selection">Handling Selection</a></li>
+<li><a class="reference internal" href="#handling-bounding-box">Handling Bounding Box</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#expression">Expression</a></li>
+<li><a class="reference internal" href="#function">Function</a></li>
+<li><a class="reference internal" href="#functionfinder">FunctionFinder</a></li>
+<li><a class="reference internal" href="#functionfactory">FunctionFactory</a><ul>
+<li><a class="reference internal" href="#variable-arguments">Variable Arguments</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#filtervisitor">FilterVisitor</a><ul>
+<li><a class="reference internal" href="#defaultfiltervisitor">DefaultFilterVisitor</a></li>
+<li><a class="reference internal" href="#duplicatingfiltervisitor">DuplicatingFilterVisitor</a></li>
+<li><a class="reference internal" href="#isstaticexpressionvisitor-visitor">IsStaticExpressionVisitor.VISITOR</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#filters">Filters</a></li>
+<li><a class="reference internal" href="#capabilities">Capabilities</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="data.html"
+                        title="previous chapter">DataUtilities</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="function_list.html"
+                        title="next chapter">Function List</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/library/main/filter.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="filter">
+<h1>Filter<a class="headerlink" href="#filter" title="Permalink to this headline">¶</a></h1>
+<p>GeoTools makes use of the gt-opengis <strong>Filter</strong> and <strong>Expression</strong> interfaces in order to express constraints. This is most often used when making a Query to retrieve specific Features from a DataStore.</p>
+<p>Reference:</p>
+<ul class="simple">
+<li>gt-opengis data <a class="reference internal" href="../opengis/model.html"><em>Model</em></a> for feature, featureType and filter</li>
+<li>gt-opengis <a class="reference internal" href="../opengis/filter.html"><em>Filter</em></a> model</li>
+<li>gt-cql <a class="reference internal" href="../cql/index.html"><em>CQL</em></a></li>
+<li>gt-xml <a class="reference internal" href="../xml/index.html"><em>XML</em></a></li>
+<li><a class="reference external" href="http://docs.geoserver.org/stable/en/user/filter/function_reference.html">http://docs.geoserver.org/stable/en/user/filter/function_reference.html</a></li>
+</ul>
+<p>You will find the use of Filter in an number of other locations:</p>
+<ul class="simple">
+<li>it is used as part of a Style when we need to select what is drawn on the screen</li>
+<li>Part of our FeatureType to express any special constraints on data values (such as the length of a String)</li>
+</ul>
+<div class="section" id="create-filter">
+<h2>Create Filter<a class="headerlink" href="#create-filter" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="using-cql">
+<h3>Using CQL<a class="headerlink" href="#using-cql" title="Permalink to this headline">¶</a></h3>
+<p>Most code examples in this wiki will assume you are using the &#8220;Common Query Language&#8221;, this parser is provided by the <strong>gt-cql</strong> jar.:</p>
+<div class="highlight-python"><div class="highlight"><pre>Filter filter = CQL.toFilter(&quot;attName &gt;= 5&quot;);
+</pre></div>
+</div>
+</div>
+<div class="section" id="using-filterfactory">
+<h3>Using FilterFactory<a class="headerlink" href="#using-filterfactory" title="Permalink to this headline">¶</a></h3>
+<p>You have a choice of which filter factory to use:</p>
+<ul>
+<li><p class="first"><strong>FilterFactory</strong> directly create a filter - according to the
+limitations of the standard standard.</p>
+<p>Use this if you are making a request of an external Web Feature Server
+and do not want to accidentally step out of bounds.</p>
+</li>
+<li><p class="first"><strong>FilterFactory2</strong> directly create a filter.</p>
+<p>Has some additional methods for working with JTS Geometry.</p>
+</li>
+</ul>
+<p>Here is an example:</p>
+<div class="highlight-python"><div class="highlight"><pre>FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2( GeoTools.getDefaultHints );
+
+Filter filter = ff.contains( ff.property( &quot;THE_GEOM&quot;), ff.literal( geometry ) );
+</pre></div>
+</div>
+<p>One thing you can do with with a FilterFactory (which you cannot do in CQL) is request features by their FeatureId:</p>
+<div class="highlight-python"><div class="highlight"><pre>FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2( GeoTools.getDefaultHints );
+
+Set&lt;FeatureId&gt; fids = new HashSet&lt;FeatureId&gt;();
+fids.add( ff.featureId(&quot;ROAD.1&quot;) );
+fids.add( ff.featureId(&quot;ROAD.2&quot;) );
+Filter filter = ff.id( fids );
+</pre></div>
+</div>
+</div>
+<div class="section" id="from-xml">
+<h3>From XML<a class="headerlink" href="#from-xml" title="Permalink to this headline">¶</a></h3>
+<p>Parsing a Filter 1.0 document:</p>
+<div class="highlight-python"><div class="highlight"><pre>Parser parser = new Parser( new org.geotools.filter.v1_0.OGCConfiguration() );
+Filter filter = (Filter) parser.parse( inputstream );
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="using-filter">
+<h2>Using Filter<a class="headerlink" href="#using-filter" title="Permalink to this headline">¶</a></h2>
+<p>You can use a filter by hand to check an individual Feature:</p>
+<div class="highlight-python"><div class="highlight"><pre>if( filter.evaulate( feature ) ){
+    System.out.println( feature.getId() + &quot; was selected&quot; );
+}
+</pre></div>
+</div>
+<p>Java Beans (and plenty of other objects) also work with filter:</p>
+<div class="highlight-python"><div class="highlight"><pre>if( filter.evaulate( bean ) ){
+    System.out.println( bean + &quot; was selected&quot; );
+}
+</pre></div>
+</div>
+<p>If you look in the advanced guide you can find out about <strong>PropertyAccessors</strong> which is how Filter learns how to access new content.
+You can teach GeoTools how to work with your domain objects by implementing a custom Property Accessor. Using this facility GeoTools
+users have used filters with Java Beans, Maps and Collections and featureTypes.</p>
+<div class="section" id="writing-xml">
+<h3>Writing XML<a class="headerlink" href="#writing-xml" title="Permalink to this headline">¶</a></h3>
+<p>We have a traditional &#8220;Transformer&#8221; for quickly writing out an xml fragment for a filter:</p>
+<div class="highlight-python"><div class="highlight"><pre>FilterTransformer transform = new FilterTransformer();
+transform.setIndentation(2);
+String xml = transform.transform( filter );
+</pre></div>
+</div>
+<p>You can also <strong>gt-xml</strong> and its <strong>OGCConfiguration</strong> for encoding a filter:</p>
+<div class="highlight-python"><div class="highlight"><pre>//create the encoder with the filter 1.0 configuration
+Configuration = new org.geotools.filter.v1_0.OGCConfiguration();
+Encoder encoder = new Encoder( configuration );
+
+//encode
+encoder.encode( filter, org.geotools.filter.v1_0.OGC.FILTER, outputStream );
+</pre></div>
+</div>
+</div>
+<div class="section" id="handling-selection">
+<h3>Handling Selection<a class="headerlink" href="#handling-selection" title="Permalink to this headline">¶</a></h3>
+<p>Often an application will want to remember the Feature that a user was working with for later. This section shows a couple of approaches to recording what Features a user has &#8220;selected&#8221;.</p>
+<ul>
+<li><p class="first">Q: How to find Features using IDs</p>
+<p>Each Feature has a FeatureID; you can use these FeatureIDs to request the feature again later.</p>
+<p>If you have a Set&lt;String&gt; of feature IDs, which you would like to query from a shapefile:</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="n">SimpleFeatureCollection</span> <span class="nf">grabSelectedIds</span><span class="o">(</span><span class="n">Set</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">selection</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+    <span class="n">FilterFactory2</span> <span class="n">ff</span> <span class="o">=</span> <span class="n">CommonFactoryFinder</span><span class="o">.</span><span class="na">getFilterFactory2</span><span class="o">();</span>
+    
+    <span class="n">Set</span><span class="o">&lt;</span><span class="n">FeatureId</span><span class="o">&gt;</span> <span class="n">fids</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashSet</span><span class="o">&lt;</span><span class="n">FeatureId</span><span class="o">&gt;();</span>
+    <span class="k">for</span> <span class="o">(</span><span class="n">String</span> <span class="n">id</span> <span class="o">:</span> <span class="n">selection</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">FeatureId</span> <span class="n">fid</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">featureId</span><span class="o">(</span><span class="n">id</span><span class="o">);</span>
+        <span class="n">fids</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">fid</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="n">Filter</span> <span class="n">filter</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">id</span><span class="o">(</span><span class="n">fids</span><span class="o">);</span>
+    <span class="k">return</span> <span class="n">featureSource</span><span class="o">.</span><span class="na">getFeatures</span><span class="o">(</span><span class="n">filter</span><span class="o">);</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>Keeping a Set&lt;String&gt; of feature ids is the best way to handle selection.</p>
+<p>Using an Id filter as shown above is often very fast.</p>
+<ul class="simple">
+<li>For databases this will result in a query based on the primary key</li>
+<li>For shapefiles it will often be based on the row number</li>
+<li>For a memory datastore the features are stored in a TreeSet sorted by feature id</li>
+</ul>
+</li>
+</ul>
+<p>Q: How to find a Feature by Name</p>
+<blockquote>
+<div><p>CQL is very good for one off queries like this:</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="n">SimpleFeatureCollection</span> <span class="nf">grabSelectedName</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">featureSource</span><span class="o">.</span><span class="na">getFeatures</span><span class="o">(</span><span class="n">CQL</span><span class="o">.</span><span class="na">toFilter</span><span class="o">(</span><span class="s">&quot;Name = &#39;&quot;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s">&quot;&#39;&quot;</span><span class="o">));</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>To select this feature while ignoring case we are going to have to use the FilterFactory (rather than CQL):</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="n">SimpleFeatureCollection</span> <span class="nf">grabSelectedNameIgnoreCase</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+    <span class="n">FilterFactory2</span> <span class="n">ff</span> <span class="o">=</span> <span class="n">CommonFactoryFinder</span><span class="o">.</span><span class="na">getFilterFactory2</span><span class="o">();</span>
+    
+    <span class="n">Filter</span> <span class="n">filter</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">equal</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">property</span><span class="o">(</span><span class="s">&quot;Name&quot;</span><span class="o">),</span> <span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="n">name</span><span class="o">),</span> <span class="kc">false</span><span class="o">);</span>
+    <span class="k">return</span> <span class="n">featureSource</span><span class="o">.</span><span class="na">getFeatures</span><span class="o">(</span><span class="n">filter</span><span class="o">);</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+<ul>
+<li><p class="first">Q: How find Features using Names</p>
+<p>If you have a Set&lt;String&gt; of &#8220;names&#8221; which you would like to query from PostGIS. In this case we are doing a
+check for an attribute called &#8220;Name&#8221;.</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="n">SimpleFeatureCollection</span> <span class="nf">grabSelectedNames</span><span class="o">(</span><span class="n">Set</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">selectedNames</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+    <span class="n">FilterFactory2</span> <span class="n">ff</span> <span class="o">=</span> <span class="n">CommonFactoryFinder</span><span class="o">.</span><span class="na">getFilterFactory2</span><span class="o">();</span>
+    
+    <span class="n">List</span><span class="o">&lt;</span><span class="n">Filter</span><span class="o">&gt;</span> <span class="n">match</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Filter</span><span class="o">&gt;();</span>
+    <span class="k">for</span> <span class="o">(</span><span class="n">String</span> <span class="n">name</span> <span class="o">:</span> <span class="n">selectedNames</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">Filter</span> <span class="n">aMatch</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">property</span><span class="o">(</span><span class="s">&quot;Name&quot;</span><span class="o">),</span> <span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="n">name</span><span class="o">));</span>
+        <span class="n">match</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">aMatch</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="n">Filter</span> <span class="n">filter</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">or</span><span class="o">(</span><span class="n">match</span><span class="o">);</span>
+    <span class="k">return</span> <span class="n">featureSource</span><span class="o">.</span><span class="na">getFeatures</span><span class="o">(</span><span class="n">filter</span><span class="o">);</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>You may want to experiment with the option to ignore case.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="handling-bounding-box">
+<h3>Handling Bounding Box<a class="headerlink" href="#handling-bounding-box" title="Permalink to this headline">¶</a></h3>
+<p>Often your users start by selecting on something with a click. Translating that to a BoundingBox, and then into a query is a little involved.</p>
+<img alt="../../_images/Filter_BBox.png" src="../../_images/Filter_BBox.png" />
+<p>You can make a bounding box query as shown below:</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="n">SimpleFeatureCollection</span> <span class="nf">grabFeaturesInBoundingBox</span><span class="o">(</span><span class="kt">double</span> <span class="n">x1</span><span class="o">,</span> <span class="kt">double</span> <span class="n">y1</span><span class="o">,</span> <span class="kt">double</span> <span class="n">x2</span><span class="o">,</span> <span class="kt">double</span> <span class="n">y2</span><span class="o">)</span>
+        <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+    <span class="n">FilterFactory2</span> <span class="n">ff</span> <span class="o">=</span> <span class="n">CommonFactoryFinder</span><span class="o">.</span><span class="na">getFilterFactory2</span><span class="o">();</span>
+    <span class="n">FeatureType</span> <span class="n">schema</span> <span class="o">=</span> <span class="n">featureSource</span><span class="o">.</span><span class="na">getSchema</span><span class="o">();</span>
+    
+    <span class="c1">// usually &quot;THE_GEOM&quot; for shapefiles</span>
+    <span class="n">String</span> <span class="n">geometryPropertyName</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="na">getGeometryDescriptor</span><span class="o">().</span><span class="na">getLocalName</span><span class="o">();</span>
+    <span class="n">CoordinateReferenceSystem</span> <span class="n">targetCRS</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="na">getGeometryDescriptor</span><span class="o">()</span>
+            <span class="o">.</span><span class="na">getCoordinateReferenceSystem</span><span class="o">();</span>
+    
+    <span class="n">ReferencedEnvelope</span> <span class="n">bbox</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ReferencedEnvelope</span><span class="o">(</span><span class="n">x1</span><span class="o">,</span> <span class="n">y1</span><span class="o">,</span> <span class="n">x2</span><span class="o">,</span> <span class="n">y2</span><span class="o">,</span> <span class="n">targetCRS</span><span class="o">);</span>
+    
+    <span class="n">Filter</span> <span class="n">filter</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">bbox</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">property</span><span class="o">(</span><span class="n">geometryPropertyName</span><span class="o">),</span> <span class="n">bbox</span><span class="o">);</span>
+    <span class="k">return</span> <span class="n">featureSource</span><span class="o">.</span><span class="na">getFeatures</span><span class="o">(</span><span class="n">filter</span><span class="o">);</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>As you can see we had to sort out what the attribute name of the default geometry was
+in order to make the correct query.</p>
+<ul>
+<li><p class="first">Q: What features are on the screen?</p>
+<ul>
+<li><p class="first">BBOX</p>
+<p>One quick way to handle this is to treat the screen as a BBox and
+make a request for the contents.</p>
+<img alt="../../_images/filter_screen.png" src="../../_images/filter_screen.png" />
+</li>
+</ul>
+<blockquote>
+<div><p>Using a simple bounding box check is fast, but may retrieve more content then you will end up displaying.:</p>
+<div class="highlight-python"><div class="highlight"><pre>ReferencedEnvelope screen = new ReferencedEnvelope( x1, y1, x2, y2, worldCRS );
+
+// Transform to dataCRS, ignoring difference in datum, 10 samples per edge
+ReferencedEnvelope world = screen.transform( dataCRS, true, 10 );
+
+FilterFactory2 bounds = CommonFactoryFinder.getFilterFactory2( GeoTools.getDefaultHints );
+Filter filter = ff.bbox( ff.property( &quot;THE_GEOM&quot; ), ff.literal( bounds ) );
+</pre></div>
+</div>
+</div></blockquote>
+<ul>
+<li><p class="first">Intersects</p>
+<p>The other way is to constructing a more exact polygon that follows the shape of your screen
+when transformed into your data&#8217;s coordinate reference system.</p>
+<img alt="../../_images/filter_screen_polygon.png" src="../../_images/filter_screen_polygon.png" />
+<p>Using a more exact polygon will result in a slower check, but less features will be
+retrieved (good for working with a WFS where sending the content is expensive):</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="n">SimpleFeatureCollection</span> <span class="nf">grabFeaturesInPolygon</span><span class="o">(</span><span class="kt">double</span> <span class="n">x1</span><span class="o">,</span> <span class="kt">double</span> <span class="n">y1</span><span class="o">,</span> <span class="kt">double</span> <span class="n">x2</span><span class="o">,</span> <span class="kt">double</span> <span class="n">y2</span><span class="o">)</span>
+        <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+    <span class="n">FilterFactory2</span> <span class="n">ff</span> <span class="o">=</span> <span class="n">CommonFactoryFinder</span><span class="o">.</span><span class="na">getFilterFactory2</span><span class="o">();</span>
+    <span class="n">FeatureType</span> <span class="n">schema</span> <span class="o">=</span> <span class="n">featureSource</span><span class="o">.</span><span class="na">getSchema</span><span class="o">();</span>
+    <span class="n">CoordinateReferenceSystem</span> <span class="n">worldCRS</span> <span class="o">=</span> <span class="n">DefaultGeographicCRS</span><span class="o">.</span><span class="na">WGS84</span><span class="o">;</span>
+
+    <span class="c1">// usually &quot;THE_GEOM&quot; for shapefiles</span>
+    <span class="n">String</span> <span class="n">geometryPropertyName</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="na">getGeometryDescriptor</span><span class="o">().</span><span class="na">getLocalName</span><span class="o">();</span>
+    <span class="n">CoordinateReferenceSystem</span> <span class="n">targetCRS</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="na">getGeometryDescriptor</span><span class="o">()</span>
+            <span class="o">.</span><span class="na">getCoordinateReferenceSystem</span><span class="o">();</span>
+
+    <span class="n">ReferencedEnvelope</span> <span class="n">click</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ReferencedEnvelope</span><span class="o">(</span><span class="n">x1</span><span class="o">,</span> <span class="n">y1</span><span class="o">,</span> <span class="n">x2</span><span class="o">,</span> <span class="n">y2</span><span class="o">,</span> <span class="n">worldCRS</span><span class="o">);</span>
+
+    <span class="c1">// will result in a slight larger BBOX then the original click</span>
+    <span class="n">ReferencedEnvelope</span> <span class="n">bbox</span> <span class="o">=</span> <span class="n">click</span><span class="o">.</span><span class="na">transform</span><span class="o">(</span><span class="n">targetCRS</span><span class="o">,</span> <span class="kc">true</span><span class="o">);</span>
+
+    <span class="c1">// will result in a polygon matching the original click</span>
+    <span class="n">Polygon</span> <span class="n">clickPolygon</span> <span class="o">=</span> <span class="n">JTS</span><span class="o">.</span><span class="na">toGeometry</span><span class="o">(</span><span class="n">bbox</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="mi">10</span><span class="o">);</span>
+    <span class="n">MathTransform</span> <span class="n">transform</span> <span class="o">=</span> <span class="n">CRS</span><span class="o">.</span><span class="na">findMathTransform</span><span class="o">(</span><span class="n">worldCRS</span><span class="o">,</span> <span class="n">targetCRS</span><span class="o">);</span>
+    <span class="n">Polygon</span> <span class="n">polygon</span> <span class="o">=</span> <span class="o">(</span><span class="n">Polygon</span><span class="o">)</span> <span class="n">JTS</span><span class="o">.</span><span class="na">transform</span><span class="o">(</span><span class="n">clickPolygon</span><span class="o">,</span> <span class="n">transform</span><span class="o">);</span>
+
+    <span class="n">Filter</span> <span class="n">filter</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">intersects</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">property</span><span class="o">(</span><span class="n">geometryPropertyName</span><span class="o">),</span>
+            <span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="n">polygon</span><span class="o">));</span>
+
+    <span class="k">return</span> <span class="n">featureSource</span><span class="o">.</span><span class="na">getFeatures</span><span class="o">(</span><span class="n">filter</span><span class="o">);</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">BBox and then Intersects</p>
+<p>You can go faster by using both techniques, the bounds check will cut down on most of the features
+right away; and the more expensive Polygon for the final check.</p>
+<img alt="../../_images/filter_screen2.png" src="../../_images/filter_screen2.png" />
+<p>Advanced data sources like PostGIS perform these kind of checks internally, but you will notice a
+large difference when working with shape files.:</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="n">SimpleFeatureCollection</span> <span class="nf">grabFeaturesOnScreen</span><span class="o">(</span><span class="n">ReferencedEnvelope</span> <span class="n">screen</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+    <span class="n">FilterFactory2</span> <span class="n">ff</span> <span class="o">=</span> <span class="n">CommonFactoryFinder</span><span class="o">.</span><span class="na">getFilterFactory2</span><span class="o">();</span>
+    <span class="n">FeatureType</span> <span class="n">schema</span> <span class="o">=</span> <span class="n">featureSource</span><span class="o">.</span><span class="na">getSchema</span><span class="o">();</span>
+
+    <span class="c1">// usually &quot;THE_GEOM&quot; for shapefiles</span>
+    <span class="n">String</span> <span class="n">geometryPropertyName</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="na">getGeometryDescriptor</span><span class="o">().</span><span class="na">getLocalName</span><span class="o">();</span>
+    <span class="n">CoordinateReferenceSystem</span> <span class="n">targetCRS</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="na">getGeometryDescriptor</span><span class="o">()</span>
+            <span class="o">.</span><span class="na">getCoordinateReferenceSystem</span><span class="o">();</span>
+    <span class="n">CoordinateReferenceSystem</span> <span class="n">worldCRS</span> <span class="o">=</span> <span class="n">screen</span><span class="o">.</span><span class="na">getCoordinateReferenceSystem</span><span class="o">();</span>
+    
+    <span class="c1">// will result in a slight larger BBOX then the original click</span>
+    <span class="n">ReferencedEnvelope</span> <span class="n">bbox</span> <span class="o">=</span> <span class="n">screen</span><span class="o">.</span><span class="na">transform</span><span class="o">(</span><span class="n">targetCRS</span><span class="o">,</span> <span class="kc">true</span><span class="o">);</span>
+    
+    <span class="c1">// will result in a polygon matching the original click</span>
+    <span class="n">Polygon</span> <span class="n">clickPolygon</span> <span class="o">=</span> <span class="n">JTS</span><span class="o">.</span><span class="na">toGeometry</span><span class="o">(</span><span class="n">bbox</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="mi">10</span><span class="o">);</span>
+    <span class="n">MathTransform</span> <span class="n">transform</span> <span class="o">=</span> <span class="n">CRS</span><span class="o">.</span><span class="na">findMathTransform</span><span class="o">(</span><span class="n">worldCRS</span><span class="o">,</span> <span class="n">targetCRS</span><span class="o">);</span>
+    <span class="n">Polygon</span> <span class="n">polygon</span> <span class="o">=</span> <span class="o">(</span><span class="n">Polygon</span><span class="o">)</span> <span class="n">JTS</span><span class="o">.</span><span class="na">transform</span><span class="o">(</span><span class="n">clickPolygon</span><span class="o">,</span> <span class="n">transform</span><span class="o">);</span>
+    
+    <span class="n">Filter</span> <span class="n">filter1</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">bbox</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">property</span><span class="o">(</span><span class="n">geometryPropertyName</span><span class="o">),</span> <span class="n">bbox</span><span class="o">);</span>
+    <span class="n">Filter</span> <span class="n">filter2</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">intersects</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">property</span><span class="o">(</span><span class="n">geometryPropertyName</span><span class="o">),</span> <span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="n">polygon</span><span class="o">));</span>
+    
+    <span class="n">Filter</span> <span class="n">filter</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">and</span><span class="o">(</span><span class="n">filter1</span><span class="o">,</span> <span class="n">filter2</span><span class="o">);</span>
+    
+    <span class="k">return</span> <span class="n">featureSource</span><span class="o">.</span><span class="na">getFeatures</span><span class="o">(</span><span class="n">filter</span><span class="o">);</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+</ul>
+<p>Q: What did I click on?</p>
+<blockquote>
+<div><blockquote>
+<div><img alt="../../_images/Filter_BBox.png" src="../../_images/Filter_BBox.png" />
+<p>Construct a bounding box for the pixel, and &#8220;back project&#8221; it into your data&#8217;s coordinate reference
+system. In the following example we have expanded our bounding box to be 3x3 pixels in order to make
+it easier to click on points and lines:</p>
+<p>In this example we have transformed our selection using 10 points for each edge of the rectangle:</p>
+<blockquote>
+<div><div class="highlight-java"><div class="highlight"><pre><span class="n">SimpleFeatureCollection</span> <span class="nf">click1</span><span class="o">(</span><span class="n">MapMouseEvent</span> <span class="n">ev</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+    <span class="c1">// Construct a 3x3 pixel rectangle centred on the mouse click position</span>
+    <span class="n">java</span><span class="o">.</span><span class="na">awt</span><span class="o">.</span><span class="na">Point</span> <span class="n">screenPos</span> <span class="o">=</span> <span class="n">ev</span><span class="o">.</span><span class="na">getPoint</span><span class="o">();</span>
+    
+    <span class="n">Rectangle</span> <span class="n">screenRect</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Rectangle</span><span class="o">(</span><span class="n">screenPos</span><span class="o">.</span><span class="na">x</span> <span class="o">-</span> <span class="mi">1</span><span class="o">,</span> <span class="n">screenPos</span><span class="o">.</span><span class="na">y</span> <span class="o">-</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">3</span><span class="o">,</span> <span class="mi">3</span><span class="o">);</span>
+    <span class="n">CoordinateReferenceSystem</span> <span class="n">worldCRS</span> <span class="o">=</span> <span class="n">mapFrame</span><span class="o">.</span><span class="na">getMapContent</span><span class="o">().</span><span class="na">getCoordinateReferenceSystem</span><span class="o">();</span>
+    <span class="c1">// Transform the screen rectangle into a bounding box in the </span>
+    <span class="c1">// coordinate reference system of our map content.</span>
+    <span class="n">AffineTransform</span> <span class="n">screenToWorld</span> <span class="o">=</span> <span class="n">mapFrame</span><span class="o">.</span><span class="na">getMapPane</span><span class="o">().</span><span class="na">getScreenToWorldTransform</span><span class="o">();</span>
+    <span class="n">Rectangle2D</span> <span class="n">worldRect</span> <span class="o">=</span> <span class="n">screenToWorld</span><span class="o">.</span><span class="na">createTransformedShape</span><span class="o">(</span><span class="n">screenRect</span><span class="o">).</span><span class="na">getBounds2D</span><span class="o">();</span>
+    <span class="n">ReferencedEnvelope</span> <span class="n">worldBBox</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ReferencedEnvelope</span><span class="o">(</span><span class="n">worldRect</span><span class="o">,</span> <span class="n">worldCRS</span><span class="o">);</span>
+    
+    <span class="c1">// transform from world to target CRS</span>
+    <span class="n">SimpleFeatureType</span> <span class="n">schema</span> <span class="o">=</span> <span class="n">featureSource</span><span class="o">.</span><span class="na">getSchema</span><span class="o">();</span>
+    <span class="n">CoordinateReferenceSystem</span> <span class="n">targetCRS</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="na">getCoordinateReferenceSystem</span><span class="o">();</span>
+    <span class="n">String</span> <span class="n">geometryAttributeName</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="na">getGeometryDescriptor</span><span class="o">().</span><span class="na">getLocalName</span><span class="o">();</span>
+    
+    <span class="n">ReferencedEnvelope</span> <span class="n">bbox</span> <span class="o">=</span> <span class="n">worldBBox</span><span class="o">.</span><span class="na">transform</span><span class="o">(</span><span class="n">targetCRS</span><span class="o">,</span> <span class="kc">true</span><span class="o">,</span> <span class="mi">10</span><span class="o">);</span>
+    
+    <span class="n">FilterFactory2</span> <span class="n">ff</span> <span class="o">=</span> <span class="n">CommonFactoryFinder</span><span class="o">.</span><span class="na">getFilterFactory2</span><span class="o">();</span>
+
+    <span class="c1">// Option 1 BBOX</span>
+    <span class="n">Filter</span> <span class="n">filter</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">bbox</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">property</span><span class="o">(</span><span class="n">geometryAttributeName</span><span class="o">),</span> <span class="n">bbox</span><span class="o">);</span>
+    
+    <span class="c1">// Option 2 Intersects</span>
+    <span class="c1">// Filter filter = ff.intersects(ff.property(geometryAttributeName), ff.literal(bbox));</span>
+    
+    <span class="k">return</span> <span class="n">featureSource</span><span class="o">.</span><span class="na">getFeatures</span><span class="o">(</span><span class="n">filter</span><span class="o">);</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div></blockquote>
+<ul>
+<li><p class="first">Use a point for to Check Polygon Layers</p>
+<p>You can turn the tables around when selecting polygons, and issue your query using
+a single point - and check what polygon(s) contain the point.</p>
+<img alt="../../_images/filter_point.png" src="../../_images/filter_point.png" />
+<p>Please note this is only suitable for working with Polygons as selecting a line
+using a single point is next to impossible.:</p>
+<div class="highlight-python"><div class="highlight"><pre>FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2( null );
+Filter filter = ff.contains( ff.property( geometryAttributeName ), ff.literal( point ) );
+</pre></div>
+</div>
+</li>
+<li><p class="first">Use a distance Check</p>
+<p>Another common approach is to call geometry.buffer( distance ) and then select with the resulting
+polygon.</p>
+<p>Please consider making your request with a distance check instead.</p>
+<p>The &#8220;units&#8221; for the distance are the same as for your data; so if you are using &#8220;EPSG:3005&#8221; they will be in
+meters; if you are using &#8220;EPSG:4326&#8221; they will be in angular degrees.:</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="n">SimpleFeatureCollection</span> <span class="nf">distance</span><span class="o">(</span><span class="n">MapMouseEvent</span> <span class="n">ev</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+    <span class="n">DirectPosition2D</span> <span class="n">worldPosition</span> <span class="o">=</span> <span class="n">ev</span><span class="o">.</span><span class="na">getMapPosition</span><span class="o">();</span>
+    
+    <span class="c1">// get the unit of measurement</span>
+    <span class="n">SimpleFeatureType</span> <span class="n">schema</span> <span class="o">=</span> <span class="n">featureSource</span><span class="o">.</span><span class="na">getSchema</span><span class="o">();</span>
+    <span class="n">CoordinateReferenceSystem</span> <span class="n">crs</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="na">getGeometryDescriptor</span><span class="o">().</span><span class="na">getCoordinateReferenceSystem</span><span class="o">();</span>
+    <span class="n">Unit</span><span class="o">&lt;?&gt;</span> <span class="n">uom</span> <span class="o">=</span> <span class="n">crs</span><span class="o">.</span><span class="na">getCoordinateSystem</span><span class="o">().</span><span class="na">getAxis</span><span class="o">(</span><span class="mi">0</span><span class="o">).</span><span class="na">getUnit</span><span class="o">();</span>
+    
+    <span class="n">MathTransform</span> <span class="n">transform</span> <span class="o">=</span> <span class="n">CRS</span><span class="o">.</span><span class="na">findMathTransform</span><span class="o">(</span><span class="n">worldPosition</span><span class="o">.</span><span class="na">getCoordinateReferenceSystem</span><span class="o">(),</span>
+            <span class="n">crs</span><span class="o">,</span> <span class="kc">true</span><span class="o">);</span>
+    
+    <span class="n">DirectPosition</span> <span class="n">dataPosition</span> <span class="o">=</span> <span class="n">transform</span><span class="o">.</span><span class="na">transform</span><span class="o">(</span><span class="n">worldPosition</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
+    
+    <span class="n">Point</span> <span class="n">point</span> <span class="o">=</span> <span class="n">JTS</span><span class="o">.</span><span class="na">toGeometry</span><span class="o">(</span><span class="n">dataPosition</span><span class="o">);</span>
+    
+    <span class="c1">// threshold distance</span>
+    <span class="kt">double</span> <span class="n">distance</span> <span class="o">=</span> <span class="mf">10.0d</span><span class="o">;</span>
+    
+    <span class="n">FilterFactory2</span> <span class="n">ff</span> <span class="o">=</span> <span class="n">CommonFactoryFinder</span><span class="o">.</span><span class="na">getFilterFactory2</span><span class="o">();</span>
+    <span class="n">Filter</span> <span class="n">filter</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">dwithin</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">property</span><span class="o">(</span><span class="s">&quot;POLYGON&quot;</span><span class="o">),</span> <span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="n">point</span><span class="o">),</span> <span class="n">distance</span><span class="o">,</span> <span class="n">uom</span><span class="o">.</span><span class="na">toString</span><span class="o">());</span>
+    
+    <span class="k">return</span> <span class="n">featureSource</span><span class="o">.</span><span class="na">getFeatures</span><span class="o">(</span><span class="n">filter</span><span class="o">);</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>This technique also benefits from adding a BBox check in front.</p>
+</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="expression">
+<h2>Expression<a class="headerlink" href="#expression" title="Permalink to this headline">¶</a></h2>
+<p>We can go through the same steps to create an expression.</p>
+<ul>
+<li><p class="first">CQL</p>
+<p>Used for human readable code examples, &#8220;Common Query Language&#8221; parser is provided by <strong>gt-cql</strong> jar.:</p>
+<div class="highlight-python"><div class="highlight"><pre>Expression filter = CQL.toExpression(&quot;attName&quot;);
+</pre></div>
+</div>
+</li>
+<li><p class="first">FilterFactory</p>
+<p>You have a choice of which filter factory to use:</p>
+<ul>
+<li><dl class="first docutils">
+<dt><strong>FilterFactory</strong> directly create a filter - according to the</dt>
+<dd><p class="first">limitations of the standard standard.</p>
+<p class="last">Use this if you are making a request of an external Web Feature Server
+and do not want to accidentally step out of bounds.</p>
+</dd>
+</dl>
+</li>
+<li><p class="first"><strong>FilterFactory2</strong> directly create a filter.</p>
+<p>Has some additional methods for working with JTS Geometry.</p>
+</li>
+</ul>
+<p>Here is an example:</p>
+<div class="highlight-python"><div class="highlight"><pre>FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2( GeoTools.getDefaultHints );
+
+Expression propertyAccess = ff.property( &quot;THE_GEOM&quot;);
+Expression literal = ff.literal( geometry );
+Expression math = ff.add( ff.literal(1), ff.literal(2) );
+Expression math = ff.add( ff.literal(1), ff.literal(2) );
+Expression function = function( &quot;length&#39;, ff.property(&quot;CITY_NAME&quot;) );
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="function">
+<h2>Function<a class="headerlink" href="#function" title="Permalink to this headline">¶</a></h2>
+<p>Function is a little special as it is your chance to add new functions to the system.</p>
+<img alt="../../_images/filter_function.PNG" src="../../_images/filter_function.PNG" />
+<p>You accomplish this by providing three peices of information:</p>
+<ul class="simple">
+<li>Function - implementation of Function</li>
+<li>FunctionName - description of Function including name and argument names advertising that a Function is available</li>
+<li>FunctionFactory - used to construct a Function on request by FilterFactory.function( name, expression ... )</li>
+</ul>
+<p>If you are interested in implementing a function and registering it with GeoTools
+is the example used to explain the GeoTools plugin system.</p>
+</div>
+<div class="section" id="functionfinder">
+<h2>FunctionFinder<a class="headerlink" href="#functionfinder" title="Permalink to this headline">¶</a></h2>
+<p>You can directly create a Function with a FunctionFinder; this gives you access to the actual implementing
+class; which occasionally offer more options that are accessible through filter factory.</p>
+<ul class="simple">
+<li>getAllFunctionDescriptions()</li>
+<li>findFunctionDescription(String)</li>
+<li>FunctionFinder.findFunction(String)</li>
+<li>FunctionFinder.findFunction(String, List&lt;Expression&gt; )</li>
+<li>FunctionFinder.findFunction(String, List&lt;Expression, Literal)</li>
+</ul>
+<p>As an example FunctionFinder gives you a way to lookup a Function, with a &#8220;safe&#8221; fallback value provided by a Literal
+in the event the function could not be found.:</p>
+<div class="highlight-python"><div class="highlight"><pre>FunctionFinder finder = new FunctionFinder( null );
+
+// default answer() of 42
+Function function = finder.findFunction( &quot;answer&quot;, Collections.EMPTY_LIST, ff.literal( 42 ) );
+</pre></div>
+</div>
+</div>
+<div class="section" id="functionfactory">
+<h2>FunctionFactory<a class="headerlink" href="#functionfactory" title="Permalink to this headline">¶</a></h2>
+<p>Internally FunctionFinder uses CommonFactoryFinder to retrieve a list of FunctionFactory instances
+that are available on the CLASSPATH.</p>
+<p>Here an example listing all the functions (where each function is described by a FunctionName): FunctionDescription is provided by the
+FunctionName):</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="n">Set</span><span class="o">&lt;</span><span class="n">FunctionFactory</span><span class="o">&gt;</span> <span class="n">functionFactories</span> <span class="o">=</span> <span class="n">CommonFactoryFinder</span><span class="o">.</span><span class="na">getFunctionFactories</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span>
+    
+    <span class="k">for</span> <span class="o">(</span><span class="n">FunctionFactory</span> <span class="n">factory</span> <span class="o">:</span> <span class="n">functionFactories</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span> <span class="n">factory</span><span class="o">.</span><span class="na">getClass</span><span class="o">().</span><span class="na">getName</span><span class="o">()</span> <span class="o">);</span>
+        <span class="n">List</span><span class="o">&lt;</span><span class="n">FunctionName</span><span class="o">&gt;</span> <span class="n">functionNames</span> <span class="o">=</span> <span class="n">factory</span><span class="o">.</span><span class="na">getFunctionNames</span><span class="o">();</span>
+        <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">FunctionName</span><span class="o">&gt;</span> <span class="n">sorted</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">FunctionName</span><span class="o">&gt;</span> <span class="o">(</span> <span class="n">functionNames</span> <span class="o">);</span>
+        <span class="n">Collections</span><span class="o">.</span><span class="na">sort</span><span class="o">(</span> <span class="n">sorted</span><span class="o">,</span> <span class="k">new</span> <span class="n">Comparator</span><span class="o">&lt;</span><span class="n">FunctionName</span><span class="o">&gt;()</span> <span class="o">{</span>
+            <span class="kd">public</span> <span class="kt">int</span> <span class="nf">compare</span><span class="o">(</span><span class="n">FunctionName</span> <span class="n">o1</span><span class="o">,</span> <span class="n">FunctionName</span> <span class="n">o2</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">if</span><span class="o">(</span> <span class="n">o1</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">o2</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">)</span> <span class="k">return</span> <span class="mi">0</span><span class="o">;</span>
+                <span class="k">if</span><span class="o">(</span> <span class="n">o1</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">o2</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">)</span> <span class="k">return</span> <span class="mi">1</span><span class="o">;</span>
+                <span class="k">if</span><span class="o">(</span> <span class="n">o1</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">o2</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">)</span> <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="o">;</span>
+                
+                <span class="k">return</span> <span class="n">o1</span><span class="o">.</span><span class="na">getName</span><span class="o">().</span><span class="na">compareTo</span><span class="o">(</span> <span class="n">o2</span><span class="o">.</span><span class="na">getName</span><span class="o">()</span> <span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span> <span class="o">);</span>
+        <span class="k">for</span> <span class="o">(</span><span class="n">FunctionName</span> <span class="n">functionName</span> <span class="o">:</span> <span class="n">sorted</span> <span class="o">)</span> <span class="o">{</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="s">&quot;    &quot;</span><span class="o">);</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="n">functionName</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="s">&quot;(&quot;</span><span class="o">);</span>
+            <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+            <span class="k">for</span> <span class="o">(</span><span class="n">Parameter</span><span class="o">&lt;?&gt;</span> <span class="n">argument</span> <span class="o">:</span> <span class="n">functionName</span><span class="o">.</span><span class="na">getArguments</span><span class="o">())</span> <span class="o">{</span>
+                <span class="k">if</span> <span class="o">(</span><span class="n">i</span><span class="o">++</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="s">&quot;, &quot;</span><span class="o">);</span>
+                <span class="o">}</span> 
+                <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="n">argument</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
+                <span class="k">if</span><span class="o">(</span> <span class="n">argument</span><span class="o">.</span><span class="na">getType</span><span class="o">()</span> <span class="o">==</span> <span class="n">Object</span><span class="o">.</span><span class="na">class</span> <span class="o">&amp;&amp;</span> <span class="n">argument</span><span class="o">.</span><span class="na">isRequired</span><span class="o">()</span> <span class="o">){</span>
+                    <span class="c1">// no interesting description</span>
+                <span class="o">}</span>
+                <span class="k">else</span> <span class="o">{</span>
+                    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="s">&quot;{&quot;</span><span class="o">);</span>
+                    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span> <span class="n">argument</span><span class="o">.</span><span class="na">getType</span><span class="o">().</span><span class="na">getSimpleName</span><span class="o">()</span> <span class="o">);</span>
+                    <span class="k">if</span><span class="o">(</span> <span class="n">argument</span><span class="o">.</span><span class="na">isRequired</span><span class="o">()){</span>
+                        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="s">&quot;,required&quot;</span><span class="o">);</span>
+                    <span class="o">}</span>
+                    <span class="k">else</span> <span class="k">if</span><span class="o">(</span> <span class="n">argument</span><span class="o">.</span><span class="na">getMinOccurs</span><span class="o">()</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">argument</span><span class="o">.</span><span class="na">getMaxOccurs</span><span class="o">()</span> <span class="o">==</span> <span class="mi">1</span> <span class="o">)</span> <span class="o">{</span>
+                        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="s">&quot;,optional&quot;</span><span class="o">);</span>
+                    <span class="o">}</span>
+                    <span class="k">else</span> <span class="o">{</span>
+                        <span class="kt">int</span> <span class="n">min</span> <span class="o">=</span> <span class="n">argument</span><span class="o">.</span><span class="na">getMinOccurs</span><span class="o">();</span>
+                        <span class="kt">int</span> <span class="n">max</span> <span class="o">=</span> <span class="n">argument</span><span class="o">.</span><span class="na">getMaxOccurs</span><span class="o">();</span>
+                        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="s">&quot;,&quot;</span><span class="o">);</span>
+                        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="n">min</span><span class="o">);</span>
+                        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="s">&quot;:&quot;</span><span class="o">);</span>
+                        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="n">max</span><span class="o">==</span><span class="n">Integer</span><span class="o">.</span><span class="na">MAX_VALUE</span><span class="o">?</span><span class="s">&quot;unbounded&quot;</span><span class="o">:</span><span class="n">max</span><span class="o">);</span>
+                    <span class="o">}</span>
+                    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="s">&quot;}&quot;</span><span class="o">);</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+            <span class="n">Parameter</span><span class="o">&lt;?&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="n">functionName</span><span class="o">.</span><span class="na">getReturn</span><span class="o">();</span>
+
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="s">&quot;)&quot;</span><span class="o">);</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="s">&quot;:&quot;</span><span class="o">+</span><span class="n">result</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
+            <span class="k">if</span><span class="o">(</span> <span class="n">result</span><span class="o">.</span><span class="na">getType</span><span class="o">()</span> <span class="o">!=</span> <span class="n">Object</span><span class="o">.</span><span class="na">class</span> <span class="o">){</span>
+                <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="s">&quot;{&quot;</span><span class="o">);</span>
+                <span class="n">Class</span><span class="o">&lt;?&gt;</span> <span class="n">type</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="na">getType</span><span class="o">();</span>
+                <span class="k">if</span><span class="o">(</span> <span class="n">type</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">){</span>
+                    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span> <span class="n">type</span><span class="o">.</span><span class="na">getSimpleName</span><span class="o">()</span> <span class="o">);</span>
+                <span class="o">}</span>
+                <span class="k">else</span> <span class="o">{</span>
+                    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span> <span class="s">&quot;null&quot;</span> <span class="o">);</span>
+                <span class="o">}</span>
+                <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="s">&quot;}&quot;</span><span class="o">);</span>
+            <span class="o">}</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">();</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+</pre></div>
+</div>
+<div class="section" id="variable-arguments">
+<h3>Variable Arguments<a class="headerlink" href="#variable-arguments" title="Permalink to this headline">¶</a></h3>
+<p>Here are some examples that allow for a variable number of arguments:</p>
+<ul>
+<li><p class="first">Definition of stroke-width based on attribute:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">categorize</span><span class="p">(</span> <span class="n">attribute</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5000</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">15000</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">40000</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span><span class="mi">750000</span><span class="p">,</span> <span class="mi">5</span> <span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">fill-color smoothly interpolated based on attribute:</p>
+<div class="highlight-python"><div class="highlight"><pre>interpolation( attribute, 0.0, &#39;#005500&#39;, 3300.0, &#39;AA1100&#39;, 5000.0, #FFFFFF, &quot;linear&quot;, &quot;color&quot;, )
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="filtervisitor">
+<h2>FilterVisitor<a class="headerlink" href="#filtervisitor" title="Permalink to this headline">¶</a></h2>
+<p>The <strong>FilterVisitor</strong> interface allows you to smoothly interact and ask questions about a filter or create a slightly modified copy.</p>
+<p>You will find many of these examples also implement ExpressionVisitor in order to visit the Expressions making up the Filter. The practice of using a visitor to ask questions about; or return a modified copy of an immutable data structure is common; you will see this practice repeated when working with StyleVisitors (Style objects contain both Filters and Expressions).</p>
+<p>The GeoTools library includes a number of ready to use FilterVisitors.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="27%" />
+<col width="16%" />
+<col width="20%" />
+<col width="37%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Class</th>
+<th class="head">FilterVisitor</th>
+<th class="head">ExpressionVisitor</th>
+<th class="head">Notes</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>DefaultFilterVisitor</td>
+<td>yes</td>
+<td>yes</td>
+<td>Visits everything, does nothing</td>
+</tr>
+<tr class="row-odd"><td>DuplicatingFilterVisitor</td>
+<td>yes</td>
+<td>yes</td>
+<td>Copies the provided filter</td>
+</tr>
+<tr class="row-even"><td>FilterAttributeExtractor</td>
+<td>yes</td>
+<td>yes</td>
+<td>Set of propertyNames</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="defaultfiltervisitor">
+<h3>DefaultFilterVisitor<a class="headerlink" href="#defaultfiltervisitor" title="Permalink to this headline">¶</a></h3>
+<p>DefaultFilterVisitor does absolutely nothing; and is thus a great place to start from when making your own visitor.</p>
+<ul>
+<li><p class="first">Q: What is the set of FeatureIDs being used?</p>
+<blockquote>
+<div><p>Here is an example of visiting a specific Filter (the &#8220;Id&#8221; filter):</p>
+<div class="highlight-python"><div class="highlight"><pre> FilterVisitor allFids = new DefaultFilterVisitor(){
+    public Object visit( Id filter, Object data ) {
+        Set set = (Set) data;
+        set.addAll(filter.getIDs());
+        return set;
+    }
+};
+Set set = (Set) myFilter.accept(allFids, new HashSet());
+</pre></div>
+</div>
+</div></blockquote>
+<p>For each Id filter we are recording some information, the result of which is returned.</p>
+<p>We have packaged up this implementation for you already:</p>
+<div class="highlight-python"><div class="highlight"><pre>Set set = (Set) myFilter.accept( IdCollectorFilterVisitor.ID_COLLECTOR, new HashSet() );
+</pre></div>
+</div>
+</li>
+<li><p class="first">Q: What are all the PropertyNames used?</p>
+<p>This time we will need to visit a Expression (the &#8220;PropertyName&#8221; expression):</p>
+<div class="highlight-python"><div class="highlight"><pre>class FindNames extends DefaultFilterVisitor {
+    public Object visit( PropertyName expression, Object data ) {
+        Set set = (Set) data;
+        set.add( expression.getPropertyName() );
+
+        return set;
+    }
+}
+Set set = (Set) myFilter.accept( new FindNames(), new HashSet() );
+</pre></div>
+</div>
+<p>While this example looks simple it is often used to check a Filter (to check for XPath expressions) before turning a Filter into SQL.</p>
+<p>This use is so common we have one ready to use for you:</p>
+<div class="highlight-python"><div class="highlight"><pre>Set set = (Set) myFilter.accept( new FilterAttributeExtractor(), null );
+</pre></div>
+</div>
+</li>
+<li><p class="first">Q: Is this filter supported</p>
+<p>A FilterCapabilities data structure contains the list of supported functions and for a
+Web Feature Server (and eventually for other DataStores). You can use the following
+code example example to check if a filter is supported.</p>
+<p>To quickly check if a specific filter is supported:</p>
+<div class="highlight-python"><div class="highlight"><pre>boolean yes = filter.accepts( IsSupportedFilterVisitor( capabilities ), null );
+</pre></div>
+</div>
+<p>To do a complete check of a filter and all its children:</p>
+<div class="highlight-python"><div class="highlight"><pre>boolean yes = filter.accepts( IsFullySupportedFilterVisitor( capabilities ), null );
+</pre></div>
+</div>
+<p>The isFullySupportedFilterVisitor is very complete:</p>
+<ul class="simple">
+<li>ensure that your Id filters make sense (ie if you are using FeatureIds for Features; or ObjectId is for objects)</li>
+<li>For a logical filter (like NOT, AND and OR) it will check each child filter</li>
+<li>For a function it will that the function is defined, and that all the arguments are supported</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="duplicatingfiltervisitor">
+<h3>DuplicatingFilterVisitor<a class="headerlink" href="#duplicatingfiltervisitor" title="Permalink to this headline">¶</a></h3>
+<p>Out of the box the DuplicatingFilterVisitor will create a copy of the provided Filter (or Expression).:</p>
+<div class="highlight-python"><div class="highlight"><pre>Filter newFilter = (Filter) filter.accept( new DuplicatingFilterVisitor(), null );
+</pre></div>
+</div>
+<p>You can provide your own FilterFactory if you want:</p>
+<div class="highlight-python"><div class="highlight"><pre>Filter newFilter = (Filter) filter.accept( new DuplicatingFilterVisitor(), filterFactory );
+</pre></div>
+</div>
+<p>If you every want to &#8220;edit&#8221; or modify an existing filter this is the place to start.:</p>
+<div class="highlight-python"><div class="highlight"><pre>* Optimizing a Filter
+</pre></div>
+</div>
+<blockquote>
+<div><p>Here is an example optimization:</p>
+<div class="highlight-python"><div class="highlight"><pre>class Optimization extends DuplicatingFilterVisitor {
+    public Object visit( Add expression, Object extraData ) {
+        Expression expr1 = expression.getExpression1();
+        Expression expr2 = expression.getExpression2();
+        if( expr1 instanceof Literal &amp;&amp; expr2 instanceof Literal){
+            Double number1 = (Double) expr1.evaluate(null,Double.class);
+            Double number2 = (Double) expr2.evaluate(null,Double.class);
+
+            return factory.literal( number1.doubleValue() + number2.doubleValue() );
+        }
+        return super.visit(expression, extraData);
+    }
+};
+Expression modified = (Expression) add.accept( new Optimization(), null );
+</pre></div>
+</div>
+<p>You can use optimisations like this to evaluate as much as a statement as possible before turning it into SQL.</p>
+</div></blockquote>
+<p>Using ExpressionVisitor to ask Questions</p>
+</div>
+<div class="section" id="isstaticexpressionvisitor-visitor">
+<h3>IsStaticExpressionVisitor.VISITOR<a class="headerlink" href="#isstaticexpressionvisitor-visitor" title="Permalink to this headline">¶</a></h3>
+<p>As static filter contains no &#8220;propertyName&#8221; elements; and will evaluate to the same answer regardless of the feature, java bean or metadata entry it is being used on.</p>
+<ul>
+<li><p class="first">Q: Is this filter static:</p>
+<div class="highlight-python"><div class="highlight"><pre>if( filter.accepts( IsStaticExpressionVisitor.VISITOR, null ) ){
+     Color color = expression.evaulate( null, Color.class );
+     ...
+}
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="filters">
+<h2>Filters<a class="headerlink" href="#filters" title="Permalink to this headline">¶</a></h2>
+<p>There is a small utility class <strong>Filters</strong> that packages up some common Filter operations.</p>
+<ul>
+<li><p class="first">Filters.accept(Filter, FilterVisitor)</p>
+<p>Used to adapt a GeoTools 2.2 FilterVisitor to what we use today. The major additions
+are allowing for Filter.INCLUDES and Filter.EXCLUDES as &#8220;visitable&#8221; targets.</p>
+</li>
+<li><p class="first">asDouble(Expression)</p>
+</li>
+<li><p class="first">asInt(Expression)</p>
+</li>
+<li><p class="first">asString(Expression)</p>
+</li>
+<li><p class="first">asType(Expression, Class&lt;T&gt;)</p>
+</li>
+<li><p class="first">gets(String, Class)</p>
+</li>
+<li><p class="first">number(Object)</p>
+</li>
+<li><p class="first">puts(Color)</p>
+</li>
+<li><p class="first">puts(double)</p>
+</li>
+<li><p class="first">puts(Object)</p>
+<p>Helper methods for those implementing Filter, these have been
+replaced with the much more powerful <strong>Converters</strong> class.:</p>
+<div class="highlight-python"><div class="highlight"><pre>// before
+text = Filters.puts( Color.BLACK );
+// after
+text = Converters.convert( Color.BLACK, String.class );
+</pre></div>
+</div>
+</li>
+<li><p class="first">Filters.getFilterType(Filter)</p>
+<p>Assist GeoTools 2.2 code where FeatureType constants were used rather than instanceof checks.:</p>
+<div class="highlight-python"><div class="highlight"><pre>// before
+switch( Filters.getFilterType( filter ) ){
+
+FilterType.GEOMETRY_BBOX:
+  ...
+}
+// after
+if( filter instanceof BBOX ){
+  ..
+}
+</pre></div>
+</div>
+</li>
+<li><p class="first">Filters.duplicate( filter )</p>
+<p>Can be used to perform a deep copy of a Filter:</p>
+<div class="highlight-python"><div class="highlight"><pre>Filters utility = Filters();
+Filter copy = filters.duplicate( filter );
+</pre></div>
+</div>
+<p>Internally this method uses DuplicatingFilterVisitor:</p>
+<div class="highlight-python"><div class="highlight"><pre>DuplicatingFilterVisitor duplicate = new DuplicatingFilterVisitor();
+Filter copy = (Filter) filter.accept( duplicate, null );
+</pre></div>
+</div>
+</li>
+<li><p class="first">Filters.attributeNames(filter, SimpleFeatureType)</p>
+</li>
+<li><p class="first">Filters.propertyNames(expression)</p>
+</li>
+<li><p class="first">Filters.propertyNames(expression, SimpleFeatureType)</p>
+</li>
+<li><p class="first">Filters.propertyNames(filter)</p>
+</li>
+<li><p class="first">Filters.propertyNames(filter, SimpleFeatureType)</p>
+</li>
+<li><p class="first">Filters.findPropertyName( filter );</p>
+<p>Methods use to query the structure of the provided Filter. Internally these
+usually use a FilterVisitor to transerse the provided Filter
+to determine the answer.</p>
+<p>Here is a quick example using findPropertyName( filter ):</p>
+<div class="highlight-python"><div class="highlight"><pre>String xpath = Filters.findPropertyName(b);
+if( xpath != null ){
+    // proeprty name found with indicated xpath expression
+}
+else {
+    // filter does not contain any references to PropertyName
+}
+</pre></div>
+</div>
+</li>
+<li><p class="first">Filters.hasChildren(Filter)</p>
+</li>
+<li><p class="first">Filters.children(Filter)</p>
+</li>
+<li><p class="first">Filters.children(Filter, boolean)</p>
+<p>Query methods regard &#8220;children&#8221; only apply to filters <em>and</em>, <em>or</em> and <em>not</em>
+which are used to combine the results of several filters.</p>
+</li>
+<li><p class="first">Filters.and(FilterFactory, Filter, Filter)</p>
+</li>
+<li><p class="first">Filters.or(FilterFactory, Filter, Filter)</p>
+<p>Used to combine two filters; will sensibly &#8220;append&#8221; filters
+onto an existing <em>and</em> or <em>or</em> filter.</p>
+<p>The result is a new filter combining the two filters as requested.</p>
+<p>Tip: Used to update GeoTools 2.2 code where Filter was mutable.</p>
+</li>
+<li><p class="first">Filters.removeFilter(Filter, Filter)</p>
+</li>
+<li><p class="first">Filters.removeFilter(Filter, Filter, boolean)</p>
+<p>Used to seperate out a child from the provided filter.</p>
+<p>Much like <em>and</em> and <em>or</em> above these methods return a modified
+filter.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="capabilities">
+<h2>Capabilities<a class="headerlink" href="#capabilities" title="Permalink to this headline">¶</a></h2>
+<p>You can also use the FilterFactory to fill in a filter capabiliies data structure describing
+the abilities of a web or database service.</p>
+<p>However we also have a <strong>Capabilities</strong> user class which is helpful both in acting as a &#8220;builder&#8221;
+when creating a FilterCapabilities data structure; and also in making use of the result.</p>
+<ul>
+<li><p class="first">Capabilities as a builder:</p>
+<div class="highlight-python"><div class="highlight"><pre>Capabilities capabilities = new Capabilities();
+capabilities.addType( Beyond.class ); // add to SpatialCapabilities
+capabilities.addType( PropertyIsEqualTo.class ); // add to ScalarCapabilities
+capabilities.addName( &quot;NullCheck&quot; ); // will enable PropertyIsNull use
+capabilities.addName( &quot;Mul&quot; ); // will enable hasSimpleArithmatic
+capabilities.addName( &quot;random&quot; ); // a function returning a random number
+capabilities.addName( &quot;Length&quot;, 1 ); // single argument function
+capabilities.addName( &quot;toDegrees&quot;, &quot;radians&quot; ); // single argument function
+capabilities.addName( &quot;length&quot;, &quot;expression&quot; );
+</pre></div>
+</div>
+</li>
+<li><p class="first">Using Capabilities:</p>
+<div class="highlight-python"><div class="highlight"><pre>Capabilities capabilities = new Capabilities( filterCapabilities );
+
+FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+Filter filter = ff.between( ff.literal(0), ff.property(&quot;x&quot;), ff.literal( 2 ) );
+
+if( capabilities.supports( filter ) ){
+   // native support for &quot;between&quot; available
+}
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="function_list.html" title="Function List"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="data.html" title="DataUtilities"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" >Main</a> &raquo;</li>
+        <li><a href="#">Filter</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,877 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Purchase Order Tutorial &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../../index.html" />
+    <link rel="up" title="Internals" href="index.html" />
+    <link rel="next" title="Geometry" href="../geometry.html" />
+    <link rel="prev" title="Code Generation" href="code.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../../index.html" >Library</a> &raquo;</li>
+          <li><a href="../index.html" >XML</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Internals</a> &raquo;</li>
+        <li><a href="#">Purchase Order Tutorial</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Purchase Order Tutorial</a><ul>
+<li><a class="reference internal" href="#create-a-new-project">Create a New Project</a></li>
+<li><a class="reference internal" href="#generate-the-model">Generate the Model</a></li>
+<li><a class="reference internal" href="#generate-the-bindings">Generate the Bindings</a></li>
+<li><a class="reference internal" href="#implement-the-bindings">Implement the Bindings</a></li>
+<li><a class="reference internal" href="#sku-simple-type">SKU (Simple Type)</a></li>
+<li><a class="reference internal" href="#usaddress-complex-type">USAddress (Complex Type)</a></li>
+<li><a class="reference internal" href="#item-anonymous-complex-type">Item ( Anonymous Complex Type )</a></li>
+<li><a class="reference internal" href="#items-another-complex-type">Items ( Another Complex Type )</a></li>
+<li><a class="reference internal" href="#purchaseordertype-the-last-one">PurchaseOrderType( The Last One )</a></li>
+<li><a class="reference internal" href="#configure-the-binding-context">Configure the Binding Context</a></li>
+<li><a class="reference internal" href="#test-the-bindings">Test the Bindings</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="code.html"
+                        title="previous chapter">Code Generation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../geometry.html"
+                        title="next chapter">Geometry</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/library/xml/internal/tutorial.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="purchase-order-tutorial">
+<h1>Purchase Order Tutorial<a class="headerlink" href="#purchase-order-tutorial" title="Permalink to this headline">¶</a></h1>
+<p>This tutorial covers how to implement xml support for a particular schema.</p>
+<p>Prerequisites at the time of writing:</p>
+<ul class="simple">
+<li>Maven 2</li>
+<li>Build GeoTools trunk locally; the gt2-xmlcodegen maven plugin is not published anywhere - you need to build it</li>
+</ul>
+<div class="section" id="create-a-new-project">
+<h2>Create a New Project<a class="headerlink" href="#create-a-new-project" title="Permalink to this headline">¶</a></h2>
+<p>Somewhere on your system:</p>
+<ol class="arabic">
+<li><p class="first">Create a new directory called xml-po</p>
+</li>
+<li><p class="first">Add the the following <strong>pom.xml</strong> to the xml-po directory</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd&quot;&gt;
+
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;groupId&gt;org.geotools.demo&lt;/groupId&gt;
+    &lt;artifactId&gt;gt2-xml-po&lt;/artifactId&gt;
+    &lt;packaging&gt;jar&lt;/packaging&gt;
+    &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+    &lt;name&gt;Purchase Order XML Support&lt;/name&gt;
+
+&lt;/project&gt;
+</pre></div>
+</div>
+</li>
+<li><p class="first">Create the directories src/main/java and src/main/xsd:</p>
+<div class="highlight-python"><div class="highlight"><pre>mkdir -p src/main/java
+mkdir -p src/main/resources
+mkdir -p src/test/java
+</pre></div>
+</div>
+</li>
+<li><p class="first">Copy <a class="reference download internal" href="../../../_downloads/po.xsd"><code class="xref download docutils literal"><span class="pre">po.xsd</span></code></a> into src/main/resources</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:schema xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot; 
+	xmlns:po=&quot;http://www.geotools.org/po&quot; 
+	xmlns=&quot;http://www.geotools.org/po&quot;
+	targetNamespace=&quot;http://www.geotools.org/po&quot;
+	elementFormDefault=&quot;qualified&quot;&gt;
+
+  &lt;xsd:annotation&gt;
+    &lt;xsd:documentation xml:lang=&quot;en&quot;&gt;
+     Purchase order schema for Example.com.
+     Copyright 2000 Example.com. All rights reserved.
+    &lt;/xsd:documentation&gt;
+  &lt;/xsd:annotation&gt;
+
+  &lt;xsd:element name=&quot;purchaseOrder&quot; type=&quot;PurchaseOrderType&quot;/&gt;
+
+  &lt;xsd:element name=&quot;comment&quot; type=&quot;xsd:string&quot;/&gt;
+
+  &lt;xsd:complexType name=&quot;PurchaseOrderType&quot;&gt;
+    &lt;xsd:sequence&gt;
+      &lt;xsd:element name=&quot;shipTo&quot; type=&quot;USAddress&quot;/&gt;
+      &lt;xsd:element name=&quot;billTo&quot; type=&quot;USAddress&quot;/&gt;
+      &lt;xsd:element ref=&quot;comment&quot; minOccurs=&quot;0&quot;/&gt;
+      &lt;xsd:element name=&quot;items&quot;  type=&quot;Items&quot;/&gt;
+    &lt;/xsd:sequence&gt;
+    &lt;xsd:attribute name=&quot;orderDate&quot; type=&quot;xsd:date&quot;/&gt;
+  &lt;/xsd:complexType&gt;
+
+  &lt;xsd:complexType name=&quot;USAddress&quot;&gt;
+    &lt;xsd:sequence&gt;
+      &lt;xsd:element name=&quot;name&quot;   type=&quot;xsd:string&quot;/&gt;
+      &lt;xsd:element name=&quot;street&quot; type=&quot;xsd:string&quot;/&gt;
+      &lt;xsd:element name=&quot;city&quot;   type=&quot;xsd:string&quot;/&gt;
+      &lt;xsd:element name=&quot;state&quot;  type=&quot;xsd:string&quot;/&gt;
+      &lt;xsd:element name=&quot;zip&quot;    type=&quot;xsd:decimal&quot;/&gt;
+    &lt;/xsd:sequence&gt;
+    &lt;xsd:attribute name=&quot;country&quot; type=&quot;xsd:NMTOKEN&quot;
+                   fixed=&quot;US&quot;/&gt;
+  &lt;/xsd:complexType&gt;
+
+  &lt;xsd:complexType name=&quot;Items&quot;&gt;
+    &lt;xsd:sequence&gt;
+      &lt;xsd:element name=&quot;item&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;&gt;
+        &lt;xsd:complexType&gt;
+          &lt;xsd:sequence&gt;
+            &lt;xsd:element name=&quot;productName&quot; type=&quot;xsd:string&quot;/&gt;
+            &lt;xsd:element name=&quot;quantity&quot;&gt;
+              &lt;xsd:simpleType&gt;
+                &lt;xsd:restriction base=&quot;xsd:positiveInteger&quot;&gt;
+                  &lt;xsd:maxExclusive value=&quot;100&quot;/&gt;
+                &lt;/xsd:restriction&gt;
+              &lt;/xsd:simpleType&gt;
+            &lt;/xsd:element&gt;
+            &lt;xsd:element name=&quot;USPrice&quot;  type=&quot;xsd:decimal&quot;/&gt;
+            &lt;xsd:element ref=&quot;comment&quot;   minOccurs=&quot;0&quot;/&gt;
+            &lt;xsd:element name=&quot;shipDate&quot; type=&quot;xsd:date&quot; minOccurs=&quot;0&quot;/&gt;
+          &lt;/xsd:sequence&gt;
+          &lt;xsd:attribute name=&quot;partNum&quot; type=&quot;SKU&quot; use=&quot;required&quot;/&gt;
+        &lt;/xsd:complexType&gt;
+      &lt;/xsd:element&gt;
+    &lt;/xsd:sequence&gt;
+  &lt;/xsd:complexType&gt;
+
+  &lt;!-- Stock Keeping Unit, a code for identifying products --&gt;
+  &lt;xsd:simpleType name=&quot;SKU&quot;&gt;
+    &lt;xsd:restriction base=&quot;xsd:string&quot;&gt;
+      &lt;xsd:pattern value=&quot;\d{3}-[A-Z]{2}&quot;/&gt;
+    &lt;/xsd:restriction&gt;
+  &lt;/xsd:simpleType&gt;
+
+&lt;/xsd:schema&gt;
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="generate-the-model">
+<h2>Generate the Model<a class="headerlink" href="#generate-the-model" title="Permalink to this headline">¶</a></h2>
+<p>The first step is to come up with an object model to work with. There are a number of technologies that will take an xml schema and generate java code from it. To name a few:</p>
+<ul class="simple">
+<li>Eclipse Modelling Framework</li>
+<li>Java Architecture for XML Binding (JAXB)</li>
+<li>XML Beans</li>
+</ul>
+<p>For this tutorial we will use JAXB.</p>
+<p>First we must configure the pom.xml file of our project to use the <a class="reference external" href="http://java.net/projects/maven-jaxb2-plugin/">maven-jaxb2-plugin</a> plugin, and also depend on jaxb as it will add some annotations.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>We collected our po.xml schema from the sample projected available here:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://confluence.highsource.org/display/MJIIP/Sample+projects">http://confluence.highsource.org/display/MJIIP/Sample+projects</a></li>
+</ul>
+<p class="last">You may wish to download a newer copy of the instructions seem out of date.</p>
+</div>
+<ol class="arabic simple">
+<li>Add some additional repositories so we can find the latest copy of jaxb:</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre>    &lt;repositories&gt;
+        &lt;repository&gt;
+            &lt;id&gt;maven2-repository.dev.java.repositorynet&lt;/id&gt;
+            &lt;name&gt;Java.net Maven 2 Repository&lt;/name&gt;
+            &lt;url&gt;http://download.java.net/maven/2&lt;/url&gt;
+        &lt;/repository&gt;
+        &lt;repository&gt;
+            &lt;id&gt;maven-repositoriesository.dev.java.net&lt;/id&gt;
+            &lt;name&gt;Java.net Maven 1 Repository (legacy)&lt;/name&gt;
+            &lt;url&gt;http://download.java.net/maven/1&lt;/url&gt;
+            &lt;layout&gt;legacy&lt;/layout&gt;
+        &lt;/repository&gt;
+    &lt;/repositories&gt;
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li>Add a dependency on jaxb api:</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre>    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.sun.xml.bind&lt;/groupId&gt;
+            &lt;artifactId&gt;jaxb-impl&lt;/artifactId&gt;
+            &lt;version&gt;2.1.13&lt;/version&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+</pre></div>
+</div>
+<ol class="arabic" start="3">
+<li><p class="first">Configure the jaxb maven plugin:</p>
+<div class="highlight-python"><div class="highlight"><pre>    &lt;pluginRepositories&gt;
+        &lt;pluginRepository&gt;
+            &lt;id&gt;maven2-repository.dev.java.net&lt;/id&gt;
+            &lt;name&gt;Java.net Mavenen 2 Repository&lt;/name&gt;
+            &lt;url&gt;http://download.java.net/maven/2&lt;/url&gt;
+        &lt;/pluginRepository&gt;
+        &lt;pluginRepository&gt;
+            &lt;id&gt;maven-repository.dev.java.repositorynet&lt;/id&gt;
+            &lt;name&gt;Java.net Maven 1 Repository (legacy)&lt;/name&gt;
+            &lt;url&gt;http://download.java.net/maven/1&lt;/url&gt;
+            &lt;layout&gt;legacy&lt;/layout&gt;
+        &lt;/pluginRepository&gt;
+    &lt;/pluginRepositories&gt;
+
+    &lt;build&gt;
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;inherited&gt;true&lt;/inherited&gt;
+                &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+                &lt;configuration&gt;
+                    &lt;source&gt;1.5&lt;/source&gt;
+                    &lt;target&gt;1.5&lt;/target&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.jvnet.jaxb2.maven2&lt;/groupId&gt;
+                &lt;artifactId&gt;maven-jaxb2-plugin&lt;/artifactId&gt;
+                &lt;configuration&gt;
+                    &lt;packageName&gt;org.geotools.po&lt;/packageName&gt;
+                    &lt;generateDirectory&gt;${project.build.sourceDirectory}&lt;/generateDirectory&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+</pre></div>
+</div>
+<p>The above configuration targets our project source directory;
+as we are only planning on running this generation code once.</p>
+</li>
+<li><p class="first">At this point, your pom should look like this <a class="reference download internal" href="../../../_downloads/pom2.xml"><code class="xref download docutils literal"><span class="pre">pom.xml</span></code></a> .</p>
+</li>
+<li><p class="first">Now we are ready to generate the model.</p>
+<p>Run the jaxb2 code generation:</p>
+<div class="highlight-python"><div class="highlight"><pre>[xml-po]$ mvn jaxb2:generate
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Purchase Order XML Support
+[INFO]    task-segment: [jaxb2:generate]
+[INFO] ------------------------------------------------------------------------
+[INFO] [jaxb2:generate {execution: default-cli}]
+Cannot find CatalogManager.properties
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESSFUL
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 2 seconds
+[INFO] Finished at: Sun Apr 10 17:20:23 EST 2011
+[INFO] Final Memory: 5M/81M
+[INFO] ------------------------------------------------------------------------
+</pre></div>
+</div>
+</li>
+<li><p class="first">Build the project:</p>
+<div class="highlight-python"><div class="highlight"><pre>[xml-po]% mvn install
+</pre></div>
+</div>
+</li>
+<li><p class="first">At this point, the model should have been generated under src/main/java.</p>
+<ul class="simple">
+<li>Items.java</li>
+<li>ObjectFactory.java</li>
+<li>PurchaseOrderType.java</li>
+<li>USAddress.java</li>
+</ul>
+</li>
+</ol>
+</div>
+<div class="section" id="generate-the-bindings">
+<h2>Generate the Bindings<a class="headerlink" href="#generate-the-bindings" title="Permalink to this headline">¶</a></h2>
+<p>At this point, we have generated objects from the original schema. The next step will be to generate xml bindings from the original schema. to do this we will make use of the geotools xml generation plugin.</p>
+<ol class="arabic">
+<li><p class="first">Add a dependency on the geotools xml module:</p>
+<div class="highlight-python"><div class="highlight"><pre>        &lt;dependency&gt;
+            &lt;groupId&gt;com.sun.xml.bind&lt;/groupId&gt;
+            &lt;artifactId&gt;jaxb-impl&lt;/artifactId&gt;
+            &lt;version&gt;2.1.13&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+           &lt;groupId&gt;org.geotools.xsd&lt;/groupId&gt;
+           &lt;artifactId&gt;gt-xsd-core&lt;/artifactId&gt;
+           &lt;version&gt;10-SNAPSHOT&lt;/version&gt;
+        &lt;/dependency&gt;    
+</pre></div>
+</div>
+</li>
+<li><p class="first">Configure the xml generation plugin:</p>
+<div class="highlight-python"><div class="highlight"><pre>            &lt;plugin&gt;
+                &lt;groupId&gt;org.geotools.maven&lt;/groupId&gt;
+                &lt;artifactId&gt;xmlcodegen&lt;/artifactId&gt;
+                &lt;version&gt;10-SNAPSHOT&lt;/version&gt;
+                &lt;configuration&gt;
+                    &lt;schemaLocation&gt;po.xsd&lt;/schemaLocation&gt;
+                    &lt;schemaSourceDirectory&gt;${basedir}/src/main/resources&lt;/schemaSourceDirectory&gt;
+                    &lt;destinationPackage&gt;org.geotools.po.bindings&lt;/destinationPackage&gt;
+                    &lt;generateConfiguration&gt;true&lt;/generateConfiguration&gt;
+                    &lt;generateBindingInterface&gt;true&lt;/generateBindingInterface&gt;
+                    &lt;generateSchemaLocationResolver&gt;true&lt;/generateSchemaLocationResolver&gt;
+                    &lt;bindingConstructorArguments&gt;
+                        &lt;bindingConstructorArgument&gt;
+                            &lt;name&gt;factory&lt;/name&gt;
+                            &lt;type&gt;org.geotools.po.ObjectFactory&lt;/type&gt;
+                        &lt;/bindingConstructorArgument&gt;
+                    &lt;/bindingConstructorArguments&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+</pre></div>
+</div>
+</li>
+<li><p class="first">A couple of things to note about the configuration:</p>
+<ul>
+<li><p class="first">The schemaLocation tag defines the target schema, in this case po.xsd.</p>
+</li>
+<li><dl class="first docutils">
+<dt>The destinationPackage defines which package we would like the generate</dt>
+<dd><p class="first last">code to end up in, in this case org.geotools.po.bindings</p>
+</dd>
+</dl>
+</li>
+<li><p class="first">The constructorArguments tag defines the constructor arguments we want our
+xml bindings to take, in this case org.geotools.po.ObjectFactory which is
+a factory that was generated in our model in the previous section</p>
+</li>
+</ul>
+</li>
+<li><p class="first">At this point, your pom should look like this <a class="reference download internal" href="../../../_downloads/pom3.xml"><code class="xref download docutils literal"><span class="pre">pom.xml</span></code></a> .</p>
+</li>
+<li><p class="first">Now we are ready to generate the bindings.</p>
+<p>Run the xml binding generator:</p>
+<div class="highlight-python"><div class="highlight"><pre>[xml-po]$ mvn org.geotools.maven:xmlcodegen:generate
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Purchase Order XML Support
+[INFO]    task-segment: [org.geotools.maven:xmlcodegen:generate]
+[INFO] ------------------------------------------------------------------------
+[INFO] [xmlcodegen:generate {execution: default-cli}]
+[INFO] org.apache.maven.artifact.factory.DefaultArtifactFactory@6da28362
+[WARNING] Unable to load org.geotools.gml2.GML
+[WARNING] Unable to load org.geotools.gml3.GML
+[WARNING] Unable to load org.geotools.filter.v1_0.OGC
+[WARNING] Unable to load org.geotools.filter.v1_1.OGC
+[INFO] Parsing schema: /Users/jody/java/geotools/xml-po/src/main/resources/po.xsd
+[INFO] Generating bindings...
+Apr 10, 2011 6:18:38 PM org.geotools.maven.xmlcodegen.BindingGenerator generate
+INFO: Generating binding for Items
+Apr 10, 2011 6:18:38 PM org.geotools.maven.xmlcodegen.BindingGenerator generate
+INFO: Generating binding for PurchaseOrderType
+Apr 10, 2011 6:18:38 PM org.geotools.maven.xmlcodegen.BindingGenerator generate
+INFO: Generating binding for SKU
+Apr 10, 2011 6:18:38 PM org.geotools.maven.xmlcodegen.BindingGenerator generate
+INFO: Generating binding for USAddress
+Apr 10, 2011 6:18:38 PM org.geotools.maven.xmlcodegen.BindingGenerator generate
+INFO: Generating binding for Items_item
+Apr 10, 2011 6:18:38 PM org.geotools.maven.xmlcodegen.AbstractGenerator copy
+INFO: Copying /Users/jody/java/geotools/xml-po/src/main/resources/po.xsd to /Users/jody/java/geotools/xml-po/src/main/resources/org/geotools/po/bindings/po.xsd
+Apr 10, 2011 6:18:38 PM org.geotools.maven.xmlcodegen.BindingGenerator generate
+WARNING: Could not copy file /Users/jody/java/geotools/xml-po/src/main/resources/po.xsd
+
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESSFUL
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 3 seconds
+[INFO] Finished at: Sun Apr 10 18:18:38 EST 2011
+[INFO] Final Memory: 9M/81M
+[INFO] ------------------------------------------------------------------------
+</pre></div>
+</div>
+</li>
+</ol>
+<ol class="arabic" start="5">
+<li><p class="first">At this point, the bindings should have been generated under src/main/java:</p>
+<div class="highlight-python"><div class="highlight"><pre>[xml-po]% ls src/main/java/org/geotools/po/bindings
+
+ItemsBinding.java            POSchemaLocationResolver.java
+Items_itemBinding.java       po.xsd
+POBindingConfiguration.java  PurchaseOrderTypeBinding.java
+POConfiguration.java         SKUBinding.java
+PO.java                      USAddressBinding.java
+</pre></div>
+</div>
+</li>
+<li><p class="first">Some explanation of the generated files is in order:</p>
+<ul>
+<li><p class="first">Binding.java</p>
+<p>These are the bindings themselves, there should be one for every type in the purchase order schema</p>
+</li>
+<li><p class="first">PO.java</p>
+<p>An interface which contains constants for the qualified names of attributes, elements, and types defined in the schema</p>
+</li>
+<li><p class="first">POConfiguration</p>
+<p>The parser configuration used to prepare the xml parser for parsing an instance of the schema</p>
+</li>
+<li><p class="first">POSchemaLocationResolver.java</p>
+<p>Helper class used by the configuration to locate our schema file while parsing</p>
+</li>
+<li><p class="first">POBindingConfiguration.java</p>
+<p>Helper class used by the configuration to register the generated bindings with the parser</p>
+</li>
+</ul>
+</li>
+</ol>
+</div>
+<div class="section" id="implement-the-bindings">
+<h2>Implement the Bindings<a class="headerlink" href="#implement-the-bindings" title="Permalink to this headline">¶</a></h2>
+<p>The next step is to implement the bindings, which are at this point contain stub methods.</p>
+<ol class="arabic">
+<li><p class="first">At this time it will be useful to switch to your development environment. The following steps can be used by Eclipse users:</p>
+<p>Run the command:</p>
+<div class="highlight-python"><div class="highlight"><pre>[xml-po]% mvn eclipse:eclipse
+[INFO] Scanning for projects...
+[INFO] Searching repository for plugin with prefix: &#39;eclipse&#39;.
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Purchase Order XML Support
+[INFO]    task-segment: [eclipse:eclipse]
+[INFO] ------------------------------------------------------------------------
+[INFO] Preparing eclipse:eclipse
+[INFO] No goals needed for project - skipping
+[INFO] [eclipse:eclipse {execution: default-cli}]
+[INFO] Using Eclipse Workspace: null
+[INFO] Adding default classpath container: org.eclipse.jdt.launching.JRE_CONTAINER
+[INFO] Wrote settings to /Users/jody/java/geotools/xml-po/.settings/org.eclipse.jdt.core.prefs
+[INFO] Wrote Eclipse project for &quot;gt2-xml-po&quot; to /Users/jody/java/geotools/xml-po.
+[INFO]
+</pre></div>
+</div>
+</li>
+<li><p class="first">The command will produce a few warnings were it cannot find source or
+javadoc files but it will generate a .project and .classpath allowing you to
+import the project into eclipse.</p>
+<img alt="../../../_images/eclipseImport.png" src="../../../_images/eclipseImport.png" />
+</li>
+<li><p class="first">We will take a bottom approach to implementation of the bindings, that is starting with bindings for types that are referenced by other types.</p>
+</li>
+</ol>
+</div>
+<div class="section" id="sku-simple-type">
+<h2>SKU (Simple Type)<a class="headerlink" href="#sku-simple-type" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p class="first">We will start by implementing the binding for the SKU type in our schema:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:simpleType name=&quot;SKU&quot;&gt;
+  &lt;xsd:restriction base=&quot;xsd:string&quot;&gt;
+    &lt;xsd:pattern value=&quot;\d{3}-[A-Z]{2}&quot;/&gt;
+  &lt;/xsd:restriction&gt;
+&lt;/xsd:simpleType&gt;
+</pre></div>
+</div>
+</li>
+<li><p class="first">From the schema definition, we see that the SKU type is a Simple Type,
+which extends xsd:string. In the realm of xml schema, the following diagram
+depicts the inheritance hierachy of the SKU type:</p>
+<img alt="../../../_images/skuHierachy.png" src="../../../_images/skuHierachy.png" />
+</li>
+<li><p class="first">The parser takes this hierachy into account when executing bindings. The
+bindings are executed in order from the top down. The output of each binding
+is passed on to the next binding in the chain. The following diagram depicts
+the binding execution chain:</p>
+<img alt="../../../_images/skuExecutionChain.png" src="../../../_images/skuExecutionChain.png" />
+</li>
+<li><p class="first">Implement the parse method</p>
+<p>So with that explanation, we can implement the SKUBinding.parse method:</p>
+<div class="highlight-python"><div class="highlight"><pre>Object parse( InstanceComponent instance, Object value ) {
+   return null;
+
+}
+</pre></div>
+</div>
+<p>The value parameter is the parsed value that has been passed down from the
+parent ( xsd:string ), which is an instance of java.lang.String, so we can
+cast accordingly.:</p>
+<div class="highlight-python"><div class="highlight"><pre>Object parse( InstanceComponent instance, Object value ) {
+   String sku = (String) value;
+
+   return sku;
+}
+</pre></div>
+</div>
+<p>At this point we could call it the end of the day, but the type definition
+for SKU constrains the value space with a pattern facet. So could also add a
+check for the pattern match:</p>
+<div class="highlight-python"><div class="highlight"><pre>Object parse( InstanceComponent instance, Object value ) {
+   String sku = (String) value;
+
+   if ( !sku.matches( &quot;\\d{3}-[A-Z]{2}&quot; ) ) {
+        throw new IllegalArgumentException( &quot;Illegal sku format: &quot; + sku );
+   }
+   return sku;
+}
+</pre></div>
+</div>
+</li>
+<li><p class="first">Implement the getType method</p>
+<p>The last thing to do in implementing the SKU binding is to declare the type
+of the object that it returns. From the implmentation parse it is clear that
+this is java.lang.String.:</p>
+<div class="highlight-python"><div class="highlight"><pre>Class getType() [
+  return String.class;
+}
+</pre></div>
+</div>
+</li>
+<li><p class="first">You can download completed <a class="reference download internal" href="../../../_downloads/SKUBinding.java"><code class="xref download docutils literal"><span class="pre">SKUBinding.java</span></code></a> .</p>
+</li>
+</ol>
+</div>
+<div class="section" id="usaddress-complex-type">
+<h2>USAddress (Complex Type)<a class="headerlink" href="#usaddress-complex-type" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p class="first">Next we will move on to implement a binding for the ComplexType USAddress:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:complexType name=&quot;USAddress&quot;&gt;
+  &lt;xsd:sequence&gt;
+    &lt;xsd:element name=&quot;name&quot;   type=&quot;xsd:string&quot;/&gt;
+    &lt;xsd:element name=&quot;street&quot; type=&quot;xsd:string&quot;/&gt;
+    &lt;xsd:element name=&quot;city&quot;   type=&quot;xsd:string&quot;/&gt;
+    &lt;xsd:element name=&quot;state&quot;  type=&quot;xsd:string&quot;/&gt;
+    &lt;xsd:element name=&quot;zip&quot;    type=&quot;xsd:decimal&quot;/&gt;
+  &lt;/xsd:sequence&gt;
+  &lt;xsd:attribute name=&quot;country&quot; type=&quot;xsd:NMTOKEN&quot; fixed=&quot;US&quot;/&gt;
+&lt;/xsd:complexType&gt;
+</pre></div>
+</div>
+</li>
+<li><p class="first">Complex bindings follow the same execution chain as simple types in which a
+parsed value is passed down the chain into the parse method. The parse
+method for a complex binding is a little different then the parse method for
+a simple binding:</p>
+<div class="highlight-python"><div class="highlight"><pre>Object parse(ElementInstance instance, Node node, Object value) throws Exception {
+  //TODO: implement
+  return null;
+}
+</pre></div>
+</div>
+</li>
+<li><p class="first">The difference is the addition of the node parameter. A Node instance
+contains the parsed values of all elements and attributes contained within
+the complex type. The node api is map like in which element and attribute
+values can be looked up by name:</p>
+<div class="highlight-python"><div class="highlight"><pre>interface Node {
+     Object getChildValue( String name );
+     Object getAttributeValue( String name ):
+}
+</pre></div>
+</div>
+</li>
+</ol>
+<blockquote>
+<div>So in implementing the binding for USAddress, we will make use of the node to
+obtain the properties of the address.</div></blockquote>
+<ol class="arabic" start="4">
+<li><p class="first">Implement the parse method</p>
+<p>The first step is to create a new instance of USAddress. To do so we make
+use of the org.geotools.po.ObjectFactory. If you remember eariler when we
+configured the binding generator, we specified that each binding should take
+one of these factories in its constructor. Well know we will put it to use.:</p>
+<div class="highlight-python"><div class="highlight"><pre>Object parse(ElementInstance instance, Node node, Object value) throws Exception {
+  USAddress address = factory.createUSAddress();
+  return address;
+}
+</pre></div>
+</div>
+</li>
+<li><p class="first">Next, we must get the values for each of the elements and attributes defined
+in the xml schema type for USAddress from the node parameter:</p>
+<div class="highlight-python"><div class="highlight"><pre>Object parse(ElementInstance instance, Node node, Object value) throws Exception {
+   USAddress address = factory.createUSAddress();
+
+   //elements
+   address.setName( (String) node.getChildValue( &quot;name&quot; ) );
+   address.setStreet( (String) node.getChildValue( &quot;street&quot; ) );
+   address.setCity( (String) node.getChildValue( &quot;city&quot; ) );
+   address.setState( (String) node.getChildValue( &quot;state&quot; ) );
+   address.setZip( (BigDecimal) node.getChildValue( &quot;zip&quot; ) );
+
+   //attribute
+   address.setCountry( (String) node.getAttributeValue( &quot;country&quot; ) );
+
+   return address;
+}
+</pre></div>
+</div>
+</li>
+<li><p class="first">Implement the getType method</p>
+<p>Same as with simple types above, complex bindings must declare the type of
+object they create. An so:</p>
+<div class="highlight-python"><div class="highlight"><pre>Class getType() {
+   return USAddress.class;
+}
+</pre></div>
+</div>
+</li>
+<li><p class="first">You can download a complete <a class="reference download internal" href="../../../_downloads/USAddressBinding.java"><code class="xref download docutils literal"><span class="pre">USAddressBinding.java</span></code></a></p>
+</li>
+</ol>
+</div>
+<div class="section" id="item-anonymous-complex-type">
+<h2>Item ( Anonymous Complex Type )<a class="headerlink" href="#item-anonymous-complex-type" title="Permalink to this headline">¶</a></h2>
+<p>Moving along we encounter the Items type. The schema for the type is relatively straight forward, it is an collection of item elements:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;xsd:complexType name=&quot;Items&quot;&gt;
+  &lt;xsd:sequence&gt;
+    &lt;xsd:element name=&quot;item&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;&gt;
+      &lt;xsd:complexType&gt;
+        &lt;xsd:sequence&gt;
+          &lt;xsd:element name=&quot;productName&quot; type=&quot;xsd:string&quot;/&gt;
+          &lt;xsd:element name=&quot;quantity&quot;&gt;
+            &lt;xsd:simpleType&gt;
+              &lt;xsd:restriction base=&quot;xsd:positiveInteger&quot;&gt;
+                &lt;xsd:maxExclusive value=&quot;100&quot;/&gt;
+              &lt;/xsd:restriction&gt;
+            &lt;/xsd:simpleType&gt;
+          &lt;/xsd:element&gt;
+          &lt;xsd:element name=&quot;USPrice&quot;  type=&quot;xsd:decimal&quot;/&gt;
+          &lt;xsd:element ref=&quot;comment&quot;   minOccurs=&quot;0&quot;/&gt;
+          &lt;xsd:element name=&quot;shipDate&quot; type=&quot;xsd:date&quot; minOccurs=&quot;0&quot;/&gt;
+        &lt;/xsd:sequence&gt;
+        &lt;xsd:attribute name=&quot;partNum&quot; type=&quot;SKU&quot; use=&quot;required&quot;/&gt;
+      &lt;/xsd:complexType&gt;
+    &lt;/xsd:element&gt;
+  &lt;/xsd:sequence&gt;
+&lt;/xsd:complexType&gt;
+</pre></div>
+</div>
+<p>However, the element &#8220;item&#8221; itself provides a small wrinkle: it has an Anonymous Inline Type Definition.</p>
+<ol class="arabic">
+<li><p class="first">The convention used for the binding append the element name to the name of the parent.</p>
+<p>In this case &#8220;Items_item&#8221;.:</p>
+<div class="highlight-python"><div class="highlight"><pre>Class getType() {
+        return Items.Item.class;
+}
+
+Object parse(ElementInstance instance, Node node, Object value) throws Exception {
+
+      Items.Item item = factory.createItemsItem();
+
+      //elements
+      item.setProductName( (String) node.getChildValue( &quot;productName&quot;) );
+      item.setQuantity( (BigInteger) node.getChildValue( &quot;quantity&quot; ) );
+      item.setUSPrice( (BigDecimal) node.getChildValue( &quot;USPrice&quot; ) );item.setComment( (String) node.getChildValue( &quot;comment&quot; ) );
+
+      //attributes
+      item.setPartNum( (String) node.getAttributeValue( &quot;partNum&quot; ) );
+
+      return item;
+}
+</pre></div>
+</div>
+</li>
+<li><p class="first">You can download a complete <a class="reference download internal" href="../../../_downloads/Items_itemBinding.java"><code class="xref download docutils literal"><span class="pre">Items_itemBinding.java</span></code></a></p>
+</li>
+</ol>
+</div>
+<div class="section" id="items-another-complex-type">
+<h2>Items ( Another Complex Type )<a class="headerlink" href="#items-another-complex-type" title="Permalink to this headline">¶</a></h2>
+<p>Items is just a container for multiple Item elements.</p>
+<ol class="arabic">
+<li><p class="first">In implementing we make use of the getChildValues() method of Node, which returns a collection of child elements corresponding to a particular name.:</p>
+<div class="highlight-python"><div class="highlight"><pre>Class getType() {
+       return Items.class;
+}
+
+Object parse(ElementInstance instance, Node node, Object value) throws Exception {
+
+      //create the items collection
+      Items items = factory.createItems();
+
+      //add each item
+      items.getItem().addAll( node.getChildValues( &quot;item&quot; ) );
+
+      return items;
+}
+</pre></div>
+</div>
+</li>
+<li><p class="first">You can download a complete <a class="reference download internal" href="../../../_downloads/ItemsBinding.java"><code class="xref download docutils literal"><span class="pre">ItemsBinding.java</span></code></a></p>
+</li>
+</ol>
+</div>
+<div class="section" id="purchaseordertype-the-last-one">
+<h2>PurchaseOrderType( The Last One )<a class="headerlink" href="#purchaseordertype-the-last-one" title="Permalink to this headline">¶</a></h2>
+<p>Onto the final binding to implement PurchaseOrderType.</p>
+<ol class="arabic">
+<li><p class="first">Compared to the binding for Items it is simple:</p>
+<div class="highlight-python"><div class="highlight"><pre>Class getType() {
+      return PurchaseOrderType.class;
+}
+
+Object parse(ElementInstance instance, Node node, Object value)  throws Exception {
+
+      PurchaseOrderType purchaseOrder = factory.createPurchaseOrderType();
+
+      purchaseOrder.setShipTo( (USAddress) node.getChildValue( &quot;shipTo&quot; ) );
+      purchaseOrder.setBillTo( (USAddress) node.getChildValue( &quot;billTo&quot; ) );
+      purchaseOrder.setComment( (String) node.getChildValue( &quot;comment&quot; ) );
+      purchaseOrder.setItems( (Items) node.getChildValue( &quot;items&quot;) );
+
+      return purchaseOrder;
+}
+</pre></div>
+</div>
+</li>
+<li><p class="first">You can download a complete <a class="reference download internal" href="../../../_downloads/PurchaseOrderTypeBinding.java"><code class="xref download docutils literal"><span class="pre">PurchaseOrderTypeBinding.java</span></code></a></p>
+</li>
+</ol>
+<p>All Done!! ... for now.</p>
+<p>And that that for implementing the bindings. In the continuing sections we will focus on configuring the parser in order to hook up the bindings implemented in this section.</p>
+</div>
+<div class="section" id="configure-the-binding-context">
+<h2>Configure the Binding Context<a class="headerlink" href="#configure-the-binding-context" title="Permalink to this headline">¶</a></h2>
+<p>You should recall above our discussion about injecting all of our bindings with an instance of org.geotools.po.ObjectFactory. But where does this come from? The answer is the Binding Context. The Binding Context is a container ( PicoContainer ) in which all the bindings are created in. The container uses Dependency Injection to satisfy binding dependencies. Therefore anytime a binding requires a factory or some other class to do work, it just has to declare one in its constructor.</p>
+<p>But, these dependencies have to be placed in the container at some point. This is done by the Configuration class. So in our case we would like to place an instance of org.geotools.po.ObjectFactory in the context. We do this by implementing the configureContext method in POConfiguration.:</p>
+<div class="highlight-python"><div class="highlight"><pre>class POConfiguration {
+     ...
+
+     protected void configureContext(MutablePicoContainer context) {
+        context.registerComponentImplementation( ObjectFactory.class );
+     }
+}
+</pre></div>
+</div>
+<p>The complete implementation of POConfiguration can be found here.</p>
+</div>
+<div class="section" id="test-the-bindings">
+<h2>Test the Bindings<a class="headerlink" href="#test-the-bindings" title="Permalink to this headline">¶</a></h2>
+<p>Now that the bindings are implemented, it is time to do some testing.</p>
+<ol class="arabic">
+<li><p class="first">Add the junit dependency to the pom:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;dependency&gt;
+    &lt;groupId&gt;junit&lt;/groupId&gt;
+    &lt;artifactId&gt;junit&lt;/artifactId&gt;
+    &lt;version&gt;3.8.1&lt;/version&gt;
+    &lt;scope&gt;test&lt;/scope&gt;
+&lt;/dependency&gt;
+</pre></div>
+</div>
+</li>
+<li><p class="first">Execute the following command once again: ( If you are using Eclipse ):</p>
+<div class="highlight-python"><div class="highlight"><pre>[xml-po]% mvn eclipse:eclipse
+</pre></div>
+</div>
+</li>
+<li><p class="first">Switch to your ide and create a new test class: POTest ( remember that test cases live under src/test/java in the project ):</p>
+<div class="highlight-python"><div class="highlight"><pre>class POTest extends TestCase {
+
+}
+</pre></div>
+</div>
+</li>
+<li><p class="first">Next, create a test method called test, which will build up a dom tree for an USAddress element.:</p>
+<div class="highlight-python"><div class="highlight"><pre>public void test() throws Exception {
+
+  InputStream input = getClass().getResourceAsStream( &quot;po.xml&quot; );
+  POConfiguration configuration = new POConfiguration();
+
+  Parser parser = new Parser( configuration );
+  PurchaseOrderType po = (PurchaseOrderType) parser.parse( input );
+
+  assertNotNull( po );
+}
+</pre></div>
+</div>
+</li>
+<li><p class="first">The complete implementation of POTest can be found here.</p>
+</li>
+<li><p class="first">To run the test we will create a test resource directory:</p>
+<div class="highlight-python"><div class="highlight"><pre>[xml-po]% mkdir -p src/test/resources/org/geotools/po
+</pre></div>
+</div>
+</li>
+<li><p class="first">Copy po.xml into the new directory</p>
+</li>
+<li><p class="first">Run the test from your ide</p>
+</li>
+</ol>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="../geometry.html" title="Geometry"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="code.html" title="Code Generation"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../../index.html" >Library</a> &raquo;</li>
+          <li><a href="../index.html" >XML</a> &raquo;</li>
+          <li><a href="index.html" >Internals</a> &raquo;</li>
+        <li><a href="#">Purchase Order Tutorial</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

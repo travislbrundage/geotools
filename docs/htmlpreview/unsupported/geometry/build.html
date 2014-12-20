@@ -1,0 +1,593 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Build Geometry &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../index.html" />
+    <link rel="up" title="Geometry Plugin" href="index.html" />
+    <link rel="next" title="Operations" href="operation.html" />
+    <link rel="prev" title="Geometry Plugin" href="index.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Unsupported</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Geometry Plugin</a> &raquo;</li>
+        <li><a href="#">Build Geometry</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Build Geometry</a><ul>
+<li><a class="reference internal" href="#factories">Factories</a><ul>
+<li><a class="reference internal" href="#geometrybuilder">GeometryBuilder</a></li>
+<li><a class="reference internal" href="#using-a-container">Using a Container</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#creating-a-point">Creating a Point</a><ul>
+<li><a class="reference internal" href="#point">Point</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#creating-a-curve">Creating a Curve</a><ul>
+<li><a class="reference internal" href="#curve">Curve</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#creating-a-surface">Creating a Surface</a><ul>
+<li><a class="reference internal" href="#surface">Surface</a></li>
+<li><a class="reference internal" href="#rendering-a-surface">Rendering a Surface</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#creating-envelope">Creating Envelope</a><ul>
+<li><a class="reference internal" href="#envelope">Envelope</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Geometry Plugin</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="operation.html"
+                        title="next chapter">Operations</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/unsupported/geometry/build.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="build-geometry">
+<h1>Build Geometry<a class="headerlink" href="#build-geometry" title="Permalink to this headline">¶</a></h1>
+<p>Factories are classes used to create other objects. This module provides geometry factories allowing you to make a range of spatial objects.</p>
+<div class="section" id="factories">
+<h2>Factories<a class="headerlink" href="#factories" title="Permalink to this headline">¶</a></h2>
+<p>The gt-opengis module several factories for working with ISO 19107 constructs:</p>
+<ul>
+<li><p class="first">PositionFactory (implemented by PositionFactoryImpl)</p>
+<p>Requires: crs, precision</p>
+<p>Creates PointArray and DirectPosition</p>
+</li>
+<li><p class="first">GeometryFactory (implemented by GeometryFactoryImpl)
+crs, PositionFactory</p>
+<p>Create arc, B-spline, envelope, geodesic, line segment, line string, polygon, tin, triangle</p>
+</li>
+<li><p class="first">PrimitiveFactory (implemented by PrimitiveFactoryImpl)</p>
+<p>Requires: crs, PositionFactory</p>
+<p>Creates curve, point, surface</p>
+</li>
+<li><p class="first">ComplexFactory (implemented by ComplexFactoryImpl)</p>
+<p>Requires: crs</p>
+<p>Creates composite curve, composite point, composite surface</p>
+</li>
+<li><p class="first">AggregateFactory (implemented by AggregateFactoryImpl)</p>
+<p>Requires: crs</p>
+<p>Creates multi point, multi curve, multi primitive, multi surface</p>
+</li>
+</ul>
+<p>You can create the factories by hand; a technique that is not recommended, but does illustrate how the parts fit together.</p>
+<blockquote>
+<div>PositionFactory posF = new PositionFactoryImpl(DefaultGeographicCRS.WGS84, new PrecisionModel());
+PrimitiveFactory primF = new PrimitiveFactoryImpl(DefaultGeographicCRS.WGS84, posF);</div></blockquote>
+<div class="section" id="geometrybuilder">
+<h3>GeometryBuilder<a class="headerlink" href="#geometrybuilder" title="Permalink to this headline">¶</a></h3>
+<p>The GeometryBuilder class is the preferred way to manage, create and use factories.</p>
+<p>This allows you to use only the factory gt-opengis interfaces and not worry about the implementations. The GeometryBuilder is found in the referencing package at org.geotools.geometry.GeometryBuilder. The following example shows how you can use the builder to create and manage factories:</p>
+<div class="highlight-python"><div class="highlight"><pre>GeometryBuilder builder = new GeometryBuilder(DefaultGeographicCRS.WGS84);
+PositionFactory posF = builder.getPositionFactory();
+PrimitiveFactory primFF = builder.getPrimitiveFactory();
+GeometryFactory geomF = builder.getGeometryFactory();
+</pre></div>
+</div>
+<p>When you ask for a factory, if the builder has a matching cached factory, it will return that. Otherwise the builder will create and return a new factory, caching it for later use. You can update the builder&#8217;s CRS, like in the following example, and get a new factory using the new CRS.:</p>
+<div class="highlight-python"><div class="highlight"><pre>builder.setCoordianteReferenceSystem(DefaultGeographicCRS.WGS84_3D);
+PositionFactory posF3D = builder.getPositionFactory();
+</pre></div>
+</div>
+</div>
+<div class="section" id="using-a-container">
+<h3>Using a Container<a class="headerlink" href="#using-a-container" title="Permalink to this headline">¶</a></h3>
+<p>Another way to manage geometry factories is through the use of a container. This requires you to register the specific factory implementations you want to use.</p>
+<p>Below we create a PicoContainer with all the required factories registered; we will then use the container to get the factories we will need and the container will figure out all the dependencies for us.</p>
+<p>The call to create the PicoContainer will have to call into the org.picocontainer PicoContainer package.:</p>
+<div class="highlight-python"><div class="highlight"><pre>DefaultPicoContainer cont = new DefaultPicoContainer();
+
+// Teach Container about Factory Implementations we want to use
+cont.registerComponentImplementation(PositionFactoryImpl.class);
+cont.registerComponentImplementation(AggregateFactoryImpl.class);
+cont.registerComponentImplementation(ComplexFactoryImpl.class);
+cont.registerComponentImplementation(GeometryFactoryImpl.class);
+cont.registerComponentImplementation(PrimitiveFactoryImpl.class);
+
+// Teach Container about other dependencies needed
+cont.registerComponentInstance( DefaultGeographicCRS.WGS84);
+cont.registerComponentInstance( new PrecisionModel());
+</pre></div>
+</div>
+<p>We made a PicoContainer, registered the factories we were going to use and then added two qualifiers. We use the static CoordinateReferencingSystem (CRS) object WGS84 to tell the container we want to use the CRS of the GPS system. We then tell the container we want to use the default precision model.</p>
+<p>The general idea is to create a different container for each CRS and/or precision model you want to use. We could therefore put the above code in a method and pass as parameters the CRS and PrecisionModel.</p>
+<p>Using the container we just made we can get some factories but we get the interface back rather than the implementation.:</p>
+<div class="highlight-python"><div class="highlight"><pre>PositionFactory posF = cont.getComponentInstanceOfType( PositionFactory.class );
+PrimitiveFactory primF = cont.getComponentInstanceOfType( PrimitiveFactory.class );
+GeometryFactory geomF = cont.getComponentInstanceOfType( GeometryFactory.class );
+</pre></div>
+</div>
+<p>Here we asked the container to give us the factories of the different types we would need.</p>
+</div>
+</div>
+<div class="section" id="creating-a-point">
+<h2>Creating a Point<a class="headerlink" href="#creating-a-point" title="Permalink to this headline">¶</a></h2>
+<p>Points are the building blocks for most other geometries. The following sections explain how to manipulate Points:</p>
+<p>There are a few ways you can go about creating a point. GeometryBuilder has many utility methods for creating geometries, so you don&#8217;t have to worry about factories. But you can also use factories directly, or you can also use a WKT parser for creating points.</p>
+<ul>
+<li><p class="first">There are several createPoint methods provided as part of GeometryBuilder.
+Here is an example using one of them:</p>
+<div class="highlight-python"><div class="highlight"><pre>GeometryBuilder builder = new GeometryBuilder( DefaultGeographicCRS.WGS84 );
+Point point = builder.createPoint( 48.44, -123.37 );
+</pre></div>
+</div>
+</li>
+<li><p class="first">Using Factories</p>
+<p>In some environments you are restricted to just using formal gt-opengis interfaces, here is an example of using the PositionFactory and PrimitiveFactory as is:</p>
+<div class="highlight-python"><div class="highlight"><pre>Hints hints = new Hints( Hints.CRS, DefaultGeographicCRS.WGS84 );
+PositionFactory positionFactory = GeometryFactoryFinder.getPositionFactory( hints );
+PrimitiveFactory primitiveFactory = GeometryFactoryFinder.getPrimitiveFactory( hints );
+
+DirectPosition here = positionFactory.createDirectPosition( new double[]{48.44, -123.37} );
+
+Point point1 = primitiveFactory.createPoint( here );
+</pre></div>
+</div>
+</li>
+<li><p class="first">PositionFactory has a helper method allowing you to save one step:</p>
+<div class="highlight-python"><div class="highlight"><pre>Hints hints = new Hints( Hints.CRS, DefaultGeographicCRS.WGS84 );
+PrimitiveFactory primitiveFactory = GeometryFactoryFinder.getPrimitiveFactory( hints );
+
+Point point2 = primitiveFactory.createPoint(  new double[]{48.44, -123.37} );
+
+System.out.println( point2 );
+</pre></div>
+</div>
+</li>
+<li><p class="first">Using WKT</p>
+<p>You can use the WKTParser to create a point from a well known text:</p>
+<div class="highlight-python"><div class="highlight"><pre>WKTParser parser = new WKTParser( DefaultGeographicCRS.WGS84 );
+Point point = (Point) parser.parse(&quot;POINT( 48.44 -123.37)&quot;);
+</pre></div>
+</div>
+<p>You can also create the WKTParser to use a specific set of factories:</p>
+<div class="highlight-python"><div class="highlight"><pre>Hints hints = new Hints( Hints.CRS, DefaultGeographicCRS.WGS84 );
+
+PositionFactory positionFactory = GeometryFactoryFinder.getPositionFactory(hints);
+GeometryFactory geometryFactory = GeometryFactoryFinder.getGeometryFactory(hints);
+PrimitiveFactory primitiveFactory = GeometryFactoryFinder.getPrimitiveFactory(hints);
+AggregateFactory aggregateFactory = GeometryFactoryFinder.getAggregateFactory(hints);
+
+WKTParser parser = new WKTParser( geometryFactory, primitiveFactory, positionFactory, aggregateFactory );
+
+Point point = (Point) parser.parse(&quot;POINT( 48.44 -123.37)&quot;);
+</pre></div>
+</div>
+</li>
+</ul>
+<div class="section" id="point">
+<h3>Point<a class="headerlink" href="#point" title="Permalink to this headline">¶</a></h3>
+<p>Sometimes it is useful to take apart a geometry and get the pieces that are used to build it. The following shows how you can get the ordinates of a point:</p>
+<div class="highlight-python"><div class="highlight"><pre>double[] ords = point.getCentroid().getCoordinates();
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="creating-a-curve">
+<h2>Creating a Curve<a class="headerlink" href="#creating-a-curve" title="Permalink to this headline">¶</a></h2>
+<p>Curves, or line objects, are usually created from a series of CurveSegments. Curves can be created directly from the GeometryBuilder, or if you only want to use gt-opengis interfaces you can use factories:</p>
+<p>The following sections explain how to manipulate Curves.</p>
+<ul>
+<li><p class="first">The following example shows how to create a CurveSegment and how to use it
+to build a Curve with the GeometryBuilder.:</p>
+<div class="highlight-python"><div class="highlight"><pre>// create directpositions
+DirectPosition start = builder.createDirectPosition(new double[]{ 48.44, -123.37 });
+DirectPosition middle = builder.createDirectPosition(new double[]{ 47, -122 });
+DirectPosition end = builder.createDirectPosition(new double[]{ 46.5, -121.5 });
+
+// add directpositions to a list
+ArrayList&lt;Position&gt; positions = new ArrayList&lt;Position&gt;();
+positions .add(start);
+positions.add(middle);
+positions.add(end);
+
+// create linestring from directpositions
+LineString line = builder.createLineString(positions);
+
+// create curvesegments from line
+ArrayList&lt;CurveSegment&gt; segs = new ArrayList&lt;CurveSegment&gt;();
+segs.add(line);
+
+// create curve
+Curve curve = builder.createCurve(segs);
+</pre></div>
+</div>
+</li>
+<li><p class="first">Using Factories</p>
+<p>Building a curve from factories is very similar to the process of using the
+GeometryBuilder, but it lets you only use gt-opengis interfaces:</p>
+<blockquote>
+<div><p>// create directpositions
+DirectPosition start = posF.createDirectPosition(new double[]{ 48.44, -123.37 });
+DirectPosition middle = posF.createDirectPosition(new double[]{ 47, -122 });
+DirectPosition end = posF.createDirectPosition(new double[]{ 46.5, -121.5 });</p>
+<p>// add directpositions to a list
+ArrayList&lt;Position&gt; positions = new ArrayList&lt;Position&gt;();
+positions .add(start);
+positions.add(middle);
+positions.add(end);</p>
+<p>// create linestring from directpositions
+LineString line = geomF.createLineString(positions);</p>
+<p>// create curvesegments from line
+ArrayList&lt;CurveSegment&gt; segs = new ArrayList&lt;CurveSegment&gt;();
+segs.add(line);</p>
+<p>// create curve
+Curve curve = primF.createCurve(segs);</p>
+</div></blockquote>
+</li>
+</ul>
+<div class="section" id="curve">
+<h3>Curve<a class="headerlink" href="#curve" title="Permalink to this headline">¶</a></h3>
+<p>Taking apart a Curve to get a list of points may not always return what you expect. For instance in a spline curve, the curve segment is given as a weighted vector sum of the control points. These control points are used to control its shape, and are not always on the curve itself. It can still be useful to obtain these control points, and the following shows how you can do that:</p>
+<div class="highlight-python"><div class="highlight"><pre>List&lt;CurveSegment&gt; segs = curve.getSegments();
+Iterator&lt;CurveSegment&gt; iter = segs.iterator();
+PointArray samplePoints = null;
+while (iter.hasNext()) {
+    if (samplePoints == null) {
+        samplePoints = iter.next().getSamplePoints();
+    }
+    else {
+        samplePoints.addAll(iter.next().getSamplePoints());
+    }
+}
+</pre></div>
+</div>
+<p>GeoTools Users Guide : 04 Working with Surface
+This page last changed on Sep 05, 2007 by gdavis.
+The following sections explain how to manipulate Surfaces:</p>
+</div>
+</div>
+<div class="section" id="creating-a-surface">
+<h2>Creating a Surface<a class="headerlink" href="#creating-a-surface" title="Permalink to this headline">¶</a></h2>
+<p>As with the other geometries, Surfaces are built up from a series of other geometry pieces. Surfaces can be created directly from the GeometryBuilder, or if you only want to use GeoAPI interfaces you can also use factories:</p>
+<ul>
+<li><p class="first">Surfaces can be built from a list of SurfacePatches or from a
+SurfaceBoundary.</p>
+<p>The following example shows how to create a Surface from a SurfaceBoundary
+using the GeometryBuilder.:</p>
+<div class="highlight-python"><div class="highlight"><pre>GeometryBuilder builder = new GeometryBuilder( DefaultGeographicCRS.WGS84 );
+
+
+// create a list of connected positions
+List&lt;Position&gt; dps = new ArrayList&lt;Position&gt;();
+dps.add(builder.createDirectPosition( new double[] {20, 10} ));
+dps.add(builder.createDirectPosition( new double[] {40, 10} ));
+dps.add(builder.createDirectPosition( new double[] {50, 40} ));
+dps.add(builder.createDirectPosition( new double[] {30, 50} ));
+dps.add(builder.createDirectPosition( new double[] {10, 30} ));
+dps.add(builder.createDirectPosition( new double[] {20, 10} ));
+
+// create linestring from directpositions
+LineString line = builder.createLineString(dps);
+
+// create curvesegments from line
+ArrayList&lt;CurveSegment&gt; segs = new ArrayList&lt;CurveSegment&gt;();
+segs.add(line);
+
+// Create list of OrientableCurves that make up the surface
+OrientableCurve curve = builder.createCurve(segs);
+List&lt;OrientableCurve&gt; orientableCurves = new ArrayList&lt;OrientableCurve&gt;();
+orientableCurves.add(curve);
+
+// create the interior ring and a list of empty interior rings (holes)
+Ring extRing = builder.createRing(orientableCurves);
+List&lt;Ring&gt; intRings = new ArrayList&lt;Ring&gt;();
+
+// create the surfaceboundary from the rings
+SurfaceBoundary sb = builder.createSurfaceBoundary(extRing, intRings);
+
+
+// create the surface
+Surface surface = builder.createSurface(sb);
+</pre></div>
+</div>
+</li>
+<li><p class="first">Using Factories</p>
+<p>Building a surface from factories is very similar to the process of using
+the GeometryBuilder, but it lets you only use gt-opengis interfaces:</p>
+<blockquote>
+<div><p>// create a list of connected positions
+List&lt;Position&gt; dps = new ArrayList&lt;Position&gt;();
+dps.add(posF.createDirectPosition( new double[] {20, 10} ));
+dps.add(posF.createDirectPosition( new double[] {40, 10} ));
+dps.add(posF.createDirectPosition( new double[] {50, 40} ));
+dps.add(posF.createDirectPosition( new double[] {30, 50} ));
+dps.add(posF.createDirectPosition( new double[] {10, 30} ));
+dps.add(posF.createDirectPosition( new double[] {20, 10} ));</p>
+<p>// create linestring from directpositions
+LineString line = geomF.createLineString(dps);</p>
+<p>// create curvesegments from line
+ArrayList&lt;CurveSegment&gt; segs = new ArrayList&lt;CurveSegment&gt;();
+segs.add(line);</p>
+<p>// Create list of OrientableCurves that make up the surface
+OrientableCurve curve = primF.createCurve(segs);
+List&lt;OrientableCurve&gt; orientableCurves = new ArrayList&lt;OrientableCurve&gt;();
+orientableCurves.add(curve);</p>
+<p>// create the interior ring and a list of empty interior rings (holes)
+Ring extRing = primF.createRing(orientableCurves);
+List&lt;Ring&gt; intRings = new ArrayList&lt;Ring&gt;();</p>
+<p>// create the surfaceboundary from the rings
+SurfaceBoundary sb = primF.createSurfaceBoundary(extRing, intRings);</p>
+<p>// create the surface
+Surface surface = primF.createSurface(sb);</p>
+</div></blockquote>
+</li>
+</ul>
+<div class="section" id="surface">
+<h3>Surface<a class="headerlink" href="#surface" title="Permalink to this headline">¶</a></h3>
+<p>The list of points that build up a Surface are not a good representation
+of that geometry. Surfaces can have holes in them, and a simple list of
+points will not tell you if they belong to a hole or to the exterior of
+the shape.</p>
+<p>However, you can obtain the Rings for the exterior and interior (holes)
+of the Surface. If desired, you can also get the points that make those
+Rings:</p>
+<div class="highlight-python"><div class="highlight"><pre>SurfaceBoundary sb = (SurfaceBoundary) surface2.getBoundary();
+Ring exterior = sb.getExterior();
+List&lt;Ring&gt; interiors = sb.getInteriors();
+Collection&lt;? extends Primitive&gt; extCurve = exterior.getElements();
+Iterator&lt;? extends Primitive&gt; iter = extCurve.iterator();
+PointArray samplePoints = null;
+while (iter.hasNext()) {
+    Curve curve = (Curve) iter.next();
+    List&lt;CurveSegment&gt; segs = curve.getSegments();
+    Iterator&lt;CurveSegment&gt; curveIter = segs.iterator();
+    while (curveIter.hasNext()) {
+        if (samplePoints == null) {
+            samplePoints = curveIter.next().getSamplePoints();
+        }
+        else {
+            samplePoints.addAll(curveIter.next().getSamplePoints());
+        }
+    }
+}
+</pre></div>
+</div>
+</div>
+<div class="section" id="rendering-a-surface">
+<h3>Rendering a Surface<a class="headerlink" href="#rendering-a-surface" title="Permalink to this headline">¶</a></h3>
+<p>The following are two quick examples of how you can render a Surface (Polygon):</p>
+<ul>
+<li><p class="first">Here is a quick example of rendering a Polygon using Java for/each syntax:</p>
+<div class="highlight-python"><div class="highlight"><pre>final int X = 0; // easting axis for surface.getCoordinateReferenceSystem()
+final int Y = 1; // westing axis for surface.getCoordinateReferenceSystem()
+for( SurfacePatch patch : surface.getPatches()){
+    SurfaceBoundary boundary = patch.getBoundary();
+    Ring ring = boundary.getExterior();
+    for( Primitive primitive : ring.getElements() ){
+        if( primitive instanceof Curve ){
+            Curve curve = (Curve) primitive;
+            for( CurveSegment segment : curve.getSegments() ){
+                if( segment instanceof LineString){
+                    LineString lines = (LineString) segment;
+                    for( LineSegment line : lines.asLineSegments() ){
+                        DirectPosition point1 = line.getStartPoint();
+                        DirectPosition point2 = line.getEndPoint();
+                        g.drawLine( point1.getOrdinate(X), point1.getOrdinate(Y),
+                                    point2.getOrdinate(X), point2.getOrdinate(Y) );
+                    }
+                }
+                else if (segment instanceof LineSegment){
+                    LineSegment line = (LineSegment) segment;
+                    DirectPosition point1 = line.getStartPoint();
+                    DirectPosition point2 = line.getEndPoint();
+                    g.drawLine( point1.getOrdinate(X), point1.getOrdinate(Y),
+                                point2.getOrdinate(X), point2.getOrdinate(Y) );
+                }
+            }
+        }
+    }
+}
+
+Please note:
+
+* Review your CoordianteReferenceSystem to figure out which axis is to use for
+  X and Y
+* Surface is a deep data structure, better suited to recursion or a visitor
+</pre></div>
+</div>
+</li>
+<li><p class="first">Using Recursive Code</p>
+<p>You can produce less code duplication using recursion to navigate through your Surface:</p>
+<div class="highlight-python"><div class="highlight"><pre>protected void paint( Graphics2D g, Surface surface  ) {
+    for( SurfacePatch patch : surface.getPatches()){
+        SurfaceBoundary boundary = patch.getBoundary();
+        Ring ring = boundary.getExterior();
+        paint( g, ring );
+    }
+}
+protected void paint( Graphics2D g, Ring ring ) {
+    for( Primitive primitive : ring.getElements() ){
+        if( primitive instanceof Curve ){
+            Curve curve = (Curve) primitive;
+            paint( g, curve );
+        }
+    }
+}
+protected void paint(Graphics2D g, Curve curve ) {
+    for( CurveSegment segment : curve.getSegments() ){
+        if( segment instanceof LineString){
+            LineString lines = (LineString) segment;
+            for( LineSegment line : lines.asLineSegments() ){
+                paint( g, line );
+            }
+        }
+        else if (segment instanceof LineSegment){
+            LineSegment line = (LineSegment) segment;
+            paint( g, line );
+        }
+    }
+}
+protected void paint(Graphics2D g, LineSegment line) {
+    DirectPosition point1 = line.getStartPoint();
+    DirectPosition point2 = line.getEndPoint();
+    g.drawLine( point1.getOrdinate(X), point1.getOrdinate(Y),
+                point2.getOrdinate(X), point2.getOrdinate(Y) );
+}
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="creating-envelope">
+<h2>Creating Envelope<a class="headerlink" href="#creating-envelope" title="Permalink to this headline">¶</a></h2>
+<p>The following sections explain how to manipulate Envelopes:</p>
+<p>Envelopes are essentially basic rectangles. Envelopes can be created
+directly from the GeometryBuilder, or if you only want to use gt-opengis
+interfaces you can use factories:</p>
+<div class="highlight-python"><div class="highlight"><pre>* The following example shows how to create an Envelope with the GeometryBuilder.::
+</pre></div>
+</div>
+<blockquote>
+<div><p>GeometryBuilder builder = new GeometryBuilder( DefaultGeographicCRS.WGS84 );</p>
+<p>DirectPosition upper = builder.createDirectPosition(new double[]{-180,-90});
+DirectPosition lower = builder.createDirectPosition(new double[]{180,90});
+Envelope envelope = builder.createEnvelope( upper, lower );</p>
+</div></blockquote>
+<ul>
+<li><p class="first">Using Factories</p>
+<p>Building an envelope from factories is very similar to the process of using
+the GeometryBuilder, but it lets you only use gt-opengis interfaces::</p>
+<div class="highlight-python"><div class="highlight"><pre>Hints hints = new Hints( Hints.CRS, DefaultGeographicCRS.WGS84 );
+
+PositionFactory positionFactory = GeometryFactoryFinder.getPositionFactory( hints );
+GeometryFactory geometryFactory = GeometryFactoryFinder.getGeometryFactory( hints );
+
+DirectPosition upper = positionFactory.createDirectPosition(new double[]{-180,-90});
+DirectPosition lower = positionFactory.createDirectPosition(new double[]{180,90});
+Envelope envelope = geometryFactory.createEnvelope( upper, lower );
+</pre></div>
+</div>
+</li>
+</ul>
+<div class="section" id="envelope">
+<h3>Envelope<a class="headerlink" href="#envelope" title="Permalink to this headline">¶</a></h3>
+<p>Please consider that the idea of Width and Height are context dependent, what
+axis is &#8220;across&#8221; depends on the data you are working with.</p>
+<p>What you can do is ask for the &#8220;length&#8221; along an axis.:</p>
+<div class="highlight-python"><div class="highlight"><pre>int length0= envelope.getLength( 0 );
+int length1 = envelope.getLength( 1 );
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="operation.html" title="Operations"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="index.html" title="Geometry Plugin"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Unsupported</a> &raquo;</li>
+          <li><a href="index.html" >Geometry Plugin</a> &raquo;</li>
+        <li><a href="#">Build Geometry</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

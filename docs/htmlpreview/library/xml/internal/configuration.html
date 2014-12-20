@@ -1,0 +1,287 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Configuration &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../../index.html" />
+    <link rel="up" title="Internals" href="index.html" />
+    <link rel="next" title="Code Generation" href="code.html" />
+    <link rel="prev" title="Bindings" href="bindings.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../../index.html" >Library</a> &raquo;</li>
+          <li><a href="../index.html" >XML</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Internals</a> &raquo;</li>
+        <li><a href="#">Configuration</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Configuration</a><ul>
+<li><a class="reference internal" href="#schema-location">Schema Location</a></li>
+<li><a class="reference internal" href="#binding-configuration">Binding Configuration</a></li>
+<li><a class="reference internal" href="#schemalocationresolver-and-schemalocator">SchemaLocationResolver and SchemaLocator</a></li>
+<li><a class="reference internal" href="#configuration-dependency">Configuration Dependency</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="bindings.html"
+                        title="previous chapter">Bindings</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="code.html"
+                        title="next chapter">Code Generation</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/library/xml/internal/configuration.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="configuration">
+<h1>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h1>
+<p>A configuration is an object that is used to configure the parser or the encoder. A configuration is used to:</p>
+<ul class="simple">
+<li>Load bindings into the parser / encoder</li>
+<li>Create the binding context</li>
+<li>Locate schema while parsing an instance document</li>
+<li>Declare depenendencies on other configurations / schemas</li>
+</ul>
+<p>More specifically a configuration is an instance of <strong>org.geotools.xml.Configuration</strong>.</p>
+<div class="section" id="schema-location">
+<h2>Schema Location<a class="headerlink" href="#schema-location" title="Permalink to this headline">¶</a></h2>
+<p>A configuration has a one-to-one correspondence to a particular schema. The configuration references two pieces of information about the schema:</p>
+<ol class="arabic simple">
+<li>Namespace uri of the schema</li>
+<li>Location of the *.xsd file which defines the schema</li>
+</ol>
+<p>Here is what that looks like:</p>
+<div class="highlight-python"><div class="highlight"><pre>interface Configuration {
+     ...
+
+    /**
+     * @return The namespace of the configuration schema.
+     */
+    String getNamespaceURI();
+
+    /**
+     * @return the uri to the file definiing hte schema.
+     */
+    String getSchemaLocation();
+
+    ...
+}
+</pre></div>
+</div>
+<ul>
+<li><p class="first">Namespace URI:</p>
+<div class="highlight-python"><div class="highlight"><pre>String getNamespaceURI();
+</pre></div>
+</div>
+<p>The getNamespaceURI method takes no parameters and returns a string which is the namespace uri of the schema.</p>
+<p>An example implementation for the purchase order schema:</p>
+<div class="highlight-python"><div class="highlight"><pre> String getNamespaceURI() {
+     return &quot;http://www.geotools.org/po&quot;;
+}
+</pre></div>
+</div>
+</li>
+<li><p class="first">Schema Location:</p>
+<div class="highlight-python"><div class="highlight"><pre>String getSchemaLocation();
+</pre></div>
+</div>
+<p>The getSchemaLocation method takes no parameters and returns a URI to a *.xsd file for the schema. It can be any valid uri, local or remote, however it must be an absolute URI.</p>
+<ul>
+<li><p class="first">A common practice is to store a copy of the schema in the same package relative to the configuration. An example implementation for the purchase order schema:</p>
+<div class="highlight-python"><div class="highlight"><pre>String getSchemaLocation() {
+  //relative to this class
+  return getClass().getResource( &quot;po.xsd&quot; ).toString();
+}
+</pre></div>
+</div>
+</li>
+<li><p class="first">An implementation referring to a remote location:</p>
+<div class="highlight-python"><div class="highlight"><pre>String getSchemaLocation() {
+   //remote uri
+   return &quot;http://schemas.geotools.org/po/po.xsd&quot;;
+}
+</pre></div>
+</div>
+</li>
+<li><p class="first">Or a location on disk:</p>
+<div class="highlight-python"><div class="highlight"><pre>String getSchemaLocation() {
+   //local uri
+   return &quot;file:///home/bob/po.xsd&quot;
+}
+</pre></div>
+</div>
+</li>
+</ul>
+<p>This location is used by the parser to actually process the schema while parsing an instance document. For schemas which are made up of multiple *.xsd files, this value should be to the top level file, ie. the file which includes all other files.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="binding-configuration">
+<h2>Binding Configuration<a class="headerlink" href="#binding-configuration" title="Permalink to this headline">¶</a></h2>
+<p>A binding configuration is a set of name, binding mappings used to load bindings for particular elements, attributes, types. More specifically, a binding configuration is an instance of <strong>org.geotools.xml.BindingConfiguration</strong>:</p>
+<div class="highlight-python"><div class="highlight"><pre>interface BindingConfiguration {
+  /**
+   * Configures the container which houses the bindings.
+   *
+   */
+  void configure(MutablePicoContainer container);
+}
+</pre></div>
+</div>
+<p>The single method configure is used to populate a container with a set of bindings. Each binding is registered under a key. The key is the qualified name (javax.xml.namespace.QName) of the element, attribute, or type the binding is bound to. Example:</p>
+<div class="highlight-python"><div class="highlight"><pre>class PurchaseOrderBindingConfiguration implements BindingConfiguration {
+
+  void configure( MutablePicoContainer container ) {
+
+    container.registerComponentImplementation( new QName( &quot;http://www.geotools.org/po&quot;, &quot;PurchaseOrderType&quot; ), PurchaseOrderTypeBinding.class );
+    container.regsiterComponentImplementation( new QName( &quot;http://www.geotools.org/po&quot;, &quot;USAddress&quot; ), USAddressBinding.class );
+    ...
+  }
+}
+</pre></div>
+</div>
+</div>
+<div class="section" id="schemalocationresolver-and-schemalocator">
+<h2>SchemaLocationResolver and SchemaLocator<a class="headerlink" href="#schemalocationresolver-and-schemalocator" title="Permalink to this headline">¶</a></h2>
+<p>A configuration maintains a reference to two &#8220;helper&#8221; classes:</p>
+<div class="highlight-python"><div class="highlight"><pre>/**
+  * Returns a schema location resolver instance used to override schema location
+  * uri&#39;s encountered in an instance document.
+  */
+ XSDSchemaLocationResolver getSchemaLocationResolver();
+
+ /**
+  * Returns a schema locator, used to create imported and included schemas
+  * when parsing an instance document.
+  */
+ XSDSchemaLocator getSchemaLocator();
+</pre></div>
+</div>
+<p>These interfaces are used internally by the eclipse XSD library to parse schemas that are referenced by an instance document.</p>
+<ul>
+<li><p class="first">XSDSchemaLocationResolver</p>
+<p>The job of this interface is to &#8220;resolve&#8221; a schema location from a namespace uri, and possible partial schema location. Often in an instance document schema references of the following form are encountered.:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;purchaseOrder xsi:schemaLocation=&quot;http://www.geotools.org/po po.xsd&quot;&gt;
+...
+</pre></div>
+</div>
+<p>The above specifies that the purchase order schmea is defined in a file called &#8220;po.xsd&#8221;. That is great, but where can the parser find the &#8220;po.xsd&#8221; file. If the reference to the file was an absolute reference it would be a different story, but sadly this is often not so. Luckily this is where the XSDSchemaLocationResolver comes in.</p>
+<p>Given a namespaceURI, and partial schema location, an instance of this interface must return an &#8220;absolute&#8221; reference to the file defining the schema. By default, the Configuration class looks in the same package as itself for a resource which matches the schema file name.</p>
+<p>This behaviour may be changed by overriding the getSchemaLocationResolver() method of the Conifguration class.</p>
+</li>
+<li><p class="first">XSDSchemaLocator</p>
+<p>The job of this interface is slightly different from that of hte XSDSchemaLocationResolver interface. Instead of returning the absolute resolved location for a schema, it returns the actual schema itself.</p>
+<p>By default, the Configuration class will return an instance of XSDSchemaLocator which uses the getSchemaLocation() method to return a schema. Subclasses may wish to override to change this behaviour.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="configuration-dependency">
+<h2>Configuration Dependency<a class="headerlink" href="#configuration-dependency" title="Permalink to this headline">¶</a></h2>
+<p>Just like a schema has dependencies on other schemas, a configuration has dependencies on other configurations. Not surprisingly the configuration dependencies mirror the schema dependencies.</p>
+<p>Configuration dependencies are added with the addDependency method.:</p>
+<div class="highlight-python"><div class="highlight"><pre>protected void addDependency( Configuration dependency );
+</pre></div>
+</div>
+<p>The method should be called from the constructor of a subclass. As an example, the filter schema has a dependency on the gml schema:</p>
+<div class="highlight-python"><div class="highlight"><pre>class OGCConfiguration extends Configuration {
+
+  public OGCConfiguration() {
+    //dependency on gml
+    addDependency( new GMLConfiguration() );
+  }
+}
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="code.html" title="Code Generation"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="bindings.html" title="Bindings"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../../index.html" >Library</a> &raquo;</li>
+          <li><a href="../index.html" >XML</a> &raquo;</li>
+          <li><a href="index.html" >Internals</a> &raquo;</li>
+        <li><a href="#">Configuration</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,497 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Using FeatureSource &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../index.html" />
+    <link rel="up" title="ContentDataStore Tutorial" href="index.html" />
+    <link rel="next" title="Implementing FeatureStore" href="store.html" />
+    <link rel="prev" title="Implementing FeatureSource" href="source.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Tutorials</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">ContentDataStore Tutorial</a> &raquo;</li>
+        <li><a href="#">Using FeatureSource</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Using FeatureSource</a><ul>
+<li><a class="reference internal" href="#datastore">DataStore</a></li>
+<li><a class="reference internal" href="#featuresource">FeatureSource</a></li>
+<li><a class="reference internal" href="#featurecollection">FeatureCollection</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="source.html"
+                        title="previous chapter">Implementing FeatureSource</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="store.html"
+                        title="next chapter">Implementing FeatureStore</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/tutorial/datastore/read.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="using-featuresource">
+<h1>Using FeatureSource<a class="headerlink" href="#using-featuresource" title="Permalink to this headline">¶</a></h1>
+<p>In this part we examine the abilities of the CSVDataStore.</p>
+<div class="section" id="datastore">
+<h2>DataStore<a class="headerlink" href="#datastore" title="Permalink to this headline">¶</a></h2>
+<p>Now that we have implemented a simple DataStore we can explore some of the capabilities made available to us.</p>
+<p>CSVDataStore API for data access:</p>
+<ul class="simple">
+<li>DataStore.getTypeNames()</li>
+<li>DataStore.getSchema( typeName )</li>
+<li>DataStore.getFeatureReader( featureType, filter, transaction )</li>
+<li>DataStore.getFeatureSource( typeName )</li>
+</ul>
+<p>If you would like to follow along with these examples you can
+<a class="reference download internal" href="../../_downloads/CSVTest.java"><code class="xref download docutils literal"><span class="pre">CSVTest.java</span></code></a>.</p>
+<ul>
+<li><p class="first">DataStore.getTypeNames()</p>
+<p>The method getTypeNames provides a list of the available types.</p>
+<p>getTypeNames() example:</p>
+<div class="highlight-java"><div class="highlight"><pre>        <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Serializable</span><span class="o">&gt;</span> <span class="n">params</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Serializable</span><span class="o">&gt;();</span>
+        <span class="n">params</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&quot;file&quot;</span><span class="o">,</span> <span class="n">file</span><span class="o">);</span>
+
+        <span class="n">DataStore</span> <span class="n">store</span> <span class="o">=</span> <span class="n">DataStoreFinder</span><span class="o">.</span><span class="na">getDataStore</span><span class="o">(</span><span class="n">params</span><span class="o">);</span>
+
+        <span class="n">String</span> <span class="n">names</span><span class="o">[]</span> <span class="o">=</span> <span class="n">store</span><span class="o">.</span><span class="na">getTypeNames</span><span class="o">();</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;typenames: &quot;</span> <span class="o">+</span> <span class="n">names</span><span class="o">.</span><span class="na">length</span><span class="o">);</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;typename[0]: &quot;</span> <span class="o">+</span> <span class="n">names</span><span class="o">[</span><span class="mi">0</span><span class="o">]);</span>
+</pre></div>
+</div>
+<p>Produces the following output (given a directory with example.properties):</p>
+<div class="highlight-text"><div class="highlight"><pre>typenames: 1
+typename[0]: locations
+</pre></div>
+</div>
+</li>
+<li><p class="first">DataStore.getSchema( typeName )</p>
+<p>The method getSchema( typeName ) provides access to a FeatureType referenced by a type name.</p>
+<p>getSchema( typeName ) example:</p>
+<div class="highlight-java"><div class="highlight"><pre>        <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Serializable</span><span class="o">&gt;</span> <span class="n">params</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Serializable</span><span class="o">&gt;();</span>
+        <span class="n">params</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&quot;file&quot;</span><span class="o">,</span> <span class="n">file</span><span class="o">);</span>
+        <span class="n">DataStore</span> <span class="n">store</span> <span class="o">=</span> <span class="n">DataStoreFinder</span><span class="o">.</span><span class="na">getDataStore</span><span class="o">(</span><span class="n">params</span><span class="o">);</span>
+
+        <span class="n">SimpleFeatureType</span> <span class="n">type</span> <span class="o">=</span> <span class="n">store</span><span class="o">.</span><span class="na">getSchema</span><span class="o">(</span><span class="s">&quot;locations&quot;</span><span class="o">);</span>
+
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;featureType  name: &quot;</span> <span class="o">+</span> <span class="n">type</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;featureType count: &quot;</span> <span class="o">+</span> <span class="n">type</span><span class="o">.</span><span class="na">getAttributeCount</span><span class="o">());</span>
+
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;featuretype attributes list:&quot;</span><span class="o">);</span>
+        <span class="c1">// access by list</span>
+        <span class="k">for</span> <span class="o">(</span><span class="n">AttributeDescriptor</span> <span class="n">descriptor</span> <span class="o">:</span> <span class="n">type</span><span class="o">.</span><span class="na">getAttributeDescriptors</span><span class="o">())</span> <span class="o">{</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="s">&quot;  &quot;</span> <span class="o">+</span> <span class="n">descriptor</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="s">&quot; (&quot;</span> <span class="o">+</span> <span class="n">descriptor</span><span class="o">.</span><span class="na">getMinOccurs</span><span class="o">()</span> <span class="o">+</span> <span class="s">&quot;,&quot;</span> <span class="o">+</span> <span class="n">descriptor</span><span class="o">.</span><span class="na">getMaxOccurs</span><span class="o">()</span>
+                    <span class="o">+</span> <span class="s">&quot;,&quot;</span><span class="o">);</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">((</span><span class="n">descriptor</span><span class="o">.</span><span class="na">isNillable</span><span class="o">()</span> <span class="o">?</span> <span class="s">&quot;nillable&quot;</span> <span class="o">:</span> <span class="s">&quot;manditory&quot;</span><span class="o">)</span> <span class="o">+</span> <span class="s">&quot;)&quot;</span><span class="o">);</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="s">&quot; type: &quot;</span> <span class="o">+</span> <span class="n">descriptor</span><span class="o">.</span><span class="na">getType</span><span class="o">().</span><span class="na">getName</span><span class="o">());</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot; binding: &quot;</span> <span class="o">+</span> <span class="n">descriptor</span><span class="o">.</span><span class="na">getType</span><span class="o">().</span><span class="na">getBinding</span><span class="o">().</span><span class="na">getSimpleName</span><span class="o">());</span>
+        <span class="o">}</span>
+        <span class="c1">// access by index</span>
+        <span class="n">AttributeDescriptor</span> <span class="n">attributeDescriptor</span> <span class="o">=</span> <span class="n">type</span><span class="o">.</span><span class="na">getDescriptor</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;attribute 0    name: &quot;</span> <span class="o">+</span> <span class="n">attributeDescriptor</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;attribute 0    type: &quot;</span> <span class="o">+</span> <span class="n">attributeDescriptor</span><span class="o">.</span><span class="na">getType</span><span class="o">().</span><span class="na">toString</span><span class="o">());</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;attribute 0 binding: &quot;</span> <span class="o">+</span> <span class="n">attributeDescriptor</span><span class="o">.</span><span class="na">getType</span><span class="o">().</span><span class="na">getBinding</span><span class="o">());</span>
+
+        <span class="c1">// access by name</span>
+        <span class="n">AttributeDescriptor</span> <span class="n">cityDescriptor</span> <span class="o">=</span> <span class="n">type</span><span class="o">.</span><span class="na">getDescriptor</span><span class="o">(</span><span class="s">&quot;CITY&quot;</span><span class="o">);</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;attribute &#39;CITY&#39;    name: &quot;</span> <span class="o">+</span> <span class="n">cityDescriptor</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;attribute &#39;CITT&#39;    type: &quot;</span> <span class="o">+</span> <span class="n">cityDescriptor</span><span class="o">.</span><span class="na">getType</span><span class="o">().</span><span class="na">toString</span><span class="o">());</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;attribute &#39;CITY&#39; binding: &quot;</span> <span class="o">+</span> <span class="n">cityDescriptor</span><span class="o">.</span><span class="na">getType</span><span class="o">().</span><span class="na">getBinding</span><span class="o">());</span>
+
+        <span class="c1">// default geometry</span>
+        <span class="n">GeometryDescriptor</span> <span class="n">geometryDescriptor</span> <span class="o">=</span> <span class="n">type</span><span class="o">.</span><span class="na">getGeometryDescriptor</span><span class="o">();</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;default geom    name: &quot;</span> <span class="o">+</span> <span class="n">geometryDescriptor</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;default geom    type: &quot;</span> <span class="o">+</span> <span class="n">geometryDescriptor</span><span class="o">.</span><span class="na">getType</span><span class="o">().</span><span class="na">toString</span><span class="o">());</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;default geom binding: &quot;</span> <span class="o">+</span> <span class="n">geometryDescriptor</span><span class="o">.</span><span class="na">getType</span><span class="o">().</span><span class="na">getBinding</span><span class="o">());</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;default geom     crs: &quot;</span>
+                <span class="o">+</span> <span class="n">CRS</span><span class="o">.</span><span class="na">toSRS</span><span class="o">(</span><span class="n">geometryDescriptor</span><span class="o">.</span><span class="na">getCoordinateReferenceSystem</span><span class="o">()));</span>
+</pre></div>
+</div>
+<p>Produces the following output:</p>
+<div class="highlight-text"><div class="highlight"><pre>featureType  name: locations
+featureType count: 4
+featuretype attributes list:
+  Location (0,1,nillable) type: Location binding: Point
+  CITY (0,1,nillable) type: CITY binding: String
+  NUMBER (0,1,nillable) type: NUMBER binding: String
+  YEAR (0,1,nillable) type: YEAR binding: String
+attribute 0    name: Location
+attribute 0    type: GeometryTypeImpl Location&lt;Point&gt;
+attribute 0 binding: class com.vividsolutions.jts.geom.Point
+attribute &#39;CITY&#39;    name: CITY
+attribute &#39;CITT&#39;    type: AttributeTypeImpl CITY&lt;String&gt;
+attribute &#39;CITY&#39; binding: class java.lang.String
+default geom    name: Location
+default geom    type: GeometryTypeImpl Location&lt;Point&gt;
+default geom binding: class com.vividsolutions.jts.geom.Point
+default geom     crs: CRS:84
+</pre></div>
+</div>
+</li>
+<li><p class="first">DataStore.getFeatureReader( query, transaction )</p>
+<p>The method getFeatureReader( query, transaction ) allows access to the contents
+of our DataStore.</p>
+<p>The method signature may be more complicated than expected, we certainly did not talk
+about Query or Transactions when we implemented our CSVDataStore. This is something
+that AbstractDataStore is handling for you and will be discussed later in the section
+on optimisation.</p>
+<ul>
+<li><p class="first">Query.getTypeName()</p>
+<p>Determines which FeatureType is being requested. In addition, Query supports the
+customization attributes, namespace, and typeName requested from the DataStore.
+While you may use DataStore.getSchema( typeName ) to retrieve the types as specified by
+the DataStore, you may also create your own FeatureType to limit the attributes returned
+or cast the result into a specific namespace.</p>
+</li>
+<li><p class="first">Query.getFilter()</p>
+<p>Used to define constraints on which features should be fetched. The constraints
+can be on spatial and non-spatial attributes of the features.</p>
+</li>
+<li><p class="first">Query.getPropertiesNames()</p>
+<p>Allows you to limit the number of properties of the returned Features to only those
+you are interested in.</p>
+</li>
+<li><p class="first">Query.getMaxFeatures()</p>
+<p>Defines an upper limit for the number of features returned.</p>
+</li>
+<li><p class="first">Query.getHandle()</p>
+<p>User-supplied name used to describe a query in user&#8217;s terms in any generated error messages.</p>
+</li>
+<li><p class="first">Query.getCoordinateSystem()</p>
+<p>Used to force the use of a user-supplied CoordinateSystem (rather than the one supplied
+by the DataStore). This capability will allow client code to use our DataStore with a
+CoordinateSystem of their choice. The coordinates returned by the DataStore will not be
+modified in any way.</p>
+</li>
+<li><p class="first">Query.getCoordinateSystemReproject()</p>
+<p>Used to reproject the Geometries provided by a DataStore from their original value (or
+the one provided by Query.getCoordinateSystem) into a different coordinate system.
+The coordinate returned by the DataStore will be processed , either natively by
+Advanced DataStores, or using GeoTools reprojection routines.</p>
+</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Since this tutorial was written Query has expanding its capabilities
+(and the capabilities of your DataStore) to include support for reprojection.</p>
+<p class="last">It also offers an &#8220;open ended&#8221; pathway for expansion using &#8220;query hints&#8221;.</p>
+</div>
+<ul>
+<li><p class="first">Transaction</p>
+<p>Allows access the contents of a DataStore during modification.</p>
+</li>
+</ul>
+<p>With all of that in mind we can now proceed to our
+DataStore.getFeatureReader( featureType, filter, transaction ) example:</p>
+<div class="highlight-java"><div class="highlight"><pre>        <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Serializable</span><span class="o">&gt;</span> <span class="n">params</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Serializable</span><span class="o">&gt;();</span>
+        <span class="n">params</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&quot;file&quot;</span><span class="o">,</span> <span class="n">file</span><span class="o">);</span>
+        <span class="n">DataStore</span> <span class="n">datastore</span> <span class="o">=</span> <span class="n">DataStoreFinder</span><span class="o">.</span><span class="na">getDataStore</span><span class="o">(</span><span class="n">params</span><span class="o">);</span>
+
+        <span class="n">Query</span> <span class="n">query</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Query</span><span class="o">(</span><span class="s">&quot;locations&quot;</span><span class="o">);</span>
+
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;open feature reader&quot;</span><span class="o">);</span>
+        <span class="n">FeatureReader</span><span class="o">&lt;</span><span class="n">SimpleFeatureType</span><span class="o">,</span> <span class="n">SimpleFeature</span><span class="o">&gt;</span> <span class="n">reader</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="na">getFeatureReader</span><span class="o">(</span><span class="n">query</span><span class="o">,</span>
+                <span class="n">Transaction</span><span class="o">.</span><span class="na">AUTO_COMMIT</span><span class="o">);</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+            <span class="k">while</span> <span class="o">(</span><span class="n">reader</span><span class="o">.</span><span class="na">hasNext</span><span class="o">())</span> <span class="o">{</span>
+                <span class="n">SimpleFeature</span> <span class="n">feature</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
+                <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;  &quot;</span> <span class="o">+</span> <span class="n">feature</span><span class="o">.</span><span class="na">getID</span><span class="o">()</span> <span class="o">+</span> <span class="s">&quot; &quot;</span> <span class="o">+</span> <span class="n">feature</span><span class="o">.</span><span class="na">getAttribute</span><span class="o">(</span><span class="s">&quot;CITY&quot;</span><span class="o">));</span>
+                <span class="n">count</span><span class="o">++;</span>
+            <span class="o">}</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;close feature reader&quot;</span><span class="o">);</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;read in &quot;</span> <span class="o">+</span> <span class="n">count</span> <span class="o">+</span> <span class="s">&quot; features&quot;</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+            <span class="n">reader</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+        <span class="o">}</span>
+</pre></div>
+</div>
+<p>Produces the following output:</p>
+<div class="highlight-text"><div class="highlight"><pre>open feature reader
+  locations.1 Trento
+  locations.2 St Paul
+  locations.3 Bangkok
+  locations.4 Ottawa
+  locations.5 Minneapolis
+  locations.6 Lausanne
+  locations.7 Victoria
+  locations.8 Cape Town
+  locations.9 Sydney
+  locations.10 Barcelona
+  locations.11 Denver
+  locations.12 Nottingham
+close feature reader
+read in 12 features
+</pre></div>
+</div>
+<p>Example with a quick &#8220;selection&#8221; Filter:</p>
+<div class="highlight-java"><div class="highlight"><pre>        <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Serializable</span><span class="o">&gt;</span> <span class="n">params</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Serializable</span><span class="o">&gt;();</span>
+        <span class="n">params</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&quot;file&quot;</span><span class="o">,</span> <span class="n">file</span><span class="o">);</span>
+        <span class="n">DataStore</span> <span class="n">store</span> <span class="o">=</span> <span class="n">DataStoreFinder</span><span class="o">.</span><span class="na">getDataStore</span><span class="o">(</span><span class="n">params</span><span class="o">);</span>
+
+        <span class="n">FilterFactory</span> <span class="n">ff</span> <span class="o">=</span> <span class="n">CommonFactoryFinder</span><span class="o">.</span><span class="na">getFilterFactory</span><span class="o">();</span>
+
+        <span class="n">Set</span><span class="o">&lt;</span><span class="n">FeatureId</span><span class="o">&gt;</span> <span class="n">selection</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashSet</span><span class="o">&lt;</span><span class="n">FeatureId</span><span class="o">&gt;();</span>
+        <span class="n">selection</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">featureId</span><span class="o">(</span><span class="s">&quot;locations.7&quot;</span><span class="o">));</span>
+
+        <span class="n">Filter</span> <span class="n">filter</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">id</span><span class="o">(</span><span class="n">selection</span><span class="o">);</span>
+        <span class="n">Query</span> <span class="n">query</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Query</span><span class="o">(</span><span class="s">&quot;locations&quot;</span><span class="o">,</span> <span class="n">filter</span><span class="o">);</span>
+
+        <span class="n">FeatureReader</span><span class="o">&lt;</span><span class="n">SimpleFeatureType</span><span class="o">,</span> <span class="n">SimpleFeature</span><span class="o">&gt;</span> <span class="n">reader</span> <span class="o">=</span> <span class="n">store</span><span class="o">.</span><span class="na">getFeatureReader</span><span class="o">(</span><span class="n">query</span><span class="o">,</span>
+                <span class="n">Transaction</span><span class="o">.</span><span class="na">AUTO_COMMIT</span><span class="o">);</span>
+
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="k">while</span> <span class="o">(</span><span class="n">reader</span><span class="o">.</span><span class="na">hasNext</span><span class="o">())</span> <span class="o">{</span>
+                <span class="n">SimpleFeature</span> <span class="n">feature</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
+                <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;feature &quot;</span> <span class="o">+</span> <span class="n">feature</span><span class="o">.</span><span class="na">getID</span><span class="o">());</span>
+
+                <span class="k">for</span> <span class="o">(</span><span class="n">Property</span> <span class="n">property</span> <span class="o">:</span> <span class="n">feature</span><span class="o">.</span><span class="na">getProperties</span><span class="o">())</span> <span class="o">{</span>
+                    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="s">&quot;\t&quot;</span><span class="o">);</span>
+                    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="n">property</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
+                    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="s">&quot; = &quot;</span><span class="o">);</span>
+                    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">property</span><span class="o">.</span><span class="na">getValue</span><span class="o">());</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+        <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+            <span class="n">reader</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+        <span class="o">}</span>
+</pre></div>
+</div>
+<p>Produces the following output:</p>
+<div class="highlight-text"><div class="highlight"><pre>feature locations.7
+	Location = POINT (-123.365556 48.428611)
+	CITY = Victoria
+	NUMBER = 721
+	YEAR = 2007
+</pre></div>
+</div>
+</li>
+<li><p class="first">DataStore.getFeatureSource( typeName )</p>
+<p>This method is the gateway to our high level as provided by an instance of FeatureSource,
+FeatureStore or FeatureLocking. The returned instance represents the contents of a single
+named FeatureType provided by the DataStore. The type of the returned instance indicates
+the capabilities available.</p>
+<p>This far in our tutorial CSVDataStore will only support an instance of FeatureSource.</p>
+<p>Example getFeatureSource:</p>
+<div class="highlight-java"><div class="highlight"><pre>        <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Serializable</span><span class="o">&gt;</span> <span class="n">params</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Serializable</span><span class="o">&gt;();</span>
+        <span class="n">params</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&quot;file&quot;</span><span class="o">,</span> <span class="n">file</span><span class="o">);</span>
+        <span class="n">DataStore</span> <span class="n">store</span> <span class="o">=</span> <span class="n">DataStoreFinder</span><span class="o">.</span><span class="na">getDataStore</span><span class="o">(</span><span class="n">params</span><span class="o">);</span>
+
+        <span class="n">SimpleFeatureSource</span> <span class="n">featureSource</span> <span class="o">=</span> <span class="n">store</span><span class="o">.</span><span class="na">getFeatureSource</span><span class="o">(</span><span class="s">&quot;locations&quot;</span><span class="o">);</span>
+
+        <span class="n">Filter</span> <span class="n">filter</span> <span class="o">=</span> <span class="n">CQL</span><span class="o">.</span><span class="na">toFilter</span><span class="o">(</span><span class="s">&quot;CITY = &#39;Denver&#39;&quot;</span><span class="o">);</span>
+        <span class="n">SimpleFeatureCollection</span> <span class="n">features</span> <span class="o">=</span> <span class="n">featureSource</span><span class="o">.</span><span class="na">getFeatures</span><span class="o">(</span><span class="n">filter</span><span class="o">);</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;found :&quot;</span> <span class="o">+</span> <span class="n">features</span><span class="o">.</span><span class="na">size</span><span class="o">()</span> <span class="o">+</span> <span class="s">&quot; feature&quot;</span><span class="o">);</span>
+        <span class="n">SimpleFeatureIterator</span> <span class="n">iterator</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="na">features</span><span class="o">();</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="k">while</span> <span class="o">(</span><span class="n">iterator</span><span class="o">.</span><span class="na">hasNext</span><span class="o">())</span> <span class="o">{</span>
+                <span class="n">SimpleFeature</span> <span class="n">feature</span> <span class="o">=</span> <span class="n">iterator</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
+                <span class="n">Geometry</span> <span class="n">geometry</span> <span class="o">=</span> <span class="o">(</span><span class="n">Geometry</span><span class="o">)</span> <span class="n">feature</span><span class="o">.</span><span class="na">getDefaultGeometry</span><span class="o">();</span>
+                <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">feature</span><span class="o">.</span><span class="na">getID</span><span class="o">()</span> <span class="o">+</span> <span class="s">&quot; default geometry &quot;</span> <span class="o">+</span> <span class="n">geometry</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Throwable</span> <span class="n">t</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">iterator</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+        <span class="o">}</span>
+</pre></div>
+</div>
+<p>Producing the following output:</p>
+<div class="highlight-text"><div class="highlight"><pre>found :1 feature
+locations.11 default geometry POINT (-104.984722 39.739167)
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="featuresource">
+<h2>FeatureSource<a class="headerlink" href="#featuresource" title="Permalink to this headline">¶</a></h2>
+<p>FeatureSource provides the ability to query a DataStore and represents the contents of a single
+FeatureType. In our example, the PropertiesDataStore represents a directory full of properties
+files. FeatureSource will represent a single one of those files.</p>
+<p>FeatureSource defines:</p>
+<ul class="simple">
+<li>FeatureSource.getFeatures( query ) - request features specified by query</li>
+<li>FeatureSource.getFeatures( filter ) - request features based on constraints</li>
+<li>FeatureSource.getFeatures() - request all features</li>
+<li>FeatureSource.getSchema() - acquire FeatureType</li>
+<li>FeatureSource.getBounds - return the bounding box of all features</li>
+<li>FeatureSource.getBounds( query ) - request bounding box of specified features</li>
+<li>FeatureSource.getCount( query ) - request number of features specified by query</li>
+</ul>
+<p>FeatureSource also defines an event notification system and provides access to the DataStore
+which created it. You may have more than one FeatureSource operating against a file at any time.</p>
+</div>
+<div class="section" id="featurecollection">
+<h2>FeatureCollection<a class="headerlink" href="#featurecollection" title="Permalink to this headline">¶</a></h2>
+<div class="sidebar">
+<p class="first sidebar-title">FeatureResults</p>
+<p>FeatureResults is the original name of FeatureCollection.
+Some of these methods have been replaced such as the use of
+DataUtilities.collection( featureCollection ) to load
+the contents into memory.</p>
+<p>It is interesting to note the design goal of capturing a
+prepared statement (rather than loading the features into memory).</p>
+<p class="last">The class was renamed FeatureCollection to help those migrating
+from GeoTools 1.0.</p>
+</div>
+<p>While the FeatureSource API does allow you to represent a named FeatureType, it still does not
+allow direct access to a FeatureReader. The getFeatures methods actually return an instance of
+FeatureCollection.</p>
+<p>FeatureCollection defines:</p>
+<ul class="simple">
+<li>FeatureCollection.getSchmea()</li>
+<li>FeatureCollection.features() - access to a FeatureIterator</li>
+<li>FeatureCollection.accepts( visitor, progress )</li>
+<li>FeatureCollection.getBounds() - bounding box of features</li>
+<li>FeatureCollection.getCount() - number of features</li>
+<li>DataUtilities.collection( featureCollection ) - used to load features into memory</li>
+</ul>
+<p>FeatureCollection is the closest thing we have to a prepared request. Many DataStores are able to
+provide optimised implementations that handles the above methods natively.</p>
+<ul>
+<li><p class="first">FeatureCollection Example:</p>
+<div class="highlight-java"><div class="highlight"><pre>        <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Serializable</span><span class="o">&gt;</span> <span class="n">params</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Serializable</span><span class="o">&gt;();</span>
+        <span class="n">params</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&quot;file&quot;</span><span class="o">,</span> <span class="n">file</span><span class="o">);</span>
+        <span class="n">DataStore</span> <span class="n">store</span> <span class="o">=</span> <span class="n">DataStoreFinder</span><span class="o">.</span><span class="na">getDataStore</span><span class="o">(</span><span class="n">params</span><span class="o">);</span>
+
+        <span class="n">SimpleFeatureSource</span> <span class="n">featureSource</span> <span class="o">=</span> <span class="n">store</span><span class="o">.</span><span class="na">getFeatureSource</span><span class="o">(</span><span class="s">&quot;locations&quot;</span><span class="o">);</span>
+        <span class="n">SimpleFeatureCollection</span> <span class="n">featureCollection</span> <span class="o">=</span> <span class="n">featureSource</span><span class="o">.</span><span class="na">getFeatures</span><span class="o">();</span>
+        
+        <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;();</span>
+        <span class="k">try</span> <span class="o">(</span><span class="n">SimpleFeatureIterator</span> <span class="n">features</span> <span class="o">=</span> <span class="n">featureCollection</span><span class="o">.</span><span class="na">features</span><span class="o">();)</span> <span class="o">{</span>
+            <span class="k">while</span> <span class="o">(</span><span class="n">features</span><span class="o">.</span><span class="na">hasNext</span><span class="o">())</span> <span class="o">{</span>
+                <span class="n">list</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">features</span><span class="o">.</span><span class="na">next</span><span class="o">().</span><span class="na">getID</span><span class="o">());</span>
+            <span class="o">}</span>
+        <span class="o">}</span> <span class="c1">// try-with-resource will call features.close()</span>
+
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;           List Contents: &quot;</span> <span class="o">+</span> <span class="n">list</span><span class="o">);</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;    FeatureSource  count: &quot;</span> <span class="o">+</span> <span class="n">featureSource</span><span class="o">.</span><span class="na">getCount</span><span class="o">(</span><span class="n">Query</span><span class="o">.</span><span class="na">ALL</span><span class="o">));</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;    FeatureSource bounds: &quot;</span> <span class="o">+</span> <span class="n">featureSource</span><span class="o">.</span><span class="na">getBounds</span><span class="o">(</span><span class="n">Query</span><span class="o">.</span><span class="na">ALL</span><span class="o">));</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;FeatureCollection   size: &quot;</span> <span class="o">+</span> <span class="n">featureCollection</span><span class="o">.</span><span class="na">size</span><span class="o">());</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;FeatureCollection bounds: &quot;</span> <span class="o">+</span> <span class="n">featureCollection</span><span class="o">.</span><span class="na">getBounds</span><span class="o">());</span>
+
+        <span class="c1">// Load into memory!</span>
+        <span class="n">DefaultFeatureCollection</span> <span class="n">collection</span> <span class="o">=</span> <span class="n">DataUtilities</span><span class="o">.</span><span class="na">collection</span><span class="o">(</span><span class="n">featureCollection</span><span class="o">);</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;         collection size: &quot;</span> <span class="o">+</span> <span class="n">collection</span><span class="o">.</span><span class="na">size</span><span class="o">());</span>
+</pre></div>
+</div>
+<p>With the following output:</p>
+<div class="highlight-text"><div class="highlight"><pre>           List Contents: [locations.1, locations.2, locations.3, locations.4, locations.5, locations.6, locations.7, locations.8, locations.9, locations.10, locations.11, locations.12]
+    FeatureSource  count: 12
+    FeatureSource bounds: null
+FeatureCollection   size: 12
+FeatureCollection bounds: ReferencedEnvelope[-123.365556 : 151.211111, -33.925278 : 52.95]
+         collection size: 12
+</pre></div>
+</div>
+</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Warning: When calling <code class="docutils literal"><span class="pre">FeatureSource.count(Query.ALL)</span></code> be aware a DataStore implementation may return <code class="docutils literal"><span class="pre">-1</span></code> indicating that the value is expensive for the DataStore to calculate.</p>
+<p>You can think of this as:</p>
+<ul class="simple">
+<li>FeatureSource is a way to perform a quick check for a precanned answer for count and bounds.
+The Shapefile format will keep this information in the header at the top of the
+file. In a similar fashion a Database may be able to quickly check an index for this information.</li>
+<li>FeatureCollection checks the contents, and possibly checks each item, for an answer to
+size and bounds.</li>
+</ul>
+<p class="last">This is a terrible API tradeoff to have to make, resulting from implementations taking ten minutes to performing a &#8220;full table scan&#8221;.</p>
+</div>
+<p>Care should be taken when using the collection() method to capture the contents of a DataStore in
+memory. GIS applications often produce large volumes of information and can place a strain
+on memory use.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="store.html" title="Implementing FeatureStore"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="source.html" title="Implementing FeatureSource"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Tutorials</a> &raquo;</li>
+          <li><a href="index.html" >ContentDataStore Tutorial</a> &raquo;</li>
+        <li><a href="#">Using FeatureSource</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

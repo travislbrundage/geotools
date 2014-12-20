@@ -1,0 +1,146 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>EPSG WKT Plugin &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../index.html" />
+    <link rel="up" title="Referencing" href="index.html" />
+    <link rel="next" title="Referencing 3D" href="3d.html" />
+    <link rel="prev" title="EPSG PostgreSQL Plugin" href="postgresql.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Referencing</a> &raquo;</li>
+        <li><a href="#">EPSG WKT Plugin</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">EPSG WKT Plugin</a><ul>
+<li><a class="reference internal" href="#epsg-definitions">EPSG Definitions</a></li>
+<li><a class="reference internal" href="#beyond-epsg-database">Beyond EPSG Database</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="postgresql.html"
+                        title="previous chapter">EPSG PostgreSQL Plugin</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="3d.html"
+                        title="next chapter">Referencing 3D</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/library/referencing/wkt.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="epsg-wkt-plugin">
+<h1>EPSG WKT Plugin<a class="headerlink" href="#epsg-wkt-plugin" title="Permalink to this headline">¶</a></h1>
+<p>The plugin provides an Coordinate Reference System Authority based on a text file (actually a Java <strong>epsg.properties</strong> file).</p>
+<p>This epsg plugin is well suited for use in situations where your application does not have write access to the filesystem (and thus gt-epsh-hsql is not available).</p>
+<p>It is not quite as good as the official epsg database; as the codes represented here do not express the full range of bursa wolf parameters available in the official epsg database. Some liberty has also been taken with axis order with the contents often presented is &#8220;x/y&#8221; order as expected by a simple drawing application.</p>
+<p>This plugin is well suited for use in a Java Applet or other restricted environment.</p>
+<div class="section" id="epsg-definitions">
+<h2>EPSG Definitions<a class="headerlink" href="#epsg-definitions" title="Permalink to this headline">¶</a></h2>
+<p>The range of represented EPSG codes is not complete, it is limited by the projections supported by
+GeoTools, and allowances have been made to go with the axis order used by WMS 1.1.1.</p>
+<p>The Plugin will work out of the box, include it in your CLASSPATH.</p>
+</div>
+<div class="section" id="beyond-epsg-database">
+<h2>Beyond EPSG Database<a class="headerlink" href="#beyond-epsg-database" title="Permalink to this headline">¶</a></h2>
+<p>The <strong>epsg.properties</strong> file does contain definitions that go beyond those defined by the EPSG database. Traditionally this has been limited to those needed to work by the module maintainer for the Canadian Region; and a few donated on the mailing list for areas like New Zealand.</p>
+<p>If you have any additions or corrections please raise a bug report.</p>
+<p>The complete definitions can be read directly out of svn:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference external" href="http://svn.osgeo.org/geotools/trunk/modules/plugin/epsg-wkt/src/main/resources/org/geotools/referencing/crs/epsg.properties">http://svn.osgeo.org/geotools/trunk/modules/plugin/epsg-wkt/src/main/resources/org/geotools/referencing/crs/epsg.properties</a></li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="3d.html" title="Referencing 3D"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="postgresql.html" title="EPSG PostgreSQL Plugin"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" >Referencing</a> &raquo;</li>
+        <li><a href="#">EPSG WKT Plugin</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

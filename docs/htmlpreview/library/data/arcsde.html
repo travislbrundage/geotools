@@ -1,0 +1,359 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ArcSDE Plugin &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../index.html" />
+    <link rel="up" title="Data" href="index.html" />
+    <link rel="next" title="Shapefile Plugin" href="shape.html" />
+    <link rel="prev" title="Exporting" href="export.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Data</a> &raquo;</li>
+        <li><a href="#">ArcSDE Plugin</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">ArcSDE Plugin</a><ul>
+<li><a class="reference internal" href="#configuration-parameters">Configuration Parameters</a></li>
+<li><a class="reference internal" href="#access">Access</a></li>
+<li><a class="reference internal" href="#advanced">Advanced</a><ul>
+<li><a class="reference internal" href="#configuring-with-direct-connect">Configuring with Direct Connect</a></li>
+<li><a class="reference internal" href="#type-names">Type Names</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#setup">Setup</a><ul>
+<li><a class="reference internal" href="#supported-versions">Supported Versions</a></li>
+<li><a class="reference internal" href="#dependencies">Dependencies</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="export.html"
+                        title="previous chapter">Exporting</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="shape.html"
+                        title="next chapter">Shapefile Plugin</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/library/data/arcsde.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="arcsde-plugin">
+<h1>ArcSDE Plugin<a class="headerlink" href="#arcsde-plugin" title="Permalink to this headline">¶</a></h1>
+<p>The ArcSDE plugin allows the GeoTools developer to work with the <a class="reference external" href="http://en.wikipedia.org/wiki/ArcSDE">ArcSDE</a> middle ware. The ArcSDE plugin has been with us since GeoTools 2.0 and is much loved.</p>
+<p>Supported Features:</p>
+<ul class="simple">
+<li><cite>Connection Pooling</cite>: Allows to configure a DataStore to hold a number of connections to ArcSDE in order to improve performance under concurrency</li>
+<li><cite>Transactions</cite>: Support for native ArcSDE transactions is embedded into the GeoTools ArcSDE DataStore. Transaction support is available for any registered ArcSDE featureclass with a proper &#8220;unique identifier&#8221;, either <cite>SDE_MANAGED</cite> or <cite>USER_MANAGED</cite>. Featureclasses with no <cite>row id</cite> are available read-only, as GeoTools needs a steady way of assigning Featrure Identifiers.</li>
+<li><cite>Direct Connect</cite>: Allows clients to directly connect to an SDE GEODB 9.2+ without a need of an SDE server instance</li>
+<li><cite>Versioning</cite>:  An ArcSDEDataStore instance may connect to a specific ArcSDE database <a class="reference external" href="http://help.arcgis.com/en/arcgisserver/10.0/help/arcgis_server_dotnet_help/index.html#/What_is_a_version/009300001612000000/">version</a></li>
+<li><cite>Geometry-less</cite> Feature Types: &#8220;Non spatial&#8221; registered ArcSDE tables can be accessed as GeoTools FeatureTypes</li>
+<li><cite>Spatial views</cite>: Registered ArcSDE spatial-views are supported read-only.</li>
+</ul>
+<p><strong>References</strong></p>
+<ul class="simple">
+<li><a class="reference internal" href="../coverage/arcsde.html"><em>gt-coverage arcsde</em></a> raster code examples</li>
+<li><a class="reference external" href="http://help.arcgis.com/en/arcgisserver/10.0/help/arcgis_server_dotnet_help/index.html#/What_is_ArcSDE/009300000115000000/">Esri ArcSDE documentation</a></li>
+</ul>
+<p><strong>Maven</strong>:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;dependency&gt;
+   &lt;groupId&gt;org.geotools&lt;/groupId&gt;
+   &lt;artifactId&gt;gt-arcsde&lt;/artifactId&gt;
+   &lt;version&gt;${geotools.version}&lt;/version&gt;
+ &lt;/dependency&gt;
+</pre></div>
+</div>
+<div class="section" id="configuration-parameters">
+<h2>Configuration Parameters<a class="headerlink" href="#configuration-parameters" title="Permalink to this headline">¶</a></h2>
+<p>To connect to an ArcSDE instance you must have the following parameters:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>&#8220;dbtype&#8221;</td>
+<td>Required: must be &#8220;arcsde&#8221;</td>
+</tr>
+<tr class="row-odd"><td>&#8220;server&#8221;</td>
+<td>Required: The machine which the ArcSDE instance is running on.</td>
+</tr>
+<tr class="row-even"><td>&#8220;port&#8221;</td>
+<td>Required: The port the ArcSDE instance is running on.
+The default is 5151, or if you&#8217;re using Direct Connect, check the
+<a class="reference internal" href="#direct-connect"><em>Configuring with Direct Connect</em></a>
+section for further information on how to format this parameter.</td>
+</tr>
+<tr class="row-odd"><td>&#8220;instance&#8221;</td>
+<td>Optional: The ArcSDE instance name (generally &#8220;sde&#8221;, or whatever
+you called the database).</td>
+</tr>
+<tr class="row-even"><td>&#8220;user&#8221;</td>
+<td>Required: The name of the user to connect with.</td>
+</tr>
+<tr class="row-odd"><td>&#8220;password&#8221;</td>
+<td>Required: The password of the user you are connecting with.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="access">
+<h2>Access<a class="headerlink" href="#access" title="Permalink to this headline">¶</a></h2>
+<p>There&#8217;s nothing special from the GeoTools API point of view in accessing an ArcSDE server. Just use the regular GeoTools DataStore creation mechanism with the correct parameters:</p>
+<div class="highlight-python"><div class="highlight"><pre>Map map = new HashMap();
+map.put( &quot;dbtype&quot;, &quot;arcsde&quot; );
+map.put( &quot;server&quot;, &quot;my.arcsdeserver.com&quot; );
+map.put( &quot;port&quot;, &quot;5151&quot; );
+map.put( &quot;instance&quot;, &quot;sde&quot; );
+map.put( &quot;user&quot;, &quot;sde&quot; );
+map.put( &quot;password&quot;, &quot;secret&quot; );
+
+DataStore dataStore = DataStoreFinder.getDataStore( Map map );
+String typeName = dataStore.getTypeNames()[0];
+
+FeatureSource source = dataStore( typeName );
+
+Filter filter = CQL.toFilter(&quot;BBOX(SHAPE, -180,-90,0,0)&quot;);
+FeatureCollection collection = source.getFeatures( filter );
+FeatureIterator iterator = collection.iterator();
+try {
+    while( iterator.hasNext() ){
+         Feature feature = (Feature) iterator.next();
+         ...
+    }
+}
+finally {
+   collection.close( iterator );
+}
+</pre></div>
+</div>
+</div>
+<div class="section" id="advanced">
+<h2>Advanced<a class="headerlink" href="#advanced" title="Permalink to this headline">¶</a></h2>
+<p>There are also a number of optional parameters to configure the ArcSDE connection &#8216;pool&#8217;. GeoTools makes use of a number of connections, but does a decent job of managing them, so that new connections need not be made for each request. The big reason for this is that some ArcSDE licenses only allow a limited number of connections, so these values can be adjusted to minimize the number of simultaneous connections. GeoTools will share the active connections instead of making new ones. Right now it requires at least two connections, as we were having some nasty bugs with ArcSDE connections going stale (only with certain instances, and only with spatial queries, which made debugging a big hassle). With some funded development work this could easily be improved, ArcSDE could definitely benefit from some more effort. If you have more connections available we do recommend upping the pool.maxConnections parameter. The meaning of these optional parameters is as follows:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="34%" />
+<col width="0%" />
+<col width="66%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head" colspan="3">Parameter                       | Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>&#8220;pool.minConnections&#8221;</td>
+<td colspan="2">The number of connections the pool makes on start up. If needed
+these will be incremented.</td>
+</tr>
+<tr class="row-odd"><td>&#8220;pool.maxConnections&#8221;</td>
+<td colspan="2">The maximum number of connections that a pool is allowed to
+make. This should be as high as possible, but there may be
+license limitations.</td>
+</tr>
+<tr class="row-even"><td>&#8220;pool.timeOut&#8221;</td>
+<td colspan="2">The amount of time that a connection request should wait for an
+unused connection before failing.</td>
+</tr>
+<tr class="row-odd"><td>&#8220;namespace&#8221;</td>
+<td colspan="2">A String literal representing the namespace URL FeatureTypes
+created by this DataStore will be assigned to. E.g.:
+<code class="docutils literal"><span class="pre">http://my.company.com/testNamespace</span></code></td>
+</tr>
+<tr class="row-even"><td>&#8220;database.version&#8221;</td>
+<td colspan="2">The ArcSDE database version to use.</td>
+</tr>
+<tr class="row-odd"><td>&#8220;datastore.allowNonSpatialTables&#8221;</td>
+<td colspan="2"><dl class="first last docutils">
+<dt><code class="docutils literal"><span class="pre">true|false</span></code> If enabled, registered non-spatial tables</dt>
+<dd>are also available.</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="configuring-with-direct-connect">
+<span id="direct-connect"></span><h3>Configuring with Direct Connect<a class="headerlink" href="#configuring-with-direct-connect" title="Permalink to this headline">¶</a></h3>
+<p>ESRI Direct Connect[ESRI DC] allows clients to directly connect to an SDE GEODB 9.2+ without a need of an SDE server instance, and is recommended for high availability environments, as it removes the ArcSDE gateway server as a single point of failure.
+ESRI DC needs additional platform dependent binary drivers and a working Oracle Client ENVIRONMENT (if connecting to an ORACLE DB). See <a class="reference external" href="http://webhelp.esri.com/arcgisserver/9.3/java/index.htm#geodatabases/setting1995868008.htm">Properties of a direct connection to an ArcSDE geodatabase</a> in the ESRI ArcSDE documentation for more information on Direct Connect, and <a class="reference external" href="http://webhelp.esri.com/arcgisserver/9.3/java/index.htm#geodatabases/setting1995868008.htm">Setting up clients for a direct connection</a> for information about connecting to the different databases supported by ArcSDE.</p>
+<p>The GeoTools ArcSDE configuration parameters are the same as in the <cite>Configuration Parameters</cite> section above, with a couple differences in how to format the parameters:</p>
+<blockquote>
+<div><ul class="simple">
+<li>server: In ESRI Direct Connect Mode a value must be given or the Direct Connect Driver will throw an error, so just put a &#8216;none&#8217; there - any String will work!</li>
+<li>port: In ESRI Direct Connect Mode the port has a String representation: <cite>sde:oracle10g</cite>, <cite>sde:oracle11g:/:test</cite>, etc. For further information check <a class="reference external" href="http://webhelp.esri.com/arcgisserver/9.3/java/geodatabases/arcsde-2034353163.htm">ArcSDE connection syntax</a> at the official ArcSDE documentation from ESRI.</li>
+<li>instance: In ESRI Direct Connect Mode a value must be given or the Direct Connect Driver will throw an error, so just put a &#8216;none&#8217; there - any String will work!</li>
+<li>user: The username to authenticate with the geo database.</li>
+<li>password: The password associated with the above username for authentication with the geo database.</li>
+</ul>
+</div></blockquote>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Be sure to assemble the password like: password&#64;&lt;Oracle Net Service name&gt; for Oracle</p>
+</div>
+</div>
+<div class="section" id="type-names">
+<h3>Type Names<a class="headerlink" href="#type-names" title="Permalink to this headline">¶</a></h3>
+<p>ArcSDE plugin&#8217;s &#8220;Feature Type Names&#8221; are fully qualified, unlike other GeoTools DataStores.
+That means that <code class="docutils literal"><span class="pre">DataStore.getTypeNames()</span></code> will return the list of spatial tables in a qualified form, as per the
+<a class="reference external" href="http://help.arcgis.com/en/geodatabase/10.0/sdk/arcsde/api/japi/docs/com/esri/sde/sdk/client/SeLayer.html#getQualifiedName()">SeLayer.getQualifiedName()</a> ESRI ArcSDE Java API call.
+For example, <code class="docutils literal"><span class="pre">JOHN.GIS.PARCELS</span></code> instead of just <code class="docutils literal"><span class="pre">PARCELS</span></code>, where <code class="docutils literal"><span class="pre">JOHN</span></code> is the user name
+the plugin connected to ArcSDE with, and <code class="docutils literal"><span class="pre">GIS</span></code> is the name of the database it&#8217;s connecting to.</p>
+</div>
+</div>
+<div class="section" id="setup">
+<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="supported-versions">
+<h3>Supported Versions<a class="headerlink" href="#supported-versions" title="Permalink to this headline">¶</a></h3>
+<p>The GeoTools ArcSDE plugin supports ArcSDE versions <code class="docutils literal"><span class="pre">9.2</span></code>, <code class="docutils literal"><span class="pre">9.3</span></code> and <code class="docutils literal"><span class="pre">10</span></code>, with their respective service packs. Support for prior
+versions (8.3 and 9.0/9.1) has been dropped since a long time due to lack of licenses for those versions of ArcSDE.</p>
+</div>
+<div class="section" id="dependencies">
+<h3>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h3>
+<p>If you&#8217;re building a project that needs the GeoTools ArcSDE plugin you&#8217;re hopefuly using Apache Maven so you that you only declare a dependency against the GeoTools ArcSDE plugin
+and let Maven take care of the transitive dependencies (i.e. libraries the ArcSDE plugin depends on but your project doesn&#8217;t directly).</p>
+<p>If that is not the case, the following are the full dependencies of the GeoTools ArcSDE plugin, plus the ones listed in the ref:<cite>esri-jars</cite> section:</p>
+<div class="highlight-python"><div class="highlight"><pre>org.geotools:gt-arcsde:jar:&lt;VERSION&gt;
++- org.geotools:gt-arcsde-common:jar:&lt;VERSION&gt;
+|  +- commons-pool:commons-pool:jar:1.5.4
+|  \- com.ibm.icu:icu4j:jar:3.4.4
++- jsqlparser:jsqlparser:jar:0.3.14
++- org.geotools:gt-jdbc:jar:&lt;VERSION&gt;
+|  +- org.geotools:gt-api:jar:&lt;VERSION&gt;
+|  +- org.geotools:gt-main:jar:&lt;VERSION&gt;
+|  |  \- org.jdom:jdom:jar:1.1.3
+|  +- org.geotools:gt-data:jar:&lt;VERSION&gt;
+|  +- commons-dbcp:commons-dbcp:jar:1.3
+|  \- commons-collections:commons-collections:jar:3.1
++- org.geotools:gt-coverage:jar:&lt;VERSION&gt;
+|  +- org.geotools:gt-referencing:jar:&lt;VERSION&gt;
+|  |  +- java3d:vecmath:jar:1.3.2
+|  |  \- org.geotools:gt-metadata:jar:&lt;VERSION&gt;
+|  |     \- org.geotools:gt-opengis:jar:&lt;VERSION&gt;
+|  |        \- net.java.dev.jsr-275:jsr-275:jar:1.0-beta-2
+|  +- com.vividsolutions:jts:jar:1.11
+|  |  \- xerces:xercesImpl:jar:2.7.1     (version managed from 2.4.0)
+|  \- it.geosolutions.imageio-ext:imageio-ext-tiff:jar:1.0.8
+|     \- it.geosolutions.imageio-ext:imageio-ext-utilities:jar:1.0.8
++- org.geotools:gt-epsg-hsql:jar:&lt;VERSION&gt;:provided
+|  \- hsqldb:hsqldb:jar:1.8.0.7:provided
++- javax.media:jai_core:jar:1.1.3:provided
++- javax.media:jai_codec:jar:1.1.3:provided
++- javax.media:jai_imageio:jar:1.1:provided
+</pre></div>
+</div>
+<p id="esri-jars"><strong>Required Proprietary Libraries</strong></p>
+<p>Additionally, you&#8217;ll need the following two jar files:</p>
+<ul class="simple">
+<li>jsde_sdk.jar</li>
+<li>jpe_sdk.jar</li>
+</ul>
+<p>We cannot distribute them with GeoTools. Please make sure the required jars are available on
+the CLASSPATH (if not the ArcSDE plugin will report itself as unavailable).</p>
+<p>They should be available once you installed the &#8220;ArcSDE Java SDK&#8221;. For example, located in <em>arcsde install dir*</em>/arcsdesdk/sdeexe92/lib/.
+Make sure you use the same version of the <code class="docutils literal"><span class="pre">jsde_sdk.jar</span></code> and <code class="docutils literal"><span class="pre">jpe_sdk.jar</span></code> libraries than your ArcSDE instance. Or at least that&#8217;s what ESRI recommends, though
+in some cases we found using a higher version of those jars against a lower version of the ArcSDE instance does not hurt at all, or can even work or perform better.
+But definitely don&#8217;t use a lower version of the jars against a higher version of ArcSDE.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">As for version 10.0, ArcSDE is part of the ESRI ArcGIS Server stack, and you may need to request a separate media DVD to ESRI for the ArcSDE Java SDK as it seems it doesn&#8217;t come with the standard DVD set but you can get it by just asking for it.</p>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="shape.html" title="Shapefile Plugin"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="export.html" title="Exporting"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" >Data</a> &raquo;</li>
+        <li><a href="#">ArcSDE Plugin</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

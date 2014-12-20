@@ -1,0 +1,242 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Geometry Relationships &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../index.html" />
+    <link rel="up" title="JTS" href="index.html" />
+    <link rel="next" title="Point Set Theory and the DE-9IM Matrix" href="dim9.html" />
+    <link rel="prev" title="Testing equality of Geometry objects" href="equals.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">JTS</a> &raquo;</li>
+        <li><a href="#">Geometry Relationships</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Geometry Relationships</a><ul>
+<li><a class="reference internal" href="#disjoint">Disjoint</a></li>
+<li><a class="reference internal" href="#intersects">Intersects</a></li>
+<li><a class="reference internal" href="#touches">Touches</a></li>
+<li><a class="reference internal" href="#crosses">Crosses</a></li>
+<li><a class="reference internal" href="#within">Within</a></li>
+<li><a class="reference internal" href="#contains">Contains</a></li>
+<li><a class="reference internal" href="#overlaps">Overlaps</a></li>
+<li><a class="reference internal" href="#relates">Relates</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="equals.html"
+                        title="previous chapter">Testing equality of Geometry objects</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="dim9.html"
+                        title="next chapter">Point Set Theory and the DE-9IM Matrix</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/library/jts/relate.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="geometry-relationships">
+<h1>Geometry Relationships<a class="headerlink" href="#geometry-relationships" title="Permalink to this headline">¶</a></h1>
+<p>One of the major points of having Geometry represented as an object is to be able to establish relationships to answer questions like &#8220;Are two geometries touching each other?&#8221;
+[]
+Equals
+^^^^^^</p>
+<p>You can use JTS to check if two objects are equal:</p>
+<div class="highlight-python"><div class="highlight"><pre>GeometryFactory geometryFactory = FactoryFinder.getGeometryFactory( null );
+
+WKTReader reader = new WKTReader( geometryFactory );
+LineString geometry = (LineString) reader.read(&quot;LINESTRING(0 0, 2 0, 5 0)&quot;);
+LineString geometry = (LineString) reader.read(&quot;LINESTRING(5 0, 0 0)&quot;);
+
+return geometry.equals( (Geometry) geometry2 );
+</pre></div>
+</div>
+<p>Please note that equals is not a quick easy check as you might expect - but a real full on spatial comparison of what the data structures mean. The above code example will return true as the two line strings define exactly the same shape.</p>
+<p>Force yourself to learn the habit of putting that (Geometry) cast in there; only habit can avoid the mistake of getting confused with Object equals.</p>
+<p>This method will fail if called on an invalid geometry.</p>
+<ul>
+<li><p class="first">Common Mistake - Getting confused with Object Equals</p>
+<p>Here is an example of this common mistake:</p>
+<div class="highlight-python"><div class="highlight"><pre>return geometry.equals( other ); // will use Object.equals( obj ) which is the same as the == operator
+</pre></div>
+</div>
+<p>Here is the correction:</p>
+<div class="highlight-python"><div class="highlight"><pre>return geometry.equals( (Geometry) other );
+</pre></div>
+</div>
+</li>
+<li><p class="first">Equals Exact Relationship</p>
+<p>You can check if two geometries are exactly equal; right down to the coordinate level:</p>
+<div class="highlight-python"><div class="highlight"><pre>return geometry.equalsExact( (Geometry) geometry2 );
+</pre></div>
+</div>
+<p>This method is faster than equals( geometry ) and is closer to what normal Java programs assume for a data
+object equals method implementation. We are checking the internal structure; rather than the meaning.</p>
+<p>The equalsExact method is able to function on invalid geometries.</p>
+</li>
+<li><p class="first">Alternative - Identity Operator</p>
+<p>Normal Java identity operator also has its place; don&#8217;t forget about it:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">return</span> <span class="n">geometry</span> <span class="o">==</span> <span class="n">geometry2</span><span class="p">;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<div class="section" id="disjoint">
+<h2>Disjoint<a class="headerlink" href="#disjoint" title="Permalink to this headline">¶</a></h2>
+<p>The geometries have no points in common.:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">return</span> <span class="n">geometry</span><span class="o">.</span><span class="n">disjoint</span><span class="p">(</span> <span class="n">geometry2</span> <span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="intersects">
+<h2>Intersects<a class="headerlink" href="#intersects" title="Permalink to this headline">¶</a></h2>
+<p>The geometries have at least one point in common.:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">return</span> <span class="n">geometry</span><span class="o">.</span><span class="n">intersects</span><span class="p">(</span> <span class="n">geometry2</span> <span class="p">);</span>
+</pre></div>
+</div>
+<p>This will test if any point on the boundary or within a geometry is
+part of the boundary or within a second geometry.</p>
+<ul>
+<li><p class="first">Alternative - not disjoint</p>
+<p>This is the opposite of disjoint:</p>
+<div class="highlight-python"><div class="highlight"><pre>return !geometryA.disjoint( geometry2 );
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="touches">
+<h2>Touches<a class="headerlink" href="#touches" title="Permalink to this headline">¶</a></h2>
+<p>The geometries only touch edges and do not overlap in any way:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">return</span> <span class="n">geometryA</span><span class="o">.</span><span class="n">touches</span><span class="p">(</span> <span class="n">geometry2</span> <span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="crosses">
+<h2>Crosses<a class="headerlink" href="#crosses" title="Permalink to this headline">¶</a></h2>
+<p>The geometries do more than touch, they actually overlap edges:</p>
+<blockquote>
+<div>return geometryA.crosses( geometry2 );</div></blockquote>
+</div>
+<div class="section" id="within">
+<h2>Within<a class="headerlink" href="#within" title="Permalink to this headline">¶</a></h2>
+<p>One geometry is completely within another (no touching edges):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">return</span> <span class="n">geometryA</span><span class="o">.</span><span class="n">within</span><span class="p">(</span> <span class="n">geometry2</span> <span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="contains">
+<h2>Contains<a class="headerlink" href="#contains" title="Permalink to this headline">¶</a></h2>
+<p>One geometry contains another:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">return</span> <span class="n">geometryA</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span> <span class="n">geometry2</span> <span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="overlaps">
+<h2>Overlaps<a class="headerlink" href="#overlaps" title="Permalink to this headline">¶</a></h2>
+<p>The geometries have some points in common; but not all points in common (so if one geometry is inside the other overlaps would be false). The overlapping section must be the same kind of shape as the two geometries; so two polygons that touch on a point are not considered to be overlapping.:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">return</span> <span class="n">geometryA</span><span class="o">.</span><span class="n">overlaps</span><span class="p">(</span> <span class="n">geometry2</span> <span class="p">);</span>
+</pre></div>
+</div>
+<p>The definition of the overlaps relationship is a little bit different than that used in common English (normally you would assume that a geometry contained inside another geometry is &#8220;overlapping&#8221;; to test for that situation use Intersects)</p>
+</div>
+<div class="section" id="relates">
+<h2>Relates<a class="headerlink" href="#relates" title="Permalink to this headline">¶</a></h2>
+<p>Computes the &#8220;DE-9IM Matrix&#8221; for two Geometies allowing you to study exactly how they interact with each other.:</p>
+<div class="highlight-python"><div class="highlight"><pre>IntersectionMatrix m = a.relate(b);
+</pre></div>
+</div>
+<p>The IntersectionMatrix allows you to separately test how the interior, exterior and edges of two geometries interact. All the above operations can be viewed as a summary of this IntersectionMatrix.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="dim9.html" title="Point Set Theory and the DE-9IM Matrix"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="equals.html" title="Testing equality of Geometry objects"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" >JTS</a> &raquo;</li>
+        <li><a href="#">Geometry Relationships</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Maven Snapshots &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../index.html" />
+    <link rel="up" title="Using Maven" href="index.html" />
+    <link rel="next" title="Generating Javadocs" href="javadocs.html" />
+    <link rel="prev" title="Maven Testing" href="testing.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Building</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Using Maven</a> &raquo;</li>
+        <li><a href="#">Maven Snapshots</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Maven Snapshots</a><ul>
+<li><a class="reference internal" href="#grab-snapshot-dependency">Grab SNAPSHOT Dependency</a></li>
+<li><a class="reference internal" href="#publish-geotools-snapshot">Publish GeoTools SNAPSHOT</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="testing.html"
+                        title="previous chapter">Maven Testing</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="javadocs.html"
+                        title="next chapter">Generating Javadocs</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/build/maven/snapshots.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="maven-snapshots">
+<h1>Maven Snapshots<a class="headerlink" href="#maven-snapshots" title="Permalink to this headline">¶</a></h1>
+<p>The current <strong>live</strong> jar published by GeoTools is known as a SNAPSHOT. Projects that want to work
+directly with GeoTools will depend “SNAPSHOT” rather than specifying a version number.</p>
+<div class="section" id="grab-snapshot-dependency">
+<h2>Grab SNAPSHOT Dependency<a class="headerlink" href="#grab-snapshot-dependency" title="Permalink to this headline">¶</a></h2>
+<p>We depend on a &#8220;snapshot&#8221; of several projects (usually project GeoTools community members are
+involved such as ImageIO-EXT). In these cases an email will be sent to the developer list asking
+people to &#8220;update with -U&#8221;.</p>
+<p>To respond to one of these emails include &#8220;-u&#8221; in your next build.</p>
+<ol class="arabic">
+<li><p class="first">Update:</p>
+<div class="highlight-python"><div class="highlight"><pre>svn up
+</pre></div>
+</div>
+</li>
+<li><p class="first">build using the -U option:</p>
+<div class="highlight-python"><div class="highlight"><pre>mvn clean install -U -Dmaven.test.skip=true
+</pre></div>
+</div>
+</li>
+</ol>
+<p>The above example skipped the tests (which is common when you are trying for a quick update),
+please note by definition that &#8220;-U&#8221; is not compatible with the &#8220;-o&#8221; offline mode.</p>
+</div>
+<div class="section" id="publish-geotools-snapshot">
+<h2>Publish GeoTools SNAPSHOT<a class="headerlink" href="#publish-geotools-snapshot" title="Permalink to this headline">¶</a></h2>
+<p>If you are working on GeoServer or uDig or another project that depends on the latest greatest
+GeoTools release you will need to know how to deploy a SNAPSHOT (so members of your developer
+community do not get compile errors).</p>
+<p>Usually do this after a commit:</p>
+<ol class="arabic">
+<li><p class="first">Update to make sure you are not missing out on anyones work:</p>
+<div class="highlight-python"><div class="highlight"><pre>svn up
+</pre></div>
+</div>
+</li>
+<li><p class="first">Build with tests to make sure your commit is not fatal:</p>
+<div class="highlight-python"><div class="highlight"><pre>mvn clean install
+</pre></div>
+</div>
+</li>
+<li><p class="first">Commit - remember to include any Jira numbers in your log message:</p>
+<div class="highlight-python"><div class="highlight"><pre>svn commit -m &quot;Change to fix shapefile charset handling, see GEOT-1437&quot;
+</pre></div>
+</div>
+</li>
+<li><p class="first">Ensure your ~/.m2/settings.xml has your webdav credentials.</p>
+<ul class="simple">
+<li>osgeo - this is the same as your svn credentials</li>
+<li>opengo - you need to ask on the developer email list</li>
+</ul>
+<p>The settings.xml should list both:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;
+&lt;settings&gt;
+    &lt;offline&gt;false&lt;/offline&gt;
+    &lt;servers&gt;
+     &lt;server&gt;
+       &lt;id&gt;osgeo&lt;/id&gt;
+       &lt;username&gt;USERID&lt;/username&gt;
+       &lt;password&gt;PASSWORD&lt;/password&gt;
+     &lt;/server&gt;
+     &lt;server&gt;
+       &lt;id&gt;opengeo&lt;/id&gt;
+       &lt;username&gt;USERID&lt;/username&gt;
+       &lt;password&gt;PASSWOD&lt;/password&gt;
+     &lt;/server&gt;
+    &lt;/servers&gt;
+&lt;/settings&gt;
+</pre></div>
+</div>
+</li>
+<li><p class="first">Deploy for members of your community:</p>
+<div class="highlight-python"><div class="highlight"><pre>mvn deploy -Dmaven.test.skip=true
+</pre></div>
+</div>
+</li>
+<li><p class="first">Let your community know via email! (The email can ask them to build iwth -U).</p>
+</li>
+</ol>
+<p>Note a nightly build machine will also generate SNAPSHOTS each day.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="javadocs.html" title="Generating Javadocs"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="testing.html" title="Maven Testing"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Building</a> &raquo;</li>
+          <li><a href="index.html" >Using Maven</a> &raquo;</li>
+        <li><a href="#">Maven Snapshots</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

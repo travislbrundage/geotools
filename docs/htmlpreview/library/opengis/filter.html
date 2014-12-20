@@ -1,0 +1,813 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Filter &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../index.html" />
+    <link rel="up" title="OpenGIS" href="index.html" />
+    <link rel="next" title="GridCoverage" href="coverage.html" />
+    <link rel="prev" title="Feature" href="feature.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">OpenGIS</a> &raquo;</li>
+        <li><a href="#">Filter</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Filter</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#id1">Filter</a><ul>
+<li><a class="reference internal" href="#cql">CQL</a></li>
+<li><a class="reference internal" href="#filterfactory">FilterFactory</a></li>
+<li><a class="reference internal" href="#filterfactory2">FilterFactory2</a></li>
+<li><a class="reference internal" href="#xml">XML</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#basic">Basic</a><ul>
+<li><a class="reference internal" href="#comparison">Comparison</a></li>
+<li><a class="reference internal" href="#null-vs-nil">Null vs Nil</a></li>
+<li><a class="reference internal" href="#matchcase">MatchCase</a></li>
+<li><a class="reference internal" href="#matchaction">MatchAction</a></li>
+<li><a class="reference internal" href="#logical">Logical</a></li>
+<li><a class="reference internal" href="#includes-and-excludes">INCLUDES and EXCLUDES</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#identifer">Identifer</a></li>
+<li><a class="reference internal" href="#spatial">Spatial</a></li>
+<li><a class="reference internal" href="#temporal">Temporal</a></li>
+<li><a class="reference internal" href="#expression">Expression</a></li>
+<li><a class="reference internal" href="#filtervisitor">FilterVisitor</a></li>
+<li><a class="reference internal" href="#filtercapabilities">FilterCapabilities</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="feature.html"
+                        title="previous chapter">Feature</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="coverage.html"
+                        title="next chapter">GridCoverage</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/library/opengis/filter.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="filter">
+<h1>Filter<a class="headerlink" href="#filter" title="Permalink to this headline">¶</a></h1>
+<p>The filter api defines the first step of a Query, it is used when requesting data from a DataStore
+or Catalog. The Filter specification itself is maintained by the OGC and is used in a number of
+their specifications (Catalog, WFS, and so on).</p>
+<p>In practice <strong>Filter</strong> is used to select features that are of interest and the <strong>Expression</strong> to
+drill in and access information.</p>
+<p>Although this forms a closed set of classes (for interoperability), you can extend the system with
+your own functions.</p>
+<p>References:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://www.opengeospatial.org/standards/filter">http://www.opengeospatial.org/standards/filter</a></li>
+<li><a class="reference internal" href="../main/filter.html"><em>gt-main filter detailed code examples</em></a></li>
+<li><a class="reference internal" href="../xml/index.html"><em>gt-xml documentation</em></a></li>
+<li><a class="reference internal" href="../cql/index.html"><em>gt-cql documentation</em></a></li>
+</ul>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>The Filer specification defines a the <strong>filter</strong> data structure used to perform selection.
+A subset of this data structure is used to define <strong>expressions</strong> to define, calculate or
+extract information.</p>
+<ul>
+<li><p class="first">Here is an example of using filter and expression together:</p>
+<div class="highlight-python"><div class="highlight"><pre>final FilterFactory ff = CommonFactoryFinder.getFilterFactory();
+Filter filter = ff.propertyLessThan( ff.property( &quot;AGE&quot;), ff.literal( 12 ) );
+
+SimpleFeatureCollection features = featureSource.getFeatures( filter );
+features.accepts( new FeatureVisitor&lt;SimpleFeature&gt;() ){
+   public void visit( SimpleFeature feature ){
+       Expression expression = ff.property( &quot;NAME&quot; );
+       String name = expression.evaulate( feature, String.class );
+
+       System.out.println( feature.getID() + &quot; is named: &quot;+ name );
+   }
+}, null );
+</pre></div>
+</div>
+</li>
+<li><p class="first">There are a couple other ways to access feature content:</p>
+<ul class="simple">
+<li>You can construct a filter or expression using the common query language</li>
+<li>You can construct a filter or expression from XML</li>
+<li>You can access the feature data structure directly</li>
+</ul>
+<p>Here is the same example using common query language and direct feature access:</p>
+<div class="highlight-python"><div class="highlight"><pre>Filter filter = CQL.toFilter( &quot;AGE &lt; 12 &quot; );
+
+SimpleFeatureCollection features = featureSource.getFeatures( filter );
+features.accepts( new FeatureVisitor&lt;SimpleFeature&gt;() ){
+   public void visit( SimpleFeature feature ){
+       String name = feature.getAttribute(&quot;NAME&quot;);
+
+       System.out.println( feature.getID() + &quot; is named: &quot;+ name );
+   }
+}, null );
+</pre></div>
+</div>
+</li>
+<li><p class="first">You can also make use of a filter &#8220;by hand&#8221; evaluate against a Feature to test if it is:</p>
+<ul class="simple">
+<li>TRUE: included in the set; or</li>
+<li>FALSE: excluded from the set</li>
+</ul>
+<p>Here is an example of how to evaluate a feature using a filter:</p>
+<div class="highlight-python"><div class="highlight"><pre>if( filter.evaluate( feature ) ){
+    // the feature was &quot;selected&quot; by the filter
+    System.out.println( &quot;Selected &quot;+ feature.getId();
+}
+</pre></div>
+</div>
+</li>
+<li><p class="first">Filters in GeoTools are very forgiving:</p>
+<ul>
+<li><p class="first">Values don&#8217;t have to be exactly the right type.</p>
+<p>GeoTools providers a Converters utility class to &#8220;type morph&#8221; objects into the required class.</p>
+<p>What this means is you can mix and match types and not worry:</p>
+<div class="highlight-python"><div class="highlight"><pre>// the following should be considered equal
+filter = ff.equals( ff.literal(&quot;123&quot;), ff.literal(123) );
+</pre></div>
+</div>
+</li>
+<li><p class="first">You can use this facility yourself to automatically ask expressions to evaluate to the kind
+of object you need.:</p>
+<div class="highlight-python"><div class="highlight"><pre>Expression expression = ff.literal(&quot;#FFFFFF&quot;);
+Color color = expression.evaluate( feature, Color.class );
+</pre></div>
+</div>
+</li>
+<li><p class="first">You can also use a Filter on normal Java objects (ie POJOs)</p>
+<p>If you are willing to write custom code you can define your own PropertyAccessor
+to teach filters how to work with your own data structures</p>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="id1">
+<h2>Filter<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>The filter interface itself is designed to test set membership. That sounds dry - but it is
+accurate. A filter is used to test features one at a time to determine what you want returned to
+you. Being a spatial standard the tests are often spatial in nature (like intersects, bounding box).</p>
+<p>You can think of Filter as similar to an SQL WHERE clause.</p>
+<ul>
+<li><p class="first">Not Object Oriented</p>
+<p>A common mistake for programmers to make is to assume that you can implement
+<strong>Filter</strong> in order to define a custom filter.</p>
+<p>The set of filter interfaces understood by the system is strictly limited to
+those defined by the Filter specification.</p>
+<p>All hope is not lost - you can define your own custom Functions.</p>
+</li>
+</ul>
+<div class="section" id="cql">
+<h3>CQL<a class="headerlink" href="#cql" title="Permalink to this headline">¶</a></h3>
+<p>The common query language is a standard that appeared as part of the OGC Catalog specification. It
+defines an text syntax similar to SQL for defining Filters.:</p>
+<div class="highlight-python"><div class="highlight"><pre>Filter filter = CQL.toFilter(&quot;attName &gt;= 5&quot;);
+Expression percent = CQL.toExpression(&quot;ratio * 100&quot;);
+</pre></div>
+</div>
+<p>In addition to the base standard the GeoTools community has allowed for a couple of extensions
+available using the ECQL class:</p>
+<div class="highlight-python"><div class="highlight"><pre>Filter filter = ECQL.toFilter(&quot;area( SHAPE ) BETWEEN 10000 AND 30000&quot;);
+</pre></div>
+</div>
+<p>In this case the idea of comparing an area expression is an extension as the base CQL specification
+only allows property values to be compared.</p>
+</div>
+<div class="section" id="filterfactory">
+<h3>FilterFactory<a class="headerlink" href="#filterfactory" title="Permalink to this headline">¶</a></h3>
+<p>By using the FilterFactory you can create objects by hand. The FilterFactory interface is limited
+to strict specification compliance.:</p>
+<div class="highlight-python"><div class="highlight"><pre>FilterFactory ff = CommonFactoryFinder.getFilterFactory( GeoTools.getDefaultHints );
+Filter filter = ff.propertyLessThan( ff.property( &quot;AGE&quot;), ff.literal( 12 ) );
+</pre></div>
+</div>
+</div>
+<div class="section" id="filterfactory2">
+<h3>FilterFactory2<a class="headerlink" href="#filterfactory2" title="Permalink to this headline">¶</a></h3>
+<p>In the real world we need to go beyond the specification. FilterFactory2 will let you work with JTS
+Geometry instances (the specification is only defined to work with ISO Geometry).:</p>
+<div class="highlight-python"><div class="highlight"><pre>FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2( GeoTools.getDefaultHints );
+Filter filter = ff.contains( ff.property( &quot;THE_GEOM&quot;), ff.literal( geometry ) );
+</pre></div>
+</div>
+<p>FilterFactory2 also let&#8217;s you define your filters in a bit more of a free form manner. In the
+specification all operations must have the PropertyName expression first.</p>
+</div>
+<div class="section" id="xml">
+<h3>XML<a class="headerlink" href="#xml" title="Permalink to this headline">¶</a></h3>
+<p>Remember that Filter is a standard? Well it actually is an XML standard with documents that look
+like this:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;ogc:Filter xmlns:ogc=&quot;http://www.opengis.net/ogc&quot; xmlns:gml=&quot;http://www.opengis.net/gml&quot;&gt;
+  &lt;ogc:PropertyIsGreaterThanOrEqualTo&gt;
+    &lt;ogc:PropertyName&gt;attName&lt;/ogc:PropertyName&gt;
+    &lt;ogc:Literal&gt;5&lt;/ogc:Literal&gt;
+  &lt;/ogc:PropertyIsGreaterThanOrEqualTo&gt;
+&lt;/ogc:Filter&gt;
+</pre></div>
+</div>
+<p>To parse an xml stream:</p>
+<div class="highlight-python"><div class="highlight"><pre>Configuration configuration = new org.geotools.filter.v1_0.OGCConfiguration();
+Parser parser = new Parser( configuration );
+Filter filter = (Filter) parser.parse( inputStream );
+</pre></div>
+</div>
+<p>To parse a DOM fragment:</p>
+<div class="highlight-python"><div class="highlight"><pre>InputSource input = new InputSource( reader );
+
+DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+DocumentBuilder db = dbf.newDocumentBuilder();
+Document dom = db.parse( input );
+
+Filter filter = null;
+
+// first grab a filter node
+NodeList nodes = dom.getElementsByTagName(&quot;Filter&quot;);
+
+for (int j = 0; j &lt; nodes.getLength(); j++) {
+    Element filterNode = (Element) nodes.item(j);
+    NodeList list = filterNode.getChildNodes();
+    Node child = null;
+
+    for (int i = 0; i &lt; list.getLength(); i++) {
+        child = list.item(i);
+
+        if ((child == null) || (child.getNodeType() != Node.ELEMENT_NODE)) {
+            continue;
+        }
+
+        filter = FilterDOMParser.parseFilter(child);
+    }
+}
+System.out.println( &quot;got:&quot;+filter );
+</pre></div>
+</div>
+<p>For more information, including examples for other versions of the
+filter specification, please review the <a class="reference internal" href="../xml/filter.html"><em>gt-xml filter</em></a> documentation.</p>
+</div>
+</div>
+<div class="section" id="basic">
+<h2>Basic<a class="headerlink" href="#basic" title="Permalink to this headline">¶</a></h2>
+<p>The core filter abstractions are here. This set of interfaces is closed (you cannot make a new
+filter class and expect it to work).</p>
+<img alt="../../_images/filter_model.PNG" src="../../_images/filter_model.PNG" />
+<div class="section" id="comparison">
+<h3>Comparison<a class="headerlink" href="#comparison" title="Permalink to this headline">¶</a></h3>
+<p>The heart of the filter data model is property comparisons; these filters allow you
+to test the attributes of your feature and select out only those features that
+match:</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="n">FilterFactory2</span> <span class="n">ff</span> <span class="o">=</span> <span class="n">CommonFactoryFinder</span><span class="o">.</span><span class="na">getFilterFactory2</span><span class="o">();</span>
+    <span class="n">Filter</span> <span class="n">filter</span><span class="o">;</span>
+
+    <span class="c1">// the most common selection criteria is a simple equal test</span>
+    <span class="n">ff</span><span class="o">.</span><span class="na">equal</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">property</span><span class="o">(</span><span class="s">&quot;land_use&quot;</span><span class="o">),</span> <span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="s">&quot;URBAN&quot;</span><span class="o">));</span>
+
+    <span class="c1">// You can also quickly test if a property has a value</span>
+    <span class="n">filter</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">isNull</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">property</span><span class="o">(</span><span class="s">&quot;approved&quot;</span><span class="o">));</span>
+
+    <span class="c1">// The usual array of property comparisons is supported</span>
+    <span class="c1">// the comparison is based on the kind of data so both</span>
+    <span class="c1">// numeric, date and string comparisons are supported.</span>
+    <span class="n">filter</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">less</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">property</span><span class="o">(</span><span class="s">&quot;depth&quot;</span><span class="o">),</span> <span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="mi">300</span><span class="o">));</span>
+    <span class="n">filter</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">lessOrEqual</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">property</span><span class="o">(</span><span class="s">&quot;risk&quot;</span><span class="o">),</span> <span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="mf">3.7</span><span class="o">));</span>
+    <span class="n">filter</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">greater</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">property</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">),</span> <span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="s">&quot;Smith&quot;</span><span class="o">));</span>
+    <span class="n">filter</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">greaterOrEqual</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">property</span><span class="o">(</span><span class="s">&quot;schedule&quot;</span><span class="o">),</span> <span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="k">new</span> <span class="n">Date</span><span class="o">()));</span>
+
+    <span class="c1">// PropertyIsBetween is a short inclusive test between two values</span>
+    <span class="n">filter</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">between</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">property</span><span class="o">(</span><span class="s">&quot;age&quot;</span><span class="o">),</span> <span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="mi">20</span><span class="o">),</span> <span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="s">&quot;29&quot;</span><span class="o">));</span>
+    <span class="n">filter</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">between</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">property</span><span class="o">(</span><span class="s">&quot;group&quot;</span><span class="o">),</span> <span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="s">&quot;A&quot;</span><span class="o">),</span> <span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="s">&quot;D&quot;</span><span class="o">));</span>
+
+    <span class="c1">// In a similar fashion there is a short cut for notEqual</span>
+    <span class="n">filter</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">notEqual</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">property</span><span class="o">(</span><span class="s">&quot;type&quot;</span><span class="o">),</span> <span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="s">&quot;draft&quot;</span><span class="o">));</span>
+
+    <span class="c1">// pattern based &quot;like&quot; filter</span>
+    <span class="n">filter</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">like</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">property</span><span class="o">(</span><span class="s">&quot;code&quot;</span><span class="o">),</span> <span class="s">&quot;2300%&quot;</span><span class="o">);</span>
+    <span class="c1">// you can customise the wildcard characters used</span>
+    <span class="n">filter</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">like</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">property</span><span class="o">(</span><span class="s">&quot;code&quot;</span><span class="o">),</span> <span class="s">&quot;2300?&quot;</span><span class="o">,</span> <span class="s">&quot;*&quot;</span><span class="o">,</span> <span class="s">&quot;?&quot;</span><span class="o">,</span> <span class="s">&quot;\\&quot;</span><span class="o">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="null-vs-nil">
+<h3>Null vs Nil<a class="headerlink" href="#null-vs-nil" title="Permalink to this headline">¶</a></h3>
+<p>A related topic to comparing a property value is testing to see if a property <em>has</em> a value
+at all. In the simple case PropertyIsNull can be used to check that a property exists; and
+that the value is empty.</p>
+<p>We also have the situation where a property is allowed to occur zero or many times; in this case
+we want a nice clear way to check that a Property does not exsit at all (that is occure = zero).</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="n">FilterFactory2</span> <span class="n">ff</span> <span class="o">=</span> <span class="n">CommonFactoryFinder</span><span class="o">.</span><span class="na">getFilterFactory2</span><span class="o">();</span>
+    <span class="n">Filter</span> <span class="n">filter</span><span class="o">;</span>
+
+    <span class="c1">// previous example tested if approved equals &quot;null&quot;</span>
+    <span class="n">filter</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">isNull</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">property</span><span class="o">(</span><span class="s">&quot;approved&quot;</span><span class="o">));</span>
+
+    <span class="c1">// this example checks if approved exists at all</span>
+    <span class="n">filter</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">isNil</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">property</span><span class="o">(</span><span class="s">&quot;approved&quot;</span><span class="o">),</span><span class="s">&quot;no approval available&quot;</span><span class="o">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="matchcase">
+<h3>MatchCase<a class="headerlink" href="#matchcase" title="Permalink to this headline">¶</a></h3>
+<p>By default property comparison is case sensitive; you can override this default
+when constructing your filter as shown below.</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="n">FilterFactory2</span> <span class="n">ff</span> <span class="o">=</span> <span class="n">CommonFactoryFinder</span><span class="o">.</span><span class="na">getFilterFactory2</span><span class="o">();</span>
+
+    <span class="c1">// default is matchCase = true</span>
+    <span class="n">Filter</span> <span class="n">filter</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">equal</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">property</span><span class="o">(</span><span class="s">&quot;state&quot;</span><span class="o">),</span> <span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="s">&quot;queensland&quot;</span><span class="o">));</span>
+
+    <span class="c1">// You can override this default with matchCase = false</span>
+    <span class="n">filter</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">equal</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">property</span><span class="o">(</span><span class="s">&quot;state&quot;</span><span class="o">),</span> <span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="s">&quot;new south wales&quot;</span><span class="o">),</span>
+            <span class="kc">false</span><span class="o">);</span>
+
+    <span class="c1">// All property comparisons allow you to control case sensitivity</span>
+    <span class="n">Filter</span> <span class="n">welcome</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">greater</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">property</span><span class="o">(</span><span class="s">&quot;zone&quot;</span><span class="o">),</span> <span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="s">&quot;danger&quot;</span><span class="o">),</span>
+            <span class="kc">false</span><span class="o">);</span>
+</pre></div>
+</div>
+<p>This capability was added by the Filter 1.1 specificaiton.</p>
+</div>
+<div class="section" id="matchaction">
+<h3>MatchAction<a class="headerlink" href="#matchaction" title="Permalink to this headline">¶</a></h3>
+<p>All filters that implement the MultiValuedFilter interface, support filtering on operands that
+return multiple values on evaluation. The way these filters handle multiple values can be modified
+through the &#8216;MatchAction&#8217; property.</p>
+<p>The property can be retrieved through a simple getter:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nb">filter</span><span class="o">.</span><span class="n">getMatchAction</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>MatchAction has three possible values:</p>
+<ul>
+<li><p class="first">MatchAction.ANY</p>
+<p>When no MatchAction is specified, it is set to the default MatchAction.ANY.</p>
+<p>Evaluates to true if any possible combinations of operands evaluates to true:</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="n">List</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">ages</span> <span class="o">=</span> <span class="n">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="k">new</span> <span class="n">Integer</span><span class="o">[]</span> <span class="o">{</span> <span class="mi">7</span><span class="o">,</span> <span class="mi">8</span><span class="o">,</span> <span class="mi">10</span><span class="o">,</span> <span class="mi">15</span> <span class="o">});</span>
+
+    <span class="n">filter</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">greater</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="n">ages</span><span class="o">),</span> <span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="mi">12</span><span class="o">),</span> <span class="kc">false</span><span class="o">,</span>
+            <span class="n">MatchAction</span><span class="o">.</span><span class="na">ANY</span><span class="o">);</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Any: &quot;</span> <span class="o">+</span> <span class="n">filter</span><span class="o">.</span><span class="na">evaluate</span><span class="o">(</span><span class="kc">null</span><span class="o">));</span> <span class="c1">// prints Any: true</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">MatchAction.ALL</p>
+<p>Evaluates to true if all possible combinations of operands evaluates to true.:</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="n">List</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">ages</span> <span class="o">=</span> <span class="n">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="k">new</span> <span class="n">Integer</span><span class="o">[]</span> <span class="o">{</span> <span class="mi">7</span><span class="o">,</span> <span class="mi">8</span><span class="o">,</span> <span class="mi">10</span><span class="o">,</span> <span class="mi">15</span> <span class="o">});</span>
+
+    <span class="n">filter</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">greater</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="n">ages</span><span class="o">),</span> <span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="mi">12</span><span class="o">),</span> <span class="kc">false</span><span class="o">,</span>
+            <span class="n">MatchAction</span><span class="o">.</span><span class="na">ALL</span><span class="o">);</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;All: &quot;</span> <span class="o">+</span> <span class="n">filter</span><span class="o">.</span><span class="na">evaluate</span><span class="o">(</span><span class="kc">null</span><span class="o">));</span> <span class="c1">// prints All: false</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">MatchAction.ONE</p>
+<p>Evaluates to true if exactly one possible combination of values evaluates to true:</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="n">List</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">ages</span> <span class="o">=</span> <span class="n">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="k">new</span> <span class="n">Integer</span><span class="o">[]</span> <span class="o">{</span> <span class="mi">7</span><span class="o">,</span> <span class="mi">8</span><span class="o">,</span> <span class="mi">10</span><span class="o">,</span> <span class="mi">15</span> <span class="o">});</span>
+
+    <span class="n">filter</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">greater</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="n">ages</span><span class="o">),</span> <span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="mi">12</span><span class="o">),</span> <span class="kc">false</span><span class="o">,</span>
+            <span class="n">MatchAction</span><span class="o">.</span><span class="na">ONE</span><span class="o">);</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;One: &quot;</span> <span class="o">+</span> <span class="n">filter</span><span class="o">.</span><span class="na">evaluate</span><span class="o">(</span><span class="kc">null</span><span class="o">));</span> <span class="c1">// prints One: true</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>Multiple values are possible in a couple situations: when working with application schemas, or
+working directly with java objects. When an expression is evaluated against rich content
+of this nature child references may return a multi-valued attribue.</p>
+<p>As an example this filter tests whether all children are older than 12:</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="n">filter</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">greater</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">property</span><span class="o">(</span><span class="s">&quot;child/age&quot;</span><span class="o">),</span> <span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="mi">12</span><span class="o">),</span> <span class="kc">true</span><span class="o">,</span>
+            <span class="n">MatchAction</span><span class="o">.</span><span class="na">ALL</span><span class="o">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="logical">
+<h3>Logical<a class="headerlink" href="#logical" title="Permalink to this headline">¶</a></h3>
+<p>Filters can be combined using the usual binary logic of AND, OR and NOT.</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="c1">// you can use *not* to invert the test; this is especially handy</span>
+    <span class="c1">// with like filters (allowing you to select content that does not</span>
+    <span class="c1">// match the provided pattern)</span>
+    <span class="n">filter</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">not</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">like</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">property</span><span class="o">(</span><span class="s">&quot;code&quot;</span><span class="o">),</span> <span class="s">&quot;230%&quot;</span><span class="o">));</span>
+
+    <span class="c1">// you can also combine filters to narrow the results returned</span>
+    <span class="n">filter</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">and</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">greater</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">property</span><span class="o">(</span><span class="s">&quot;rainfall&quot;</span><span class="o">),</span> <span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="mi">70</span><span class="o">)),</span>
+            <span class="n">ff</span><span class="o">.</span><span class="na">equal</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">property</span><span class="o">(</span><span class="s">&quot;land_use&quot;</span><span class="o">),</span> <span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="s">&quot;urban&quot;</span><span class="o">),</span> <span class="kc">false</span><span class="o">));</span>
+
+    <span class="n">filter</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">or</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">equal</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">property</span><span class="o">(</span><span class="s">&quot;code&quot;</span><span class="o">),</span> <span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="s">&quot;approved&quot;</span><span class="o">)),</span>
+            <span class="n">ff</span><span class="o">.</span><span class="na">greater</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">property</span><span class="o">(</span><span class="s">&quot;funding&quot;</span><span class="o">),</span> <span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="mi">23000</span><span class="o">)));</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="includes-and-excludes">
+<h3>INCLUDES and EXCLUDES<a class="headerlink" href="#includes-and-excludes" title="Permalink to this headline">¶</a></h3>
+<p>There are two constants defined that can be used as Sentinel objects (or placeholders). Both of
+them represent &#8220;I don&#8217;t have a Filter&#8221;, but they differ in what client code is supposed to do
+about it.</p>
+<ul>
+<li><p class="first">Filter.INCLUDES</p>
+<p>All content is included in the set. Would return EVERYTHING if used in a Query.</p>
+</li>
+<li><p class="first">Filter.EXCLUDES</p>
+<p>Don&#8217;t include any content. Would return an empty Collection if used in a Query.</p>
+</li>
+</ul>
+<p>These values are often used as default values in other data structures - for example the default
+value for Query.getFilter() is Filter.INCLUDES.</p>
+<ul>
+<li><p class="first">These are static constants and do not require a constructor:</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="n">filter</span> <span class="o">=</span> <span class="n">Filter</span><span class="o">.</span><span class="na">INCLUDE</span><span class="o">;</span> <span class="c1">// no filter provided! include everything</span>
+    <span class="n">filter</span> <span class="o">=</span> <span class="n">Filter</span><span class="o">.</span><span class="na">EXCLUDE</span><span class="o">;</span> <span class="c1">// no filter provided! exclude everything</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">You can check for these values when optimising:</p>
+<div class="highlight-python"><div class="highlight"><pre>public void draw( Filter filter ){
+   if( filter == Filter.EXCLUDES ) return; // draw nothing
+
+   Query query = new DefaultQuery( &quot;roads&quot;, filter );
+   FeatureCollection collection = store.getFeatureSource( &quot;roads&quot; ).getFeatures( filter );
+   ...
+}
+</pre></div>
+</div>
+<p>However do be careful as it is easy to get confused.:</p>
+<div class="highlight-python"><div class="highlight"><pre>if( filter == Filter.INCLUDES || filter.evaluate( feature ) ){
+    System.out.println( &quot;Selected &quot;+ feature.getId();
+}
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="identifer">
+<h2>Identifer<a class="headerlink" href="#identifer" title="Permalink to this headline">¶</a></h2>
+<p>The other interesting way to use a filter to more as a &#8220;selection&#8221; in the GIS sense. In this
+case rather than evaluating the attributes we will directly match the FeatureId.</p>
+<img alt="../../_images/filter_id.PNG" src="../../_images/filter_id.PNG" />
+<p>The most common test is against FeatureId:</p>
+<blockquote>
+<div><div class="highlight-java"><div class="highlight"><pre>    <span class="n">FilterFactory2</span> <span class="n">ff</span> <span class="o">=</span> <span class="n">CommonFactoryFinder</span><span class="o">.</span><span class="na">getFilterFactory2</span><span class="o">();</span>
+    <span class="n">Filter</span> <span class="n">filter</span><span class="o">;</span>
+    
+    <span class="n">filter</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">id</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">featureId</span><span class="o">(</span><span class="s">&quot;CITY.98734597823459687235&quot;</span><span class="o">),</span>
+                   <span class="n">ff</span><span class="o">.</span><span class="na">featureId</span><span class="o">(</span><span class="s">&quot;CITY.98734592345235823474&quot;</span><span class="o">));</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>Formally this style of Id matching is not supposed to be mixed with the traditional attribute
+based evaluation (such as a bounding box filter).</p>
+<p>You can also use a Set&lt;FeatureId&gt;:</p>
+<blockquote>
+<div><div class="highlight-java"><div class="highlight"><pre>    <span class="n">FilterFactory2</span> <span class="n">ff</span> <span class="o">=</span> <span class="n">CommonFactoryFinder</span><span class="o">.</span><span class="na">getFilterFactory2</span><span class="o">();</span>
+    <span class="n">Filter</span> <span class="n">filter</span><span class="o">;</span>
+    
+    <span class="n">Set</span><span class="o">&lt;</span><span class="n">FeatureId</span><span class="o">&gt;</span> <span class="n">selected</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashSet</span><span class="o">&lt;</span><span class="n">FeatureId</span><span class="o">&gt;();</span>
+    <span class="n">selected</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">featureId</span><span class="o">(</span><span class="s">&quot;CITY.98734597823459687235&quot;</span><span class="o">));</span>
+    <span class="n">selected</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">featureId</span><span class="o">(</span><span class="s">&quot;CITY.98734592345235823474&quot;</span><span class="o">));</span>
+    
+    <span class="n">filter</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">id</span><span class="o">(</span><span class="n">selected</span><span class="o">);</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>The other place where identifiers are used are when working with versioned information. In this
+case a ResourceId is used that consists of both a &#8220;fid&#8221; and a &#8220;rid&#8221;.</p>
+<p>ResourceId can be used to explore versioned information:</p>
+<blockquote>
+<div><div class="highlight-java"><div class="highlight"><pre>    <span class="n">FilterFactory2</span> <span class="n">ff</span> <span class="o">=</span> <span class="n">CommonFactoryFinder</span><span class="o">.</span><span class="na">getFilterFactory2</span><span class="o">();</span>
+    <span class="n">Filter</span> <span class="n">filter</span><span class="o">;</span>
+    
+    <span class="c1">// grab a specific revision</span>
+    <span class="n">filter</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">id</span><span class="o">(</span> <span class="n">ff</span><span class="o">.</span><span class="na">featureId</span><span class="o">(</span><span class="s">&quot;CITY.98734597823459687235&quot;</span><span class="o">,</span><span class="s">&quot;A457&quot;</span><span class="o">)</span> <span class="o">);</span>
+    
+    <span class="c1">// You can also use ResourceId to grab a specific revision</span>
+    <span class="n">filter</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">id</span><span class="o">(</span> <span class="n">ff</span><span class="o">.</span><span class="na">resourceId</span><span class="o">(</span><span class="s">&quot;CITY.98734597823459687235&quot;</span><span class="o">,</span><span class="s">&quot;A457&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">Version</span><span class="o">())</span> <span class="o">);</span>
+    
+    <span class="c1">// grab the one before that</span>
+    <span class="n">filter</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">id</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">resourceId</span><span class="o">(</span><span class="s">&quot;CITY.98734597823459687235&quot;</span><span class="o">,</span><span class="s">&quot;A457&quot;</span><span class="o">,</span><span class="k">new</span> <span class="n">Version</span><span class="o">(</span><span class="n">Action</span><span class="o">.</span><span class="na">PREVIOUS</span><span class="o">)</span> <span class="o">));</span>
+    
+     <span class="c1">// grab the one after that</span>
+    <span class="n">filter</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">id</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">resourceId</span><span class="o">(</span><span class="s">&quot;CITY.98734597823459687235&quot;</span><span class="o">,</span><span class="s">&quot;A457&quot;</span><span class="o">,</span><span class="k">new</span> <span class="n">Version</span><span class="o">(</span><span class="n">Action</span><span class="o">.</span><span class="na">NEXT</span><span class="o">)</span> <span class="o">));</span>
+    
+     <span class="c1">// grab the first one</span>
+    <span class="n">filter</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">id</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">resourceId</span><span class="o">(</span><span class="s">&quot;CITY.98734597823459687235&quot;</span><span class="o">,</span><span class="s">&quot;A457&quot;</span><span class="o">,</span><span class="k">new</span> <span class="n">Version</span><span class="o">(</span><span class="n">Action</span><span class="o">.</span><span class="na">FIRST</span><span class="o">)</span> <span class="o">));</span>
+    
+    <span class="c1">// grab the first one (ie index = 1 )</span>
+    <span class="n">filter</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">id</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">resourceId</span><span class="o">(</span><span class="s">&quot;CITY.98734597823459687235&quot;</span><span class="o">,</span><span class="s">&quot;A457&quot;</span><span class="o">,</span><span class="k">new</span> <span class="n">Version</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span> <span class="o">));</span>
+    
+    <span class="c1">// grab the twelfth record in the sequence (ie index = 12 )</span>
+    <span class="n">filter</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">id</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">resourceId</span><span class="o">(</span><span class="s">&quot;CITY.98734597823459687235&quot;</span><span class="o">,</span><span class="s">&quot;A457&quot;</span><span class="o">,</span><span class="k">new</span> <span class="n">Version</span><span class="o">(</span><span class="mi">12</span><span class="o">)</span> <span class="o">));</span>
+    
+    <span class="c1">// Grab the entry close to Jan 1985</span>
+    <span class="n">DateFormat</span> <span class="n">df</span> <span class="o">=</span> <span class="n">DateFormat</span><span class="o">.</span><span class="na">getDateInstance</span><span class="o">(</span> <span class="n">DateFormat</span><span class="o">.</span><span class="na">SHORT</span> <span class="o">);</span>
+    <span class="n">df</span><span class="o">.</span><span class="na">setTimeZone</span><span class="o">(</span><span class="n">TimeZone</span><span class="o">.</span><span class="na">getTimeZone</span><span class="o">(</span><span class="s">&quot;GMT&quot;</span><span class="o">));</span>
+    <span class="n">filter</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">id</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">resourceId</span><span class="o">(</span><span class="s">&quot;CITY.98734597823459687235&quot;</span><span class="o">,</span><span class="s">&quot;A457&quot;</span><span class="o">,</span><span class="k">new</span> <span class="n">Version</span><span class="o">(</span><span class="n">df</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="s">&quot;1985-1-1&quot;</span><span class="o">))));</span>
+    
+     <span class="c1">// Grab all the entries in the 1990s</span>
+    <span class="n">filter</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">id</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">resourceId</span><span class="o">(</span><span class="s">&quot;CITY.98734597823459687235&quot;</span><span class="o">,</span><span class="n">df</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="s">&quot;1990-1-1&quot;</span><span class="o">),</span><span class="n">df</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="s">&quot;2000-1-1&quot;</span><span class="o">)));</span>
+    
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="spatial">
+<h2>Spatial<a class="headerlink" href="#spatial" title="Permalink to this headline">¶</a></h2>
+<p>Spatial filters are also available.</p>
+<img alt="../../_images/filter_spatial.PNG" src="../../_images/filter_spatial.PNG" />
+<p>Here is a quick example showing how to request features within a bounding box.</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="n">FilterFactory2</span> <span class="n">ff</span> <span class="o">=</span> <span class="n">CommonFactoryFinder</span><span class="o">.</span><span class="na">getFilterFactory2</span><span class="o">();</span>
+    <span class="n">ReferencedEnvelope</span> <span class="n">bbox</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ReferencedEnvelope</span><span class="o">(</span><span class="n">x1</span><span class="o">,</span> <span class="n">x2</span><span class="o">,</span> <span class="n">y1</span><span class="o">,</span> <span class="n">y2</span><span class="o">,</span> <span class="n">DefaultGeographicCRS</span><span class="o">.</span><span class="na">WGS84</span> <span class="o">);</span>
+    <span class="n">Filter</span> <span class="n">filter</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">bbox</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">property</span><span class="o">(</span><span class="s">&quot;the_geom&quot;</span><span class="o">),</span> <span class="n">bbox</span><span class="o">);</span>
+</pre></div>
+</div>
+<p>Please review the <a class="reference internal" href="../main/filter.html"><em>gt-main filter examples</em></a> for examples of using
+spatial filters.</p>
+</div>
+<div class="section" id="temporal">
+<h2>Temporal<a class="headerlink" href="#temporal" title="Permalink to this headline">¶</a></h2>
+<p>Temporal filters have been recently defined by the Filter 2.0 specification and
+are a new addition for GeoTools 8.0.</p>
+<img alt="../../_images/filter_temporal.PNG" src="../../_images/filter_temporal.PNG" />
+<p>The gt-main module supplies some of the implementation classes we will need:</p>
+<ul class="simple">
+<li>DefaultIntant: this is an implementation of Instant used to represent a single point in time.</li>
+<li>DefaultPeriod: this is an implementation of Period used to reresent a range in time</li>
+</ul>
+<p>Here is an example illustrating their construction and use with temporal filters:</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="c1">// use the default implementations from gt-main</span>
+
+    <span class="n">DateFormat</span> <span class="n">FORMAT</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SimpleDateFormat</span><span class="o">(</span><span class="s">&quot;yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSZ&quot;</span><span class="o">);</span>
+    <span class="n">Date</span> <span class="n">date1</span> <span class="o">=</span> <span class="n">FORMAT</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="s">&quot;2001-07-05T12:08:56.235-0700&quot;</span><span class="o">);</span>
+    <span class="n">Instant</span> <span class="n">temporalInstant</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DefaultInstant</span><span class="o">(</span><span class="k">new</span> <span class="n">DefaultPosition</span><span class="o">(</span><span class="n">date1</span><span class="o">));</span>
+
+    <span class="c1">// Simple check if property is after provided temporal instant</span>
+    <span class="n">Filter</span> <span class="n">after</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">after</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">property</span><span class="o">(</span><span class="s">&quot;date&quot;</span><span class="o">),</span> <span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="n">temporalInstant</span><span class="o">));</span>
+
+    <span class="c1">// can also check of property is within a certain period</span>
+    <span class="n">Date</span> <span class="n">date2</span> <span class="o">=</span> <span class="n">FORMAT</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="s">&quot;2001-07-04T12:08:56.235-0700&quot;</span><span class="o">);</span>
+    <span class="n">Instant</span> <span class="n">temporalInstant2</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DefaultInstant</span><span class="o">(</span><span class="k">new</span> <span class="n">DefaultPosition</span><span class="o">(</span><span class="n">date2</span><span class="o">));</span>
+    <span class="n">Period</span> <span class="n">period</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DefaultPeriod</span><span class="o">(</span><span class="n">temporalInstant</span><span class="o">,</span> <span class="n">temporalInstant2</span><span class="o">);</span>
+
+    <span class="n">Filter</span> <span class="n">within</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">toverlaps</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">property</span><span class="o">(</span><span class="s">&quot;constructed_date&quot;</span><span class="o">),</span>
+            <span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="n">period</span><span class="o">));</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="expression">
+<h2>Expression<a class="headerlink" href="#expression" title="Permalink to this headline">¶</a></h2>
+<p>Many of the filters mentioned above are presented as a comparison between two (or more)
+expressions. Expressions are used to access data held in a Feature (or POJO, or Record, or ...).</p>
+<p>The core expression abstractions are here - this set is open in that you can define new functions.</p>
+<img alt="../../_images/filter_expression.PNG" src="../../_images/filter_expression.PNG" />
+<p>You evaluate an expression against a feature:</p>
+<div class="highlight-python"><div class="highlight"><pre>Object value = expression.evaluate( feature );
+</pre></div>
+</div>
+<p>Or against a Java Bean, or even java.util.Map:</p>
+<div class="highlight-python"><div class="highlight"><pre>Object value = expression.evaluate( bean );
+</pre></div>
+</div>
+<p>Out of the box expression is typeless, and will do its best to convert the value
+to the type required.</p>
+<p>To do this yourself you can evaluate with a specific type of object in mind:</p>
+<div class="highlight-python"><div class="highlight"><pre>Integer number = expression.evaulate( feature, Integer.class );
+</pre></div>
+</div>
+<p>As an example of conversion here is an expression converting a String to a Color:</p>
+<div class="highlight-python"><div class="highlight"><pre>Expression expr = ff.literal(&quot;#FF0000&quot;)
+Color color = expr.evaualte( null, Color.class );
+</pre></div>
+</div>
+<p>Expressions are so useful that you will see them pop up in many parts of GeoTools. They are used
+by styles to select which data for portrayal and so forth.</p>
+<ul>
+<li><p class="first">PropertyName</p>
+<p>The PropertyName expression is used to extract information from your data model.</p>
+<p>The most common use is to access a Feature Property.:</p>
+<div class="highlight-python"><div class="highlight"><pre>FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2( GeoTools.getDefaultHints );
+
+Expression expr = ff.property(&quot;name&quot;);
+Object value = expr.evaluate( feature ); // evaluate
+if( value instanceof String){
+    name = (String) value;
+}
+else {
+    name = &quot;(invalid name)&quot;;
+}
+</pre></div>
+</div>
+<p>You can also ask for the value specifically as a String, null will be returned if the value
+cannot be forced into a String:</p>
+<div class="highlight-python"><div class="highlight"><pre>FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2( GeoTools.getDefaultHints );
+
+Expression expr = ff.property(&quot;name&quot;);
+String name = expr.evaluate( feature, String ); // evaluate
+if( name == null ){
+    name = &quot;(invalid name)&quot;;
+}
+</pre></div>
+</div>
+</li>
+<li><p class="first">X-Paths and Namespaces</p>
+<p>It is possible to use X-Path expressions in filters. This is particularly useful for evaluating nested
+properties against complex features. To evaluate X-path expressions, an
+org.xml.sax.helpers.NamespaceSupport object is needed to associate prefixes with Namespace URI&#8217;s.</p>
+<p>FilterFactory2 supports the creation of PropertyName expression with associated Namespace context
+information.:</p>
+<div class="highlight-python"><div class="highlight"><pre>FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2( GeoTools.getDefaultHints );
+
+NamespaceSupport namespaceSupport = new NamespaceSupport();
+namespaceSupport.declarePrefix(&quot;foo&quot;, &quot;urn:cgi:xmlns:CGI:GeoSciML:2.0&quot; );
+
+Filter filter = ff.greater(ff.property(&quot;foo:city/foo:size&quot;,namespaceSupport),ff.literal(300000));
+</pre></div>
+</div>
+<p>Namespace context information can be retrieved from an existing PropertyName expression:</p>
+<div class="highlight-python"><div class="highlight"><pre>PropertyName propertyName = ff.property(&quot;foo:city/foo:size&quot;, namespaceSupport);
+NamespaceSupport namespaceSupport2 = propertyName.getNamespaceContext();
+ // now namespaceSupport2 == namespaceSupport !
+</pre></div>
+</div>
+<p>PropertyName.getNamespaceContext() will return null when the PropertyName expression does not
+contain or does not support Namespace context information.</p>
+</li>
+<li><p class="first">Functions</p>
+<p>You can create functions using FilterFactory2:</p>
+<div class="highlight-python"><div class="highlight"><pre>FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2( GeoTools.getDefaultHints );
+
+PropertyName a = ff.property(&quot;testInteger&quot;);
+Literal b = ff.literal( 1004.0 );
+Function min = ff.function(&quot;min&quot;, a, b );
+</pre></div>
+</div>
+<p>For functions that take more than a couple parameters you will need to use an Array:</p>
+<div class="highlight-python"><div class="highlight"><pre>FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+PropertyName property = ff.property(&quot;name&quot;);
+Literal search = ff.literal(&quot;foo&quot;);
+Literal replace = ff.literal(&quot;bar&quot;);
+Literal all = ff.literal( true );
+
+Function f = ff.function(&quot;strReplace&quot;, new Expression[]{property,search,replace,all});
+</pre></div>
+</div>
+<p>What can you do when a Function is not found - creating the Function will fail!</p>
+<p>The Symbology Encoding 2.0 specification has the concept of a fallbackValue - while we have not
+made it available via the factory yet you can use the FunctionFinder.:</p>
+<div class="highlight-python"><div class="highlight"><pre>FunctionFinder finder = new FunctionFinder(null);
+finder.findFunction(&quot;pi&quot;, Collections.emptyList(), ff.literal(Math.PI));
+</pre></div>
+</div>
+<p>Please note that the literal value provided above is only used when the expression is evaluated
+in context of a service that does not support the <strong>pi()</strong> function.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="filtervisitor">
+<h2>FilterVisitor<a class="headerlink" href="#filtervisitor" title="Permalink to this headline">¶</a></h2>
+<p>FilterVisitor is used to traverse the filter data structure. Common uses include:</p>
+<ul class="simple">
+<li>Asking questions about the content of a Filter</li>
+<li>Performing analysis and optimisations on a Filter (say replacing &#8220;1+1&#8221; with &#8220;2&#8221; )</li>
+<li>Transforming the filter (think search and replace)</li>
+</ul>
+<div class="sidebar">
+<p class="first sidebar-title">Visitor</p>
+<p>For simple data structures like a List java provides a for loop
+to allow you to traverse list elements. Since the Filter data
+structure forms a tree we have a different approach - passing in
+an object (called a visitor) which is called on each element in
+the tree.</p>
+<p class="last">A similar approach is used for XML documents (which also form a
+tree) when XSLT processing is used traverse the tree.</p>
+</div>
+<p>All of these activities have something in common:</p>
+<ul class="simple">
+<li>the contents of the Filter need to be examined</li>
+<li>a result or answer needs to be built up</li>
+</ul>
+<p>Here is a quick code example showing the use of a visitor to traverse the data structure:</p>
+<div class="highlight-python"><div class="highlight"><pre>// The visitor will be called on each object
+// in your filter
+class FindNames extends DefaultFilterVisitor {
+    public Set&lt;String&gt; found = new HashSet&lt;String&gt;();
+    /** We are only interested in property name expressions */
+    public Object visit( PropertyName expression, Object data ) {
+        found.add( expression.getPropertyName() );
+        return found;
+    }
+}
+// Pass the visitor to your filter to start the traversal
+FindNames visitor = new FindNames();
+filter.accept( visitor, null );
+
+System.out.println(&quot;Property Names found &quot;+visitor.found );
+</pre></div>
+</div>
+<p>For more examples please see gt-main where several visitors are defined for your use.</p>
+</div>
+<div class="section" id="filtercapabilities">
+<h2>FilterCapabilities<a class="headerlink" href="#filtercapabilities" title="Permalink to this headline">¶</a></h2>
+<p>GeoTools is very good about ensuring that your Filters and Expressions perform as expected; however
+it will do what you say (even at a great cost to performance!). Different web services and
+databases have different native capabilities. For any functionality that cannot be provided
+natively GeoTools will perform the work locally in Java. Indeed for simple file formats almost
+everything occurs locally in Java.</p>
+<p>The <strong>FilterCapabilities</strong> data structure is used to describe the native abilities of a
+WebFeatureService. We also use this data structure to describe the abilities of the different
+JDBC DataStores for working with Databases. Of special interest is the list of FunctionNames
+supported.</p>
+<img alt="../../_images/filter_capabilities.PNG" src="../../_images/filter_capabilities.PNG" />
+<p>This data structure is not commonly used in day to day GeoTools work; it is mostly of interest to
+those implementing support for new web or database services.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="coverage.html" title="GridCoverage"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="feature.html" title="Feature"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" >OpenGIS</a> &raquo;</li>
+        <li><a href="#">Filter</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

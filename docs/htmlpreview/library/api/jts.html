@@ -1,0 +1,248 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>JTS Utility Class &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../index.html" />
+    <link rel="up" title="API" href="index.html" />
+    <link rel="next" title="Converter" href="convert.html" />
+    <link rel="prev" title="Envelope" href="envelope.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">API</a> &raquo;</li>
+        <li><a href="#">JTS Utility Class</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">JTS Utility Class</a><ul>
+<li><a class="reference internal" href="#distance">Distance</a></li>
+<li><a class="reference internal" href="#transform">Transform</a></li>
+<li><a class="reference internal" href="#convert">Convert</a></li>
+<li><a class="reference internal" href="#smooth">Smooth</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="envelope.html"
+                        title="previous chapter">Envelope</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="convert.html"
+                        title="next chapter">Converter</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/library/api/jts.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="jts-utility-class">
+<h1>JTS Utility Class<a class="headerlink" href="#jts-utility-class" title="Permalink to this headline">¶</a></h1>
+<p>The JTS Utility class is used to smooth out some of the common
+JTS Geometry activities.</p>
+<p>Reference:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://docs.geotools.org/stable/javadocs/org/geotools/geometry/jts/JTS.html">http://docs.geotools.org/stable/javadocs/org/geotools/geometry/jts/JTS.html</a></li>
+<li><a class="reference internal" href="../../tutorial/geometry/geometrycrs.html"><em>Geometry CRS Tutorial</em></a> (tutorial)</li>
+</ul>
+<div class="section" id="distance">
+<h2>Distance<a class="headerlink" href="#distance" title="Permalink to this headline">¶</a></h2>
+<p>There is a helper method allowing you to calcualte the real-world distance between two points:</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="kt">double</span> <span class="n">distance</span> <span class="o">=</span> <span class="n">JTS</span><span class="o">.</span><span class="na">orthodromicDistance</span><span class="o">(</span><span class="n">start</span><span class="o">,</span> <span class="n">end</span><span class="o">,</span> <span class="n">crs</span><span class="o">);</span>
+    <span class="kt">int</span> <span class="n">totalmeters</span> <span class="o">=</span> <span class="o">(</span><span class="kt">int</span><span class="o">)</span> <span class="n">distance</span><span class="o">;</span>
+    <span class="kt">int</span> <span class="n">km</span> <span class="o">=</span> <span class="n">totalmeters</span> <span class="o">/</span> <span class="mi">1000</span><span class="o">;</span>
+    <span class="kt">int</span> <span class="n">meters</span> <span class="o">=</span> <span class="n">totalmeters</span> <span class="o">-</span> <span class="o">(</span><span class="n">km</span> <span class="o">*</span> <span class="mi">1000</span><span class="o">);</span>
+    <span class="kt">float</span> <span class="n">remaining_cm</span> <span class="o">=</span> <span class="o">(</span><span class="kt">float</span><span class="o">)</span> <span class="o">(</span><span class="n">distance</span> <span class="o">-</span> <span class="n">totalmeters</span><span class="o">)</span> <span class="o">*</span> <span class="mi">10000</span><span class="o">;</span>
+    <span class="n">remaining_cm</span> <span class="o">=</span> <span class="n">Math</span><span class="o">.</span><span class="na">round</span><span class="o">(</span><span class="n">remaining_cm</span><span class="o">);</span>
+    <span class="kt">float</span> <span class="n">cm</span> <span class="o">=</span> <span class="n">remaining_cm</span> <span class="o">/</span> <span class="mi">100</span><span class="o">;</span>
+
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Distance = &quot;</span> <span class="o">+</span> <span class="n">km</span> <span class="o">+</span> <span class="s">&quot;km &quot;</span> <span class="o">+</span> <span class="n">meters</span> <span class="o">+</span> <span class="s">&quot;m &quot;</span> <span class="o">+</span> <span class="n">cm</span> <span class="o">+</span> <span class="s">&quot;cm&quot;</span><span class="o">);</span>
+</pre></div>
+</div>
+<p>Internally this method makes use of GeodeticCalculator which offers a more general purpose solution
+able to take the distance between any two points (even if they are provided in different
+coordiante reference systems).</p>
+</div>
+<div class="section" id="transform">
+<h2>Transform<a class="headerlink" href="#transform" title="Permalink to this headline">¶</a></h2>
+<p>You can make use of <em>MathTransform*</em> directly - it has methods for feeding <strong>DirectPosition</strong> instances in one at a time, transforming, and returning a modified <strong>DirectPosition</strong>.</p>
+<p>The problem is our JTS Geometry instances are built out of <strong>Coordinate</strong> instances rather than using <strong>DirectPosition</strong>.</p>
+<p>The <strong>JTS</strong> utility class defines a helper method for this common activity:</p>
+<div class="highlight-python"><div class="highlight"><pre>import org.geotools.geometry.jts.JTS;
+import org.geotools.referencing.CRS;
+
+CoordinateReferenceSystem sourceCRS = CRS.decode(&quot;EPSG:4326&quot;);
+CoordinateReferenceSystem targetCRS = CRS.decode(&quot;EPSG:23032&quot;);
+
+MathTransform transform = CRS.findMathTransform(sourceCRS, targetCRS);
+Geometry targetGeometry = JTS.transform( sourceGeometry, transform);
+</pre></div>
+</div>
+<p>As a quick example, you can make use of an affine transformation to perform simple transformations such as rotation and scale.:</p>
+<div class="highlight-python"><div class="highlight"><pre>Coordinate ancorPoint = geometry.getCentroid(); // or some other point
+AffineTransform affineTransform = AffineTransform.getRotateInstance(angleRad, ancorPoint.x, ancorPoint.y);
+MathTransform mathTransform = new AffineTransform2D(affineTransform);
+
+Geometry rotatedPoint = JTS.transform(geometry, mathTransform);
+</pre></div>
+</div>
+<p>The same approach works with a JTS Coordinate:</p>
+<div class="highlight-python"><div class="highlight"><pre>// by default it can make a new Coordinate for the result
+Coordinate targetCoordinate = JTS.transform( coordinate, null, transform );
+
+// or make use of an existing destination coordinate (to save memory)
+JTS.transform( coordinate, destination, transform );
+
+// or modify a coordinate in place
+JTS.transform( coordinate, coordinate, transform );
+</pre></div>
+</div>
+<p>And also a JTS Envelope, although this case is a bit special in that you get a chance to specify how many points along the edge of the boundary are sampled. If you specify 5, five points along the top, bottom, left and right edges will be transformed - giving you a chance to better account for the curvature of the earth.:</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="n">CoordinateReferenceSystem</span> <span class="n">sourceCRS</span> <span class="o">=</span> <span class="n">CRS</span><span class="o">.</span><span class="na">decode</span><span class="o">(</span><span class="s">&quot;EPSG:4326&quot;</span><span class="o">);</span>
+    <span class="n">CoordinateReferenceSystem</span> <span class="n">targetCRS</span> <span class="o">=</span> <span class="n">CRS</span><span class="o">.</span><span class="na">decode</span><span class="o">(</span><span class="s">&quot;EPSG:23032&quot;</span><span class="o">);</span>
+    
+    <span class="n">Envelope</span> <span class="n">envelope</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Envelope</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="mi">10</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">20</span><span class="o">);</span>
+    
+    <span class="n">MathTransform</span> <span class="n">transform</span> <span class="o">=</span> <span class="n">CRS</span><span class="o">.</span><span class="na">findMathTransform</span><span class="o">(</span><span class="n">sourceCRS</span><span class="o">,</span> <span class="n">targetCRS</span><span class="o">);</span>
+    
+    <span class="n">Envelope</span> <span class="n">quick</span> <span class="o">=</span> <span class="n">JTS</span><span class="o">.</span><span class="na">transform</span><span class="o">(</span><span class="n">envelope</span><span class="o">,</span> <span class="n">transform</span><span class="o">);</span>
+    
+    <span class="c1">// Sample 10 points around the envelope</span>
+    <span class="n">Envelope</span> <span class="n">better</span> <span class="o">=</span> <span class="n">JTS</span><span class="o">.</span><span class="na">transform</span><span class="o">(</span><span class="n">envelope</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="n">transform</span><span class="o">,</span> <span class="mi">10</span><span class="o">);</span>
+</pre></div>
+</div>
+<p>Finally the common target of DefaultGeographicCRS.WGS84 is given its own method (to quickly
+transform to geographic bounds):</p>
+<div class="highlight-python"><div class="highlight"><pre>Envelope geographicBounds = JTS.toGeographic( envelope, dataCRS );
+</pre></div>
+</div>
+<p>Finally there is a very fast method for performing a transform directly on an array of doubles:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">JTS</span><span class="o">.</span><span class="n">xform</span><span class="p">(</span> <span class="n">transform</span><span class="p">,</span> <span class="n">sourceArray</span><span class="p">,</span> <span class="n">destinationArray</span> <span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="convert">
+<h2>Convert<a class="headerlink" href="#convert" title="Permalink to this headline">¶</a></h2>
+<p>There are a number of methods to help convert JTS Geometry to some of the ISO Geometry ideas used
+by the referencing module.</p>
+<p>Quickly convert from a JTS Envelope to the ISO Geometry Envelope (with a provided CoordinateReferenceSystem):</p>
+<div class="highlight-python"><div class="highlight"><pre>Envelope envelope = geometry.getEnvelopeInternal();
+
+// create with supplied crs
+Envelope2D bounds = JTS.getEnvelope2D( envelope, crs );
+
+// Check geometry.getUserData() for srsName or CoordinateReferenceSystem
+ReferencedEnvelope bounds = JTS.toEnvelope( geometry );
+</pre></div>
+</div>
+<p>Here are also a large number of methods to help you create a geometry from a range of sources:</p>
+<div class="highlight-python"><div class="highlight"><pre>// Convert a normal JTS Envelope
+Polygon polygon = JTS.toGeometry( envelope );
+
+// The methods take an optional GeometryFactory
+Polygon polygon2 = JTS.toGeometry( envelope, geometryFactory );
+
+// Or from ISO Geometry BoundingBox (such as ReferencedEnvelope)
+Polygon polygon3 = JTS.toGeometry( bounds );
+
+// Or from a Java2D Shape
+Geometry geometry = JTS.toGeometry( shape );
+</pre></div>
+</div>
+</div>
+<div class="section" id="smooth">
+<h2>Smooth<a class="headerlink" href="#smooth" title="Permalink to this headline">¶</a></h2>
+<p>A recent addition is the use of splines to &#8220;smooth&#8221; a geometry into a single curve that contains
+all the points.:</p>
+<div class="highlight-python"><div class="highlight"><pre>// The amount of smoothing can be set between 0.0 and 1.0
+Geometry geometry = JTS.smooth( geometry, 0.4 );
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="convert.html" title="Converter"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="envelope.html" title="Envelope"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" >API</a> &raquo;</li>
+        <li><a href="#">JTS Utility Class</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

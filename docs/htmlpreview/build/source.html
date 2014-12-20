@@ -1,0 +1,222 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Source Code &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../index.html" />
+    <link rel="up" title="Building" href="index.html" />
+    <link rel="next" title="Using Maven" href="maven/index.html" />
+    <link rel="prev" title="Sphinx (Optional)" href="install/sphinx.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Building</a> &raquo;</li>
+        <li><a href="#">Source Code</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Source Code</a><ul>
+<li><a class="reference internal" href="#download-source-code">Download Source Code</a></li>
+<li><a class="reference internal" href="#git-checkout-of-source-code">Git Checkout of Source Code</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="install/sphinx.html"
+                        title="previous chapter">Sphinx (Optional)</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="maven/index.html"
+                        title="next chapter">Using Maven</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/build/source.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="source-code">
+<h1>Source Code<a class="headerlink" href="#source-code" title="Permalink to this headline">¶</a></h1>
+<p>The GeoTools source code is organized into the following structure:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="25%" />
+<col width="75%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">build/</span></code></td>
+<td>java projects that help with our build process</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">docs/</span></code></td>
+<td>documentation and website source in rich structured text</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">modules/library/</span></code></td>
+<td>the core library allowing your application to be spatial</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">modules/extensions/</span></code></td>
+<td>extensions built on top of the library that do useful things</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">modules/ogc/</span></code></td>
+<td>OGC schemas and data structures</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">modules/plugins/</span></code></td>
+<td>plugins that work with the core library to support additional formats</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">modules/unsupported/</span></code></td>
+<td>community code that is not ready yet, but you may find interesting</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">spike/</span></code></td>
+<td>scratch space for ideas and experiments and collaboration</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="download-source-code">
+<h2>Download Source Code<a class="headerlink" href="#download-source-code" title="Permalink to this headline">¶</a></h2>
+<p>Source code is published with each release and is available on the downloads page:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://sourceforge.net/projects/geotools/files">http://sourceforge.net/projects/geotools/files</a></li>
+</ul>
+<p>Source code encoding is UTF-8.</p>
+</div>
+<div class="section" id="git-checkout-of-source-code">
+<h2>Git Checkout of Source Code<a class="headerlink" href="#git-checkout-of-source-code" title="Permalink to this headline">¶</a></h2>
+<p>GeoTools makes use of the Git revision control system (as mentioned in downloads above).
+It is an advanced version management tool with a different workflow than Subversion or
+CVS.</p>
+<p>You do not need any special permission to have read-only access to the source code which
+is located on <a class="reference external" href="https://github.com/geotools/geotools/">github</a>. You are encouraged to
+clone the repository or fork it into your own account and issue pull requests.</p>
+<p>Please just check out the code and have fun. If you are interested in getting commit permission later you can look into Developers Guide Roles and Responsibilities.</p>
+<ol class="arabic">
+<li><p class="first">Our Git Install page contains detailed instructions for setting up git
+on different platforms.</p>
+</li>
+<li><p class="first">Ensure your git configuration is a friendly one to cross platform projects:</p>
+<div class="highlight-python"><div class="highlight"><pre>git config --global core.autocrlf input
+</pre></div>
+</div>
+<p>This option may also be set on a repository by repository basis if for some reason
+you require a different global default. You can verify your git configuration with:</p>
+<div class="highlight-python"><div class="highlight"><pre>git config --list
+</pre></div>
+</div>
+</li>
+<li><p class="first">Navigate to where you want the checkout with the command line:</p>
+<div class="highlight-python"><div class="highlight"><pre>C:\java&gt;
+</pre></div>
+</div>
+</li>
+<li><p class="first">Checkout geotools using git (a new directory &#8220;geotools&#8221; will be created):</p>
+<div class="highlight-python"><div class="highlight"><pre>C:\java&gt; git clone git://github.com/geotools/geotools.git
+</pre></div>
+</div>
+</li>
+<li><p class="first">This will create a geotools directory that contains the source code for this project</p>
+</li>
+</ol>
+<p>Notes:</p>
+<ul>
+<li><p class="first">You can switch between the master and stable branches easily:</p>
+<div class="highlight-python"><div class="highlight"><pre>C:\java\geotools&gt; git checkout master
+C:\java\geotools&gt; git checkout 11.x
+C:\java\geotools&gt; git checkout 8.x
+</pre></div>
+</div>
+</li>
+<li><p class="first">Take the time to read the git book before diving into git:</p>
+<blockquote>
+<div><p><a class="reference external" href="http://git-scm.com/book/">http://git-scm.com/book/</a></p>
+</div></blockquote>
+<p>Also an excellent introduction to git:</p>
+<blockquote>
+<div><p><a class="reference external" href="http://www.sbf5.com/~cduan/technical/git/">http://www.sbf5.com/~cduan/technical/git/</a></p>
+</div></blockquote>
+</li>
+<li><p class="first">Although links to various IDE interfaces will be made available, no GUI will substitute for an understanding of the underlying git versioning model, and how the system is actually doing work.</p>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="maven/index.html" title="Using Maven"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="install/sphinx.html" title="Sphinx (Optional)"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="index.html" >Building</a> &raquo;</li>
+        <li><a href="#">Source Code</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,320 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Map data and display classes &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../index.html" />
+    <link rel="up" title="Render" href="index.html" />
+    <link rel="next" title="Styling features for display" href="style.html" />
+    <link rel="prev" title="GTRenderer to draw maps" href="gtrenderer.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Render</a> &raquo;</li>
+        <li><a href="#">Map data and display classes</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Map data and display classes</a><ul>
+<li><a class="reference internal" href="#mapcontent">MapContent</a><ul>
+<li><a class="reference internal" href="#aspect-ratio-of-map-and-screen-bounds">Aspect-ratio of map and screen bounds</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#layer">Layer</a><ul>
+<li><a class="reference internal" href="#featurelayer">FeatureLayer</a></li>
+<li><a class="reference internal" href="#gridcoveragelayer">GridCoverageLayer</a></li>
+<li><a class="reference internal" href="#gridreaderlayer">GridReaderLayer</a></li>
+<li><a class="reference internal" href="#directlayer">DirectLayer</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#mapcontext">MapContext</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="gtrenderer.html"
+                        title="previous chapter">GTRenderer to draw maps</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="style.html"
+                        title="next chapter">Styling features for display</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/library/render/map.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="map-data-and-display-classes">
+<h1>Map data and display classes<a class="headerlink" href="#map-data-and-display-classes" title="Permalink to this headline">¶</a></h1>
+<p>The gt-render module defines a new data structure to represent the contents of a map. MapContent
+defines a map as a series of layers (which are drawn in order). This is not part of the formal
+gt-opengis module because it is not based on a standard.</p>
+<div class="section" id="mapcontent">
+<h2>MapContent<a class="headerlink" href="#mapcontent" title="Permalink to this headline">¶</a></h2>
+<p>MapContent is used to capture the contents of a map for rendering.</p>
+<img alt="../../_images/map_content.PNG" src="../../_images/map_content.PNG" />
+<p>These ideas are broken down into the following three classes:</p>
+<ul>
+<li><p class="first"><strong>MapContent</strong></p>
+<p>The contents of a map to be drawn.</p>
+</li>
+<li><p class="first"><strong>MapViewport</strong></p>
+<p>Represents the area of the map to drawn. The viewport stores:</p>
+<ul class="simple">
+<li>the world bounds (spatial extent in world units) of the area to be drawn;</li>
+<li>the screen, image or device bounds to draw into;</li>
+<li>the coordinate transforms used to convert between world and screen positions.</li>
+</ul>
+<p>In practice, you provide the world and screen bounds to a MapViewport object and
+it calculates the coordinate transforms for you (see <a class="reference internal" href="#aspect-ratio"><em>Aspect-ratio of map and screen bounds</em></a> for more details).</p>
+<p>Potentially, a viewport could also work with parameters other than horizontal spatial extent when
+defining the map data to be drawn such as height or time. The MapViewport class does not presently
+support such usage but you could derive a sub-class for this purpose.</p>
+</li>
+<li><p class="first"><strong>Layer</strong> - represents a layer of content to be drawn; layers are held in a list and are drawn in
+order.</p>
+</li>
+</ul>
+<p>Examples:</p>
+<ul>
+<li><p class="first">Direct access to layer information is provided:</p>
+<div class="highlight-python"><div class="highlight"><pre>MapContent content = mapFrame.getMapContent();
+if( content.layers().get(0) instanceof FeatureLayer ){
+    FeatureLayer selectionLayer = (FeatureLayer) content.layers().get(0);
+    selectLayer.setStyle( style );
+}
+</pre></div>
+</div>
+</li>
+<li><p class="first">Zoom out to show all content:</p>
+<div class="highlight-python"><div class="highlight"><pre>MapContent content = mapFrame.getMapContent();
+MapViewport viewport = content.getMapViewport();
+ReferencedEnvelope maxBounds = null;
+CoordinateReferenceSystem mapCRS = viewport.getCoordianteReferenceSystem();
+
+for (Layer layer : content.layers()) {
+    ReferencedEnvelope dataBounds = layer.getBounds();
+    CoordinateReferenceSystem dataCrs = dataBounds.getCoordinateReferenceSystem();
+    if (!CRS.equalsIgnoreMetadata(dataCrs, mapCRS)) {
+        dataBounds = dataBounds.transform(mapCRS, true);
+    }
+    if (maxBounds == null) {
+        maxBounds = dataBounds;
+    } else {
+        maxBounds.expandToInclude(dataBounds);
+    }
+}
+viewport.setBounds( maxBounds );
+</pre></div>
+</div>
+</li>
+</ul>
+<div class="section" id="aspect-ratio-of-map-and-screen-bounds">
+<span id="aspect-ratio"></span><h3>Aspect-ratio of map and screen bounds<a class="headerlink" href="#aspect-ratio-of-map-and-screen-bounds" title="Permalink to this headline">¶</a></h3>
+<p>Very often, the aspect ratio (ratio of width to height) of the world and screen bounds will differ.
+By default, MapViewport does not make any correction for this (this behaviour accords with the OGC
+WMS specification which states that a map server should honour the bounds provided by the user
+regardless of any distortion which results).</p>
+<p>In many cases, it is preferable to have MapViewport automagically correct for differing aspect
+ratios, thereby avoiding distortion in the map display. You can request this behaviour as follows:</p>
+<div class="highlight-python"><div class="highlight"><pre>MapViewport vp = myMapContent.getViewport();
+vp.setMatchingAspectRatio( true );
+</pre></div>
+</div>
+<p>With this setting, the viewport will calculate coordinate transforms such that the user requested
+world bounds are centered in the screen or image display area. Note that when such a correction has
+been applied, the world bounds stored by the viewport will be larger than those requested by the
+user.</p>
+</div>
+</div>
+<div class="section" id="layer">
+<h2>Layer<a class="headerlink" href="#layer" title="Permalink to this headline">¶</a></h2>
+<p>We have different subclasses of of Layer each specifically made for working with different kinds
+of content.</p>
+<img alt="../../_images/layer.PNG" src="../../_images/layer.PNG" />
+<p>The important information each Layer implementation must provided is:</p>
+<ul>
+<li><p class="first">Layer.getTitle()</p>
+</li>
+<li><p class="first">Layer.setTitle( String )</p>
+<p>Used in a legend to display to the user</p>
+</li>
+<li><p class="first">Layer.isVisible()</p>
+</li>
+<li><p class="first">Layer.setVisible( boolean )</p>
+</li>
+<li><p class="first">Layer.getuserData()</p>
+<p>A general purpose map used by applications to hold information. This
+approach was preferred as an alternative to loading up Layer with additional methods to
+handle selection, error feedback and so forth.</p>
+</li>
+<li><p class="first">Layer.getBounds() - the extent of the data being rendered by the Layer</p>
+</li>
+<li><p class="first">Layer.addMapLayerListener()</p>
+</li>
+<li><p class="first">Layer.removeMapLayerListener()</p>
+<p>Used to notify the renderer of any changes when used in an interactive setting.</p>
+</li>
+</ul>
+<p>With these ideas in mind we can now explore the different kinds of content that can be added
+to a map:</p>
+<div class="section" id="featurelayer">
+<h3>FeatureLayer<a class="headerlink" href="#featurelayer" title="Permalink to this headline">¶</a></h3>
+<p>Feature layer is set up to render information from a FeatureSource.</p>
+<img alt="../../_images/feature_layer.PNG" src="../../_images/feature_layer.PNG" />
+<p>You can use the various method of the DataUtilities class to convert your information into
+a FeatureSource if it happens to be in another format. This is what the constructor that
+takes a FeatureCollection does internally.</p>
+</div>
+<div class="section" id="gridcoveragelayer">
+<h3>GridCoverageLayer<a class="headerlink" href="#gridcoveragelayer" title="Permalink to this headline">¶</a></h3>
+<p>Used to render a GridCoverage.</p>
+<img alt="../../_images/gridcoverage_layer.PNG" src="../../_images/gridcoverage_layer.PNG" />
+<p>Note that direct use of a GridCoverage in this fashion is generally not as efficent
+as using GridReaderLayer below.</p>
+</div>
+<div class="section" id="gridreaderlayer">
+<h3>GridReaderLayer<a class="headerlink" href="#gridreaderlayer" title="Permalink to this headline">¶</a></h3>
+<p>Used to render raster information on the fly directly from a GridCoverageReader.</p>
+<img alt="../../_images/gridreader_layer.PNG" src="../../_images/gridreader_layer.PNG" />
+<p>This is an efficient solution (much like FeatureSource) in that for many cases the correct visual
+can be determined without reading all of the raster into memory:</p>
+<ul class="simple">
+<li>When zoomed in the amount of the file read can be limited when working with common formats
+such as geotiff. Other formats such as JPEG require that the entire image be loaded each time.</li>
+<li>When zoomed out information from a raster overlay can be used (if avaialble) to avoid reading the
+entire file.</li>
+</ul>
+<p>The performance of GridReaderLayer is dependent on how you have tuned your Java Advanced Imaging
+&#8220;TileCache&#8221; and on the amount of work you have put into prepairing your data for display.</p>
+<p>This class has been extended by gt-wms for the rendering of WMS information.</p>
+</div>
+<div class="section" id="directlayer">
+<h3>DirectLayer<a class="headerlink" href="#directlayer" title="Permalink to this headline">¶</a></h3>
+<p><em>Experimental</em>: DirectLayer is used fill in your own custom renderer (primarily intended for
+drawing scalebars, north arrows and grids to decorate the map).</p>
+<img alt="../../_images/direct_layer.PNG" src="../../_images/direct_layer.PNG" />
+<p>This concept is considered experimental and is not currently hooked up.</p>
+</div>
+</div>
+<div class="section" id="mapcontext">
+<h2>MapContext<a class="headerlink" href="#mapcontext" title="Permalink to this headline">¶</a></h2>
+<p>An earlier draft of these ideas is based on initial OGC discussion papers:</p>
+<ul class="simple">
+<li>Web Map Context (WMS Context)</li>
+<li>Open Web Service Context (OWS Context)</li>
+</ul>
+<p>The GeoTools community actively looking to collaborate with other projects (such as OpenJUMP,
+uDig and deegree) in order to collaborate on these ideas. If open source collaboration fails
+we will look to traditional collaboration with a standards body in the form of the
+OGC working group on &#8220;Open Web Context&#8221; documents.</p>
+<p>References:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://www.opengeospatial.org/standards/wmc">http://www.opengeospatial.org/standards/wmc</a></li>
+<li><a class="reference external" href="http://www.opengeospatial.org/projects/groups/owscontextswg">http://www.opengeospatial.org/projects/groups/owscontextswg</a></li>
+</ul>
+<p>These initial concepts are preserved with the following extensions to MapContent.</p>
+<img alt="../../_images/map_context.PNG" src="../../_images/map_context.PNG" />
+<p>The critical design difference here is a single <em>MapLayer</em> which is general purpose for working
+with any kind of content (and also confusing to work with as their is no easy way to check what
+kind of content is in use).</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Internally this code has been refactored to use MapContent / Layer and MapViewport. As such we do
+not recommend using MapContext and MapLayer for new development.</p>
+<p>At a technical level we no longer keep instances of of MapLayer around; instead each is a
+shallow wrapper around a layer holding the specific content (FeatureLayer, GridReaderLayer,
+etc...).</p>
+<p>In the event clinet code is expecting a MapLayer; this wrapper is recreated as needed and
+returned from getLayer( int ) method.</p>
+<p class="last">In a similar fashion the various methods for managing the area of interest delegate to
+MapViewport.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="style.html" title="Styling features for display"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="gtrenderer.html" title="GTRenderer to draw maps"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" >Render</a> &raquo;</li>
+        <li><a href="#">Map data and display classes</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,2642 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Function List &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../index.html" />
+    <link rel="up" title="Main" href="index.html" />
+    <link rel="next" title="Feature" href="feature.html" />
+    <link rel="prev" title="Filter" href="filter.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Main</a> &raquo;</li>
+        <li><a href="#">Function List</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Function List</a><ul>
+<li><a class="reference internal" href="#processfunctionfactory">ProcessFunctionFactory</a><ul>
+<li><a class="reference internal" href="#addcoverages-coveragea-coverageb-result">AddCoverages(coverageA, coverageB): result</a></li>
+<li><a class="reference internal" href="#affine-coverage-scalex-scaley-shearx-sheary-translatex-translatey-nodata-interpolation-result">Affine(coverage, scalex, scaley, shearx, sheary, translatex, translatey, nodata, interpolation): result</a></li>
+<li><a class="reference internal" href="#aggregate-features-aggregationattribute-function-singlepass-result">Aggregate(features, aggregationAttribute, function, singlePass): result</a></li>
+<li><a class="reference internal" href="#areagrid-envelope-width-height-result">AreaGrid(envelope, width, height): result</a></li>
+<li><a class="reference internal" href="#bandmerge-coverages-roi-transformchoice-index-result">BandMerge(coverages, roi, transformChoice, index): result</a></li>
+<li><a class="reference internal" href="#bandselect-coverage-sampledimensions-visiblesampledimension-result">BandSelect(coverage, SampleDimensions, VisibleSampleDimension): result</a></li>
+<li><a class="reference internal" href="#barnessurface-data-valueattr-datalimit-scale-convergence-passes-minobservations-maxobservationdistance-nodatavalue-pixelspercell-querybuffer-outputbbox-outputwidth-outputheight-result">BarnesSurface(data, valueAttr, dataLimit, scale, convergence, passes, minObservations, maxObservationDistance, noDataValue, pixelsPerCell, queryBuffer, outputBBOX, outputWidth, outputHeight): result</a></li>
+<li><a class="reference internal" href="#bounds-features-bounds">Bounds(features): bounds</a></li>
+<li><a class="reference internal" href="#bufferfeaturecollection-features-buffer-result">BufferFeatureCollection(features, buffer): result</a></li>
+<li><a class="reference internal" href="#bufferfeaturecollection-features-distance-attributename-result">BufferFeatureCollection(features, distance, attributeName): result</a></li>
+<li><a class="reference internal" href="#centroid-features-result">Centroid(features): result</a></li>
+<li><a class="reference internal" href="#clip-features-clip-preservez-result">Clip(features, clip, preserveZ): result</a></li>
+<li><a class="reference internal" href="#collectgeometries-features-result">CollectGeometries(features): result</a></li>
+<li><a class="reference internal" href="#contour-data-band-levels-interval-simplify-smooth-roi-result">Contour(data, band, levels, interval, simplify, smooth, roi): result</a></li>
+<li><a class="reference internal" href="#count-features-result">Count(features): result</a></li>
+<li><a class="reference internal" href="#cropcoverage-coverage-cropshape-result">CropCoverage(coverage, cropShape): result</a></li>
+<li><a class="reference internal" href="#feature-geometry-crs-typename-result">Feature(geometry, crs, typeName): result</a></li>
+<li><a class="reference internal" href="#grid-bounds-width-height-vertexspacing-mode-result">Grid(bounds, width, height, vertexSpacing, mode): result</a></li>
+<li><a class="reference internal" href="#heatmap-data-radiuspixels-weightattr-pixelspercell-outputbbox-outputwidth-outputheight-result">Heatmap(data, radiusPixels, weightAttr, pixelsPerCell, outputBBOX, outputWidth, outputHeight): result</a></li>
+<li><a class="reference internal" href="#inclusionfeaturecollection-first-second-result">InclusionFeatureCollection(first, second): result</a></li>
+<li><a class="reference internal" href="#intersectionfeaturecollection-first-feature-collection-second-feature-collection-first-attributes-to-retain-second-attributes-to-retain-intersectionmode-percentagesenabled-areasenabled-result">IntersectionFeatureCollection(first feature collection, second feature collection, first attributes to retain, second attributes to retain, intersectionMode, percentagesEnabled, areasEnabled): result</a></li>
+<li><a class="reference internal" href="#lrsgeocode-features-from-measure-attb-to-measure-attb-measure-result">LRSGeocode(features, from_measure_attb, to_measure_attb, measure): result</a></li>
+<li><a class="reference internal" href="#lrsmeasure-features-from-measure-attb-to-measure-attb-point-crs-result">LRSMeasure(features, from_measure_attb, to_measure_attb, point, crs): result</a></li>
+<li><a class="reference internal" href="#lrssegment-features-from-measure-attb-to-measure-attb-from-measure-to-measure-result">LRSSegment(features, from_measure_attb, to_measure_attb, from_measure, to_measure): result</a></li>
+<li><a class="reference internal" href="#multiplycoverages-coveragea-coverageb-result">MultiplyCoverages(coverageA, coverageB): result</a></li>
+<li><a class="reference internal" href="#nearest-features-point-crs-result">Nearest(features, point, crs): result</a></li>
+<li><a class="reference internal" href="#pointbuffers-center-crs-distances-quadrantsegments-buffers">PointBuffers(center, crs, distances, quadrantSegments): buffers</a></li>
+<li><a class="reference internal" href="#pointstacker-data-cellsize-normalize-preservelocation-outputbbox-outputwidth-outputheight-result">PointStacker(data, cellSize, normalize, preserveLocation, outputBBOX, outputWidth, outputHeight): result</a></li>
+<li><a class="reference internal" href="#polygonextraction-data-band-insideedges-roi-nodata-ranges-result">PolygonExtraction(data, band, insideEdges, roi, nodata, ranges): result</a></li>
+<li><a class="reference internal" href="#query-features-attribute-filter-result">Query(features, attribute, filter): result</a></li>
+<li><a class="reference internal" href="#rangelookup-coverage-band-ranges-outputpixelvalues-nodata-reclassified">RangeLookup(coverage, band, ranges, outputPixelValues, noData): reclassified</a></li>
+<li><a class="reference internal" href="#rasteraspointcollection-data-targetcrs-scale-interpolation-emisphere-result">RasterAsPointCollection(data, targetCRS, scale, interpolation, emisphere): result</a></li>
+<li><a class="reference internal" href="#rasterzonalstatistics-data-band-zones-classification-statistics">RasterZonalStatistics(data, band, zones, classification): statistics</a></li>
+<li><a class="reference internal" href="#rectangularclip-features-clip-preservez-result">RectangularClip(features, clip, preserveZ): result</a></li>
+<li><a class="reference internal" href="#reproject-features-forcedcrs-targetcrs-result">Reproject(features, forcedCRS, targetCRS): result</a></li>
+<li><a class="reference internal" href="#scalecoverage-coverage-xscale-yscale-xtranslate-ytranslate-interpolation-result">ScaleCoverage(coverage, xScale, yScale, xTranslate, yTranslate, interpolation): result</a></li>
+<li><a class="reference internal" href="#simplify-features-distance-preservetopology-result">Simplify(features, distance, preserveTopology): result</a></li>
+<li><a class="reference internal" href="#snap-features-point-crs-result">Snap(features, point, crs): result</a></li>
+<li><a class="reference internal" href="#stylecoverage-coverage-style-result">StyleCoverage(coverage, style): result</a></li>
+<li><a class="reference internal" href="#transform-features-transform-result">Transform(features, transform): result</a></li>
+<li><a class="reference internal" href="#unionfeaturecollection-first-second-result">UnionFeatureCollection(first, second): result</a></li>
+<li><a class="reference internal" href="#unique-features-attribute-result">Unique(features, attribute): result</a></li>
+<li><a class="reference internal" href="#vectortoraster-features-rasterwidth-rasterheight-title-attribute-bounds-result">VectorToRaster(features, rasterWidth, rasterHeight, title, attribute, bounds): result</a></li>
+<li><a class="reference internal" href="#vectorzonalstatistics-data-dataattribute-zones-statistics">VectorZonalStatistics(data, dataAttribute, zones): statistics</a></li>
+<li><a class="reference internal" href="#area-geom-result">area(geom): result</a></li>
+<li><a class="reference internal" href="#boundary-geom-result">boundary(geom): result</a></li>
+<li><a class="reference internal" href="#buffer-geom-distance-quadrantsegments-capstyle-result">buffer(geom, distance, quadrantSegments, capStyle): result</a></li>
+<li><a class="reference internal" href="#centroid-geom-result">centroid(geom): result</a></li>
+<li><a class="reference internal" href="#contains-a-b-result">contains(a, b): result</a></li>
+<li><a class="reference internal" href="#convexhull-geom-result">convexHull(geom): result</a></li>
+<li><a class="reference internal" href="#crosses-a-b-result">crosses(a, b): result</a></li>
+<li><a class="reference internal" href="#densify-geom-distance-result">densify(geom, distance): result</a></li>
+<li><a class="reference internal" href="#difference-a-b-result">difference(a, b): result</a></li>
+<li><a class="reference internal" href="#dimension-geom-result">dimension(geom): result</a></li>
+<li><a class="reference internal" href="#disjoint-a-b-result">disjoint(a, b): result</a></li>
+<li><a class="reference internal" href="#distance-a-b-result">distance(a, b): result</a></li>
+<li><a class="reference internal" href="#endpoint-geom-result">endPoint(geom): result</a></li>
+<li><a class="reference internal" href="#envelope-geom-result">envelope(geom): result</a></li>
+<li><a class="reference internal" href="#equalsexact-a-b-result">equalsExact(a, b): result</a></li>
+<li><a class="reference internal" href="#equalsexacttolerance-a-b-tolerance-result">equalsExactTolerance(a, b, tolerance): result</a></li>
+<li><a class="reference internal" href="#exteriorring-geom-result">exteriorRing(geom): result</a></li>
+<li><a class="reference internal" href="#geometrytype-geom-result">geometryType(geom): result</a></li>
+<li><a class="reference internal" href="#getgeometryn-geom-index-result">getGeometryN(geom, index): result</a></li>
+<li><a class="reference internal" href="#getx-geom-result">getX(geom): result</a></li>
+<li><a class="reference internal" href="#gety-geom-result">getY(geom): result</a></li>
+<li><a class="reference internal" href="#interiorpoint-geom-result">interiorPoint(geom): result</a></li>
+<li><a class="reference internal" href="#interiorringn-geom-index-result">interiorRingN(geom, index): result</a></li>
+<li><a class="reference internal" href="#intersection-a-b-result">intersection(a, b): result</a></li>
+<li><a class="reference internal" href="#intersects-a-b-result">intersects(a, b): result</a></li>
+<li><a class="reference internal" href="#isclosed-geom-result">isClosed(geom): result</a></li>
+<li><a class="reference internal" href="#isempty-geom-result">isEmpty(geom): result</a></li>
+<li><a class="reference internal" href="#isring-geom-result">isRing(geom): result</a></li>
+<li><a class="reference internal" href="#issimple-geom-result">isSimple(geom): result</a></li>
+<li><a class="reference internal" href="#isvalid-geom-result">isValid(geom): result</a></li>
+<li><a class="reference internal" href="#iswithindistance-a-b-distance-result">isWithinDistance(a, b, distance): result</a></li>
+<li><a class="reference internal" href="#length-geom-result">length(geom): result</a></li>
+<li><a class="reference internal" href="#numgeometries-geom-result">numGeometries(geom): result</a></li>
+<li><a class="reference internal" href="#numinteriorring-geom-result">numInteriorRing(geom): result</a></li>
+<li><a class="reference internal" href="#numpoints-geom-result">numPoints(geom): result</a></li>
+<li><a class="reference internal" href="#octagonalenvelope-geom-result">octagonalEnvelope(geom): result</a></li>
+<li><a class="reference internal" href="#overlaps-a-b-result">overlaps(a, b): result</a></li>
+<li><a class="reference internal" href="#parameter-argumentname-values-parametermap">parameter(argumentName, values): parameterMap</a></li>
+<li><a class="reference internal" href="#pointn-geom-index-result">pointN(geom, index): result</a></li>
+<li><a class="reference internal" href="#polygonize-geom-result">polygonize(geom): result</a></li>
+<li><a class="reference internal" href="#relate-a-b-result">relate(a, b): result</a></li>
+<li><a class="reference internal" href="#relatepattern-a-b-relate-pattern-result">relatePattern(a, b, Relate pattern): result</a></li>
+<li><a class="reference internal" href="#reproject-geometry-sourcecrs-targetcrs-result">reproject(geometry, sourceCRS, targetCRS): result</a></li>
+<li><a class="reference internal" href="#simplify-geom-distance-result">simplify(geom, distance): result</a></li>
+<li><a class="reference internal" href="#splitpolygon-polygon-line-result">splitPolygon(polygon, line): result</a></li>
+<li><a class="reference internal" href="#startpoint-geom-result">startPoint(geom): result</a></li>
+<li><a class="reference internal" href="#symdifference-a-b-result">symDifference(a, b): result</a></li>
+<li><a class="reference internal" href="#touches-a-b-result">touches(a, b): result</a></li>
+<li><a class="reference internal" href="#union-geom-result">union(geom): result</a></li>
+<li><a class="reference internal" href="#within-a-b-result">within(a, b): result</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#defaultfunctionfactory">DefaultFunctionFactory</a><ul>
+<li><a class="reference internal" href="#area-geometry-area">Area(geometry): area</a></li>
+<li><a class="reference internal" href="#attributerename-targetattribute-optimizequery-sourceattribute">AttributeRename(targetAttribute, optimizeQuery): sourceAttribute</a></li>
+<li><a class="reference internal" href="#buffertest-distance">BufferTest(): distance</a></li>
+<li><a class="reference internal" href="#categorize-lookupvalue-value-threshold-1-value-1-threshold-2-value-2-succeeding-or-preceding-return">Categorize(LookupValue, Value, Threshold 1, Value 1, Threshold 2, Value 2, succeeding or preceding): return</a></li>
+<li><a class="reference internal" href="#collection-average-expression-average">Collection_Average(expression): average</a></li>
+<li><a class="reference internal" href="#collection-bounds-geometry-bounds">Collection_Bounds(geometry): bounds</a></li>
+<li><a class="reference internal" href="#collection-count-count">Collection_Count(): count</a></li>
+<li><a class="reference internal" href="#collection-max-expression-max">Collection_Max(expression): max</a></li>
+<li><a class="reference internal" href="#collection-median-expression-median">Collection_Median(expression): median</a></li>
+<li><a class="reference internal" href="#collection-min-expression-min">Collection_Min(expression): min</a></li>
+<li><a class="reference internal" href="#collection-nearest-value-expression">Collection_Nearest(value): expression</a></li>
+<li><a class="reference internal" href="#collection-sum-expression-sum">Collection_Sum(expression): sum</a></li>
+<li><a class="reference internal" href="#collection-unique-expression-unique">Collection_Unique(expression): unique</a></li>
+<li><a class="reference internal" href="#concatenate-text-result">Concatenate(text): result</a></li>
+<li><a class="reference internal" href="#coveragecenter-coverage">CoverageCenter(): coverage</a></li>
+<li><a class="reference internal" href="#equalinterval-value-classes-equalinterval">EqualInterval(value, classes): EqualInterval</a></li>
+<li><a class="reference internal" href="#ieeeremainder-dividend-divisor-remainder">IEEEremainder(dividend, divisor): remainder</a></li>
+<li><a class="reference internal" href="#interpolate-data-value-pairs-mode-method-lookup">Interpolate(data value pairs, mode, method): lookup</a></li>
+<li><a class="reference internal" href="#jenks-value-classes-jenks">Jenks(value, classes): Jenks</a></li>
+<li><a class="reference internal" href="#propertyexists-propertyname-exists">PropertyExists(propertyName): exists</a></li>
+<li><a class="reference internal" href="#quantile-value-classes-quantile">Quantile(value, classes): Quantile</a></li>
+<li><a class="reference internal" href="#recode-lookupvalue-data-1-value-1-data-2-value-2-return">Recode(LookupValue, Data 1, Value 1, Data 2, Value 2): return</a></li>
+<li><a class="reference internal" href="#reprojectcollection-crs">ReprojectCollection(): crs</a></li>
+<li><a class="reference internal" href="#standarddeviation-value-classes-standarddeviation">StandardDeviation(value, classes): StandardDeviation</a></li>
+<li><a class="reference internal" href="#uniqueinterval-value-classes-uniqueinterval">UniqueInterval(value, classes): UniqueInterval</a></li>
+<li><a class="reference internal" href="#equals-return">__equals(): return</a></li>
+<li><a class="reference internal" href="#abs-int-abs">abs(int): abs</a></li>
+<li><a class="reference internal" href="#abs-2-number-long">abs_2(number): long</a></li>
+<li><a class="reference internal" href="#abs-3-number-float">abs_3(number): float</a></li>
+<li><a class="reference internal" href="#abs-4-number-double">abs_4(number): double</a></li>
+<li><a class="reference internal" href="#acos-value-arc-cosine">acos(value): arc cosine</a></li>
+<li><a class="reference internal" href="#area2-geometry-area">area2(geometry): area</a></li>
+<li><a class="reference internal" href="#asin-value-arc-sine">asin(value): arc sine</a></li>
+<li><a class="reference internal" href="#atan-value-arc-tan">atan(value): arc tan</a></li>
+<li><a class="reference internal" href="#atan2-x-y-arc-tan">atan2(x, y): arc tan</a></li>
+<li><a class="reference internal" href="#between-value-low-high-between">between(value, low, high): between</a></li>
+<li><a class="reference internal" href="#boundary-geometry-boundary">boundary(geometry): boundary</a></li>
+<li><a class="reference internal" href="#boundarydimension-geometry-dimension">boundaryDimension(geometry): dimension</a></li>
+<li><a class="reference internal" href="#buffer-geometry-distance-buffer">buffer(geometry, distance): buffer</a></li>
+<li><a class="reference internal" href="#bufferwithsegments-geometry-distance-numberofsegments-buffer">bufferWithSegments(geometry, distance, numberOfSegments): buffer</a></li>
+<li><a class="reference internal" href="#ceil-number-ceiling">ceil(number): ceiling</a></li>
+<li><a class="reference internal" href="#centroid-geometry-centroid">centroid(geometry): centroid</a></li>
+<li><a class="reference internal" href="#classify-expression-classifer-value">classify(expression, classifer): value</a></li>
+<li><a class="reference internal" href="#contains-geometry1-geometry2-contains">contains(geometry1, geometry2): contains</a></li>
+<li><a class="reference internal" href="#convert-value-class-converted">convert(value, class): converted</a></li>
+<li><a class="reference internal" href="#convexhull-geometry-hull">convexHull(geometry): hull</a></li>
+<li><a class="reference internal" href="#cos-radians-cosine">cos(radians): cosine</a></li>
+<li><a class="reference internal" href="#crosses-geometry1-geometry2-crosses">crosses(geometry1, geometry2): crosses</a></li>
+<li><a class="reference internal" href="#dateformat-format-date-formatted">dateFormat(format, date): formatted</a></li>
+<li><a class="reference internal" href="#dateparse-format-datestring-date">dateParse(format, dateString): date</a></li>
+<li><a class="reference internal" href="#difference-geometry1-geometry2-difference">difference(geometry1, geometry2): difference</a></li>
+<li><a class="reference internal" href="#dimension-geometry-dimension">dimension(geometry): dimension</a></li>
+<li><a class="reference internal" href="#disjoint-geometry1-geometry2-disjoint">disjoint(geometry1, geometry2): disjoint</a></li>
+<li><a class="reference internal" href="#disjoint3d-geometry1-geometry2-disjoint3d">disjoint3D(geometry1, geometry2): disjoint3D</a></li>
+<li><a class="reference internal" href="#distance-geometry1-geometry2-distance">distance(geometry1, geometry2): distance</a></li>
+<li><a class="reference internal" href="#distance3d-geometry1-geometry2-distance3d">distance3D(geometry1, geometry2): distance3D</a></li>
+<li><a class="reference internal" href="#double2bool-double-double2bool">double2bool(double): double2bool</a></li>
+<li><a class="reference internal" href="#endangle-linestring-endangle">endAngle(linestring): endAngle</a></li>
+<li><a class="reference internal" href="#endpoint-linestring-endpoint">endPoint(linestring): endPoint</a></li>
+<li><a class="reference internal" href="#env-variable-value">env(variable): value</a></li>
+<li><a class="reference internal" href="#envelope-geometry-envelope">envelope(geometry): envelope</a></li>
+<li><a class="reference internal" href="#equalto-object1-object2-equalto">equalTo(object1, object2): equalTo</a></li>
+<li><a class="reference internal" href="#equalsexact-geometry1-geometry2-equalsexact">equalsExact(geometry1, geometry2): equalsExact</a></li>
+<li><a class="reference internal" href="#equalsexacttolerance-geometry1-geometry2-tolarance-equalsexacttolerance">equalsExactTolerance(geometry1, geometry2, tolarance): equalsExactTolerance</a></li>
+<li><a class="reference internal" href="#exp-number-exponent">exp(number): exponent</a></li>
+<li><a class="reference internal" href="#exteriorring-geometry-exteriorring">exteriorRing(geometry): exteriorRing</a></li>
+<li><a class="reference internal" href="#floor-double-floor">floor(double): floor</a></li>
+<li><a class="reference internal" href="#geomfromwkt-geometry-geomfromwkt">geomFromWKT(geometry): geomFromWKT</a></li>
+<li><a class="reference internal" href="#geomlength-geometry-geomlength">geomLength(geometry): geomLength</a></li>
+<li><a class="reference internal" href="#geometrytype-geometry-geometrytype">geometryType(geometry): geometryType</a></li>
+<li><a class="reference internal" href="#getgeometryn-geometry-index-getgeometryn">getGeometryN(geometry, index): getGeometryN</a></li>
+<li><a class="reference internal" href="#getx-geometry-getx">getX(geometry): getX</a></li>
+<li><a class="reference internal" href="#gety-geometry-gety">getY(geometry): getY</a></li>
+<li><a class="reference internal" href="#getz-geometry-getz">getz(geometry): getz</a></li>
+<li><a class="reference internal" href="#greaterequalthan-object1-object2-greaterequalthan">greaterEqualThan(object1, object2): greaterEqualThan</a></li>
+<li><a class="reference internal" href="#greaterthan-object1-object2-greaterthan">greaterThan(object1, object2): greaterThan</a></li>
+<li><a class="reference internal" href="#id-id">id(): id</a></li>
+<li><a class="reference internal" href="#if-then-else-condition-then-else-if-then-else">if_then_else(condition, then, else): if_then_else</a></li>
+<li><a class="reference internal" href="#in10-value-in1-in2-in3-in4-in5-in6-in7-in8-in9-in10-in10">in10(value, in1, in2, in3, in4, in5, in6, in7, in8, in9, in10): in10</a></li>
+<li><a class="reference internal" href="#in2-value-in1-in2-in2">in2(value, in1, in2): in2</a></li>
+<li><a class="reference internal" href="#in3-value-in1-in2-in3-in3">in3(value, in1, in2, in3): in3</a></li>
+<li><a class="reference internal" href="#in4-value-in1-in2-in3-in4-in4">in4(value, in1, in2, in3, in4): in4</a></li>
+<li><a class="reference internal" href="#in5-value-in1-in2-in3-in4-in5-in5">in5(value, in1, in2, in3, in4, in5): in5</a></li>
+<li><a class="reference internal" href="#in6-value-in1-in2-in3-in4-in5-in6-in6">in6(value, in1, in2, in3, in4, in5, in6): in6</a></li>
+<li><a class="reference internal" href="#in7-value-in1-in2-in3-in4-in5-in6-in7-in7">in7(value, in1, in2, in3, in4, in5, in6, in7): in7</a></li>
+<li><a class="reference internal" href="#in8-value-in1-in2-in3-in4-in5-in6-in7-in8-in8">in8(value, in1, in2, in3, in4, in5, in6, in7, in8): in8</a></li>
+<li><a class="reference internal" href="#in9-value-in1-in2-in3-in4-in5-in6-in7-in8-in9-in9">in9(value, in1, in2, in3, in4, in5, in6, in7, in8, in9): in9</a></li>
+<li><a class="reference internal" href="#int2bbool-int-int2bbool">int2bbool(int): int2bbool</a></li>
+<li><a class="reference internal" href="#int2ddouble-int-int2ddouble">int2ddouble(int): int2ddouble</a></li>
+<li><a class="reference internal" href="#interiorpoint-geometry-interiorpoint">interiorPoint(geometry): interiorPoint</a></li>
+<li><a class="reference internal" href="#interiorringn-geometry-n-interiorringn">interiorRingN(geometry, n): interiorRingN</a></li>
+<li><a class="reference internal" href="#intersection-geometry1-geometry2-intersection">intersection(geometry1, geometry2): intersection</a></li>
+<li><a class="reference internal" href="#intersects-geometry1-geometry2-intersects">intersects(geometry1, geometry2): intersects</a></li>
+<li><a class="reference internal" href="#intersects3d-geometry1-geometry2-intersects3d">intersects3D(geometry1, geometry2): intersects3D</a></li>
+<li><a class="reference internal" href="#isclosed-geometry-isclosed">isClosed(geometry): isClosed</a></li>
+<li><a class="reference internal" href="#iscoverage-iscoverage">isCoverage(): isCoverage</a></li>
+<li><a class="reference internal" href="#isempty-geometry-isempty">isEmpty(geometry): isEmpty</a></li>
+<li><a class="reference internal" href="#islike-string-regex-islike">isLike(string, regex): isLike</a></li>
+<li><a class="reference internal" href="#isnull-object-isnull">isNull(object): isNull</a></li>
+<li><a class="reference internal" href="#isring-geometry-isring">isRing(geometry): isRing</a></li>
+<li><a class="reference internal" href="#issimple-geometry-issimple">isSimple(geometry): isSimple</a></li>
+<li><a class="reference internal" href="#isvalid-geometry-isvalid">isValid(geometry): isValid</a></li>
+<li><a class="reference internal" href="#iswithindistance-geometry1-geometry2-distance-iswithindistance">isWithinDistance(geometry1, geometry2, distance): isWithinDistance</a></li>
+<li><a class="reference internal" href="#iswithindistance3d-geometry1-geometry2-distance-iswithindistance3d">isWithinDistance3D(geometry1, geometry2, distance): isWithinDistance3D</a></li>
+<li><a class="reference internal" href="#isometric-geometry-extrusion-isometric">isometric(geometry, extrusion): isometric</a></li>
+<li><a class="reference internal" href="#length-string-length">length(string): length</a></li>
+<li><a class="reference internal" href="#lessequalthan-a-b-lessequalthan">lessEqualThan(a, b): lessEqualThan</a></li>
+<li><a class="reference internal" href="#lessthan-a-b-lessthan">lessThan(a, b): lessThan</a></li>
+<li><a class="reference internal" href="#list-item-list">list(item): list</a></li>
+<li><a class="reference internal" href="#log-value-logarithm">log(value): logarithm</a></li>
+<li><a class="reference internal" href="#max-double-double-maxium">max(double, double): maxium</a></li>
+<li><a class="reference internal" href="#max-2-long-long-maximum">max_2(long, long): maximum</a></li>
+<li><a class="reference internal" href="#max-3-float-float-maximum">max_3(float, float): maximum</a></li>
+<li><a class="reference internal" href="#max-4-int-int-maximum">max_4(int, int): maximum</a></li>
+<li><a class="reference internal" href="#min-double-double-minium">min(double, double): minium</a></li>
+<li><a class="reference internal" href="#min-2-long-long-minium">min_2(long, long): minium</a></li>
+<li><a class="reference internal" href="#min-3-float-float-minium">min_3(float, float): minium</a></li>
+<li><a class="reference internal" href="#min-4-int-int-minium">min_4(int, int): minium</a></li>
+<li><a class="reference internal" href="#mincircle-geometry-mincircle">mincircle(geometry): mincircle</a></li>
+<li><a class="reference internal" href="#minimumdiameter-geometry-minimumdiameter">minimumdiameter(geometry): minimumdiameter</a></li>
+<li><a class="reference internal" href="#minrectangle-geometry-minrectangle">minrectangle(geometry): minrectangle</a></li>
+<li><a class="reference internal" href="#modulo-dividend-divisor-modulo">modulo(dividend, divisor): modulo</a></li>
+<li><a class="reference internal" href="#not-logicvalue-not">not(logicValue): not</a></li>
+<li><a class="reference internal" href="#notequalto-a-b-notequalto">notEqualTo(a, b): notEqualTo</a></li>
+<li><a class="reference internal" href="#numgeometries-geometry-numgeometries">numGeometries(geometry): numGeometries</a></li>
+<li><a class="reference internal" href="#numinteriorring-geometry-numinteriorring">numInteriorRing(geometry): numInteriorRing</a></li>
+<li><a class="reference internal" href="#numpoints-geometry-numpoints">numPoints(geometry): numPoints</a></li>
+<li><a class="reference internal" href="#numberformat-format-number-numberformat">numberFormat(format, number): numberFormat</a></li>
+<li><a class="reference internal" href="#numberformat2-format-number-minus-decimal-separator-numberformat2">numberFormat2(format, number, minus, decimal, separator): numberFormat2</a></li>
+<li><a class="reference internal" href="#octagonalenvelope-geometry-octagonalenvelope">octagonalenvelope(geometry): octagonalenvelope</a></li>
+<li><a class="reference internal" href="#offset-geometry-offsetx-offsety-offset">offset(geometry, offsetX, offsetY): offset</a></li>
+<li><a class="reference internal" href="#overlaps-geometry1-geometry2-overlaps">overlaps(geometry1, geometry2): overlaps</a></li>
+<li><a class="reference internal" href="#parseboolean-string-parseboolean">parseBoolean(string): parseBoolean</a></li>
+<li><a class="reference internal" href="#parsedouble-string-parsedouble">parseDouble(string): parseDouble</a></li>
+<li><a class="reference internal" href="#parseint-string-parseint">parseInt(string): parseInt</a></li>
+<li><a class="reference internal" href="#parselong-string-parselong">parseLong(string): parseLong</a></li>
+<li><a class="reference internal" href="#pi-pi">pi(): pi</a></li>
+<li><a class="reference internal" href="#pointn-geometry-index-pointn">pointN(geometry, index): pointN</a></li>
+<li><a class="reference internal" href="#pow-base-exponent-power">pow(base, exponent): power</a></li>
+<li><a class="reference internal" href="#property-propertyname-propertyvalue">property(propertyName): propertyValue</a></li>
+<li><a class="reference internal" href="#random-random">random(): random</a></li>
+<li><a class="reference internal" href="#relate-geometry1-geometry2-relate">relate(geometry1, geometry2): relate</a></li>
+<li><a class="reference internal" href="#relatepattern-geometry-geometry-pattern-related">relatePattern(geometry, geometry, pattern): related</a></li>
+<li><a class="reference internal" href="#rescaletopixels-value-defaultunit-scalefactor-rescalingmode-rescaletopixels">rescaleToPixels(value, defaultUnit, scaleFactor, rescalingMode): rescaleToPixels</a></li>
+<li><a class="reference internal" href="#rint-double-rounded">rint(double): rounded</a></li>
+<li><a class="reference internal" href="#round-number-float">round(number): float</a></li>
+<li><a class="reference internal" href="#rounddouble-number-rounded">roundDouble(number): rounded</a></li>
+<li><a class="reference internal" href="#round-2-number-long">round_2(number): long</a></li>
+<li><a class="reference internal" href="#setcrs-geometry-crs-setcrs">setCRS(geometry, CRS): setCRS</a></li>
+<li><a class="reference internal" href="#sin-radians-sine">sin(radians): sine</a></li>
+<li><a class="reference internal" href="#sqrt-number-root">sqrt(number): root</a></li>
+<li><a class="reference internal" href="#startangle-linestring-degrees">startAngle(linestring): degrees</a></li>
+<li><a class="reference internal" href="#startpoint-linestring-point">startPoint(linestring): point</a></li>
+<li><a class="reference internal" href="#strcapitalize-string-string">strCapitalize(string): string</a></li>
+<li><a class="reference internal" href="#strconcat-string1-string2-strconcat">strConcat(string1, string2): strConcat</a></li>
+<li><a class="reference internal" href="#strendswith-string-postfix-endswith">strEndsWith(String, postfix): endsWith</a></li>
+<li><a class="reference internal" href="#strequalsignorecase-string-lookup-equals">strEqualsIgnoreCase(string, lookup): equals</a></li>
+<li><a class="reference internal" href="#strindexof-string-lookup-index">strIndexOf(String, lookup): index</a></li>
+<li><a class="reference internal" href="#strlastindexof-string-lookup-index">strLastIndexOf(String, lookup): index</a></li>
+<li><a class="reference internal" href="#strlength-string-length">strLength(string): length</a></li>
+<li><a class="reference internal" href="#strmatches-string-regex-match">strMatches(string, regex): match</a></li>
+<li><a class="reference internal" href="#strposition-string-lookup-method-string">strPosition(string, lookup, method): string</a></li>
+<li><a class="reference internal" href="#strreplace-string-search-replace-all-string">strReplace(string, search, replace, all): string</a></li>
+<li><a class="reference internal" href="#strstartswith-string-prefix-starts-with">strStartsWith(string, prefix): starts with</a></li>
+<li><a class="reference internal" href="#strsubstring-string-beginindex-endindex-substring">strSubstring(string, beginIndex, endIndex): substring</a></li>
+<li><a class="reference internal" href="#strsubstringstart-string-beginindex-substring">strSubstringStart(string, beginIndex): substring</a></li>
+<li><a class="reference internal" href="#strtolowercase-string-lowercase">strToLowerCase(string): lowercase</a></li>
+<li><a class="reference internal" href="#strtouppercase-string-uppercase">strToUpperCase(string): uppercase</a></li>
+<li><a class="reference internal" href="#strtrim-string-trim">strTrim(string): trim</a></li>
+<li><a class="reference internal" href="#strtrim2-string-method-character-trim">strTrim2(string, method, character): trim</a></li>
+<li><a class="reference internal" href="#stringtemplate-input-pattern-template-defaultvalue-return">stringTemplate(input, pattern, template, defaultValue): return</a></li>
+<li><a class="reference internal" href="#symdifference-geometry-geometry-symetric-difference">symDifference(geometry, geometry): symetric difference</a></li>
+<li><a class="reference internal" href="#tan-radians-tan">tan(radians): tan</a></li>
+<li><a class="reference internal" href="#todegrees-radians-degrees">toDegrees(radians): degrees</a></li>
+<li><a class="reference internal" href="#toradians-degree-radians">toRadians(degree): radians</a></li>
+<li><a class="reference internal" href="#towkt-geometry-wkt">toWKT(geometry): wkt</a></li>
+<li><a class="reference internal" href="#touches-geometry-geometry-touches">touches(geometry, geometry): touches</a></li>
+<li><a class="reference internal" href="#union-geometry-geometry-union">union(geometry, geometry): union</a></li>
+<li><a class="reference internal" href="#vertices-geometry-vertices">vertices(geometry): vertices</a></li>
+<li><a class="reference internal" href="#within-geometry-geometry-within">within(geometry, geometry): within</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="filter.html"
+                        title="previous chapter">Filter</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="feature.html"
+                        title="next chapter">Feature</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/library/main/function_list.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="function-list">
+<h1>Function List<a class="headerlink" href="#function-list" title="Permalink to this headline">¶</a></h1>
+<p>Generated list of available functions at the time of writing:</p>
+<div class="section" id="processfunctionfactory">
+<h2>ProcessFunctionFactory<a class="headerlink" href="#processfunctionfactory" title="Permalink to this headline">¶</a></h2>
+<p>Contains 94 functions.</p>
+<div class="section" id="addcoverages-coveragea-coverageb-result">
+<h3>AddCoverages(coverageA, coverageB): result<a class="headerlink" href="#addcoverages-coveragea-coverageb-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>coverageA: GridCoverage2D 1:1 required</li>
+<li>coverageB: GridCoverage2D 1:1 required</li>
+<li>result: GridCoverage2D 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="affine-coverage-scalex-scaley-shearx-sheary-translatex-translatey-nodata-interpolation-result">
+<h3>Affine(coverage, scalex, scaley, shearx, sheary, translatex, translatey, nodata, interpolation): result<a class="headerlink" href="#affine-coverage-scalex-scaley-shearx-sheary-translatex-translatey-nodata-interpolation-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>coverage: GridCoverage2D 1:1 required</li>
+<li>scalex: Double 0:1 optional</li>
+<li>scaley: Double 0:1 optional</li>
+<li>shearx: Double 0:1 optional</li>
+<li>sheary: Double 0:1 optional</li>
+<li>translatex: Double 0:1 optional</li>
+<li>translatey: Double 0:1 optional</li>
+<li>nodata: double 0:unbounded</li>
+<li>interpolation: Interpolation 0:1 optional</li>
+<li>result: GridCoverage2D 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="aggregate-features-aggregationattribute-function-singlepass-result">
+<h3>Aggregate(features, aggregationAttribute, function, singlePass): result<a class="headerlink" href="#aggregate-features-aggregationattribute-function-singlepass-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>features: SimpleFeatureCollection 1:1 required</li>
+<li>aggregationAttribute: String 0:1 optional</li>
+<li>function: AggregationFunction 0:unbounded</li>
+<li>singlePass: Boolean 1:1 required</li>
+<li>result: Results 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="areagrid-envelope-width-height-result">
+<h3>AreaGrid(envelope, width, height): result<a class="headerlink" href="#areagrid-envelope-width-height-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>envelope: ReferencedEnvelope 1:1 required</li>
+<li>width: Integer 1:1 required</li>
+<li>height: Integer 1:1 required</li>
+<li>result: GridCoverage2D 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="bandmerge-coverages-roi-transformchoice-index-result">
+<h3>BandMerge(coverages, roi, transformChoice, index): result<a class="headerlink" href="#bandmerge-coverages-roi-transformchoice-index-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>coverages: GridCoverage2D 1:unbounded required</li>
+<li>roi: Geometry 0:1 optional</li>
+<li>transformChoice: String 0:1 optional</li>
+<li>index: Integer 0:1 optional</li>
+<li>result: GridCoverage2D 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="bandselect-coverage-sampledimensions-visiblesampledimension-result">
+<h3>BandSelect(coverage, SampleDimensions, VisibleSampleDimension): result<a class="headerlink" href="#bandselect-coverage-sampledimensions-visiblesampledimension-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>coverage: GridCoverage2D 1:1 required</li>
+<li>SampleDimensions: int 1:unbounded required</li>
+<li>VisibleSampleDimension: Integer 0:1 optional</li>
+<li>result: GridCoverage2D 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="barnessurface-data-valueattr-datalimit-scale-convergence-passes-minobservations-maxobservationdistance-nodatavalue-pixelspercell-querybuffer-outputbbox-outputwidth-outputheight-result">
+<h3>BarnesSurface(data, valueAttr, dataLimit, scale, convergence, passes, minObservations, maxObservationDistance, noDataValue, pixelsPerCell, queryBuffer, outputBBOX, outputWidth, outputHeight): result<a class="headerlink" href="#barnessurface-data-valueattr-datalimit-scale-convergence-passes-minobservations-maxobservationdistance-nodatavalue-pixelspercell-querybuffer-outputbbox-outputwidth-outputheight-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>data: SimpleFeatureCollection 1:1 required</li>
+<li>valueAttr: String 1:1 required</li>
+<li>dataLimit: Integer 0:1 optional</li>
+<li>scale: Double 1:1 required</li>
+<li>convergence: Double 0:1 optional</li>
+<li>passes: Integer 0:1 optional</li>
+<li>minObservations: Integer 0:1 optional</li>
+<li>maxObservationDistance: Double 0:1 optional</li>
+<li>noDataValue: Double 0:1 optional</li>
+<li>pixelsPerCell: Integer 0:1 optional</li>
+<li>queryBuffer: Double 0:1 optional</li>
+<li>outputBBOX: ReferencedEnvelope 1:1 required</li>
+<li>outputWidth: Integer 1:1 required</li>
+<li>outputHeight: Integer 1:1 required</li>
+<li>result: GridCoverage2D 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="bounds-features-bounds">
+<h3>Bounds(features): bounds<a class="headerlink" href="#bounds-features-bounds" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>features: FeatureCollection 1:1 required</li>
+<li>bounds: ReferencedEnvelope 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="bufferfeaturecollection-features-buffer-result">
+<h3>BufferFeatureCollection(features, buffer): result<a class="headerlink" href="#bufferfeaturecollection-features-buffer-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>features: FeatureCollection 1:1 required</li>
+<li>buffer: Double 1:1 required</li>
+<li>result: FeatureCollection 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="bufferfeaturecollection-features-distance-attributename-result">
+<h3>BufferFeatureCollection(features, distance, attributeName): result<a class="headerlink" href="#bufferfeaturecollection-features-distance-attributename-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>features: SimpleFeatureCollection 1:1 required</li>
+<li>distance: Double 1:1 required</li>
+<li>attributeName: String 0:1 optional</li>
+<li>result: SimpleFeatureCollection 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="centroid-features-result">
+<h3>Centroid(features): result<a class="headerlink" href="#centroid-features-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>features: SimpleFeatureCollection 1:1 required</li>
+<li>result: SimpleFeatureCollection 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="clip-features-clip-preservez-result">
+<h3>Clip(features, clip, preserveZ): result<a class="headerlink" href="#clip-features-clip-preservez-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>features: SimpleFeatureCollection 1:1 required</li>
+<li>clip: Geometry 1:1 required</li>
+<li>preserveZ: Boolean 0:1 optional</li>
+<li>result: SimpleFeatureCollection 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="collectgeometries-features-result">
+<h3>CollectGeometries(features): result<a class="headerlink" href="#collectgeometries-features-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>features: FeatureCollection 1:1 required</li>
+<li>result: GeometryCollection 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="contour-data-band-levels-interval-simplify-smooth-roi-result">
+<h3>Contour(data, band, levels, interval, simplify, smooth, roi): result<a class="headerlink" href="#contour-data-band-levels-interval-simplify-smooth-roi-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>data: GridCoverage2D 1:1 required</li>
+<li>band: Integer 0:1 optional</li>
+<li>levels: double 0:unbounded</li>
+<li>interval: Double 0:1 optional</li>
+<li>simplify: Boolean 0:1 optional</li>
+<li>smooth: Boolean 0:1 optional</li>
+<li>roi: Geometry 0:1 optional</li>
+<li>result: SimpleFeatureCollection 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="count-features-result">
+<h3>Count(features): result<a class="headerlink" href="#count-features-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>features: SimpleFeatureCollection 1:1 required</li>
+<li>result: Number 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="cropcoverage-coverage-cropshape-result">
+<h3>CropCoverage(coverage, cropShape): result<a class="headerlink" href="#cropcoverage-coverage-cropshape-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>coverage: GridCoverage2D 1:1 required</li>
+<li>cropShape: Geometry 1:1 required</li>
+<li>result: GridCoverage2D 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="feature-geometry-crs-typename-result">
+<h3>Feature(geometry, crs, typeName): result<a class="headerlink" href="#feature-geometry-crs-typename-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry: Geometry 1:1 required</li>
+<li>crs: CoordinateReferenceSystem 1:1 required</li>
+<li>typeName: String 1:1 required</li>
+<li>result: SimpleFeatureCollection 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="grid-bounds-width-height-vertexspacing-mode-result">
+<h3>Grid(bounds, width, height, vertexSpacing, mode): result<a class="headerlink" href="#grid-bounds-width-height-vertexspacing-mode-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>bounds: ReferencedEnvelope 1:1 required</li>
+<li>width: Double 1:1 required</li>
+<li>height: Double 0:1 optional</li>
+<li>vertexSpacing: Double 0:1 optional</li>
+<li>mode: GridMode 1:1 required</li>
+<li>result: SimpleFeatureCollection 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="heatmap-data-radiuspixels-weightattr-pixelspercell-outputbbox-outputwidth-outputheight-result">
+<h3>Heatmap(data, radiusPixels, weightAttr, pixelsPerCell, outputBBOX, outputWidth, outputHeight): result<a class="headerlink" href="#heatmap-data-radiuspixels-weightattr-pixelspercell-outputbbox-outputwidth-outputheight-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>data: SimpleFeatureCollection 1:1 required</li>
+<li>radiusPixels: Integer 1:1 required</li>
+<li>weightAttr: String 0:1 optional</li>
+<li>pixelsPerCell: Integer 0:1 optional</li>
+<li>outputBBOX: ReferencedEnvelope 1:1 required</li>
+<li>outputWidth: Integer 1:1 required</li>
+<li>outputHeight: Integer 1:1 required</li>
+<li>result: GridCoverage2D 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="inclusionfeaturecollection-first-second-result">
+<h3>InclusionFeatureCollection(first, second): result<a class="headerlink" href="#inclusionfeaturecollection-first-second-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>first: SimpleFeatureCollection 1:1 required</li>
+<li>second: SimpleFeatureCollection 1:1 required</li>
+<li>result: SimpleFeatureCollection 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="intersectionfeaturecollection-first-feature-collection-second-feature-collection-first-attributes-to-retain-second-attributes-to-retain-intersectionmode-percentagesenabled-areasenabled-result">
+<h3>IntersectionFeatureCollection(first feature collection, second feature collection, first attributes to retain, second attributes to retain, intersectionMode, percentagesEnabled, areasEnabled): result<a class="headerlink" href="#intersectionfeaturecollection-first-feature-collection-second-feature-collection-first-attributes-to-retain-second-attributes-to-retain-intersectionmode-percentagesenabled-areasenabled-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>first feature collection: SimpleFeatureCollection 1:1 required</li>
+<li>second feature collection: SimpleFeatureCollection 1:1 required</li>
+<li>first attributes to retain: String 0:unbounded</li>
+<li>second attributes to retain: String 0:unbounded</li>
+<li>intersectionMode: IntersectionMode 0:1 optional</li>
+<li>percentagesEnabled: Boolean 0:1 optional</li>
+<li>areasEnabled: Boolean 0:1 optional</li>
+<li>result: SimpleFeatureCollection 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="lrsgeocode-features-from-measure-attb-to-measure-attb-measure-result">
+<h3>LRSGeocode(features, from_measure_attb, to_measure_attb, measure): result<a class="headerlink" href="#lrsgeocode-features-from-measure-attb-to-measure-attb-measure-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>features: FeatureCollection 1:1 required</li>
+<li>from_measure_attb: String 1:1 required</li>
+<li>to_measure_attb: String 1:1 required</li>
+<li>measure: Double 1:1 required</li>
+<li>result: FeatureCollection 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="lrsmeasure-features-from-measure-attb-to-measure-attb-point-crs-result">
+<h3>LRSMeasure(features, from_measure_attb, to_measure_attb, point, crs): result<a class="headerlink" href="#lrsmeasure-features-from-measure-attb-to-measure-attb-point-crs-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>features: FeatureCollection 1:1 required</li>
+<li>from_measure_attb: String 1:1 required</li>
+<li>to_measure_attb: String 1:1 required</li>
+<li>point: Point 1:1 required</li>
+<li>crs: CoordinateReferenceSystem 0:1 optional</li>
+<li>result: FeatureCollection 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="lrssegment-features-from-measure-attb-to-measure-attb-from-measure-to-measure-result">
+<h3>LRSSegment(features, from_measure_attb, to_measure_attb, from_measure, to_measure): result<a class="headerlink" href="#lrssegment-features-from-measure-attb-to-measure-attb-from-measure-to-measure-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>features: FeatureCollection 1:1 required</li>
+<li>from_measure_attb: String 1:1 required</li>
+<li>to_measure_attb: String 1:1 required</li>
+<li>from_measure: Double 1:1 required</li>
+<li>to_measure: Double 1:1 required</li>
+<li>result: FeatureCollection 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="multiplycoverages-coveragea-coverageb-result">
+<h3>MultiplyCoverages(coverageA, coverageB): result<a class="headerlink" href="#multiplycoverages-coveragea-coverageb-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>coverageA: GridCoverage2D 1:1 required</li>
+<li>coverageB: GridCoverage2D 1:1 required</li>
+<li>result: GridCoverage2D 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="nearest-features-point-crs-result">
+<h3>Nearest(features, point, crs): result<a class="headerlink" href="#nearest-features-point-crs-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>features: FeatureCollection 1:1 required</li>
+<li>point: Point 1:1 required</li>
+<li>crs: CoordinateReferenceSystem 0:1 optional</li>
+<li>result: FeatureCollection 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="pointbuffers-center-crs-distances-quadrantsegments-buffers">
+<h3>PointBuffers(center, crs, distances, quadrantSegments): buffers<a class="headerlink" href="#pointbuffers-center-crs-distances-quadrantsegments-buffers" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>center: Point 1:1 required</li>
+<li>crs: CoordinateReferenceSystem 0:1 optional</li>
+<li>distances: double 0:unbounded</li>
+<li>quadrantSegments: Integer 0:1 optional</li>
+<li>buffers: SimpleFeatureCollection 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="pointstacker-data-cellsize-normalize-preservelocation-outputbbox-outputwidth-outputheight-result">
+<h3>PointStacker(data, cellSize, normalize, preserveLocation, outputBBOX, outputWidth, outputHeight): result<a class="headerlink" href="#pointstacker-data-cellsize-normalize-preservelocation-outputbbox-outputwidth-outputheight-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>data: SimpleFeatureCollection 1:1 required</li>
+<li>cellSize: Integer 1:1 required</li>
+<li>normalize: Boolean 1:1 required</li>
+<li>preserveLocation: PreserveLocation 0:1 optional</li>
+<li>outputBBOX: ReferencedEnvelope 1:1 required</li>
+<li>outputWidth: Integer 1:1 required</li>
+<li>outputHeight: Integer 1:1 required</li>
+<li>result: SimpleFeatureCollection 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="polygonextraction-data-band-insideedges-roi-nodata-ranges-result">
+<h3>PolygonExtraction(data, band, insideEdges, roi, nodata, ranges): result<a class="headerlink" href="#polygonextraction-data-band-insideedges-roi-nodata-ranges-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>data: GridCoverage2D 1:1 required</li>
+<li>band: Integer 0:1 optional</li>
+<li>insideEdges: Boolean 0:1 optional</li>
+<li>roi: Geometry 0:1 optional</li>
+<li>nodata: Number 0:unbounded</li>
+<li>ranges: Range 0:unbounded</li>
+<li>result: SimpleFeatureCollection 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="query-features-attribute-filter-result">
+<h3>Query(features, attribute, filter): result<a class="headerlink" href="#query-features-attribute-filter-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>features: SimpleFeatureCollection 1:1 required</li>
+<li>attribute: String 0:unbounded</li>
+<li>filter: Filter 0:1 optional</li>
+<li>result: SimpleFeatureCollection 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="rangelookup-coverage-band-ranges-outputpixelvalues-nodata-reclassified">
+<h3>RangeLookup(coverage, band, ranges, outputPixelValues, noData): reclassified<a class="headerlink" href="#rangelookup-coverage-band-ranges-outputpixelvalues-nodata-reclassified" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>coverage: GridCoverage2D 1:1 required</li>
+<li>band: Integer 0:1 optional</li>
+<li>ranges: Range 0:unbounded</li>
+<li>outputPixelValues: int 0:unbounded</li>
+<li>noData: Double 0:1 optional</li>
+<li>reclassified: GridCoverage2D 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="rasteraspointcollection-data-targetcrs-scale-interpolation-emisphere-result">
+<h3>RasterAsPointCollection(data, targetCRS, scale, interpolation, emisphere): result<a class="headerlink" href="#rasteraspointcollection-data-targetcrs-scale-interpolation-emisphere-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>data: GridCoverage2D 1:1 required</li>
+<li>targetCRS: CoordinateReferenceSystem 0:1 optional</li>
+<li>scale: Float 0:1 optional</li>
+<li>interpolation: Interpolation 0:1 optional</li>
+<li>emisphere: Boolean 0:1 optional</li>
+<li>result: SimpleFeatureCollection 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="rasterzonalstatistics-data-band-zones-classification-statistics">
+<h3>RasterZonalStatistics(data, band, zones, classification): statistics<a class="headerlink" href="#rasterzonalstatistics-data-band-zones-classification-statistics" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>data: GridCoverage2D 1:1 required</li>
+<li>band: Integer 0:1 optional</li>
+<li>zones: SimpleFeatureCollection 1:1 required</li>
+<li>classification: GridCoverage2D 0:1 optional</li>
+<li>statistics: SimpleFeatureCollection 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="rectangularclip-features-clip-preservez-result">
+<h3>RectangularClip(features, clip, preserveZ): result<a class="headerlink" href="#rectangularclip-features-clip-preservez-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>features: SimpleFeatureCollection 1:1 required</li>
+<li>clip: ReferencedEnvelope 1:1 required</li>
+<li>preserveZ: Boolean 0:1 optional</li>
+<li>result: SimpleFeatureCollection 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="reproject-features-forcedcrs-targetcrs-result">
+<h3>Reproject(features, forcedCRS, targetCRS): result<a class="headerlink" href="#reproject-features-forcedcrs-targetcrs-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>features: SimpleFeatureCollection 1:1 required</li>
+<li>forcedCRS: CoordinateReferenceSystem 0:1 optional</li>
+<li>targetCRS: CoordinateReferenceSystem 0:1 optional</li>
+<li>result: SimpleFeatureCollection 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="scalecoverage-coverage-xscale-yscale-xtranslate-ytranslate-interpolation-result">
+<h3>ScaleCoverage(coverage, xScale, yScale, xTranslate, yTranslate, interpolation): result<a class="headerlink" href="#scalecoverage-coverage-xscale-yscale-xtranslate-ytranslate-interpolation-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>coverage: GridCoverage2D 1:1 required</li>
+<li>xScale: Double 1:1 required</li>
+<li>yScale: Double 1:1 required</li>
+<li>xTranslate: Double 1:1 required</li>
+<li>yTranslate: Double 1:1 required</li>
+<li>interpolation: Interpolation 0:1 optional</li>
+<li>result: GridCoverage2D 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="simplify-features-distance-preservetopology-result">
+<h3>Simplify(features, distance, preserveTopology): result<a class="headerlink" href="#simplify-features-distance-preservetopology-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>features: SimpleFeatureCollection 1:1 required</li>
+<li>distance: Double 1:1 required</li>
+<li>preserveTopology: Boolean 1:1 required</li>
+<li>result: SimpleFeatureCollection 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="snap-features-point-crs-result">
+<h3>Snap(features, point, crs): result<a class="headerlink" href="#snap-features-point-crs-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>features: FeatureCollection 1:1 required</li>
+<li>point: Point 1:1 required</li>
+<li>crs: CoordinateReferenceSystem 0:1 optional</li>
+<li>result: FeatureCollection 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="stylecoverage-coverage-style-result">
+<h3>StyleCoverage(coverage, style): result<a class="headerlink" href="#stylecoverage-coverage-style-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>coverage: GridCoverage2D 1:1 required</li>
+<li>style: Style 1:1 required</li>
+<li>result: GridCoverage2D 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="transform-features-transform-result">
+<h3>Transform(features, transform): result<a class="headerlink" href="#transform-features-transform-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>features: SimpleFeatureCollection 1:1 required</li>
+<li>transform: String 1:1 required</li>
+<li>result: SimpleFeatureCollection 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="unionfeaturecollection-first-second-result">
+<h3>UnionFeatureCollection(first, second): result<a class="headerlink" href="#unionfeaturecollection-first-second-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>first: SimpleFeatureCollection 1:1 required</li>
+<li>second: SimpleFeatureCollection 1:1 required</li>
+<li>result: SimpleFeatureCollection 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="unique-features-attribute-result">
+<h3>Unique(features, attribute): result<a class="headerlink" href="#unique-features-attribute-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>features: SimpleFeatureCollection 1:1 required</li>
+<li>attribute: String 1:1 required</li>
+<li>result: SimpleFeatureCollection 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="vectortoraster-features-rasterwidth-rasterheight-title-attribute-bounds-result">
+<h3>VectorToRaster(features, rasterWidth, rasterHeight, title, attribute, bounds): result<a class="headerlink" href="#vectortoraster-features-rasterwidth-rasterheight-title-attribute-bounds-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>features: SimpleFeatureCollection 1:1 required</li>
+<li>rasterWidth: Integer 1:1 required</li>
+<li>rasterHeight: Integer 1:1 required</li>
+<li>title: String 0:1 optional</li>
+<li>attribute: String 1:1 required</li>
+<li>bounds: Envelope 0:1 optional</li>
+<li>result: GridCoverage2D 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="vectorzonalstatistics-data-dataattribute-zones-statistics">
+<h3>VectorZonalStatistics(data, dataAttribute, zones): statistics<a class="headerlink" href="#vectorzonalstatistics-data-dataattribute-zones-statistics" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>data: SimpleFeatureCollection 1:1 required</li>
+<li>dataAttribute: String 1:1 required</li>
+<li>zones: SimpleFeatureCollection 1:1 required</li>
+<li>statistics: SimpleFeatureCollection 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="area-geom-result">
+<h3>area(geom): result<a class="headerlink" href="#area-geom-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geom: Geometry 1:1 required</li>
+<li>result: double 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="boundary-geom-result">
+<h3>boundary(geom): result<a class="headerlink" href="#boundary-geom-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geom: Geometry 1:1 required</li>
+<li>result: Geometry 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="buffer-geom-distance-quadrantsegments-capstyle-result">
+<h3>buffer(geom, distance, quadrantSegments, capStyle): result<a class="headerlink" href="#buffer-geom-distance-quadrantsegments-capstyle-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geom: Geometry 1:1 required</li>
+<li>distance: Double 1:1 required</li>
+<li>quadrantSegments: Integer 0:1 optional</li>
+<li>capStyle: BufferCapStyle 0:1 optional</li>
+<li>result: Geometry 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="centroid-geom-result">
+<h3>centroid(geom): result<a class="headerlink" href="#centroid-geom-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geom: Geometry 1:1 required</li>
+<li>result: Geometry 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="contains-a-b-result">
+<h3>contains(a, b): result<a class="headerlink" href="#contains-a-b-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>a: Geometry 1:1 required</li>
+<li>b: Geometry 1:1 required</li>
+<li>result: boolean 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="convexhull-geom-result">
+<h3>convexHull(geom): result<a class="headerlink" href="#convexhull-geom-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geom: Geometry 1:1 required</li>
+<li>result: Geometry 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="crosses-a-b-result">
+<h3>crosses(a, b): result<a class="headerlink" href="#crosses-a-b-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>a: Geometry 1:1 required</li>
+<li>b: Geometry 1:1 required</li>
+<li>result: boolean 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="densify-geom-distance-result">
+<h3>densify(geom, distance): result<a class="headerlink" href="#densify-geom-distance-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geom: Geometry 1:1 required</li>
+<li>distance: Double 1:1 required</li>
+<li>result: Geometry 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="difference-a-b-result">
+<h3>difference(a, b): result<a class="headerlink" href="#difference-a-b-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>a: Geometry 1:1 required</li>
+<li>b: Geometry 1:1 required</li>
+<li>result: Geometry 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="dimension-geom-result">
+<h3>dimension(geom): result<a class="headerlink" href="#dimension-geom-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geom: Geometry 1:1 required</li>
+<li>result: int 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="disjoint-a-b-result">
+<h3>disjoint(a, b): result<a class="headerlink" href="#disjoint-a-b-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>a: Geometry 1:1 required</li>
+<li>b: Geometry 1:1 required</li>
+<li>result: boolean 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="distance-a-b-result">
+<h3>distance(a, b): result<a class="headerlink" href="#distance-a-b-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>a: Geometry 1:1 required</li>
+<li>b: Geometry 1:1 required</li>
+<li>result: double 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="endpoint-geom-result">
+<h3>endPoint(geom): result<a class="headerlink" href="#endpoint-geom-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geom: LineString 1:1 required</li>
+<li>result: Point 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="envelope-geom-result">
+<h3>envelope(geom): result<a class="headerlink" href="#envelope-geom-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geom: Geometry 1:1 required</li>
+<li>result: Geometry 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="equalsexact-a-b-result">
+<h3>equalsExact(a, b): result<a class="headerlink" href="#equalsexact-a-b-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>a: Geometry 1:1 required</li>
+<li>b: Geometry 1:1 required</li>
+<li>result: boolean 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="equalsexacttolerance-a-b-tolerance-result">
+<h3>equalsExactTolerance(a, b, tolerance): result<a class="headerlink" href="#equalsexacttolerance-a-b-tolerance-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>a: Geometry 1:1 required</li>
+<li>b: Geometry 1:1 required</li>
+<li>tolerance: Double 1:1 required</li>
+<li>result: boolean 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="exteriorring-geom-result">
+<h3>exteriorRing(geom): result<a class="headerlink" href="#exteriorring-geom-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geom: Polygon 1:1 required</li>
+<li>result: Geometry 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="geometrytype-geom-result">
+<h3>geometryType(geom): result<a class="headerlink" href="#geometrytype-geom-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geom: Geometry 1:1 required</li>
+<li>result: String 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="getgeometryn-geom-index-result">
+<h3>getGeometryN(geom, index): result<a class="headerlink" href="#getgeometryn-geom-index-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geom: GeometryCollection 1:1 required</li>
+<li>index: Integer 1:1 required</li>
+<li>result: Geometry 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="getx-geom-result">
+<h3>getX(geom): result<a class="headerlink" href="#getx-geom-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geom: Point 1:1 required</li>
+<li>result: double 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="gety-geom-result">
+<h3>getY(geom): result<a class="headerlink" href="#gety-geom-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geom: Point 1:1 required</li>
+<li>result: double 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="interiorpoint-geom-result">
+<h3>interiorPoint(geom): result<a class="headerlink" href="#interiorpoint-geom-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geom: Geometry 1:1 required</li>
+<li>result: Geometry 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="interiorringn-geom-index-result">
+<h3>interiorRingN(geom, index): result<a class="headerlink" href="#interiorringn-geom-index-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geom: Polygon 1:1 required</li>
+<li>index: Integer 1:1 required</li>
+<li>result: Geometry 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="intersection-a-b-result">
+<h3>intersection(a, b): result<a class="headerlink" href="#intersection-a-b-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>a: Geometry 1:1 required</li>
+<li>b: Geometry 1:1 required</li>
+<li>result: Geometry 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="intersects-a-b-result">
+<h3>intersects(a, b): result<a class="headerlink" href="#intersects-a-b-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>a: Geometry 1:1 required</li>
+<li>b: Geometry 1:1 required</li>
+<li>result: boolean 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="isclosed-geom-result">
+<h3>isClosed(geom): result<a class="headerlink" href="#isclosed-geom-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geom: LineString 1:1 required</li>
+<li>result: boolean 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="isempty-geom-result">
+<h3>isEmpty(geom): result<a class="headerlink" href="#isempty-geom-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geom: Geometry 1:1 required</li>
+<li>result: boolean 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="isring-geom-result">
+<h3>isRing(geom): result<a class="headerlink" href="#isring-geom-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geom: LineString 1:1 required</li>
+<li>result: boolean 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="issimple-geom-result">
+<h3>isSimple(geom): result<a class="headerlink" href="#issimple-geom-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geom: Geometry 1:1 required</li>
+<li>result: boolean 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="isvalid-geom-result">
+<h3>isValid(geom): result<a class="headerlink" href="#isvalid-geom-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geom: Geometry 1:1 required</li>
+<li>result: boolean 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="iswithindistance-a-b-distance-result">
+<h3>isWithinDistance(a, b, distance): result<a class="headerlink" href="#iswithindistance-a-b-distance-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>a: Geometry 1:1 required</li>
+<li>b: Geometry 1:1 required</li>
+<li>distance: Double 1:1 required</li>
+<li>result: boolean 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="length-geom-result">
+<h3>length(geom): result<a class="headerlink" href="#length-geom-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geom: Geometry 1:1 required</li>
+<li>result: double 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="numgeometries-geom-result">
+<h3>numGeometries(geom): result<a class="headerlink" href="#numgeometries-geom-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geom: Geometry 1:1 required</li>
+<li>result: int 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="numinteriorring-geom-result">
+<h3>numInteriorRing(geom): result<a class="headerlink" href="#numinteriorring-geom-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geom: Polygon 1:1 required</li>
+<li>result: int 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="numpoints-geom-result">
+<h3>numPoints(geom): result<a class="headerlink" href="#numpoints-geom-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geom: Geometry 1:1 required</li>
+<li>result: int 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="octagonalenvelope-geom-result">
+<h3>octagonalEnvelope(geom): result<a class="headerlink" href="#octagonalenvelope-geom-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geom: Geometry 1:1 required</li>
+<li>result: Geometry 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="overlaps-a-b-result">
+<h3>overlaps(a, b): result<a class="headerlink" href="#overlaps-a-b-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>a: Geometry 1:1 required</li>
+<li>b: Geometry 1:1 required</li>
+<li>result: boolean 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="parameter-argumentname-values-parametermap">
+<h3>parameter(argumentName, values): parameterMap<a class="headerlink" href="#parameter-argumentname-values-parametermap" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>argumentName: String 1:1 required</li>
+<li>values: Object 0:unbounded</li>
+<li>parameterMap: Map 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="pointn-geom-index-result">
+<h3>pointN(geom, index): result<a class="headerlink" href="#pointn-geom-index-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geom: LineString 1:1 required</li>
+<li>index: Integer 1:1 required</li>
+<li>result: Point 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="polygonize-geom-result">
+<h3>polygonize(geom): result<a class="headerlink" href="#polygonize-geom-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geom: Geometry 1:1 required</li>
+<li>result: Geometry 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="relate-a-b-result">
+<h3>relate(a, b): result<a class="headerlink" href="#relate-a-b-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>a: Geometry 1:1 required</li>
+<li>b: Geometry 1:1 required</li>
+<li>result: String 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="relatepattern-a-b-relate-pattern-result">
+<h3>relatePattern(a, b, Relate pattern): result<a class="headerlink" href="#relatepattern-a-b-relate-pattern-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>a: Geometry 1:1 required</li>
+<li>b: Geometry 1:1 required</li>
+<li>Relate pattern: String 1:1 required</li>
+<li>result: boolean 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="reproject-geometry-sourcecrs-targetcrs-result">
+<h3>reproject(geometry, sourceCRS, targetCRS): result<a class="headerlink" href="#reproject-geometry-sourcecrs-targetcrs-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry: Geometry 1:1 required</li>
+<li>sourceCRS: CoordinateReferenceSystem 0:1 optional</li>
+<li>targetCRS: CoordinateReferenceSystem 0:1 optional</li>
+<li>result: Geometry 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="simplify-geom-distance-result">
+<h3>simplify(geom, distance): result<a class="headerlink" href="#simplify-geom-distance-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geom: Geometry 1:1 required</li>
+<li>distance: Double 1:1 required</li>
+<li>result: Geometry 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="splitpolygon-polygon-line-result">
+<h3>splitPolygon(polygon, line): result<a class="headerlink" href="#splitpolygon-polygon-line-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>polygon: Geometry 1:1 required</li>
+<li>line: LineString 1:1 required</li>
+<li>result: Geometry 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="startpoint-geom-result">
+<h3>startPoint(geom): result<a class="headerlink" href="#startpoint-geom-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geom: LineString 1:1 required</li>
+<li>result: Point 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="symdifference-a-b-result">
+<h3>symDifference(a, b): result<a class="headerlink" href="#symdifference-a-b-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>a: Geometry 1:1 required</li>
+<li>b: Geometry 1:1 required</li>
+<li>result: Geometry 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="touches-a-b-result">
+<h3>touches(a, b): result<a class="headerlink" href="#touches-a-b-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>a: Geometry 1:1 required</li>
+<li>b: Geometry 1:1 required</li>
+<li>result: boolean 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="union-geom-result">
+<h3>union(geom): result<a class="headerlink" href="#union-geom-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geom: Geometry 2:unbounded required</li>
+<li>result: Geometry 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="within-a-b-result">
+<h3>within(a, b): result<a class="headerlink" href="#within-a-b-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>a: Geometry 1:1 required</li>
+<li>b: Geometry 1:1 required</li>
+<li>result: boolean 1:1 required</li>
+</ul>
+</div>
+</div>
+<div class="section" id="defaultfunctionfactory">
+<h2>DefaultFunctionFactory<a class="headerlink" href="#defaultfunctionfactory" title="Permalink to this headline">¶</a></h2>
+<p>Contains 180 functions.</p>
+<div class="section" id="area-geometry-area">
+<h3>Area(geometry): area<a class="headerlink" href="#area-geometry-area" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry: Geometry 1:1 required</li>
+<li>area: Double 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="attributerename-targetattribute-optimizequery-sourceattribute">
+<h3>AttributeRename(targetAttribute, optimizeQuery): sourceAttribute<a class="headerlink" href="#attributerename-targetattribute-optimizequery-sourceattribute" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>targetAttribute: String 1:1 required</li>
+<li>optimizeQuery: boolean 0:1 optional</li>
+<li>sourceAttribute: String 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="buffertest-distance">
+<h3>BufferTest(): distance<a class="headerlink" href="#buffertest-distance" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>distance: Double 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="categorize-lookupvalue-value-threshold-1-value-1-threshold-2-value-2-succeeding-or-preceding-return">
+<h3>Categorize(LookupValue, Value, Threshold 1, Value 1, Threshold 2, Value 2, succeeding or preceding): return<a class="headerlink" href="#categorize-lookupvalue-value-threshold-1-value-1-threshold-2-value-2-succeeding-or-preceding-return" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>LookupValue</li>
+<li>Value</li>
+<li>Threshold 1</li>
+<li>Value 1</li>
+<li>Threshold 2</li>
+<li>Value 2</li>
+<li>succeeding or preceding</li>
+<li>return</li>
+</ul>
+</div>
+<div class="section" id="collection-average-expression-average">
+<h3>Collection_Average(expression): average<a class="headerlink" href="#collection-average-expression-average" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>expression: Number 1:1 required</li>
+<li>average: Number 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="collection-bounds-geometry-bounds">
+<h3>Collection_Bounds(geometry): bounds<a class="headerlink" href="#collection-bounds-geometry-bounds" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry: Geometry 1:1 required</li>
+<li>bounds</li>
+</ul>
+</div>
+<div class="section" id="collection-count-count">
+<h3>Collection_Count(): count<a class="headerlink" href="#collection-count-count" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>count</li>
+</ul>
+</div>
+<div class="section" id="collection-max-expression-max">
+<h3>Collection_Max(expression): max<a class="headerlink" href="#collection-max-expression-max" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>expression: Comparable 1:1 required</li>
+<li>max: Comparable 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="collection-median-expression-median">
+<h3>Collection_Median(expression): median<a class="headerlink" href="#collection-median-expression-median" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>expression: Comparable 1:1 required</li>
+<li>median: Comparable 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="collection-min-expression-min">
+<h3>Collection_Min(expression): min<a class="headerlink" href="#collection-min-expression-min" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>expression: Comparable 1:1 required</li>
+<li>min: Comparable 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="collection-nearest-value-expression">
+<h3>Collection_Nearest(value): expression<a class="headerlink" href="#collection-nearest-value-expression" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>value: Comparable 1:1 required</li>
+<li>expression: Expression 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="collection-sum-expression-sum">
+<h3>Collection_Sum(expression): sum<a class="headerlink" href="#collection-sum-expression-sum" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>expression: Number 1:1 required</li>
+<li>sum: Number 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="collection-unique-expression-unique">
+<h3>Collection_Unique(expression): unique<a class="headerlink" href="#collection-unique-expression-unique" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>expression</li>
+<li>unique</li>
+</ul>
+</div>
+<div class="section" id="concatenate-text-result">
+<h3>Concatenate(text): result<a class="headerlink" href="#concatenate-text-result" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>text: String 2:-1 required</li>
+<li>result: String 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="coveragecenter-coverage">
+<h3>CoverageCenter(): coverage<a class="headerlink" href="#coveragecenter-coverage" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>coverage: GridCoverage2D 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="equalinterval-value-classes-equalinterval">
+<h3>EqualInterval(value, classes): EqualInterval<a class="headerlink" href="#equalinterval-value-classes-equalinterval" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>value: Double 1:1 required</li>
+<li>classes: Integer 1:1 required</li>
+<li>EqualInterval: RangedClassifier 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="ieeeremainder-dividend-divisor-remainder">
+<h3>IEEEremainder(dividend, divisor): remainder<a class="headerlink" href="#ieeeremainder-dividend-divisor-remainder" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>dividend: Number 1:1 required</li>
+<li>divisor: Number 1:1 required</li>
+<li>remainder: Double 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="interpolate-data-value-pairs-mode-method-lookup">
+<h3>Interpolate(data value pairs, mode, method): lookup<a class="headerlink" href="#interpolate-data-value-pairs-mode-method-lookup" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>data value pairs</li>
+<li>mode: String 1:1 required</li>
+<li>method: String 0:1 optional</li>
+<li>lookup</li>
+</ul>
+</div>
+<div class="section" id="jenks-value-classes-jenks">
+<h3>Jenks(value, classes): Jenks<a class="headerlink" href="#jenks-value-classes-jenks" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>value: Double 1:1 required</li>
+<li>classes: Integer 1:1 required</li>
+<li>Jenks: RangedClassifier 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="propertyexists-propertyname-exists">
+<h3>PropertyExists(propertyName): exists<a class="headerlink" href="#propertyexists-propertyname-exists" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>propertyName</li>
+<li>exists: Boolean 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="quantile-value-classes-quantile">
+<h3>Quantile(value, classes): Quantile<a class="headerlink" href="#quantile-value-classes-quantile" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>value: Double 1:1 required</li>
+<li>classes: Integer 1:1 required</li>
+<li>Quantile: RangedClassifier 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="recode-lookupvalue-data-1-value-1-data-2-value-2-return">
+<h3>Recode(LookupValue, Data 1, Value 1, Data 2, Value 2): return<a class="headerlink" href="#recode-lookupvalue-data-1-value-1-data-2-value-2-return" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>LookupValue</li>
+<li>Data 1</li>
+<li>Value 1</li>
+<li>Data 2</li>
+<li>Value 2</li>
+<li>return</li>
+</ul>
+</div>
+<div class="section" id="reprojectcollection-crs">
+<h3>ReprojectCollection(): crs<a class="headerlink" href="#reprojectcollection-crs" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>crs: String 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="standarddeviation-value-classes-standarddeviation">
+<h3>StandardDeviation(value, classes): StandardDeviation<a class="headerlink" href="#standarddeviation-value-classes-standarddeviation" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>value: Double 1:1 required</li>
+<li>classes: Integer 1:1 required</li>
+<li>StandardDeviation: RangedClassifier 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="uniqueinterval-value-classes-uniqueinterval">
+<h3>UniqueInterval(value, classes): UniqueInterval<a class="headerlink" href="#uniqueinterval-value-classes-uniqueinterval" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>value: Double 1:1 required</li>
+<li>classes: Integer 1:1 required</li>
+<li>UniqueInterval: RangedClassifier 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="equals-return">
+<h3>__equals(): return<a class="headerlink" href="#equals-return" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>return</li>
+</ul>
+</div>
+<div class="section" id="abs-int-abs">
+<h3>abs(int): abs<a class="headerlink" href="#abs-int-abs" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>int: Integer 1:1 required</li>
+<li>abs: Integer 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="abs-2-number-long">
+<h3>abs_2(number): long<a class="headerlink" href="#abs-2-number-long" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>number: Long 1:1 required</li>
+<li>long: Long 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="abs-3-number-float">
+<h3>abs_3(number): float<a class="headerlink" href="#abs-3-number-float" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>number: Float 1:1 required</li>
+<li>float: Float 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="abs-4-number-double">
+<h3>abs_4(number): double<a class="headerlink" href="#abs-4-number-double" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>number: Double 1:1 required</li>
+<li>double: Double 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="acos-value-arc-cosine">
+<h3>acos(value): arc cosine<a class="headerlink" href="#acos-value-arc-cosine" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>value: Double 1:1 required</li>
+<li>arc cosine: Double 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="area2-geometry-area">
+<h3>area2(geometry): area<a class="headerlink" href="#area2-geometry-area" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry: Geometry 1:1 required</li>
+<li>area: Double 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="asin-value-arc-sine">
+<h3>asin(value): arc sine<a class="headerlink" href="#asin-value-arc-sine" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>value: Double 1:1 required</li>
+<li>arc sine: Double 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="atan-value-arc-tan">
+<h3>atan(value): arc tan<a class="headerlink" href="#atan-value-arc-tan" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>value: Double 1:1 required</li>
+<li>arc tan: Double 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="atan2-x-y-arc-tan">
+<h3>atan2(x, y): arc tan<a class="headerlink" href="#atan2-x-y-arc-tan" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>x: Double 1:1 required</li>
+<li>y: Double 1:1 required</li>
+<li>arc tan: Double 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="between-value-low-high-between">
+<h3>between(value, low, high): between<a class="headerlink" href="#between-value-low-high-between" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>value</li>
+<li>low</li>
+<li>high</li>
+<li>between: Boolean 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="boundary-geometry-boundary">
+<h3>boundary(geometry): boundary<a class="headerlink" href="#boundary-geometry-boundary" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry: Geometry 1:1 required</li>
+<li>boundary: Geometry 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="boundarydimension-geometry-dimension">
+<h3>boundaryDimension(geometry): dimension<a class="headerlink" href="#boundarydimension-geometry-dimension" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry: Geometry 1:1 required</li>
+<li>dimension: Integer 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="buffer-geometry-distance-buffer">
+<h3>buffer(geometry, distance): buffer<a class="headerlink" href="#buffer-geometry-distance-buffer" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry: Geometry 1:1 required</li>
+<li>distance: Number 1:1 required</li>
+<li>buffer: Geometry 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="bufferwithsegments-geometry-distance-numberofsegments-buffer">
+<h3>bufferWithSegments(geometry, distance, numberOfSegments): buffer<a class="headerlink" href="#bufferwithsegments-geometry-distance-numberofsegments-buffer" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry: Geometry 1:1 required</li>
+<li>distance: Number 1:1 required</li>
+<li>numberOfSegments: Number 1:1 required</li>
+<li>buffer: Geometry 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="ceil-number-ceiling">
+<h3>ceil(number): ceiling<a class="headerlink" href="#ceil-number-ceiling" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>number: Number 1:1 required</li>
+<li>ceiling: Double 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="centroid-geometry-centroid">
+<h3>centroid(geometry): centroid<a class="headerlink" href="#centroid-geometry-centroid" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry: Geometry 1:1 required</li>
+<li>centroid: Point 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="classify-expression-classifer-value">
+<h3>classify(expression, classifer): value<a class="headerlink" href="#classify-expression-classifer-value" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>expression</li>
+<li>classifer: Classifier 1:1 required</li>
+<li>value</li>
+</ul>
+</div>
+<div class="section" id="contains-geometry1-geometry2-contains">
+<h3>contains(geometry1, geometry2): contains<a class="headerlink" href="#contains-geometry1-geometry2-contains" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry1: Geometry 1:1 required</li>
+<li>geometry2: Geometry 1:1 required</li>
+<li>contains: Boolean 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="convert-value-class-converted">
+<h3>convert(value, class): converted<a class="headerlink" href="#convert-value-class-converted" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>value</li>
+<li>class: Class 1:1 required</li>
+<li>converted</li>
+</ul>
+</div>
+<div class="section" id="convexhull-geometry-hull">
+<h3>convexHull(geometry): hull<a class="headerlink" href="#convexhull-geometry-hull" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry: Geometry 1:1 required</li>
+<li>hull: Geometry 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="cos-radians-cosine">
+<h3>cos(radians): cosine<a class="headerlink" href="#cos-radians-cosine" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>radians: Double 1:1 required</li>
+<li>cosine: Double 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="crosses-geometry1-geometry2-crosses">
+<h3>crosses(geometry1, geometry2): crosses<a class="headerlink" href="#crosses-geometry1-geometry2-crosses" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry1: Geometry 1:1 required</li>
+<li>geometry2: Geometry 1:1 required</li>
+<li>crosses: Boolean 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="dateformat-format-date-formatted">
+<h3>dateFormat(format, date): formatted<a class="headerlink" href="#dateformat-format-date-formatted" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>format: String 1:1 required</li>
+<li>date: Date 1:1 required</li>
+<li>formatted: String 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="dateparse-format-datestring-date">
+<h3>dateParse(format, dateString): date<a class="headerlink" href="#dateparse-format-datestring-date" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>format: String 1:1 required</li>
+<li>dateString: String 1:1 required</li>
+<li>date: Date 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="difference-geometry1-geometry2-difference">
+<h3>difference(geometry1, geometry2): difference<a class="headerlink" href="#difference-geometry1-geometry2-difference" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry1: Geometry 1:1 required</li>
+<li>geometry2: Geometry 1:1 required</li>
+<li>difference: Geometry 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="dimension-geometry-dimension">
+<h3>dimension(geometry): dimension<a class="headerlink" href="#dimension-geometry-dimension" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry: Geometry 1:1 required</li>
+<li>dimension: Integer 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="disjoint-geometry1-geometry2-disjoint">
+<h3>disjoint(geometry1, geometry2): disjoint<a class="headerlink" href="#disjoint-geometry1-geometry2-disjoint" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry1: Geometry 1:1 required</li>
+<li>geometry2: Geometry 1:1 required</li>
+<li>disjoint: Boolean 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="disjoint3d-geometry1-geometry2-disjoint3d">
+<h3>disjoint3D(geometry1, geometry2): disjoint3D<a class="headerlink" href="#disjoint3d-geometry1-geometry2-disjoint3d" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry1: Geometry 1:1 required</li>
+<li>geometry2: Geometry 1:1 required</li>
+<li>disjoint3D: Double 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="distance-geometry1-geometry2-distance">
+<h3>distance(geometry1, geometry2): distance<a class="headerlink" href="#distance-geometry1-geometry2-distance" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry1: Geometry 1:1 required</li>
+<li>geometry2: Geometry 1:1 required</li>
+<li>distance: Double 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="distance3d-geometry1-geometry2-distance3d">
+<h3>distance3D(geometry1, geometry2): distance3D<a class="headerlink" href="#distance3d-geometry1-geometry2-distance3d" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry1: Geometry 1:1 required</li>
+<li>geometry2: Geometry 1:1 required</li>
+<li>distance3D: Double 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="double2bool-double-double2bool">
+<h3>double2bool(double): double2bool<a class="headerlink" href="#double2bool-double-double2bool" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>double: Double 1:1 required</li>
+<li>double2bool: Boolean 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="endangle-linestring-endangle">
+<h3>endAngle(linestring): endAngle<a class="headerlink" href="#endangle-linestring-endangle" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>linestring: LineString 1:1 required</li>
+<li>endAngle: Double 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="endpoint-linestring-endpoint">
+<h3>endPoint(linestring): endPoint<a class="headerlink" href="#endpoint-linestring-endpoint" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>linestring: LineString 1:1 required</li>
+<li>endPoint: Point 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="env-variable-value">
+<h3>env(variable): value<a class="headerlink" href="#env-variable-value" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>variable: String 1:1 required</li>
+<li>value</li>
+</ul>
+</div>
+<div class="section" id="envelope-geometry-envelope">
+<h3>envelope(geometry): envelope<a class="headerlink" href="#envelope-geometry-envelope" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry: Geometry 1:1 required</li>
+<li>envelope: Geometry 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="equalto-object1-object2-equalto">
+<h3>equalTo(object1, object2): equalTo<a class="headerlink" href="#equalto-object1-object2-equalto" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>object1</li>
+<li>object2</li>
+<li>equalTo: Boolean 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="equalsexact-geometry1-geometry2-equalsexact">
+<h3>equalsExact(geometry1, geometry2): equalsExact<a class="headerlink" href="#equalsexact-geometry1-geometry2-equalsexact" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry1: Geometry 1:1 required</li>
+<li>geometry2: Geometry 1:1 required</li>
+<li>equalsExact: Boolean 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="equalsexacttolerance-geometry1-geometry2-tolarance-equalsexacttolerance">
+<h3>equalsExactTolerance(geometry1, geometry2, tolarance): equalsExactTolerance<a class="headerlink" href="#equalsexacttolerance-geometry1-geometry2-tolarance-equalsexacttolerance" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry1: Geometry 1:1 required</li>
+<li>geometry2: Geometry 1:1 required</li>
+<li>tolarance: Double 1:1 required</li>
+<li>equalsExactTolerance: Boolean 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="exp-number-exponent">
+<h3>exp(number): exponent<a class="headerlink" href="#exp-number-exponent" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>number: Number 1:1 required</li>
+<li>exponent: Double 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="exteriorring-geometry-exteriorring">
+<h3>exteriorRing(geometry): exteriorRing<a class="headerlink" href="#exteriorring-geometry-exteriorring" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry: Geometry 1:1 required</li>
+<li>exteriorRing: LinearRing 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="floor-double-floor">
+<h3>floor(double): floor<a class="headerlink" href="#floor-double-floor" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>double: Double 1:1 required</li>
+<li>floor: Double 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="geomfromwkt-geometry-geomfromwkt">
+<h3>geomFromWKT(geometry): geomFromWKT<a class="headerlink" href="#geomfromwkt-geometry-geomfromwkt" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry: String 1:1 required</li>
+<li>geomFromWKT: Geometry 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="geomlength-geometry-geomlength">
+<h3>geomLength(geometry): geomLength<a class="headerlink" href="#geomlength-geometry-geomlength" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry: Geometry 1:1 required</li>
+<li>geomLength: Double 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="geometrytype-geometry-geometrytype">
+<h3>geometryType(geometry): geometryType<a class="headerlink" href="#geometrytype-geometry-geometrytype" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry: Geometry 1:1 required</li>
+<li>geometryType: String 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="getgeometryn-geometry-index-getgeometryn">
+<h3>getGeometryN(geometry, index): getGeometryN<a class="headerlink" href="#getgeometryn-geometry-index-getgeometryn" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry: Geometry 1:1 required</li>
+<li>index: Integer 1:1 required</li>
+<li>getGeometryN: Geometry 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="getx-geometry-getx">
+<h3>getX(geometry): getX<a class="headerlink" href="#getx-geometry-getx" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry: Geometry 1:1 required</li>
+<li>getX: Double 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="gety-geometry-gety">
+<h3>getY(geometry): getY<a class="headerlink" href="#gety-geometry-gety" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry: Geometry 1:1 required</li>
+<li>getY: Double 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="getz-geometry-getz">
+<h3>getz(geometry): getz<a class="headerlink" href="#getz-geometry-getz" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry: Geometry 1:1 required</li>
+<li>getz: Double 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="greaterequalthan-object1-object2-greaterequalthan">
+<h3>greaterEqualThan(object1, object2): greaterEqualThan<a class="headerlink" href="#greaterequalthan-object1-object2-greaterequalthan" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>object1</li>
+<li>object2</li>
+<li>greaterEqualThan: Boolean 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="greaterthan-object1-object2-greaterthan">
+<h3>greaterThan(object1, object2): greaterThan<a class="headerlink" href="#greaterthan-object1-object2-greaterthan" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>object1</li>
+<li>object2</li>
+<li>greaterThan: Boolean 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="id-id">
+<h3>id(): id<a class="headerlink" href="#id-id" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>id: String 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="if-then-else-condition-then-else-if-then-else">
+<h3>if_then_else(condition, then, else): if_then_else<a class="headerlink" href="#if-then-else-condition-then-else-if-then-else" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>condition: Boolean 1:1 required</li>
+<li>then</li>
+<li>else</li>
+<li>if_then_else</li>
+</ul>
+</div>
+<div class="section" id="in10-value-in1-in2-in3-in4-in5-in6-in7-in8-in9-in10-in10">
+<h3>in10(value, in1, in2, in3, in4, in5, in6, in7, in8, in9, in10): in10<a class="headerlink" href="#in10-value-in1-in2-in3-in4-in5-in6-in7-in8-in9-in10-in10" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>value: Boolean 1:1 required</li>
+<li>in1</li>
+<li>in2</li>
+<li>in3</li>
+<li>in4</li>
+<li>in5</li>
+<li>in6</li>
+<li>in7</li>
+<li>in8</li>
+<li>in9</li>
+<li>in10</li>
+<li>in10: Boolean 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="in2-value-in1-in2-in2">
+<h3>in2(value, in1, in2): in2<a class="headerlink" href="#in2-value-in1-in2-in2" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>value: Boolean 1:1 required</li>
+<li>in1</li>
+<li>in2</li>
+<li>in2: Boolean 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="in3-value-in1-in2-in3-in3">
+<h3>in3(value, in1, in2, in3): in3<a class="headerlink" href="#in3-value-in1-in2-in3-in3" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>value: Boolean 1:1 required</li>
+<li>in1</li>
+<li>in2</li>
+<li>in3</li>
+<li>in3: Boolean 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="in4-value-in1-in2-in3-in4-in4">
+<h3>in4(value, in1, in2, in3, in4): in4<a class="headerlink" href="#in4-value-in1-in2-in3-in4-in4" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>value: Boolean 1:1 required</li>
+<li>in1</li>
+<li>in2</li>
+<li>in3</li>
+<li>in4</li>
+<li>in4: Boolean 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="in5-value-in1-in2-in3-in4-in5-in5">
+<h3>in5(value, in1, in2, in3, in4, in5): in5<a class="headerlink" href="#in5-value-in1-in2-in3-in4-in5-in5" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>value: Boolean 1:1 required</li>
+<li>in1</li>
+<li>in2</li>
+<li>in3</li>
+<li>in4</li>
+<li>in5</li>
+<li>in5: Boolean 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="in6-value-in1-in2-in3-in4-in5-in6-in6">
+<h3>in6(value, in1, in2, in3, in4, in5, in6): in6<a class="headerlink" href="#in6-value-in1-in2-in3-in4-in5-in6-in6" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>value: Boolean 1:1 required</li>
+<li>in1</li>
+<li>in2</li>
+<li>in3</li>
+<li>in4</li>
+<li>in5</li>
+<li>in6</li>
+<li>in6: Boolean 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="in7-value-in1-in2-in3-in4-in5-in6-in7-in7">
+<h3>in7(value, in1, in2, in3, in4, in5, in6, in7): in7<a class="headerlink" href="#in7-value-in1-in2-in3-in4-in5-in6-in7-in7" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>value: Boolean 1:1 required</li>
+<li>in1</li>
+<li>in2</li>
+<li>in3</li>
+<li>in4</li>
+<li>in5</li>
+<li>in6</li>
+<li>in7</li>
+<li>in7: Boolean 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="in8-value-in1-in2-in3-in4-in5-in6-in7-in8-in8">
+<h3>in8(value, in1, in2, in3, in4, in5, in6, in7, in8): in8<a class="headerlink" href="#in8-value-in1-in2-in3-in4-in5-in6-in7-in8-in8" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>value: Boolean 1:1 required</li>
+<li>in1</li>
+<li>in2</li>
+<li>in3</li>
+<li>in4</li>
+<li>in5</li>
+<li>in6</li>
+<li>in7</li>
+<li>in8</li>
+<li>in8: Boolean 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="in9-value-in1-in2-in3-in4-in5-in6-in7-in8-in9-in9">
+<h3>in9(value, in1, in2, in3, in4, in5, in6, in7, in8, in9): in9<a class="headerlink" href="#in9-value-in1-in2-in3-in4-in5-in6-in7-in8-in9-in9" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>value: Boolean 1:1 required</li>
+<li>in1</li>
+<li>in2</li>
+<li>in3</li>
+<li>in4</li>
+<li>in5</li>
+<li>in6</li>
+<li>in7</li>
+<li>in8</li>
+<li>in9</li>
+<li>in9: Boolean 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="int2bbool-int-int2bbool">
+<h3>int2bbool(int): int2bbool<a class="headerlink" href="#int2bbool-int-int2bbool" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>int: Integer 1:1 required</li>
+<li>int2bbool: Boolean 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="int2ddouble-int-int2ddouble">
+<h3>int2ddouble(int): int2ddouble<a class="headerlink" href="#int2ddouble-int-int2ddouble" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>int: Integer 1:1 required</li>
+<li>int2ddouble: Double 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="interiorpoint-geometry-interiorpoint">
+<h3>interiorPoint(geometry): interiorPoint<a class="headerlink" href="#interiorpoint-geometry-interiorpoint" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry: Geometry 1:1 required</li>
+<li>interiorPoint: Point 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="interiorringn-geometry-n-interiorringn">
+<h3>interiorRingN(geometry, n): interiorRingN<a class="headerlink" href="#interiorringn-geometry-n-interiorringn" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry: Geometry 1:1 required</li>
+<li>n: Integer 1:1 required</li>
+<li>interiorRingN: LinearRing 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="intersection-geometry1-geometry2-intersection">
+<h3>intersection(geometry1, geometry2): intersection<a class="headerlink" href="#intersection-geometry1-geometry2-intersection" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry1: Geometry 1:1 required</li>
+<li>geometry2: Geometry 1:1 required</li>
+<li>intersection: Geometry 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="intersects-geometry1-geometry2-intersects">
+<h3>intersects(geometry1, geometry2): intersects<a class="headerlink" href="#intersects-geometry1-geometry2-intersects" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry1: Geometry 1:1 required</li>
+<li>geometry2: Geometry 1:1 required</li>
+<li>intersects: Boolean 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="intersects3d-geometry1-geometry2-intersects3d">
+<h3>intersects3D(geometry1, geometry2): intersects3D<a class="headerlink" href="#intersects3d-geometry1-geometry2-intersects3d" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry1: Geometry 1:1 required</li>
+<li>geometry2: Geometry 1:1 required</li>
+<li>intersects3D: Double 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="isclosed-geometry-isclosed">
+<h3>isClosed(geometry): isClosed<a class="headerlink" href="#isclosed-geometry-isclosed" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry: Geometry 1:1 required</li>
+<li>isClosed: Boolean 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="iscoverage-iscoverage">
+<h3>isCoverage(): isCoverage<a class="headerlink" href="#iscoverage-iscoverage" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>isCoverage: Boolean 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="isempty-geometry-isempty">
+<h3>isEmpty(geometry): isEmpty<a class="headerlink" href="#isempty-geometry-isempty" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry: Geometry 1:1 required</li>
+<li>isEmpty: Boolean 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="islike-string-regex-islike">
+<h3>isLike(string, regex): isLike<a class="headerlink" href="#islike-string-regex-islike" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>string: String 1:1 required</li>
+<li>regex: String 1:1 required</li>
+<li>isLike: Boolean 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="isnull-object-isnull">
+<h3>isNull(object): isNull<a class="headerlink" href="#isnull-object-isnull" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>object</li>
+<li>isNull: Boolean 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="isring-geometry-isring">
+<h3>isRing(geometry): isRing<a class="headerlink" href="#isring-geometry-isring" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry: Geometry 1:1 required</li>
+<li>isRing: Boolean 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="issimple-geometry-issimple">
+<h3>isSimple(geometry): isSimple<a class="headerlink" href="#issimple-geometry-issimple" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry: Geometry 1:1 required</li>
+<li>isSimple: Boolean 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="isvalid-geometry-isvalid">
+<h3>isValid(geometry): isValid<a class="headerlink" href="#isvalid-geometry-isvalid" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry: Geometry 1:1 required</li>
+<li>isValid: Boolean 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="iswithindistance-geometry1-geometry2-distance-iswithindistance">
+<h3>isWithinDistance(geometry1, geometry2, distance): isWithinDistance<a class="headerlink" href="#iswithindistance-geometry1-geometry2-distance-iswithindistance" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry1: Geometry 1:1 required</li>
+<li>geometry2: Geometry 1:1 required</li>
+<li>distance: Double 1:1 required</li>
+<li>isWithinDistance: Boolean 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="iswithindistance3d-geometry1-geometry2-distance-iswithindistance3d">
+<h3>isWithinDistance3D(geometry1, geometry2, distance): isWithinDistance3D<a class="headerlink" href="#iswithindistance3d-geometry1-geometry2-distance-iswithindistance3d" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry1: Geometry 1:1 required</li>
+<li>geometry2: Geometry 1:1 required</li>
+<li>distance: Double 1:1 required</li>
+<li>isWithinDistance3D: Double 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="isometric-geometry-extrusion-isometric">
+<h3>isometric(geometry, extrusion): isometric<a class="headerlink" href="#isometric-geometry-extrusion-isometric" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry: Geometry 1:1 required</li>
+<li>extrusion: Double 1:1 required</li>
+<li>isometric: Geometry 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="length-string-length">
+<h3>length(string): length<a class="headerlink" href="#length-string-length" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>string: String 1:1 required</li>
+<li>length: Integer 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="lessequalthan-a-b-lessequalthan">
+<h3>lessEqualThan(a, b): lessEqualThan<a class="headerlink" href="#lessequalthan-a-b-lessequalthan" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>a: Number 1:1 required</li>
+<li>b: Number 1:1 required</li>
+<li>lessEqualThan: Boolean 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="lessthan-a-b-lessthan">
+<h3>lessThan(a, b): lessThan<a class="headerlink" href="#lessthan-a-b-lessthan" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>a: Number 1:1 required</li>
+<li>b: Number 1:1 required</li>
+<li>lessThan: Boolean 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="list-item-list">
+<h3>list(item): list<a class="headerlink" href="#list-item-list" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>item</li>
+<li>list: List 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="log-value-logarithm">
+<h3>log(value): logarithm<a class="headerlink" href="#log-value-logarithm" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>value: Number 1:1 required</li>
+<li>logarithm: Double 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="max-double-double-maxium">
+<h3>max(double, double): maxium<a class="headerlink" href="#max-double-double-maxium" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>double: Number 1:1 required</li>
+<li>double: Number 1:1 required</li>
+<li>maxium: Double 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="max-2-long-long-maximum">
+<h3>max_2(long, long): maximum<a class="headerlink" href="#max-2-long-long-maximum" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>long: Number 1:1 required</li>
+<li>long: Number 1:1 required</li>
+<li>maximum: Long 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="max-3-float-float-maximum">
+<h3>max_3(float, float): maximum<a class="headerlink" href="#max-3-float-float-maximum" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>float: Number 1:1 required</li>
+<li>float: Number 1:1 required</li>
+<li>maximum: Float 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="max-4-int-int-maximum">
+<h3>max_4(int, int): maximum<a class="headerlink" href="#max-4-int-int-maximum" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>int: Number 1:1 required</li>
+<li>int: Number 1:1 required</li>
+<li>maximum: Integer 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="min-double-double-minium">
+<h3>min(double, double): minium<a class="headerlink" href="#min-double-double-minium" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>double: Double 1:1 required</li>
+<li>double: Double 1:1 required</li>
+<li>minium: Double 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="min-2-long-long-minium">
+<h3>min_2(long, long): minium<a class="headerlink" href="#min-2-long-long-minium" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>long: Number 1:1 required</li>
+<li>long: Number 1:1 required</li>
+<li>minium: Long 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="min-3-float-float-minium">
+<h3>min_3(float, float): minium<a class="headerlink" href="#min-3-float-float-minium" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>float: Number 1:1 required</li>
+<li>float: Number 1:1 required</li>
+<li>minium: Float 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="min-4-int-int-minium">
+<h3>min_4(int, int): minium<a class="headerlink" href="#min-4-int-int-minium" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>int: Number 1:1 required</li>
+<li>int: Number 1:1 required</li>
+<li>minium: Integer 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="mincircle-geometry-mincircle">
+<h3>mincircle(geometry): mincircle<a class="headerlink" href="#mincircle-geometry-mincircle" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry: Geometry 1:1 required</li>
+<li>mincircle: Geometry 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="minimumdiameter-geometry-minimumdiameter">
+<h3>minimumdiameter(geometry): minimumdiameter<a class="headerlink" href="#minimumdiameter-geometry-minimumdiameter" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry: Geometry 1:1 required</li>
+<li>minimumdiameter: Geometry 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="minrectangle-geometry-minrectangle">
+<h3>minrectangle(geometry): minrectangle<a class="headerlink" href="#minrectangle-geometry-minrectangle" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry: Geometry 1:1 required</li>
+<li>minrectangle: Geometry 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="modulo-dividend-divisor-modulo">
+<h3>modulo(dividend, divisor): modulo<a class="headerlink" href="#modulo-dividend-divisor-modulo" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>dividend: Integer 1:1 required</li>
+<li>divisor: Integer 1:1 required</li>
+<li>modulo: Integer 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="not-logicvalue-not">
+<h3>not(logicValue): not<a class="headerlink" href="#not-logicvalue-not" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>logicValue: Boolean 1:1 required</li>
+<li>not: Boolean 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="notequalto-a-b-notequalto">
+<h3>notEqualTo(a, b): notEqualTo<a class="headerlink" href="#notequalto-a-b-notequalto" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>a</li>
+<li>b</li>
+<li>notEqualTo: Boolean 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="numgeometries-geometry-numgeometries">
+<h3>numGeometries(geometry): numGeometries<a class="headerlink" href="#numgeometries-geometry-numgeometries" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry: Geometry 1:1 required</li>
+<li>numGeometries: Integer 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="numinteriorring-geometry-numinteriorring">
+<h3>numInteriorRing(geometry): numInteriorRing<a class="headerlink" href="#numinteriorring-geometry-numinteriorring" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry: Geometry 1:1 required</li>
+<li>numInteriorRing: Integer 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="numpoints-geometry-numpoints">
+<h3>numPoints(geometry): numPoints<a class="headerlink" href="#numpoints-geometry-numpoints" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry: Geometry 1:1 required</li>
+<li>numPoints: Integer 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="numberformat-format-number-numberformat">
+<h3>numberFormat(format, number): numberFormat<a class="headerlink" href="#numberformat-format-number-numberformat" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>format: String 1:1 required</li>
+<li>number: Number 1:1 required</li>
+<li>numberFormat: String 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="numberformat2-format-number-minus-decimal-separator-numberformat2">
+<h3>numberFormat2(format, number, minus, decimal, separator): numberFormat2<a class="headerlink" href="#numberformat2-format-number-minus-decimal-separator-numberformat2" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>format: String 1:1 required</li>
+<li>number: Number 1:1 required</li>
+<li>minus: String 1:1 required</li>
+<li>decimal: String 1:1 required</li>
+<li>separator: String 1:1 required</li>
+<li>numberFormat2: String 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="octagonalenvelope-geometry-octagonalenvelope">
+<h3>octagonalenvelope(geometry): octagonalenvelope<a class="headerlink" href="#octagonalenvelope-geometry-octagonalenvelope" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry: Geometry 1:1 required</li>
+<li>octagonalenvelope: Geometry 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="offset-geometry-offsetx-offsety-offset">
+<h3>offset(geometry, offsetX, offsetY): offset<a class="headerlink" href="#offset-geometry-offsetx-offsety-offset" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry: Geometry 1:1 required</li>
+<li>offsetX: Double 1:1 required</li>
+<li>offsetY: Double 1:1 required</li>
+<li>offset: Geometry 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="overlaps-geometry1-geometry2-overlaps">
+<h3>overlaps(geometry1, geometry2): overlaps<a class="headerlink" href="#overlaps-geometry1-geometry2-overlaps" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry1: Geometry 1:1 required</li>
+<li>geometry2: Geometry 1:1 required</li>
+<li>overlaps: Geometry 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="parseboolean-string-parseboolean">
+<h3>parseBoolean(string): parseBoolean<a class="headerlink" href="#parseboolean-string-parseboolean" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>string: String 1:1 required</li>
+<li>parseBoolean: Boolean 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="parsedouble-string-parsedouble">
+<h3>parseDouble(string): parseDouble<a class="headerlink" href="#parsedouble-string-parsedouble" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>string: String 1:1 required</li>
+<li>parseDouble: Double 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="parseint-string-parseint">
+<h3>parseInt(string): parseInt<a class="headerlink" href="#parseint-string-parseint" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>string: String 1:1 required</li>
+<li>parseInt: Integer 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="parselong-string-parselong">
+<h3>parseLong(string): parseLong<a class="headerlink" href="#parselong-string-parselong" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>string: String 1:1 required</li>
+<li>parseLong: Long 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="pi-pi">
+<h3>pi(): pi<a class="headerlink" href="#pi-pi" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>pi: Double 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="pointn-geometry-index-pointn">
+<h3>pointN(geometry, index): pointN<a class="headerlink" href="#pointn-geometry-index-pointn" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry: Geometry 1:1 required</li>
+<li>index: Integer 1:1 required</li>
+<li>pointN: Geometry 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="pow-base-exponent-power">
+<h3>pow(base, exponent): power<a class="headerlink" href="#pow-base-exponent-power" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>base: Number 1:1 required</li>
+<li>exponent: Number 1:1 required</li>
+<li>power: Double 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="property-propertyname-propertyvalue">
+<h3>property(propertyName): propertyValue<a class="headerlink" href="#property-propertyname-propertyvalue" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>propertyName: String 1:1 required</li>
+<li>propertyValue</li>
+</ul>
+</div>
+<div class="section" id="random-random">
+<h3>random(): random<a class="headerlink" href="#random-random" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>random: Double 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="relate-geometry1-geometry2-relate">
+<h3>relate(geometry1, geometry2): relate<a class="headerlink" href="#relate-geometry1-geometry2-relate" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry1: Geometry 1:1 required</li>
+<li>geometry2: Geometry 1:1 required</li>
+<li>relate: String 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="relatepattern-geometry-geometry-pattern-related">
+<h3>relatePattern(geometry, geometry, pattern): related<a class="headerlink" href="#relatepattern-geometry-geometry-pattern-related" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry: Geometry 1:1 required</li>
+<li>geometry: Geometry 1:1 required</li>
+<li>pattern: String 1:1 required</li>
+<li>related: Boolean 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="rescaletopixels-value-defaultunit-scalefactor-rescalingmode-rescaletopixels">
+<h3>rescaleToPixels(value, defaultUnit, scaleFactor, rescalingMode): rescaleToPixels<a class="headerlink" href="#rescaletopixels-value-defaultunit-scalefactor-rescalingmode-rescaletopixels" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>value: String 1:1 required</li>
+<li>defaultUnit: Unit 1:1 required</li>
+<li>scaleFactor: Double 1:1 required</li>
+<li>rescalingMode: RescalingMode 0:1 optional</li>
+<li>rescaleToPixels: String 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="rint-double-rounded">
+<h3>rint(double): rounded<a class="headerlink" href="#rint-double-rounded" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>double: Number 1:1 required</li>
+<li>rounded: Double 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="round-number-float">
+<h3>round(number): float<a class="headerlink" href="#round-number-float" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>number: Number 1:1 required</li>
+<li>float: Float 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="rounddouble-number-rounded">
+<h3>roundDouble(number): rounded<a class="headerlink" href="#rounddouble-number-rounded" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>number: Number 1:1 required</li>
+<li>rounded: Double 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="round-2-number-long">
+<h3>round_2(number): long<a class="headerlink" href="#round-2-number-long" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>number: Number 1:1 required</li>
+<li>long: Long 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="setcrs-geometry-crs-setcrs">
+<h3>setCRS(geometry, CRS): setCRS<a class="headerlink" href="#setcrs-geometry-crs-setcrs" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry: Geometry 1:1 required</li>
+<li>CRS: String 1:1 required</li>
+<li>setCRS: Geometry 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="sin-radians-sine">
+<h3>sin(radians): sine<a class="headerlink" href="#sin-radians-sine" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>radians: Number 1:1 required</li>
+<li>sine: Double 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="sqrt-number-root">
+<h3>sqrt(number): root<a class="headerlink" href="#sqrt-number-root" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>number: Number 1:1 required</li>
+<li>root: Double 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="startangle-linestring-degrees">
+<h3>startAngle(linestring): degrees<a class="headerlink" href="#startangle-linestring-degrees" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>linestring: LineString 1:1 required</li>
+<li>degrees: Double 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="startpoint-linestring-point">
+<h3>startPoint(linestring): point<a class="headerlink" href="#startpoint-linestring-point" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>linestring: LineString 1:1 required</li>
+<li>point: Point 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="strcapitalize-string-string">
+<h3>strCapitalize(string): string<a class="headerlink" href="#strcapitalize-string-string" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>string: String 1:1 required</li>
+<li>string: String 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="strconcat-string1-string2-strconcat">
+<h3>strConcat(string1, string2): strConcat<a class="headerlink" href="#strconcat-string1-string2-strconcat" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>string1: String 1:1 required</li>
+<li>string2: String 1:1 required</li>
+<li>strConcat: String 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="strendswith-string-postfix-endswith">
+<h3>strEndsWith(String, postfix): endsWith<a class="headerlink" href="#strendswith-string-postfix-endswith" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>String: String 1:1 required</li>
+<li>postfix: String 1:1 required</li>
+<li>endsWith: Boolean 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="strequalsignorecase-string-lookup-equals">
+<h3>strEqualsIgnoreCase(string, lookup): equals<a class="headerlink" href="#strequalsignorecase-string-lookup-equals" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>string: String 1:1 required</li>
+<li>lookup: String 1:1 required</li>
+<li>equals: Boolean 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="strindexof-string-lookup-index">
+<h3>strIndexOf(String, lookup): index<a class="headerlink" href="#strindexof-string-lookup-index" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>String: String 1:1 required</li>
+<li>lookup: String 1:1 required</li>
+<li>index: Integer 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="strlastindexof-string-lookup-index">
+<h3>strLastIndexOf(String, lookup): index<a class="headerlink" href="#strlastindexof-string-lookup-index" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>String: String 1:1 required</li>
+<li>lookup: String 1:1 required</li>
+<li>index: Integer 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="strlength-string-length">
+<h3>strLength(string): length<a class="headerlink" href="#strlength-string-length" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>string: String 1:1 required</li>
+<li>length: Integer 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="strmatches-string-regex-match">
+<h3>strMatches(string, regex): match<a class="headerlink" href="#strmatches-string-regex-match" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>string: String 1:1 required</li>
+<li>regex: String 1:1 required</li>
+<li>match: Boolean 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="strposition-string-lookup-method-string">
+<h3>strPosition(string, lookup, method): string<a class="headerlink" href="#strposition-string-lookup-method-string" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>string: String 1:1 required</li>
+<li>lookup: String 1:1 required</li>
+<li>method: String 1:1 required</li>
+<li>string: String 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="strreplace-string-search-replace-all-string">
+<h3>strReplace(string, search, replace, all): string<a class="headerlink" href="#strreplace-string-search-replace-all-string" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>string: String 1:1 required</li>
+<li>search: String 1:1 required</li>
+<li>replace: String 1:1 required</li>
+<li>all: Boolean 1:1 required</li>
+<li>string: String 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="strstartswith-string-prefix-starts-with">
+<h3>strStartsWith(string, prefix): starts with<a class="headerlink" href="#strstartswith-string-prefix-starts-with" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>string: String 1:1 required</li>
+<li>prefix: String 1:1 required</li>
+<li>starts with: Boolean 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="strsubstring-string-beginindex-endindex-substring">
+<h3>strSubstring(string, beginIndex, endIndex): substring<a class="headerlink" href="#strsubstring-string-beginindex-endindex-substring" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>string: String 1:1 required</li>
+<li>beginIndex: Integer 1:1 required</li>
+<li>endIndex: Integer 1:1 required</li>
+<li>substring: String 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="strsubstringstart-string-beginindex-substring">
+<h3>strSubstringStart(string, beginIndex): substring<a class="headerlink" href="#strsubstringstart-string-beginindex-substring" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>string: String 1:1 required</li>
+<li>beginIndex: Integer 1:1 required</li>
+<li>substring: String 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="strtolowercase-string-lowercase">
+<h3>strToLowerCase(string): lowercase<a class="headerlink" href="#strtolowercase-string-lowercase" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>string: String 1:1 required</li>
+<li>lowercase: String 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="strtouppercase-string-uppercase">
+<h3>strToUpperCase(string): uppercase<a class="headerlink" href="#strtouppercase-string-uppercase" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>string: String 1:1 required</li>
+<li>uppercase: String 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="strtrim-string-trim">
+<h3>strTrim(string): trim<a class="headerlink" href="#strtrim-string-trim" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>string: String 1:1 required</li>
+<li>trim: String 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="strtrim2-string-method-character-trim">
+<h3>strTrim2(string, method, character): trim<a class="headerlink" href="#strtrim2-string-method-character-trim" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>string: String 1:1 required</li>
+<li>method: String 1:1 required</li>
+<li>character: String 1:1 required</li>
+<li>trim: String 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="stringtemplate-input-pattern-template-defaultvalue-return">
+<h3>stringTemplate(input, pattern, template, defaultValue): return<a class="headerlink" href="#stringtemplate-input-pattern-template-defaultvalue-return" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>input</li>
+<li>pattern</li>
+<li>template</li>
+<li>defaultValue</li>
+<li>return</li>
+</ul>
+</div>
+<div class="section" id="symdifference-geometry-geometry-symetric-difference">
+<h3>symDifference(geometry, geometry): symetric difference<a class="headerlink" href="#symdifference-geometry-geometry-symetric-difference" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry: Geometry 1:1 required</li>
+<li>geometry: Geometry 1:1 required</li>
+<li>symetric difference: Geometry 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="tan-radians-tan">
+<h3>tan(radians): tan<a class="headerlink" href="#tan-radians-tan" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>radians: Number 1:1 required</li>
+<li>tan: Double 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="todegrees-radians-degrees">
+<h3>toDegrees(radians): degrees<a class="headerlink" href="#todegrees-radians-degrees" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>radians: Number 1:1 required</li>
+<li>degrees: Double 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="toradians-degree-radians">
+<h3>toRadians(degree): radians<a class="headerlink" href="#toradians-degree-radians" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>degree: Number 1:1 required</li>
+<li>radians: Double 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="towkt-geometry-wkt">
+<h3>toWKT(geometry): wkt<a class="headerlink" href="#towkt-geometry-wkt" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry: Geometry 1:1 required</li>
+<li>wkt: String 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="touches-geometry-geometry-touches">
+<h3>touches(geometry, geometry): touches<a class="headerlink" href="#touches-geometry-geometry-touches" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry: Geometry 1:1 required</li>
+<li>geometry: Geometry 1:1 required</li>
+<li>touches: Boolean 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="union-geometry-geometry-union">
+<h3>union(geometry, geometry): union<a class="headerlink" href="#union-geometry-geometry-union" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry: Geometry 1:1 required</li>
+<li>geometry: Geometry 1:1 required</li>
+<li>union: Geometry 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="vertices-geometry-vertices">
+<h3>vertices(geometry): vertices<a class="headerlink" href="#vertices-geometry-vertices" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry: Geometry 1:1 required</li>
+<li>vertices: MultiPoint 1:1 required</li>
+</ul>
+</div>
+<div class="section" id="within-geometry-geometry-within">
+<h3>within(geometry, geometry): within<a class="headerlink" href="#within-geometry-geometry-within" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>geometry: Geometry 1:1 required</li>
+<li>geometry: Geometry 1:1 required</li>
+<li>within: Boolean 1:1 required</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="feature.html" title="Feature"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="filter.html" title="Filter"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" >Main</a> &raquo;</li>
+        <li><a href="#">Function List</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

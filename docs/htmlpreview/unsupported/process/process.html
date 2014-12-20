@@ -1,0 +1,255 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Process &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../index.html" />
+    <link rel="up" title="Process" href="index.html" />
+    <link rel="next" title="Process Feature Plugin" href="process-feature.html" />
+    <link rel="prev" title="Internal" href="internal.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Unsupported</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Process</a> &raquo;</li>
+        <li><a href="#">Process</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Process</a><ul>
+<li><a class="reference internal" href="#typical-use">Typical Use</a><ul>
+<li><a class="reference internal" href="#direct-use">Direct Use</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#processors-utility-class">Processors Utility Class</a><ul>
+<li><a class="reference internal" href="#setting-up-a-process">Setting up A Process</a></li>
+<li><a class="reference internal" href="#using-a-processorexecutor">Using a ProcessorExecutor</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="internal.html"
+                        title="previous chapter">Internal</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="process-feature.html"
+                        title="next chapter">Process Feature Plugin</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/unsupported/process/process.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="process">
+<h1>Process<a class="headerlink" href="#process" title="Permalink to this headline">¶</a></h1>
+<p>The Process module gathers together interesting geospatial algorithms along with an API
+that allows applications to discover what implementations are available at runtime.</p>
+<div class="section" id="typical-use">
+<h2>Typical Use<a class="headerlink" href="#typical-use" title="Permalink to this headline">¶</a></h2>
+<p>While processes can be used directly (you can see how to do that below) the real benefit
+is the have a thread pool ready to execute processes in the background.</p>
+<ol class="arabic">
+<li><p class="first">Here is a code example showing creation of a process, and scheduling it to run in a
+thread pool:</p>
+<div class="highlight-python"><div class="highlight"><pre>// 3 is one more then the current number of cpu cores
+ProcessExecutor backgroundExecutor = Processors.newProcessExecutor( 3, null );
+
+Process buffer = Processors.createProcess( new NameImpl(&quot;gt&quot;,&quot;buffer&quot;) );
+Map&lt;String,Object&gt; input = new KVP(&quot;features&quot;, inputFeatureCollection, &quot;buffer&quot;, 0.01 );
+
+Progress progress = backgroundExecutor.schedule( buffer, input );
+</pre></div>
+</div>
+</li>
+<li><p class="first">You can check on the progress of a running process:</p>
+<div class="highlight-python"><div class="highlight"><pre>if( progress.getProgress() == Progress.WORKING ){
+  System.out.println( &quot;Progress: Working&quot;);
+else {
+  System.out.println( &quot;Progress:&quot;+progress.getProgress() + &quot;percent complete&quot; );
+}
+</pre></div>
+</div>
+</li>
+<li><p class="first">To read the value when done:</p>
+<div class="highlight-python"><div class="highlight"><pre>Map&lt;String,Object&gt; result = progress.get();
+SimpleFeatureCollection resultFeatureCollection = (SimpleFeatureCollection) result.get(&quot;features&quot;);
+</pre></div>
+</div>
+</li>
+<li><p class="first">If you ask for the value before the progress is complete your current thread will block while the
+value is produced.</p>
+<p>This is the Java Future API and represents a thread safe way of calculating something in a
+background thread.</p>
+</li>
+</ol>
+<div class="section" id="direct-use">
+<h3>Direct Use<a class="headerlink" href="#direct-use" title="Permalink to this headline">¶</a></h3>
+<p>By convention Process implementations have a static helper method that you can call directly.:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">features</span> <span class="o">=</span> <span class="n">RasterToVectorProcess</span><span class="o">.</span><span class="n">process</span><span class="p">(</span> <span class="n">gridCoverage</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">Collections</span><span class="o">.</span><span class="n">EMPTY</span><span class="p">,</span> <span class="n">null</span> <span class="p">);</span>
+</pre></div>
+</div>
+<p>For instructions on how to use this method you will need to read the javadocs of the
+method in question.</p>
+<p>By convention the last parameter is a progress monitor you can use to report back
+what is going on to your user - and let them cancel.</p>
+<p>Since processes can take minuets to hours this is a good plan.:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">features</span> <span class="o">=</span> <span class="n">RasterToVectorProcess</span><span class="o">.</span><span class="n">process</span><span class="p">(</span> <span class="n">gridCoverage</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">Collections</span><span class="o">.</span><span class="n">EMPTY</span><span class="p">,</span> <span class="n">monitor</span> <span class="p">);</span>
+</pre></div>
+</div>
+<p>This is all well and good - what else could happen to make things complicated?</p>
+</div>
+</div>
+<div class="section" id="processors-utility-class">
+<h2>Processors Utility Class<a class="headerlink" href="#processors-utility-class" title="Permalink to this headline">¶</a></h2>
+<p>You can also use the Processors utility class to do things like list all the processes that
+are available to be called:</p>
+<div class="highlight-python"><div class="highlight"><pre>// find all the process factories and print out their names
+Set&lt;ProcessFactory&gt; processFactories = Processors.getProcessFactories();
+Iterator&lt;ProcessFactory&gt; iterator = processFactories.iterator();
+while (iterator.hasNext()) {
+    System.out.println(&quot;Process Factory: &quot; + iterator.next().getTitle().toString() );
+}
+</pre></div>
+</div>
+<div class="section" id="setting-up-a-process">
+<h3>Setting up A Process<a class="headerlink" href="#setting-up-a-process" title="Permalink to this headline">¶</a></h3>
+<p>You can now create a Process object; and sort out what input it needs:</p>
+<div class="highlight-python"><div class="highlight"><pre>Name name = new NameImpl(ProcessFactory.GT_NAMESPACE, &quot;RasterToVectorProcess&quot;);
+
+Process r2v = Processors.createProcess(name);
+
+Map&lt;String, Object&gt; params = new HashMap&lt;String, Object&gt;();
+
+params.put(RasterToVectorFactory.RASTER.key, cov);
+params.put(RasterToVectorFactory.BAND.key, Integer.valueOf(0));
+params.put(RasterToVectorFactory.BOUNDS.key, env);
+params.put(RasterToVectorFactory.OUTSIDE.key, Collections.singleton(0.0d));
+</pre></div>
+</div>
+<p>You can execute your process by hand in the current thread (we are using a swing progress bar
+to report progress below).:</p>
+<div class="highlight-python"><div class="highlight"><pre>ProgressListener progress = new ProgressWindow(null);
+Map&lt;String, Object&gt; results = r2v.execute(params, progress);
+</pre></div>
+</div>
+</div>
+<div class="section" id="using-a-processorexecutor">
+<h3>Using a ProcessorExecutor<a class="headerlink" href="#using-a-processorexecutor" title="Permalink to this headline">¶</a></h3>
+<p>The real fun with using the Processes utility class is that you can set up work and then schedule
+the work in two separate steps. This is a great way to use todays multi-core processors in
+your application.</p>
+<ol class="arabic">
+<li><p class="first">You can then use a ProcessorExecutor is going to be in charge of running your processes - you
+can indicate how many threads you want it to keep going at once.</p>
+<p>A good idea is the number of cores you have plus 1.:</p>
+<div class="highlight-python"><div class="highlight"><pre>ProcessExecutor schedule = Processors.newProcessExecutor( 3, null );
+</pre></div>
+</div>
+</li>
+<li><p class="first">You can then schedule your process - which will produce a Progress - this is a placeholder
+object that you can use to retrive the answer when it is ready.</p>
+<p>You can think of it like a &#8220;work ticket&#8221;.:</p>
+<div class="highlight-python"><div class="highlight"><pre>Process workTicket = schedule.submit( buffer, input );
+</pre></div>
+</div>
+</li>
+<li><p class="first">When you want the answer:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="n">Object</span><span class="o">&gt;</span> <span class="n">answer</span> <span class="o">=</span> <span class="n">workTicket</span><span class="o">.</span><span class="n">get</span><span class="p">();</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<dl class="docutils">
+<dt>4 The advantage of this technique is that you can get an object that represents the</dt>
+<dd>activity of doing the work; it will not actually do anything until you need the work done.</dd>
+</dl>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="process-feature.html" title="Process Feature Plugin"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="internal.html" title="Internal"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Unsupported</a> &raquo;</li>
+          <li><a href="index.html" >Process</a> &raquo;</li>
+        <li><a href="#">Process</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

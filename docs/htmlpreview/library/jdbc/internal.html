@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Internals &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../index.html" />
+    <link rel="up" title="JDBC" href="index.html" />
+    <link rel="next" title="JDBCDataStore" href="datastore.html" />
+    <link rel="prev" title="JDBC FAQ" href="faq.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">JDBC</a> &raquo;</li>
+        <li><a href="#">Internals</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Internals</a><ul>
+<li><a class="reference internal" href="#jdbcdatastore">JDBCDataStore</a></li>
+<li><a class="reference internal" href="#sqldialect">SQLDialect</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="faq.html"
+                        title="previous chapter">JDBC FAQ</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="datastore.html"
+                        title="next chapter">JDBCDataStore</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/library/jdbc/internal.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="internals">
+<h1>Internals<a class="headerlink" href="#internals" title="Permalink to this headline">¶</a></h1>
+<p>The internals of gt-jdbc layout the code for JDBCDataStore and abstract classes that are extended for each new format.</p>
+<p>Related:</p>
+<ul class="simple">
+<li><a class="reference internal" href="../data/internal.html"><em>gt-data internal</em></a></li>
+</ul>
+<div class="section" id="jdbcdatastore">
+<h2>JDBCDataStore<a class="headerlink" href="#jdbcdatastore" title="Permalink to this headline">¶</a></h2>
+<p>The JDBCDataStore class is an extension of ContentDataStore defined by gt-data.</p>
+<img alt="../../_images/content2.PNG" src="../../_images/content2.PNG" />
+<p>ContentDataStore is extended with a concrete JDBCDataStore that:</p>
+<ul class="simple">
+<li>delegates out to a SQLDialect that is implemented for each format</li>
+<li>makes use of custom extensions for:<ul>
+<li>JDBCState</li>
+<li>JDBCFeatureSource supported by a feature reader that makes use of
+a light-weight feature implementation</li>
+<li>JDBCFeatureStore supported by two feature writer implementations</li>
+</ul>
+</li>
+</ul>
+<img alt="../../_images/jdbcDataStore.PNG" src="../../_images/jdbcDataStore.PNG" />
+<p>You will find a careful attention to details and steps taken to minimise any duplication of code. The FeatureStore implementation maintains an internal delegate JDBCFeatureSource in order to smoothly handle getFeature() requests without duplicating code.</p>
+</div>
+<div class="section" id="sqldialect">
+<h2>SQLDialect<a class="headerlink" href="#sqldialect" title="Permalink to this headline">¶</a></h2>
+<p>If you would like to implement support for an additional format please ask on the developers list. The clearest starting place is to review the <em>gt-jdbc-h2</em> code which serves as the reference implementation.</p>
+<p>To have your format accepted by GeoTools you will also need to extend the
+conformance test cases as shown in the <em>gt-jdbc-h2</em> module.</p>
+<p>Here is a brief illustration of SQLDialect as implemented by the gt-jdbc-h2 plugin.</p>
+<img alt="../../_images/jdbcDataStoreH2.PNG" src="../../_images/jdbcDataStoreH2.PNG" />
+<p>As expected this class is required to fill in the H2 specific details:</p>
+<ul class="simple">
+<li>how to decode and encode Geometry and Bounds information</li>
+<li>handle database specific functionality such as sequences</li>
+<li>follow up to table creation (often needed if geometry columns need to be registered)</li>
+</ul>
+<p>Your implementation of these methods may depend on the conventions of your database.  Oracle spatial for example will have its own idea on how to handle SRID values, while a simple Java database like H2 will make use of the GeoTools CRS class.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="datastore.html" title="JDBCDataStore"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="faq.html" title="JDBC FAQ"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" >JDBC</a> &raquo;</li>
+        <li><a href="#">Internals</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

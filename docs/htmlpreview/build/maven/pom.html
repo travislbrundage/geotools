@@ -1,0 +1,192 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Project Object Model (POM) Files &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../index.html" />
+    <link rel="up" title="Using Maven" href="index.html" />
+    <link rel="next" title="Maven Local Settings" href="settings.html" />
+    <link rel="prev" title="Maven Eclipse Plugin" href="eclipse.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Building</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Using Maven</a> &raquo;</li>
+        <li><a href="#">Project Object Model (POM) Files</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Project Object Model (POM) Files</a><ul>
+<li><a class="reference internal" href="#extending-a-parent-module">Extending a Parent Module</a></li>
+<li><a class="reference internal" href="#id">Id</a></li>
+<li><a class="reference internal" href="#dependency-management">Dependency Management</a></li>
+<li><a class="reference internal" href="#dependency-version-changes">Dependency Version Changes</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="eclipse.html"
+                        title="previous chapter">Maven Eclipse Plugin</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="settings.html"
+                        title="next chapter">Maven Local Settings</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/build/maven/pom.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="project-object-model-pom-files">
+<h1>Project Object Model (POM) Files<a class="headerlink" href="#project-object-model-pom-files" title="Permalink to this headline">¶</a></h1>
+<p>Complete documentation for the project.xml file for maven can be found at the maven site, and in particular in the project descriptor part of the reference section.</p>
+<p>We only show the things specific to a GeoTools <strong>module pom.xml</strong> file here.</p>
+<div class="section" id="extending-a-parent-module">
+<h2>Extending a Parent Module<a class="headerlink" href="#extending-a-parent-module" title="Permalink to this headline">¶</a></h2>
+<p>The &lt;parent&gt; section allows one pom.xml file to inherit items from another. Modules should extend the pom.xml within the module, plugin, extension or demo directory they belong to:</p>
+<div class="highlight-xml"><div class="highlight"><pre><span class="nt">&lt;parent&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>org.geotools<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>gt-module<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;version&gt;</span>2.2-SNAPSHOT<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/Parent&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id">
+<h2>Id<a class="headerlink" href="#id" title="Permalink to this headline">¶</a></h2>
+<p>The id should reflect the name of the module.
+We use a “gt” prefix to avoid conflicts (as the groupId org.geotools does not appears in the final JAR filenames)</p>
+<p>Examples:</p>
+<ul class="simple">
+<li>gt-main</li>
+<li>gt-referencing.</li>
+</ul>
+<p>This policy allows our “gt-main.jar” to avoid conflict with a application “main” jar created that makes use of GeoTools.</p>
+</div>
+<div class="section" id="dependency-management">
+<h2>Dependency Management<a class="headerlink" href="#dependency-management" title="Permalink to this headline">¶</a></h2>
+<p>Dependencies are specified within the  pom.xml file, but care should be taken to handle this in a consistent manner.</p>
+<p>New dependencies on another GeoTools module, should use:</p>
+<ul class="simple">
+<li>groupId - identify the project</li>
+<li>artifactId - identify the jar within that project</li>
+<li>version - ${project.version} to match the current build</li>
+</ul>
+<p>Sample pom.xml dependency entry:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;dependency&gt;
+   &lt;groupId&gt;org.geotools&lt;/groupId&gt;
+   &lt;artifactId&gt;gt-main&lt;/artifactId&gt;
+   &lt;version&gt;${project.version}&lt;/version&gt;
+&lt;/Dependency&gt;
+</pre></div>
+</div>
+<p>New dependencies on a third-party jar need to be handled in two parts.</p>
+<p>The dependency is supplied in the pom.xml file:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;dependency&gt;
+   &lt;groupId&gt;javax.media&lt;/groupId&gt;
+   &lt;artifactId&gt;jai_codec&lt;/artifactId&gt;
+   &lt;!-- The version number is specified in the parent POM. --&gt;
+   &lt;scope&gt;test&lt;/scope&gt;
+&lt;/Dependency&gt;
+</pre></div>
+</div>
+<p>And the dependency version is supplied in the “root” pom.xml file in the dependency management section.</p>
+</div>
+<div class="section" id="dependency-version-changes">
+<h2>Dependency Version Changes<a class="headerlink" href="#dependency-version-changes" title="Permalink to this headline">¶</a></h2>
+<p>When a dependency changes you will need to update the root pom.xml &#8220;dependency management section&#8221; to reflect the new version number.</p>
+<p>You should be able to locate an entry like this and change the version number:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;dependency&gt;
+   &lt;groupId&gt;net.java.dev.swing-layout&lt;/groupId&gt;
+   &lt;artifactId&gt;swing-layout&lt;/artifactId&gt;
+   &lt;version&gt;1.0.2&lt;/version&gt;
+&lt;/dependency&gt;
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="settings.html" title="Maven Local Settings"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="eclipse.html" title="Maven Eclipse Plugin"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Building</a> &raquo;</li>
+          <li><a href="index.html" >Using Maven</a> &raquo;</li>
+        <li><a href="#">Project Object Model (POM) Files</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

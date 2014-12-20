@@ -1,0 +1,556 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Point Set Theory and the DE-9IM Matrix &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../index.html" />
+    <link rel="up" title="JTS" href="index.html" />
+    <link rel="next" title="Geometry Operations" href="operation.html" />
+    <link rel="prev" title="Geometry Relationships" href="relate.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">JTS</a> &raquo;</li>
+        <li><a href="#">Point Set Theory and the DE-9IM Matrix</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Point Set Theory and the DE-9IM Matrix</a><ul>
+<li><a class="reference internal" href="#definition-of-a-geometry">Definition of a Geometry</a></li>
+<li><a class="reference internal" href="#intersection-of-two-geometries">Intersection of Two Geometries</a></li>
+<li><a class="reference internal" href="#geospatial-relationships">Geospatial Relationships</a></li>
+<li><a class="reference internal" href="#optimisation">Optimisation</a><ul>
+<li><a class="reference internal" href="#combining-relationship-tests">Combining Relationship Tests</a></li>
+<li><a class="reference internal" href="#preparedgeometry">PreparedGeometry</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="relate.html"
+                        title="previous chapter">Geometry Relationships</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="operation.html"
+                        title="next chapter">Geometry Operations</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/library/jts/dim9.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="point-set-theory-and-the-de-9im-matrix">
+<h1>Point Set Theory and the DE-9IM Matrix<a class="headerlink" href="#point-set-theory-and-the-de-9im-matrix" title="Permalink to this headline">¶</a></h1>
+<p>This page covers some of what the JTS Topology is made up of, and how you can use this information to increase the performance of your queries. optimise a bit.</p>
+<p>This page has as little math as possible, quickly moving on to a normal String which we can do regular expression on. This page gives you enough information to optimise your own spatial relationship tests.</p>
+<p>Related:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://vwfs.refractions.net/docs/Spatial_Validation_Academic.pdf">http://vwfs.refractions.net/docs/Spatial_Validation_Academic.pdf</a></li>
+<li><a class="reference external" href="http://edndoc.esri.com/arcsde/9.1/general_topics/understand_spatial_relations.htm">http://edndoc.esri.com/arcsde/9.1/general_topics/understand_spatial_relations.htm</a></li>
+</ul>
+<div class="section" id="definition-of-a-geometry">
+<h2>Definition of a Geometry<a class="headerlink" href="#definition-of-a-geometry" title="Permalink to this headline">¶</a></h2>
+<p>Point Set Theory includes concepts of lines and points in addition to regions. These constructs are defined as the set of points contained in their Interior, Boundary and Exterior.</p>
+<ul class="simple">
+<li>a Region <strong>h</strong> is define as a set of interior points h<sup>0</sup>, boundary <sub>d</sub>h and exterior is everything not part of <strong>h</strong>.</li>
+<li>a Line <strong>l</strong> is defined by an set of interior points l<sup>0</sup> along its length, a boundary of the two end points and an exterior of everything not part of <strong>l</strong></li>
+<li>a Point <strong>p</strong> is defined by an interior point p<sup>0</sup>, there is no boundary and the exterior is everything except the point p.</li>
+</ul>
+<p>As shown above they refer to region as <strong>h</strong>, line as <strong>l</strong> and point as <strong>p</strong>. In order to talk about the interior, boundary and exterior the following annotations are added.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="22%" />
+<col width="22%" />
+<col width="20%" />
+<col width="17%" />
+<col width="20%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Geometry</th>
+<th class="head">Primitive</th>
+<th class="head">Interior</th>
+<th class="head">Boundary</th>
+<th class="head">Exterior</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>A Region</td>
+<td>h</td>
+<td>h<sup>0</sup></td>
+<td><sub>d</sub>h</td>
+<td>-h</td>
+</tr>
+<tr class="row-odd"><td>A Point</td>
+<td>p</td>
+<td>p<sup>0</sup></td>
+<td><sub>d</sub>p</td>
+<td>-p</td>
+</tr>
+<tr class="row-even"><td>A Line</td>
+<td>l</td>
+<td>l<sup>0</sup></td>
+<td><sub>d</sub>l</td>
+<td>-l</td>
+</tr>
+</tbody>
+</table>
+<p>We have an intuitive idea of what a dimension is, for point set theory it is going to act as a
+number summarising the shape of a geometry.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="32%" />
+<col width="55%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Shape</th>
+<th class="head">Dimension</th>
+<th class="head">Non-empty</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Region</td>
+<td>dim( Region ) is 2</td>
+<td>&#8220;T&#8221;, 2 is a non empty value</td>
+</tr>
+<tr class="row-odd"><td>Line</td>
+<td>dim( Line ) is 1</td>
+<td>&#8220;T&#8221;, 1 is a non empty value</td>
+</tr>
+<tr class="row-even"><td>Point</td>
+<td>dim( Point ) is 0</td>
+<td>&#8220;T&#8221;, 0 is a non empty value</td>
+</tr>
+<tr class="row-odd"><td>empty set</td>
+<td>dim( empty set ) is -1</td>
+<td>&#8220;F&#8221;, -1 is an empty value</td>
+</tr>
+</tbody>
+</table>
+<p>You can read <strong>dim( obj )</strong> as &#8220;the dimension of obj&#8221;. Hopefully this line up with your idea of two dimensional flat shapes, and one dimensional lines.</p>
+<p>We are going to leave 3D stuff out as we are focusing on JTS.</p>
+<p>Intersection of Two Geometries</p>
+<p>Relationships between Regions are described as a matrix produced by comparing the intersection of the Interior, Boundary and Exterior properties of both regions. This comparison referred to as the Dimensionally Extended 9-Intersection Matrix or DE-9IM.</p>
+<p>The relationship between two geometries x and y (point line or region) as defined by their Interior, Boundary and Exterior results in a matrix based on: x INTERSECTION y.</p>
+</div>
+<div class="section" id="intersection-of-two-geometries">
+<h2>Intersection of Two Geometries<a class="headerlink" href="#intersection-of-two-geometries" title="Permalink to this headline">¶</a></h2>
+<p>Relationships between Regions are described as a matrix produced by comparing the intersection of the Interior, Boundary and Exterior properties of both regions. This comparison referred to as the Dimensionally Extended 9-Intersection Matrix or <strong>DE-9IM</strong>.</p>
+<p>The relationship between two geometries x and y (point line or region) as defined by their Interior, Boundary and Exterior results in a matrix based on: <strong>x INTERSECTION y</strong>.</p>
+<p>To start with here is what the intersection of two objects <em>x</em> and <em>y</em> looks like.</p>
+<p>x <img alt="intersection" src="../../_images/intersection.png" /> y</p>
+<p>And in code:</p>
+<div class="highlight-python"><div class="highlight"><pre>GeometryFactory geometryFactory = FactoryFinder.getGeometryFactory( null );
+
+WKTReader reader = new WKTReader( geometryFactory );
+Polygon x = (Polygon) reader.read(&quot;POLYGON ((10 10, 15 0, 25 0, 30 10, 25 20, 15 20, 10 10))&quot;);
+Polygon x = (Polygon) reader.read(&quot;POLYGON ((20 10, 30 0, 40 10, 30 20, 20 10))&quot;);
+</pre></div>
+</div>
+<p>The 9-Intersection Matrix is going to act as a record of what is going on between the two objects above. Use the above picture as reference point as we go through writing down what the intersection matrix looks like.</p>
+<p>The 9-Intersection Matrix lists the intersection of the interior, boundary and exterior of each geometry with the other (for a total of nine combinations).</p>
+<p><strong>x</strong> INTERSECTION <strong>y</strong> =</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="17%" />
+<col width="28%" />
+<col width="28%" />
+<col width="28%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>9IM</td>
+<td>Interior</td>
+<td>Boundary</td>
+<td>Exterior</td>
+</tr>
+<tr class="row-even"><td>Interior</td>
+<td>x<sup>0</sup> INTERSECTION y<sup>0</sup></td>
+<td>x<sup>0</sup> INTERSECTION <sub>d</sub>y</td>
+<td>x<sup>0</sup> INTERSECTION -y</td>
+</tr>
+<tr class="row-odd"><td>Boundary</td>
+<td><sub>d</sub>x INTERSECTION y<sup>0</sup></td>
+<td><sub>d</sub>x INTERSECTION <sub>d</sub>y</td>
+<td><sub>d</sub>x INTERSECTION -y</td>
+</tr>
+<tr class="row-even"><td>Exterior</td>
+<td>-x INTERSECTION y<sup>0</sup></td>
+<td>-x INTERSECTION <sub>d</sub>y</td>
+<td>-x INTERSECTION -y</td>
+</tr>
+</tbody>
+</table>
+<p>Since that just looks like a lot of math, try this handy visual representation:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="15%" />
+<col width="29%" />
+<col width="27%" />
+<col width="29%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>9IM</td>
+<td>Interior</td>
+<td>Boundary</td>
+<td>Exterior</td>
+</tr>
+<tr class="row-even"><td>Interior</td>
+<td><a class="reference internal" href="../../_images/matrix_x0_y0.png"><img alt="x0_y0" src="../../_images/matrix_x0_y0.png" style="width: 93px; height: 58px;" /></a></td>
+<td><a class="reference internal" href="../../_images/matrix_x0_dy.png"><img alt="x0_dy" src="../../_images/matrix_x0_dy.png" style="width: 93px; height: 58px;" /></a></td>
+<td><a class="reference internal" href="../../_images/matrix_x0_ny.png"><img alt="x0_ny" src="../../_images/matrix_x0_ny.png" style="width: 93px; height: 58px;" /></a></td>
+</tr>
+<tr class="row-odd"><td>Boundary</td>
+<td><a class="reference internal" href="../../_images/matrix_dx_y0.png"><img alt="dx_y0" src="../../_images/matrix_dx_y0.png" style="width: 93px; height: 58px;" /></a></td>
+<td><a class="reference internal" href="../../_images/matrix_dx_dy.png"><img alt="dx_dy" src="../../_images/matrix_dx_dy.png" style="width: 93px; height: 58px;" /></a></td>
+<td><a class="reference internal" href="../../_images/matrix_dx_ny.png"><img alt="dx_ny" src="../../_images/matrix_dx_ny.png" style="width: 93px; height: 58px;" /></a></td>
+</tr>
+<tr class="row-even"><td>Exterior</td>
+<td><a class="reference internal" href="../../_images/matrix_nx_y0.png"><img alt="nx_y0" src="../../_images/matrix_nx_y0.png" style="width: 93px; height: 58px;" /></a></td>
+<td><a class="reference internal" href="../../_images/matrix_nx_dy.png"><img alt="nx_dy" src="../../_images/matrix_nx_dy.png" style="width: 93px; height: 58px;" /></a></td>
+<td><a class="reference internal" href="../../_images/matrix_nx_ny.png"><img alt="nx_ny" src="../../_images/matrix_nx_ny.png" style="width: 93px; height: 58px;" /></a></td>
+</tr>
+</tbody>
+</table>
+<p>The next step is to count the dimensions of the shapes in the above 9-Intersection matrix. This gives us the &#8220;Dimensionally Extended 9-Intersection Matrix&#8221;.</p>
+<ul class="simple">
+<li><strong>DE-9IM</strong> = dimension( <strong>x</strong> INTERSECTION <strong>Y</strong>)</li>
+<li><strong>DE-9IM</strong> =</li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="17%" />
+<col width="28%" />
+<col width="28%" />
+<col width="28%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>DE-9IM</td>
+<td>Interior</td>
+<td>Boundary</td>
+<td>Exterior</td>
+</tr>
+<tr class="row-even"><td>Interior</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr class="row-odd"><td>Boundary</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr class="row-even"><td>Exterior</td>
+<td>2</td>
+<td>1</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>As you can see this matrix is a summary of the relationship between the two geometries. Depending on the geometry involves; and their arrangement you will get different numbers here. The above numbers are taken by looking at what kind of shapes are displayed in the above pictures and writing down their dimension.</p>
+<p>And if you were writing this in code it would be:</p>
+<div class="highlight-python"><div class="highlight"><pre>String relationship = &quot;212101212&quot;;
+</pre></div>
+</div>
+<p>You can also generate this from two live geometry instances:</p>
+<div class="highlight-python"><div class="highlight"><pre>IntersectionMatrix matrix = geometry.relate( geometry2 );
+String relationship = matrix.toString();
+</pre></div>
+</div>
+<p>This is something so normal we can start to use regular expressions to perform pattern matching on the result! Indeed that is just how Geospatial Relationships are defined.</p>
+</div>
+<div class="section" id="geospatial-relationships">
+<h2>Geospatial Relationships<a class="headerlink" href="#geospatial-relationships" title="Permalink to this headline">¶</a></h2>
+<p>Now that we have boiled how two Geometry instances are interacting to a String we can define our Geospatial relationships can be described in terms of a wild card expression.</p>
+<p>Consider the following definition of Area/Area overlap:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="17%" />
+<col width="28%" />
+<col width="28%" />
+<col width="28%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>OVERLAP</td>
+<td>Interior</td>
+<td>Boundary</td>
+<td>Exterior</td>
+</tr>
+<tr class="row-even"><td>Interior</td>
+<td>T</td>
+<td>*</td>
+<td>T</td>
+</tr>
+<tr class="row-odd"><td>Boundary</td>
+<td>*</td>
+<td>*</td>
+<td>*</td>
+</tr>
+<tr class="row-even"><td>Exterior</td>
+<td>T</td>
+<td>*</td>
+<td>*</td>
+</tr>
+</tbody>
+</table>
+<p>Or in code:</p>
+<div class="highlight-python"><div class="highlight"><pre>String overlaps = &quot;T*T***T**&quot;;
+</pre></div>
+</div>
+<p>Where:</p>
+<ul class="simple">
+<li>T: value is &#8220;true&#8221; - non empty - any dimension &gt;= 0</li>
+<li>F: value is &#8220;false&#8221; - empty - dimension &lt; 0</li>
+<li>*: Don&#8217;t care what the value is</li>
+<li>0: value is exactly zero</li>
+<li>1: value is exactly one</li>
+<li>2: value is exactly two</li>
+</ul>
+<p>You can use these strings with the Geometry relate method:</p>
+<div class="highlight-python"><div class="highlight"><pre>boolean isRelated = geometry.relate( geometry2, &quot;T*T***T**&quot; );
+</pre></div>
+</div>
+<p>You can now start to make sense of the JTS javadocs here they define what the operations mean in terms of the relate function.</p>
+<ol class="arabic simple">
+<li>x.Disjoint(y)<ul>
+<li>FF*FF**** All</li>
+</ul>
+</li>
+<li>x.Touches(y)<ul>
+<li>FT******* Area/Area, Line/Line, Line/Area, Point/Area</li>
+<li>F**T***** Not Point/Point</li>
+<li>F***T**** All</li>
+</ul>
+</li>
+<li>x.Crosses(y)<ul>
+<li>T*T****** Point/Line, Point/Area, Line/Area</li>
+<li>0******** Line/Line</li>
+</ul>
+</li>
+<li>x.Within(y)<ul>
+<li>TF*F***** All</li>
+</ul>
+</li>
+<li>x.Overlaps(y)<ul>
+<li>T*T***T** Point/Point, Area/Area</li>
+<li>1*T***T** Line/Line</li>
+</ul>
+</li>
+</ol>
+<p>To complete our example lets see what relationships our &#8220;212101212&#8221; string represents.</p>
+<a class="reference internal image-reference" href="../../_images/intersection.png"><img alt="../../_images/intersection.png" src="../../_images/intersection.png" style="width: 186px; height: 116px;" /></a>
+<table border="1" class="docutils">
+<colgroup>
+<col width="22%" />
+<col width="25%" />
+<col width="16%" />
+<col width="37%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Relationship</th>
+<th class="head">Area/Area Pattern</th>
+<th class="head">&#8220;212101212&#8221;</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Disjoint</td>
+<td>FF*FF****</td>
+<td>false</td>
+<td>x is not disjoint from y</td>
+</tr>
+<tr class="row-odd"><td>Touches</td>
+<td>FT*******</td>
+<td>false</td>
+<td>x does not just touch y</td>
+</tr>
+<tr class="row-even"><td>Touches</td>
+<td>F***T****</td>
+<td>false</td>
+<td>x does not just touch y</td>
+</tr>
+<tr class="row-odd"><td>Crosses</td>
+<td>T*T***T**</td>
+<td>true</td>
+<td>x crosses y</td>
+</tr>
+<tr class="row-even"><td>Within</td>
+<td>TF*F*****</td>
+<td>false</td>
+<td>x is not within y</td>
+</tr>
+<tr class="row-odd"><td>Overlaps</td>
+<td>T*T***T**</td>
+<td>true</td>
+<td>x overlaps y</td>
+</tr>
+</tbody>
+</table>
+<p>The only one that is not really intuitive here is &#8220;touches&#8221;, yes x and y touch in the english sense of the word; but since x and y overlap they are not considered to be only touching. The relationship touches only works when the contact between geometries is limited to the border.</p>
+</div>
+<div class="section" id="optimisation">
+<h2>Optimisation<a class="headerlink" href="#optimisation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="combining-relationship-tests">
+<h3>Combining Relationship Tests<a class="headerlink" href="#combining-relationship-tests" title="Permalink to this headline">¶</a></h3>
+<p>Since calculating this stuff is expensive you should take some care not to work too hard; don&#8217;t call multiple relationship test functions if you can get away with it.</p>
+<p>Do not do this:</p>
+<div class="highlight-python"><div class="highlight"><pre>if( geometry.disjoint( geometry2 ) || geometry.touches( geometry2 ) ){
+   // these two geometries hardly know each other
+}
+</pre></div>
+</div>
+<p>The first alternative is to calculate the full matrix once and then test out what it can tell you:</p>
+<div class="highlight-python"><div class="highlight"><pre>IntersectionMatrix matrix = geometry.relate( geometry2 );
+if( matrix.isDisjoint() || matrix.isTouches(2,2) ){
+   // these two geometries hardly know each other
+}
+</pre></div>
+</div>
+<p>Of course you can see that with the pattern matching often the full matrix is not needed (since a lot of interactions are marked as don&#8217;t care). If you think about what you are testing you can come up with your own string and do the test in one step.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="52%" />
+<col width="48%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Relationship</th>
+<th class="head">Pattern</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Disjoint</td>
+<td>FF*FF****</td>
+</tr>
+<tr class="row-odd"><td>Touches</td>
+<td>F***T****</td>
+</tr>
+<tr class="row-even"><td>Touches</td>
+<td>FT*******</td>
+</tr>
+<tr class="row-odd"><td>RESULT</td>
+<td>F********</td>
+</tr>
+</tbody>
+</table>
+<p>We can set up the relate function to test against this pattern:</p>
+<div class="highlight-python"><div class="highlight"><pre>if( geometry.relate( geometry2, &quot;F********&quot; ) ){
+  // these two geometries hardly know each other
+}
+</pre></div>
+</div>
+<p>So it ends up the relationship we are testing is that the interiors do not overlap.</p>
+</div>
+<div class="section" id="preparedgeometry">
+<h3>PreparedGeometry<a class="headerlink" href="#preparedgeometry" title="Permalink to this headline">¶</a></h3>
+<p>Occasionally, when comparing two sets of geometry, you can get nested loops in order to compare each pair.:</p>
+<div class="highlight-python"><div class="highlight"><pre>for( Geometry geometry : firstCollection ){
+    for( Geometry geometry2 : secondCollection ){
+        if( geometry.disjoint( geometry2 ) ){
+            // process
+        }
+    }
+}
+</pre></div>
+</div>
+<p>Each time you do a geometry relationship test; JTS &#8220;explodes&#8221; the geometry into an internal data structure (called an edge graph).</p>
+<p>In order to save this edge graph and reuse it for more than one test you can rewrite the above code to use a PreparedGeometry:</p>
+<div class="highlight-python"><div class="highlight"><pre>for( Geometry geometry : firstCollection ){
+    PreparedGeometry prep = PreparedGeometryFactory.prepare( geometry );
+    for( Geometry geometry2 : secondColection ){
+        if( prep.disjoint( geometry2 ) ){
+            // process
+        }
+    }
+}
+</pre></div>
+</div>
+<p>The PreparedGeometry method is method compatible; allowing you to easily try it out and benchmark for any performance gains.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="operation.html" title="Geometry Operations"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="relate.html" title="Geometry Relationships"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" >JTS</a> &raquo;</li>
+        <li><a href="#">Point Set Theory and the DE-9IM Matrix</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

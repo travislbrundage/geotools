@@ -1,0 +1,286 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>SpatiaLite Plugin &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../index.html" />
+    <link rel="up" title="JDBC" href="index.html" />
+    <link rel="next" title="SQL Server Plugin" href="sqlserver.html" />
+    <link rel="prev" title="PostGIS Plugin" href="postgis.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">JDBC</a> &raquo;</li>
+        <li><a href="#">SpatiaLite Plugin</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">SpatiaLite Plugin</a><ul>
+<li><a class="reference internal" href="#connection-parameters">Connection Parameters</a></li>
+<li><a class="reference internal" href="#access">Access</a></li>
+<li><a class="reference internal" href="#setup">Setup</a><ul>
+<li><a class="reference internal" href="#supported-platforms">Supported Platforms</a></li>
+<li><a class="reference internal" href="#native-libraries">Native Libraries</a><ul>
+<li><a class="reference internal" href="#windows-32-bit">Windows 32-bit</a></li>
+<li><a class="reference internal" href="#windows-64-bit">Windows 64-bit</a></li>
+<li><a class="reference internal" href="#linux-32-bit">Linux 32-bit</a></li>
+<li><a class="reference internal" href="#linux-64-bit">Linux 64-bit</a></li>
+<li><a class="reference internal" href="#mac">Mac</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#java-environment">Java Environment</a><ul>
+<li><a class="reference internal" href="#windows">Windows</a></li>
+<li><a class="reference internal" href="#linux">Linux</a></li>
+<li><a class="reference internal" href="#id1">Mac</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="postgis.html"
+                        title="previous chapter">PostGIS Plugin</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="sqlserver.html"
+                        title="next chapter">SQL Server Plugin</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/library/jdbc/spatialite.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="spatialite-plugin">
+<h1>SpatiaLite Plugin<a class="headerlink" href="#spatialite-plugin" title="Permalink to this headline">¶</a></h1>
+<p>Supports direct access to a SQLite/SpatiaLite database.</p>
+<p>SQLite is a popular embedded relational database. SpatiaLite is the spatial extension to SQLite.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This plugin uses internal versions of both SQLite (3.7.2) and SpatiaLite (2.4.0).
+Therefore the plugin is only capable of accessing databases that are compatible with these
+versions.</p>
+</div>
+<p>References:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference external" href="http://www.sqlite.org/">http://www.sqlite.org/</a></li>
+<li><a class="reference external" href="http://www.gaia-gis.it/spatialite/">http://www.gaia-gis.it/spatialite/</a></li>
+</ul>
+</div></blockquote>
+<p><strong>Maven</strong></p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;dependency&gt;
+   &lt;groupId&gt;org.geotools.jdbc&lt;/groupId&gt;
+   &lt;artifactId&gt;gt-jdbc-spatialite&lt;/artifactId&gt;
+   &lt;version&gt;${geotools.version}&lt;/version&gt;
+ &lt;/dependency&gt;
+</pre></div>
+</div>
+<p>Note that the groupId is <strong>org.geotools.jdbc</strong> for this and other JDBC plugin modules.</p>
+<div class="section" id="connection-parameters">
+<h2>Connection Parameters<a class="headerlink" href="#connection-parameters" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="24%" />
+<col width="76%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>&#8220;dbtype&#8221;</td>
+<td>Must be the string &#8220;spatialite&#8221;</td>
+</tr>
+<tr class="row-odd"><td>&#8220;database&#8221;</td>
+<td>The databse to connect to</td>
+</tr>
+<tr class="row-even"><td>&#8220;user&#8221;</td>
+<td>User name (optional)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="access">
+<h2>Access<a class="headerlink" href="#access" title="Permalink to this headline">¶</a></h2>
+<p>Example use:</p>
+<div class="highlight-python"><div class="highlight"><pre>Map params = new HashMap();
+params.put(&quot;dbtype&quot;, &quot;spatialite&quot;);
+params.put(&quot;database&quot;, &quot;geotools.db&quot;);
+
+DataStore datastore = DataStoreFinder.getDataStore(params);
+</pre></div>
+</div>
+</div>
+<div class="section" id="setup">
+<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h2>
+<p>The SpatiaLite datastore ships with its own build of the SQLite and SpatiaLite
+libraries. The SpatiaLite component has been compiled with GEOS and PROJ support
+so those libraries are required for the plugin to function. Setting up the plugin
+requires:</p>
+<ol class="arabic simple">
+<li>Install the required native libraries for your platform</li>
+<li>Ensure Java is configured to locate the native libraries</li>
+</ol>
+<p>Prebuilt libraries are available for all supported platforms but you may choose to
+compile your own. For more information see:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://trac.osgeo.org/proj/">http://trac.osgeo.org/proj/</a></li>
+<li><a class="reference external" href="http://trac.osgeo.org/geos/">http://trac.osgeo.org/geos/</a></li>
+</ul>
+<div class="section" id="supported-platforms">
+<h3>Supported Platforms<a class="headerlink" href="#supported-platforms" title="Permalink to this headline">¶</a></h3>
+<p>The following platforms are currently supported.</p>
+</div>
+<div class="section" id="native-libraries">
+<h3>Native Libraries<a class="headerlink" href="#native-libraries" title="Permalink to this headline">¶</a></h3>
+<p>Prebuilt libraries of PROJ and GEOS are available for a number of platforms.</p>
+<div class="section" id="windows-32-bit">
+<h4>Windows 32-bit<a class="headerlink" href="#windows-32-bit" title="Permalink to this headline">¶</a></h4>
+<p>Prebuilt 32-bit Windows DLL&#8217;s for PROJ and GEOS are available from:</p>
+<blockquote>
+<div><a class="reference external" href="http://ares.boundlessgeo.com/geotools/spatialite-libs-win-x86.zip">http://ares.boundlessgeo.com/geotools/spatialite-libs-win-x86.zip</a></div></blockquote>
+<p>These libraries along with the original header files are also available from:</p>
+<blockquote>
+<div><a class="reference external" href="http://www.gaia-gis.it/spatialite-2.3.1/binaries.html">http://www.gaia-gis.it/spatialite-2.3.1/binaries.html</a></div></blockquote>
+<p>These DLL files should be installed in a directory that is on the default search
+path for DLL&#8217;s such as <code class="docutils literal"><span class="pre">C:\WINDOWS\System32</span></code>.</p>
+</div>
+<div class="section" id="windows-64-bit">
+<h4>Windows 64-bit<a class="headerlink" href="#windows-64-bit" title="Permalink to this headline">¶</a></h4>
+<p>At this time Windows 64-bit libraries are not available but the 32-bit libraries should work on 64-bit systems.</p>
+</div>
+<div class="section" id="linux-32-bit">
+<h4>Linux 32-bit<a class="headerlink" href="#linux-32-bit" title="Permalink to this headline">¶</a></h4>
+<p>Prebuilt 32-bit Linux shared libraries for PROJ and GEOS are available from:</p>
+<blockquote>
+<div><a class="reference external" href="http://ares.boundlessgeo.com/geotools/spatialite-libs-linux-x86.zip">http://ares.boundlessgeo.com/geotools/spatialite-libs-linux-x86.zip</a></div></blockquote>
+</div>
+<div class="section" id="linux-64-bit">
+<h4>Linux 64-bit<a class="headerlink" href="#linux-64-bit" title="Permalink to this headline">¶</a></h4>
+<p>Prebuilt 64-bit Linux shared libraries for PROJ and GEOS are available from:</p>
+<blockquote>
+<div><a class="reference external" href="http://ares.boundlessgeo.com/geotools/spatialite-libs-linux-x86_64.zip">http://ares.boundlessgeo.com/geotools/spatialite-libs-linux-x86_64.zip</a></div></blockquote>
+</div>
+<div class="section" id="mac">
+<h4>Mac<a class="headerlink" href="#mac" title="Permalink to this headline">¶</a></h4>
+<p>Prebuilt 32/64-bit shared libraries for PROJ and GEOS for <strong>Intel based Macs only</strong> are available from:</p>
+<blockquote>
+<div><a class="reference external" href="http://ares.boundlessgeo.com/geotools/spatialite-libs-osx-intel.zip">http://ares.boundlessgeo.com/geotools/spatialite-libs-osx-intel.zip</a></div></blockquote>
+</div>
+</div>
+<div class="section" id="java-environment">
+<h3>Java Environment<a class="headerlink" href="#java-environment" title="Permalink to this headline">¶</a></h3>
+<p>For the SpatiaLite plugin to function Java must be configured to load the required PROJ/GEOS libraries.</p>
+<div class="section" id="windows">
+<h4>Windows<a class="headerlink" href="#windows" title="Permalink to this headline">¶</a></h4>
+<p>The easiest way to allow Java to load the required DLL&#8217;s is to put them in the <code class="docutils literal"><span class="pre">C:\WINDOWS\System32</span></code> directory.</p>
+</div>
+<div class="section" id="linux">
+<h4>Linux<a class="headerlink" href="#linux" title="Permalink to this headline">¶</a></h4>
+<p>The libraries may be installed anywhere on the system, a common place to put them is under <code class="docutils literal"><span class="pre">/usr/local</span></code>.
+Java is configured by setting the <code class="docutils literal"><span class="pre">-Djava.library.path</span></code> system property:</p>
+<div class="highlight-python"><div class="highlight"><pre>java -Djava.library.path=/usr/local/lib
+</pre></div>
+</div>
+<p>It also maybe required to set the <code class="docutils literal"><span class="pre">LD_LIBRARY_PATH</span></code> environment variable as well:</p>
+<div class="highlight-python"><div class="highlight"><pre>export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
+java -Djava.library.path=/usr/local/lib
+</pre></div>
+</div>
+</div>
+<div class="section" id="id1">
+<h4>Mac<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
+<p>Same as for Linux expect that <code class="docutils literal"><span class="pre">LD_LIBRARY_PATH</span></code> is replaced with <code class="docutils literal"><span class="pre">DYLD_LIBRARY_PATH</span></code>.</p>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="sqlserver.html" title="SQL Server Plugin"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="postgis.html" title="PostGIS Plugin"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" >JDBC</a> &raquo;</li>
+        <li><a href="#">SpatiaLite Plugin</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

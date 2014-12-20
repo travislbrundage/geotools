@@ -1,0 +1,283 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ECQL &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../index.html" />
+    <link rel="up" title="CQL" href="index.html" />
+    <link rel="next" title="XML" href="../xml/index.html" />
+    <link rel="prev" title="CQL" href="cql.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">CQL</a> &raquo;</li>
+        <li><a href="#">ECQL</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">ECQL</a><ul>
+<li><a class="reference internal" href="#ecql-utility-class">ECQL Utility Class</a><ul>
+<li><a class="reference internal" href="#running">Running</a></li>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="cql.html"
+                        title="previous chapter">CQL</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../xml/index.html"
+                        title="next chapter">XML</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/library/cql/ecql.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="ecql">
+<h1>ECQL<a class="headerlink" href="#ecql" title="Permalink to this headline">¶</a></h1>
+<p>The ECQL language is intended as an extension of CQL, thus you can write all predicates supported by CQL and use the new expression possibilities defined in the new syntax rules.</p>
+<p>References</p>
+<ul class="simple">
+<li><a class="reference external" href="http://docs.codehaus.org/display/GEOTOOLS/ECQL+Parser+Design">ECQL Parser Design</a> (wiki with BNF)</li>
+<li><a class="reference external" href="http://docs.geoserver.org/latest/en/user/tutorials/cql/cql_tutorial.html">GeoServer CQL Examples</a> (geoserver)</li>
+</ul>
+<div class="section" id="ecql-utility-class">
+<h2>ECQL Utility Class<a class="headerlink" href="#ecql-utility-class" title="Permalink to this headline">¶</a></h2>
+<p>The ECQL utility class is method compatible allowing you to use it as a drop-in replacement for CQL.</p>
+<img alt="../../_images/ecql.PNG" src="../../_images/ecql.PNG" />
+<div class="section" id="running">
+<h3>Running<a class="headerlink" href="#running" title="Permalink to this headline">¶</a></h3>
+<p>As you can see above the ECQL class can be run on the command line.</p>
+<p>It allows you to try out the ECQL examples on this page; and produces the XML Filter representation of the result.:</p>
+<div class="highlight-python"><div class="highlight"><pre>ECQL Filter Tester
+&quot;Seperate with \&quot;;\&quot; or \&quot;quit\&quot; to finish)
+&gt;attr &gt; 10
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;ogc:PropertyIsGreaterThan xmlns=&quot;http://www.opengis.net/ogc&quot; xmlns:ogc=&quot;http://www.opengis.net/ogc&quot; xmlns:gml=&quot;http://www.opengis.net/gml&quot;&gt;
+&lt;ogc:PropertyName&gt;attr&lt;/ogc:PropertyName&gt;
+&lt;ogc:Literal&gt;10&lt;/ogc:Literal&gt;
+&lt;/ogc:PropertyIsGreaterThan&gt;
+
+&gt;quit
+Bye!
+</pre></div>
+</div>
+</div>
+<div class="section" id="examples">
+<h3>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p class="first">Filter by Comparing Values</p>
+<p>The CQL language limited us to referencing a propertyName against
+a more general expression.</p>
+<p>ECQL allows you to use full expressions everywhere:</p>
+<div class="highlight-java"><div class="highlight"><pre>        <span class="n">Filter</span> <span class="n">filter</span> <span class="o">=</span> <span class="n">ECQL</span><span class="o">.</span><span class="na">toFilter</span><span class="o">(</span><span class="s">&quot;1000 &lt;= population&quot;</span><span class="o">);</span>
+</pre></div>
+</div>
+<div class="highlight-java"><div class="highlight"><pre>        <span class="n">Filter</span> <span class="n">filter</span> <span class="o">=</span> <span class="n">ECQL</span><span class="o">.</span><span class="na">toFilter</span><span class="o">(</span><span class="s">&quot;(under18YearsOld * 19541453 / 100 ) &lt; (over65YearsOld * 19541453 / 100 )&quot;</span><span class="o">);</span>
+</pre></div>
+</div>
+<div class="highlight-java"><div class="highlight"><pre>        <span class="n">Filter</span> <span class="n">filter</span> <span class="o">=</span> <span class="n">ECQL</span><span class="o">.</span><span class="na">toFilter</span><span class="o">(</span><span class="s">&quot;population BETWEEN 10000000 and 20000000&quot;</span><span class="o">);</span>
+</pre></div>
+</div>
+<div class="highlight-java"><div class="highlight"><pre>        <span class="n">Filter</span> <span class="n">filter</span> <span class="o">=</span> <span class="n">ECQL</span><span class="o">.</span><span class="na">toFilter</span><span class="o">(</span><span class="s">&quot;area( Polygon((10 10, 20 10, 20 20, 10 10)) ) BETWEEN 10000 AND 30000&quot;</span><span class="o">);</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Filter by a List of Features&#8217; ID</p>
+<p>The Filter XML format allows the definition of an <strong>Id</strong> Filter
+capturing a set of FeatureIDs (often representing a selection).</p>
+<p>Using string as id:</p>
+<div class="highlight-python"><div class="highlight"><pre>Filter filter = ECQL.toFilter(&quot;IN (&#39;river.1&#39;, &#39;river.2&#39;)&quot;);
+</pre></div>
+</div>
+<p>Using integer as id:</p>
+<div class="highlight-python"><div class="highlight"><pre>Filter filter = ECQL.toFilter(&quot;IN (300, 301)&quot;);
+</pre></div>
+</div>
+<p>We tried a couple of experiments, not all of them worked leaving
+us with the following deprecated syntax:</p>
+<div class="highlight-python"><div class="highlight"><pre>Filter filter = ECQL.toFilter(&quot;ID IN (&#39;river.1&#39;, &#39;river.2&#39;)&quot;);
+</pre></div>
+</div>
+</li>
+<li><p class="first">Filter based in a set of values</p>
+<p>The following filter selects the countries which have silver, oil or gold as principal mineral resource:</p>
+<div class="highlight-java"><div class="highlight"><pre>        <span class="n">Filter</span> <span class="n">filter</span> <span class="o">=</span> <span class="n">ECQL</span><span class="o">.</span><span class="na">toFilter</span><span class="o">(</span><span class="s">&quot;principalMineralResource IN (&#39;silver&#39;,&#39;oil&#39;, &#39;gold&#39; )&quot;</span><span class="o">);</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Filter using a text pattern:</p>
+<p>Filter for a text pattern using <strong>LIKE</strong> keyword:</p>
+<div class="highlight-java"><div class="highlight"><pre>        <span class="n">Filter</span> <span class="n">filter</span> <span class="o">=</span> <span class="n">ECQL</span><span class="o">.</span><span class="na">toFilter</span><span class="o">(</span><span class="s">&quot;cityName LIKE &#39;New%&#39;&quot;</span><span class="o">);</span>
+</pre></div>
+</div>
+<p>Case insensitive example with <strong>ILIKE</strong> keyword:</p>
+<div class="highlight-java"><div class="highlight"><pre>        <span class="n">Filter</span> <span class="n">filter</span> <span class="o">=</span> <span class="n">ECQL</span><span class="o">.</span><span class="na">toFilter</span><span class="o">(</span><span class="s">&quot;cityName ILIKE &#39;new%&#39;&quot;</span><span class="o">);</span>
+</pre></div>
+</div>
+<p>ECQL allows you to test any two expression, including literals:</p>
+<div class="highlight-java"><div class="highlight"><pre>        <span class="n">Filter</span> <span class="n">filter</span> <span class="o">=</span> <span class="n">ECQL</span><span class="o">.</span><span class="na">toFilter</span><span class="o">(</span><span class="s">&quot;&#39;aabbcc&#39; LIKE &#39;%bb%&#39;&quot;</span><span class="o">);</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Filter by spatial relation:</p>
+<p>The ability to use a full expression also applies to spatial operations
+allowing us to process a geometry using a function as in the following
+example:</p>
+<div class="highlight-python"><div class="highlight"><pre>Filter filter = ECQL.toFilter(&quot;DISJOINT(the_geom, POINT(1 2))&quot;);
+Filter filter = ECQL.toFilter(&quot;DISJOINT(buffer(the_geom, 10) , POINT(1 2))&quot;);
+Filter filter = ECQL.toFilter(
+        &quot;DWITHIN(buffer(the_geom,5), POINT(1 2), 10, kilometers)&quot;);
+</pre></div>
+</div>
+<p>The followning example shows how to make a filter using the RELATE geooperation. In this case, the DE-9IM pattern corresponds to the <strong>contains</strong> spatial relation, It will be true if the first geometry contains the second.</p>
+<div class="highlight-java"><div class="highlight"><pre>        <span class="n">Filter</span> <span class="n">filter</span> <span class="o">=</span> <span class="n">ECQL</span><span class="o">.</span><span class="na">toFilter</span><span class="o">(</span> <span class="s">&quot;RELATE(geometry, LINESTRING (-134.921387 58.687767, -135.303391 59.092838), T*****FF*)&quot;</span><span class="o">);</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Filter by temporal relation:</p>
+<p>The temporal predicates allow to establish the relation between two given instant of time, or between an instant and an interval of time.
+In the next sample, the during predicate is used to filter the cities where an earthquake has occurred between the  specified dates:</p>
+<div class="highlight-java"><div class="highlight"><pre>        <span class="n">During</span> <span class="n">filter</span> <span class="o">=</span> <span class="o">(</span><span class="n">During</span><span class="o">)</span> <span class="n">ECQL</span><span class="o">.</span><span class="na">toFilter</span><span class="o">(</span><span class="s">&quot;lastEarthQuake DURING 1700-01-01T00:00:00Z/2011-01-01T00:00:00Z&quot;</span><span class="o">);</span>
+</pre></div>
+</div>
+<p>In ECQL you can write a datetime expression in the left hand of the temporal predicate:</p>
+<div class="highlight-java"><div class="highlight"><pre>        <span class="n">Filter</span> <span class="n">filter</span> <span class="o">=</span> <span class="n">ECQL</span><span class="o">.</span><span class="na">toFilter</span><span class="o">(</span><span class="s">&quot;2006-11-30T01:00:00Z AFTER 2006-11-30T01:30:00Z&quot;</span><span class="o">);</span>
+</pre></div>
+</div>
+<p>in the Before predicate:</p>
+<div class="highlight-java"><div class="highlight"><pre>        <span class="n">Filter</span> <span class="n">filter</span> <span class="o">=</span> <span class="n">ECQL</span><span class="o">.</span><span class="na">toFilter</span><span class="o">(</span><span class="s">&quot;2006-11-30T01:00:00Z BEFORE 2006-11-30T01:30:00Z&quot;</span><span class="o">);</span>
+</pre></div>
+</div>
+<p>in the During predicate:</p>
+<div class="highlight-java"><div class="highlight"><pre>        <span class="n">Filter</span> <span class="n">filter</span> <span class="o">=</span> <span class="n">ECQL</span><span class="o">.</span><span class="na">toFilter</span><span class="o">(</span><span class="s">&quot;2006-11-30T01:00:00Z DURING 2006-11-30T00:30:00Z/2006-11-30T01:30:00Z &quot;</span><span class="o">);</span>
+</pre></div>
+</div>
+<p>The following example presents a time predicate that includes the UTC time zone (GMT +3) in date-time expression:</p>
+<div class="highlight-java"><div class="highlight"><pre>        <span class="n">Filter</span> <span class="n">filter</span> <span class="o">=</span> <span class="n">ECQL</span><span class="o">.</span><span class="na">toFilter</span><span class="o">(</span><span class="s">&quot;2006-11-30T01:00:00+03:00 DURING 2006-11-30T00:30:00+03:00/2006-11-30T01:30:00+03:00 &quot;</span><span class="o">);</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Filter Nulls:</p>
+<div class="highlight-python"><div class="highlight"><pre>Filter filter = ECQL.toFilter(&quot; Name IS NULL&quot;);
+Filter filter = ECQL.toFilter(&quot;centroid( the_geom ) IS NULL&quot;);
+</pre></div>
+</div>
+</li>
+<li><p class="first">Property Exist Predicate:</p>
+<div class="highlight-python"><div class="highlight"><pre>Filter resultFilter = ECQL.toFilter(&quot;aProperty EXISTS&quot;);
+</pre></div>
+</div>
+</li>
+<li><p class="first">Expression</p>
+<p>Expressions support is unchanged:</p>
+<div class="highlight-python"><div class="highlight"><pre>Expression expr = ECQL.toExpression(&quot;X + 1&quot;);
+</pre></div>
+</div>
+</li>
+<li><p class="first">Filter list</p>
+<p>Filter list is still supported using a &#8221;;&#8221; to separate entries:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">List</span><span class="o">&lt;</span><span class="n">Filter</span><span class="o">&gt;</span> <span class="nb">list</span> <span class="o">=</span> <span class="n">ECQL</span><span class="o">.</span><span class="n">toFilterList</span><span class="p">(</span><span class="s">&quot;X=1; Y&lt;4&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Filter with date literals:</p>
+<div class="highlight-python"><div class="highlight"><pre>Filter filter = ECQL.toFilter(&quot;foo = 1981-06-20&quot;);
+Filter filter = ECQL.toFilter(&quot;foo &lt;= 1981-06-20T12:30:01Z&quot;);
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="../xml/index.html" title="XML"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="cql.html" title="CQL"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" >CQL</a> &raquo;</li>
+        <li><a href="#">ECQL</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Text &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../index.html" />
+    <link rel="up" title="OpenGIS" href="index.html" />
+    <link rel="next" title="Parameter" href="parameter.html" />
+    <link rel="prev" title="Name and Record" href="name.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">OpenGIS</a> &raquo;</li>
+        <li><a href="#">Text</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Text</a><ul>
+<li><a class="reference internal" href="#enum">Enum</a></li>
+<li><a class="reference internal" href="#codelist">CodeList</a></li>
+<li><a class="reference internal" href="#string">String</a></li>
+<li><a class="reference internal" href="#internationalstring">InternationalString</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="name.html"
+                        title="previous chapter">Name and Record</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="parameter.html"
+                        title="next chapter">Parameter</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/library/opengis/text.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="text">
+<h1>Text<a class="headerlink" href="#text" title="Permalink to this headline">¶</a></h1>
+<p>Many projects use Java String to represent text. This page goes over some of the String alternative used to text in a consistent manner.</p>
+<div class="section" id="enum">
+<h2>Enum<a class="headerlink" href="#enum" title="Permalink to this headline">¶</a></h2>
+<p>The first alternative is a normal Java 5 <strong>enum</strong>. We use enumerations to represent a frozen set of machine readable text.</p>
+<p>The key idea here is:</p>
+<ul class="simple">
+<li>this is machine readable; you don&#8217;t need to show this to your end users</li>
+<li>it is frozen; literally it is boiled into the jar you download and you cannot modify the list of defined codes in any way</li>
+<li>If you are reading any of the ISO specifications you will find this concept is called an <strong>Enum</strong> there as well, our use agrees with typical Java practice.</li>
+</ul>
+<p>Here is an example for reference:</p>
+<div class="highlight-python"><div class="highlight"><pre>public enum OverlapBehavior {
+    LATEST_ON_TOP,
+    EARLIEST_ON_TOP,
+    AVERAGE,
+    RANDOM
+}
+</pre></div>
+</div>
+<p>As this set of text form directives to a rendering engine on handling overlapping images they are represented as an Enum.</p>
+<ul class="simple">
+<li>The &#8220;vocabulary&#8221; of allowed text values is fixed at compile time (and is well documented for those implementing a rendering engine).</li>
+<li>As this text is intended to direct a rendering engine the entries are considered machine readable.</li>
+</ul>
+<p>An easy test to see if something is considered machine readable is to consider if internationalizing the values would &#8220;break&#8221; the codebase.</p>
+</div>
+<div class="section" id="codelist">
+<h2>CodeList<a class="headerlink" href="#codelist" title="Permalink to this headline">¶</a></h2>
+<p>A CodeList is used to represent an extensible set of machine readable text.</p>
+<p>In pragmatic terms this is behaves just like a Java 5 Enum, except that you can add to it at runtime.</p>
+<p>The ISO specifications call this concept is a CodeList as well,</p>
+<p>Here is an example of a CodeList:</p>
+<div class="highlight-python"><div class="highlight"><pre>public final class SortOrder extends CodeList&lt;SortOrder&gt; {
+   private static final long serialVersionUID = 7840334200112859571L;
+   private static final List all = new ArrayList();
+   public static final SortOrder ASCENDING  = new SortOrder(&quot;ASC&quot;);
+   public static final SortOrder DESCENDING = new SortOrder(&quot;DESC&quot;);
+
+   private SortOrder( String name ){
+      super(name, all );
+   }
+
+   public CodeList[] family() {
+      return (CodeList[]) all.toArray( new CodeList[ all.size()]);
+   }
+}
+</pre></div>
+</div>
+<p>The above implementation is actually very similar to the definition of an Enum and can give you some insight into have Enums are represented as Objects by Java.</p>
+<p>The difference here is that your application can add additional SortOrders at runtime:</p>
+<div class="highlight-python"><div class="highlight"><pre>SortOrder order = SortOrder.valueOf( SortOrder.class, &quot;NATURAL&quot; );
+</pre></div>
+</div>
+<p>Once again a CodeList is considered:</p>
+<ul class="simple">
+<li>Machine Readable - the text values are intended for programs not people</li>
+<li>Open ended, application code can add additional values to the &#8220;vocabulary&#8221;</li>
+</ul>
+</div>
+<div class="section" id="string">
+<h2>String<a class="headerlink" href="#string" title="Permalink to this headline">¶</a></h2>
+<p>String also has a place, in this case for free form machine readable text. Good examples are common query language &#8220;query&#8221; strings, or version numbers which change with each release.</p>
+<p>Please note that we are not using Strings to communicate to the end user, we have a special class (InternationalString) to address Internationalization issues.</p>
+<p>The ISO specifications call this concept a <strong>CharacterString</strong>. However you have to be careful and read how they are using it on a case by case basis. Our use does not agree with typical Java practice; we are reserving the use of String for machine readable text.</p>
+<p>Here is an example:</p>
+<div class="highlight-python"><div class="highlight"><pre>public static Version getVersion(){
+  return VERSION;
+}
+</pre></div>
+</div>
+<p>With this in mind String is considered:</p>
+<ul class="simple">
+<li>Machine readable (the values are not translated!)</li>
+<li>Freeform (ie does not belong to a set vocabulary of defined values)</li>
+</ul>
+</div>
+<div class="section" id="internationalstring">
+<h2>InternationalString<a class="headerlink" href="#internationalstring" title="Permalink to this headline">¶</a></h2>
+<p>An <strong>InternationalString</strong> is used to represent free form human readable text. The InternationalString interface makes every translation of the text available through one class.</p>
+<p>The ISO specifications call this concept a CharacterString, but once again you need to check how they are using it.</p>
+<p>To use an InternationalString with the current locale:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">return</span> <span class="n">title</span><span class="o">.</span><span class="n">toString</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>To use the InternationalString with a different locale:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">return</span> <span class="n">title</span><span class="o">.</span><span class="n">toString</span><span class="p">(</span> <span class="n">locale</span> <span class="p">);</span>
+</pre></div>
+</div>
+<p>This method of handing internationalization may be unfamiliar to those coming from a desktop computing background. You will find this technique very handy when implementing a web application that is communicating with users from a number of different locales.</p>
+<p>With this in mind International String is considered:</p>
+<ul class="simple">
+<li>Human Readable</li>
+<li>Free form</li>
+</ul>
+<p>We have a number of implementations available, backed on properties files and such like.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="parameter.html" title="Parameter"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="name.html" title="Name and Record"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" >OpenGIS</a> &raquo;</li>
+        <li><a href="#">Text</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

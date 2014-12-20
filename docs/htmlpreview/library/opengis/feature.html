@@ -1,0 +1,191 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Feature &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../index.html" />
+    <link rel="up" title="OpenGIS" href="index.html" />
+    <link rel="next" title="Filter" href="filter.html" />
+    <link rel="prev" title="FeatureType" href="type.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">OpenGIS</a> &raquo;</li>
+        <li><a href="#">Feature</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Feature</a><ul>
+<li><a class="reference internal" href="#data-structure">Data Structure</a></li>
+<li><a class="reference internal" href="#simple-feature">Simple Feature</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="type.html"
+                        title="previous chapter">FeatureType</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="filter.html"
+                        title="next chapter">Filter</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/library/opengis/feature.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="feature">
+<h1>Feature<a class="headerlink" href="#feature" title="Permalink to this headline">¶</a></h1>
+<p>The Feature class is used to represents &#8220;something that can be drawn on a map&#8221;.</p>
+<p>References:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://docs.geotools.org/stable/javadocs/org/opengis/feature/package-summary.html">org.opengis.feature</a> (javadocs)</li>
+<li><a class="reference external" href="http://docs.geotools.org/stable/javadocs/org/opengis/feature/simple/package-summary.html">org.opengis.feature.simple</a></li>
+<li><a class="reference internal" href="../main/feature.html"><em>Feature</em></a> gt-main feature code examples</li>
+</ul>
+<div class="section" id="data-structure">
+<h2>Data Structure<a class="headerlink" href="#data-structure" title="Permalink to this headline">¶</a></h2>
+<p>A GeoTools Feature stores your information in a data structure composed of Feature, Attributes, and
+Associations.</p>
+<img alt="../../_images/feature_data_model.PNG" src="../../_images/feature_data_model.PNG" />
+<p>To directly create a <strong>Feature</strong> you can make use of <strong>FeatureFactory</strong>, or use a builder which makes things a little easier (as it fills in defaults):</p>
+<div class="highlight-python"><div class="highlight"><pre>//create the builder
+SimpleFeatureBuilder builder = new SimpleFeatureBuilder(featureType);
+
+//add the values
+builder.add( &quot;Canada&quot; );
+builder.add( 1 );
+builder.add( 20.5 );
+builder.add( new Point( -124, 52 ) );
+
+//build the feature with provided ID
+SimpleFeature feature = builder.buildFeature( &quot;fid.1&quot; );
+</pre></div>
+</div>
+<p>In practice you can use a feature much like a java.util.Map to get and put values. The difference is that the &#8220;keys&#8221; are formally defined by the FeatureType (which helps us swap information between systems).</p>
+<p>This is a little bit easier with <strong>SimpleFeature</strong> which allows direct access to attribute values:</p>
+<blockquote>
+<div>feature.setAttribute( &#8220;turbidity&#8221;, 3.7 );
+Object value = feature.getAttribute( &#8220;turbidity&#8221; ); // returns double 3.7 stored above</div></blockquote>
+<p>For more information see the examples listed in gt-main <a class="reference internal" href="../main/feature.html"><em>Feature</em></a>.</p>
+</div>
+<div class="section" id="simple-feature">
+<h2>Simple Feature<a class="headerlink" href="#simple-feature" title="Permalink to this headline">¶</a></h2>
+<p>Most GIS data does not need a full dynamic type system with associations, operations, multiple values. With this in mind we have a &#8220;simple&#8221; extension of Feature and FeatureType providing to represent this kind of information.</p>
+<p>A &#8220;simple&#8221; feature is an object that can be drawn on a map (ie a feature) that does not contain any complicated internal structure. A SimpleFeature is &#8220;flat&#8221; recording of key value pairs. At least one of the values should be a Geometry, and the list of keys is known ahead of time.</p>
+<p>SimpleFeature may be used when:</p>
+<ul class="simple">
+<li>a feature&#8217;s properties are limited to mandatory GeometryAttribute and Attribute (no complex attributes or multiplicity allowed).</li>
+<li>Attributes values may be null; but each attribute must be represented</li>
+<li>order of attribute values is considered significant allowing values to be looked up by attribute name, or by the order they are listed</li>
+<li>These restrictions match the abilities of a simple shapefile or database table</li>
+</ul>
+<p>Here are the additional methods made available:</p>
+<img alt="../../_images/feature_simple.PNG" src="../../_images/feature_simple.PNG" />
+<p>Here is an example of constructing a SimpleFeatureType:</p>
+<div class="highlight-python"><div class="highlight"><pre>SimpleFeatureTypeBuilder b = new SimpleFeatureTypeBuilder();
+
+//set the name
+b.setName( &quot;Flag&quot; );
+
+//add some properties
+b.add( &quot;name&quot;, String.class );
+b.add( &quot;classification&quot;, Integer.class );
+b.add( &quot;height&quot;, Double.class );
+
+//add a geometry property
+b.setCRS( DefaultGeographicCRS.WSG84 );
+b.add( &quot;location&quot;, Point.class );
+
+//build the type
+SimpleFeatureType type = b.buildFeatureType();
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="filter.html" title="Filter"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="type.html" title="FeatureType"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" >OpenGIS</a> &raquo;</li>
+        <li><a href="#">Feature</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

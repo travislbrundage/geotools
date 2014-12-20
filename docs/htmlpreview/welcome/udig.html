@@ -1,0 +1,191 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Welcome to uDig Developers &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../index.html" />
+    <link rel="up" title="Welcome" href="index.html" />
+    <link rel="next" title="Java EE" href="javaEE.html" />
+    <link rel="prev" title="Welcome Geomajas Developers" href="geomajas.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Welcome</a> &raquo;</li>
+        <li><a href="#">Welcome to uDig Developers</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Welcome to uDig Developers</a><ul>
+<li><a class="reference internal" href="#catalog-to-manage-datastores">Catalog to manage DataStores</a></li>
+<li><a class="reference internal" href="#how-do-i-add-stuff">How do I add stuff</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="geomajas.html"
+                        title="previous chapter">Welcome Geomajas Developers</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="javaEE.html"
+                        title="next chapter">Java EE</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/welcome/udig.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="welcome-to-udig-developers">
+<h1>Welcome to uDig Developers<a class="headerlink" href="#welcome-to-udig-developers" title="Permalink to this headline">¶</a></h1>
+<div class="sidebar">
+<p class="first sidebar-title">uDig</p>
+<p><a class="reference external" href="http://udig.refractions.net/">http://udig.refractions.net/</a></p>
+<img alt="../_images/udig_64.gif" src="../_images/udig_64.gif" />
+<p class="last">User-friendly Desktop Internet GIS (uDig) supports GeoTools functionality
+in a slick &#8220;Eclipse Rich Client Platform&#8221; application.</p>
+</div>
+<p>This page gathers up some notes for those of us looking to put uDig to good use. The uDig project operates as a Eclipse RCP smash up of as many geospatial projects as it can get a hold of - and GeoTools is its first victim.</p>
+<p>The uDig project does its best to stick to OpenGIS interfaces (the same interfaces that GeoTools implements). Like GeoTools it makes use of JTS to capture the idea of a Geometry.</p>
+<div class="section" id="catalog-to-manage-datastores">
+<h2>Catalog to manage DataStores<a class="headerlink" href="#catalog-to-manage-datastores" title="Permalink to this headline">¶</a></h2>
+<p>DataStores represent physical connections to external servers (often with their own connection
+pool and resources to be cleaned up after). As such it is important that you always use the uDig
+Catalog to allow the application to know when you are obtaining resources, and clean up the mess
+if your code happens to crash.</p>
+<p>References:</p>
+<ul class="simple">
+<li><a class="reference internal" href="../library/main/repository.html"><em>Repository</em></a></li>
+<li><a class="reference external" href="http://udig.refractions.net/confluence/display/DEV/2+Catalog">http://udig.refractions.net/confluence/display/DEV/2+Catalog</a></li>
+</ul>
+</div>
+<div class="section" id="how-do-i-add-stuff">
+<h2>How do I add stuff<a class="headerlink" href="#how-do-i-add-stuff" title="Permalink to this headline">¶</a></h2>
+<p>The FeatureStore interface is used to add content.</p>
+<p>You can get a FeatureStore in uDig by writing an operation. The operation will show up on the right click menu of anything that can be turned into a FeatureStore (such as a read/write Layer in the map, or File in the catalog):</p>
+<div class="highlight-python"><div class="highlight"><pre>public class AddStuff implements IOp {
+    static GeometryFactory geomFactory = new GeometryFactory();
+    public void op( Display display, Object target, IProgressMonitor monitor ){
+
+        FeatureStore store = (FeatureStore) target; // AddStuff registered to accept FeatureStore
+        FeatureType schema = store.getSchema();
+
+        FeatureCollection collection = FeatureCollections.newInstance();
+        Object attributes = new Object[]{
+            &quot;name&quot;,
+            new geomFactory.createPoint( new Coordinate(1,1) ),
+            new Integer(3)
+        };
+        Feature feature = schema.create( attribtues, &quot;featureId&quot; );
+        ...
+        collection.add( feature );
+
+        store.addFeatures( collection );
+    }
+}
+</pre></div>
+</div>
+<p>You can also get a FeatureStore directly from from an ILayer:</p>
+<div class="highlight-python"><div class="highlight"><pre>if( layer.hasResource( FeatureStore.class ) ){
+    FeatureStore store = layer.getResource( FeatureStore.class, monitor );
+    ...
+}
+</pre></div>
+</div>
+<p>Or directly from a GeoResource:</p>
+<div class="highlight-python"><div class="highlight"><pre>if( geoResource.canResolve( FeatureStore.class ) ){
+    FeatureStore store = handle.resolve( FeatureStore.class, monitor );
+    ...
+}
+</pre></div>
+</div>
+<p>Notes:</p>
+<ul class="simple">
+<li>features you add this way will not actually hit the disk until the user presses the commit button.</li>
+<li>do not assume anything about the layer - even if it is a WMS layer uDig may be able to hunt you
+down a FeatureStore by looking for a matching WFS service</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="javaEE.html" title="Java EE"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="geomajas.html" title="Welcome Geomajas Developers"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="index.html" >Welcome</a> &raquo;</li>
+        <li><a href="#">Welcome to uDig Developers</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

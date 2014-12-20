@@ -1,0 +1,164 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Java2D Shape &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../index.html" />
+    <link rel="up" title="Main" href="index.html" />
+    <link rel="next" title="WKT Parser" href="geometry.html" />
+    <link rel="prev" title="FeatureCollection" href="collection.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Main</a> &raquo;</li>
+        <li><a href="#">Java2D Shape</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Java2D Shape</a><ul>
+<li><a class="reference internal" href="#drawing">Drawing</a></li>
+<li><a class="reference internal" href="#liteshape2">LiteShape2</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="collection.html"
+                        title="previous chapter">FeatureCollection</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="geometry.html"
+                        title="next chapter">WKT Parser</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/library/main/shape.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="java2d-shape">
+<h1>Java2D Shape<a class="headerlink" href="#java2d-shape" title="Permalink to this headline">¶</a></h1>
+<p>GeoTools includes a couple of classes for generating a Java 2D Shape from a JTS Geometry.</p>
+<p>The examples shown here are taken from LiteShapeTest.</p>
+<p>You can use LiteShape to quickly make a Java2D shape to display on the screen:</p>
+<div class="highlight-python"><div class="highlight"><pre>AffineTransform affineTransform = new AffineTransform();
+LiteShape lineShape = new LiteShape(lineString, affineTransform, false);
+</pre></div>
+</div>
+<p>You can also ask for the shape to be simplified; by default is to generalise to a single pixel.:</p>
+<div class="highlight-python"><div class="highlight"><pre>LiteShape lineShape = new LiteShape(lineString, affineTransform, true);
+</pre></div>
+</div>
+<p>If you are using anti-aliasing you may want to drop that down to half a pixel.:</p>
+<div class="highlight-python"><div class="highlight"><pre>AffineTransform affineTransform = new AffineTransform();
+LiteShape lineShape = new LiteShape(lineString, affineTransform, true, 0.5 );
+</pre></div>
+</div>
+<div class="section" id="drawing">
+<h2>Drawing<a class="headerlink" href="#drawing" title="Permalink to this headline">¶</a></h2>
+<p>The code makes use of an AffineTransform allowing you to scale and rotate the geometry into the correct position on the screen. You may consider starting with graphics2d.getTransform() representing your image coordinates and work from there.:</p>
+<div class="highlight-python"><div class="highlight"><pre>public void draw( Graphics2d g2, Geometry geom ){
+   AffineTransform transform = g2.getTransform(); // returns a copy
+   transform.translate( 10, 10 ); // offset
+   transform.scale( 0.5, 0.5 ); // scale by 50%
+   LiteShape lineShape = new LiteShape(lineString, transform, false);
+   g2.draw( lineShape );
+}
+</pre></div>
+</div>
+</div>
+<div class="section" id="liteshape2">
+<h2>LiteShape2<a class="headerlink" href="#liteshape2" title="Permalink to this headline">¶</a></h2>
+<p>LiteShape2 is similar in function, but makes use of MathTransform (and thus can be used to handle
+the case where you using reprojection to manipulate your geometry priory to display).</p>
+<p>This class also makes use of a Decimator class to control how generalisation occurs.:</p>
+<div class="highlight-python"><div class="highlight"><pre>Decimator decimator = new Decimator(screen2world, paintArea );
+LiteShape2 lineShape = new LiteShape2(lineString, world2screen, decimator, false);
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="geometry.html" title="WKT Parser"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="collection.html" title="FeatureCollection"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" >Main</a> &raquo;</li>
+        <li><a href="#">Java2D Shape</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

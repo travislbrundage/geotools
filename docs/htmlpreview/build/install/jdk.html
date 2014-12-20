@@ -1,0 +1,377 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Java Install &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../index.html" />
+    <link rel="up" title="Install Build Tools" href="index.html" />
+    <link rel="next" title="Maven Install" href="mvn.html" />
+    <link rel="prev" title="Install Build Tools" href="index.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Building</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Install Build Tools</a> &raquo;</li>
+        <li><a href="#">Java Install</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Java Install</a><ul>
+<li><a class="reference internal" href="#java-standard-edition-software-developers-kit">Java Standard Edition Software Developers Kit</a><ul>
+<li><a class="reference internal" href="#use-java-7-starting-with-geotools-11-0">Use Java 7 starting with GeoTools 11.0</a></li>
+<li><a class="reference internal" href="#why-java-home-does-not-work-on-windows">Why JAVA_HOME does not work on Windows</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#java-extensions-optional">Java Extensions (Optional)</a><ul>
+<li><a class="reference internal" href="#java-advanced-imaging">Java Advanced Imaging</a></li>
+<li><a class="reference internal" href="#java-image-io">Java Image IO</a></li>
+<li><a class="reference internal" href="#imageio-ext-install">ImageIO-Ext Install</a></li>
+<li><a class="reference internal" href="#alternate-classpath-install">Alternate CLASSPATH Install</a></li>
+<li><a class="reference internal" href="#optional-mac-imageio">Optional: Mac ImageIO</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Install Build Tools</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="mvn.html"
+                        title="next chapter">Maven Install</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/build/install/jdk.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="java-install">
+<h1>Java Install<a class="headerlink" href="#java-install" title="Permalink to this headline">¶</a></h1>
+<p>GeoTools is written in the Java Programming Language. The library is targeted for Java 6.</p>
+<p>Java Runtime Environment:</p>
+<ul class="simple">
+<li>Java 7 - GeoTools 11.x and above (OpenJDK and Oracle JRE tested)</li>
+<li>Java 6 - Geotools 8.x to GeoTools 10.x (Oracle JRE tested)</li>
+<li>Java 5 - GeoTools 2.5.x to GeoTools 8.x (Sun JRE tested)</li>
+<li>Java 1.4 - GeoTools 2.x to GeoTools 2.4.x (Sun JRE tested)</li>
+</ul>
+<p>If you wish to experiment with Java 8 please visit the user list for discussion. The GeoTools user list has previously reported success with JREs provided by IBM, Apple and OpenJDK.</p>
+<p>Java Extension:</p>
+<ul class="simple">
+<li>Java Advanced Imaging is used to process rasters. If you have installed the native support into your JRE you can take advantage of hardware acceleration.</li>
+<li>Java Image IO - used to support additional raster formats</li>
+<li>ImageIO-Ext - used to support additional geospatial raster formats</li>
+</ul>
+<p>When developing GeoTools please change your compile options to:</p>
+<ul class="simple">
+<li>IDE: Produce Java 7 compliant code</li>
+<li>Maven: source=1.7</li>
+</ul>
+<div class="section" id="java-standard-edition-software-developers-kit">
+<h2>Java Standard Edition Software Developers Kit<a class="headerlink" href="#java-standard-edition-software-developers-kit" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li>Download a JDK</li>
+<li>Use the one click installer</li>
+<li>When it asks if you want to install a JRE you can say yes</li>
+</ol>
+<div class="section" id="use-java-7-starting-with-geotools-11-0">
+<h3>Use Java 7 starting with GeoTools 11.0<a class="headerlink" href="#use-java-7-starting-with-geotools-11-0" title="Permalink to this headline">¶</a></h3>
+<p>Since the API changes from Java version to version, building a GeoTOols version with a newer Java SDK is risky (you may accidentally use a new method).</p>
+<p>GeoTools requires a Java 1.7 SDK for versions 11.0 and above. If your project uses an older version of Java use an appropriate version of GeoTools as shown in the table below.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="16%" />
+<col width="28%" />
+<col width="28%" />
+<col width="29%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Java</th>
+<th class="head">Initial</th>
+<th class="head">Final</th>
+<th class="head">Compiler Setting</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Java 7</td>
+<td>GeoTools 11.x</td>
+<td>And Above</td>
+<td>compiler=1.7</td>
+</tr>
+<tr class="row-odd"><td>Java 6</td>
+<td>Geotools 8.x</td>
+<td>GeoTools 10.x</td>
+<td>compiler=1.6</td>
+</tr>
+<tr class="row-even"><td>Java 5</td>
+<td>GeoTools 2.5.x</td>
+<td>GeoTools 8.x</td>
+<td>compiler=1.5</td>
+</tr>
+<tr class="row-odd"><td>Java 1.4</td>
+<td>GeoTools 2.x</td>
+<td>GeoTools 2.4.x</td>
+<td>compiler=1.4</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="why-java-home-does-not-work-on-windows">
+<h3>Why JAVA_HOME does not work on Windows<a class="headerlink" href="#why-java-home-does-not-work-on-windows" title="Permalink to this headline">¶</a></h3>
+<p>How to use different versions of Java for building and running on windows.</p>
+<p>Several projects expect to make use of the latest JRE runtime environment
+(for speed or new features). If your computer is set up with both a stable JDK for buildin
+GeoTools; and an experimental JDK for your other projects you will need to sort out how
+to switch between them.</p>
+<p>One technique is to set up a batch file similar to the following:</p>
+<ol class="arabic">
+<li><p class="first">Hunt down the cmd.exe ( Start menu &gt; Accessories &gt; Command Prompt) and right click to send it to the desktop</p>
+</li>
+<li><p class="first">Edit the desktop cmd.exe short cut and change the target to:</p>
+<div class="highlight-python"><div class="highlight"><pre>%SystemRoot%\system32\cmd.exe /k C:\java\java6.bat
+</pre></div>
+</div>
+</li>
+<li><p class="first">Create the C:javajava6.bat file mentioned above:</p>
+<div class="highlight-python"><div class="highlight"><pre>set ANT_HOME=C:\java\apache-ant-1.9.4
+set M2_HOME=C:\java\maven-3.0.5
+set JAVA_HOME=C:\Program Files\Java\jdk1.7.0_51
+
+set PATH=%JAVA_HOME%\bin;%SystemRoot%\system32;%SystemRoot%;%SystemRoot%\System32\Wbem;C:\Program Files\Subversion\bin;%M2_HOME%\bin;%ANT_HOME%\bin
+</pre></div>
+</div>
+</li>
+<li><p class="first">Please note that the construction of the PATH above is very important; <code class="docutils literal"><span class="pre">JAVA_HOME\bin</span></code> must
+appear before <code class="docutils literal"><span class="pre">SystemRoot\system32</span></code> as the system32 contains a stub java.exe that looks up
+the correct version of java to run in the registry.</p>
+<img alt="../../_images/jdk.png" src="../../_images/jdk.png" />
+</li>
+<li><p class="first">You can see in the above screen snap that the
+<code class="docutils literal"><span class="pre">My</span> <span class="pre">Computer\HKEY_LOCAL_MACHINE\SOFTWARE\JavaSoft</span> <span class="pre">&gt;</span> <span class="pre">Java</span> <span class="pre">Development</span> <span class="pre">Kit</span> <span class="pre">&gt;</span> <span class="pre">CurrentVersion</span></code>
+is set to <strong>1.6</strong>.</p>
+<p>The <strong>1.6</strong> entry documents the path to the version of java to run.</p>
+<p>Placing JAVA_HOME on the path before System32 shortcuts this annoying &#8220;feature&#8221;.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="section" id="java-extensions-optional">
+<h2>Java Extensions (Optional)<a class="headerlink" href="#java-extensions-optional" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Optional</p>
+<p class="last">GeoTools is now able to build with just a normal Java Software Developers Kit.</p>
+</div>
+<p>You should be aware that several of our raster formats are capable of making use of native code (packaged up as Java extensions).</p>
+<p>Java Developers Kit:
+* Can make use of JAI and ImageIO if they have been installed into your JDK
+Java Runtime Environment:
+* Can make use of JAI and ImageIO if you have installed them into your JRE</p>
+<p>These extensions end up adding:
+* some jars into your lib folder
+* some dlls into your bin folder</p>
+<p>Please follow the installation instructions carefully.</p>
+<div class="section" id="java-advanced-imaging">
+<h3>Java Advanced Imaging<a class="headerlink" href="#java-advanced-imaging" title="Permalink to this headline">¶</a></h3>
+<p>Java Advanced Imaging is an image processing library allowing you to form chains of operations
+to process rasters in a manner similar to functional programming.</p>
+<p>References:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://java.net/projects/jai-core">http://java.net/projects/jai-core</a></li>
+</ul>
+<ol class="arabic">
+<li><p class="first">Download this Version of JAI</p>
+<ul class="simple">
+<li>Java Advanced Imaging API 1.1.3</li>
+</ul>
+<p>At the time of writing Oracle is migrating java projects around - try the following:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://download.java.net/media/jai/builds/release/1_1_3/">http://download.java.net/media/jai/builds/release/1_1_3/</a></li>
+<li><a class="reference external" href="http://download.java.net/media/jai/builds/release/1_1_3/INSTALL.html">http://download.java.net/media/jai/builds/release/1_1_3/INSTALL.html</a></li>
+</ul>
+</li>
+<li><p class="first">Download JAI for your JDK by clicking on the link for your platform:</p>
+<p>Example: jai-1_1_3-lib-windows-i586-jdk.exe</p>
+</li>
+<li><p class="first">Use the one click installer to install JAI into your JDK</p>
+</li>
+<li><p class="first">Download JAI for your JRE by clicking on the link for your platform:</p>
+<p>Example: jai-1_1_3-lib-windows-i586-jre.exe</p>
+</li>
+<li><p class="first">Use the one click installer to install JAI into your JRE</p>
+<p>(If you are working on linux you will of course need to choose the appropriate download)</p>
+</li>
+</ol>
+</div>
+<div class="section" id="java-image-io">
+<h3>Java Image IO<a class="headerlink" href="#java-image-io" title="Permalink to this headline">¶</a></h3>
+<p>Java ImageIO provides the raw &#8220;formats&#8221; that allow both Java and JAI to read in additional image
+files. This is similar in practice to the JDBC library allowing data vendors to supply JDBC drivers.</p>
+<p>References:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://java.net/projects/imageio">http://java.net/projects/imageio</a></li>
+</ul>
+<ol class="arabic">
+<li><p class="first">Download this Version of ImageIO:</p>
+<ul class="simple">
+<li>JAI Image I/O Tools 1.1</li>
+</ul>
+<p>At the time of writing Oracle is migrating java projects around - try the following:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://download.java.net/media/jai-imageio/builds/release/1.1/">http://download.java.net/media/jai-imageio/builds/release/1.1/</a></li>
+<li><a class="reference external" href="http://download.java.net/media/jai-imageio/builds/release/1.1/INSTALL-jai_imageio.html">http://download.java.net/media/jai-imageio/builds/release/1.1/INSTALL-jai_imageio.html</a></li>
+</ul>
+</li>
+<li><p class="first">Download ImageIO for your JDK by clicking on the above link.</p>
+<p>Example: jai_imageio-1_1-lib-windows-i586-jdk.exe</p>
+</li>
+<li><p class="first">Use the one click installer to install ImageIO into your JDK</p>
+<p>(Depending on your configuration this may be sufficient for your needs)</p>
+</li>
+<li><p class="first">Download ImageIO for your JRE by clicking on the link for your platform</p>
+<p>Example: jai_imageio-1_1-lib-windows-i586-jre.exe</p>
+</li>
+<li><p class="first">Use the one click installer to install the ImageIO into your JRE.</p>
+<p>(If you are working on linux you will of course need to choose the appropriate download)</p>
+</li>
+</ol>
+</div>
+<div class="section" id="imageio-ext-install">
+<h3>ImageIO-Ext Install<a class="headerlink" href="#imageio-ext-install" title="Permalink to this headline">¶</a></h3>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The installer provided here will install JAI and ImageIO if needed</p>
+</div>
+<p>The installer from the ImageIO-Ext website can be used to install into your JAVA_HOME (ie the JDK). If you like you can use this to install the software; and then copy the required jars into your JRE by hand (they end up in JAVA_HOME/jre/ext/libs and need to be copied into JRE/ext/libs).</p>
+<ol class="arabic">
+<li><p class="first">Download the appropriate version of ImageIO-ext:</p>
+<ul class="simple">
+<li>ImageIO-EXT 1.0.10</li>
+<li><a class="reference external" href="http://java.net/projects/imageio-ext">http://java.net/projects/imageio-ext</a></li>
+</ul>
+<p>Tip: You can check the version of ImageIO-EXT used in the root pom.xml file.</p>
+</li>
+<li><p class="first">Download ImageIO for your JDK by clicking on the above link.</p>
+<p>Example: <a class="reference external" href="http://java.net/projects/imageio-ext/downloads/download/Releases/ImageIO-Ext/1.0.x/1.0.8/windows32-installer/windows32-imageio-ext-installer-gdal-mrsid-1.0.8.zip">windows32-imageio-ext-installer-gdal-mrsid-1.0.8.zip</a></p>
+<p>Example: <a class="reference external" href="http://java.net/projects/imageio-ext/downloads/download/Releases/ImageIO-Ext/1.0.x/1.0.8/windows32-installer/windows32-imageio-ext-installer-gdal-mrsid-ecw-1.0.8.zip">windows32-imageio-ext-installer-gdal-mrsid-ecw-1.0.8.zip</a></p>
+</li>
+<li><p class="first">This will install the required extension into your <strong>JAVA_HOME/jre/ext/libs</strong></p>
+</li>
+<li><p class="first">Make a copy of these files into your <em>JRE_HOME/ext/libs*</em></p>
+</li>
+</ol>
+</div>
+<div class="section" id="alternate-classpath-install">
+<h3>Alternate CLASSPATH Install<a class="headerlink" href="#alternate-classpath-install" title="Permalink to this headline">¶</a></h3>
+<p>This is only needed if the windows one-click installers don&#8217;t work for you:</p>
+<ul class="simple">
+<li>Perhaps you have several JDKs installed on your system?</li>
+<li>Perhaps you are on Linux?</li>
+<li>Perhaps you are on Mac and the version of JAI/ImageIO included with your operating system is out of date?</li>
+</ul>
+<p>The goal is to place the required jars into your lib/ext directory of both your JDK (for compiling) and your JRE (for running).</p>
+</div>
+<div class="section" id="optional-mac-imageio">
+<h3>Optional: Mac ImageIO<a class="headerlink" href="#optional-mac-imageio" title="Permalink to this headline">¶</a></h3>
+<p>Java Advanced Imaging is included with recent releases of Mac OS (but that may be changing in the future).</p>
+<p>The JAI ImageIO extension is not available as a download for the mac. However, you can use the jar from the Linux/windows download to get “pure java” functionality without hardware acceleration:</p>
+<ol class="arabic simple">
+<li>Copy the jars to ~/Library/Java/Extensions</li>
+<li>Check that the files are present as expected:<ul>
+<li>clibwrapper_jiio.jar</li>
+<li>jai_core.jar</li>
+<li>mlibwrapper_jai.jar</li>
+<li>jai_codec.jar</li>
+<li>jai_imageio.jar</li>
+</ul>
+</li>
+</ol>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="mvn.html" title="Maven Install"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="index.html" title="Install Build Tools"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Building</a> &raquo;</li>
+          <li><a href="index.html" >Install Build Tools</a> &raquo;</li>
+        <li><a href="#">Java Install</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

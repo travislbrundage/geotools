@@ -1,0 +1,1075 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Styling features for display &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../index.html" />
+    <link rel="up" title="Render" href="index.html" />
+    <link rel="next" title="Icon" href="icon.html" />
+    <link rel="prev" title="Map data and display classes" href="map.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Render</a> &raquo;</li>
+        <li><a href="#">Styling features for display</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Styling features for display</a><ul>
+<li><a class="reference internal" href="#stylefactory">StyleFactory</a></li>
+<li><a class="reference internal" href="#style-layer-descriptor">Style Layer Descriptor</a><ul>
+<li><a class="reference internal" href="#create">Create</a></li>
+<li><a class="reference internal" href="#access">Access</a></li>
+<li><a class="reference internal" href="#document">Document</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#symbology-encoding">Symbology Encoding</a><ul>
+<li><a class="reference internal" href="#featuretypestyle">FeatureTypeStyle</a></li>
+<li><a class="reference internal" href="#rule">Rule</a></li>
+<li><a class="reference internal" href="#symbolizer">Symbolizer</a></li>
+<li><a class="reference internal" href="#point-symbolizer">Point Symbolizer</a></li>
+<li><a class="reference internal" href="#linesymbolizer">LineSymbolizer</a></li>
+<li><a class="reference internal" href="#polygonsymbolizer">PolygonSymbolizer</a></li>
+<li><a class="reference internal" href="#textsymbolizer">TextSymbolizer</a></li>
+<li><a class="reference internal" href="#raster-symbolizer">Raster Symbolizer</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#stylevisitor">StyleVisitor</a><ul>
+<li><a class="reference internal" href="#duplicatingstylevisitor">DuplicatingStyleVisitor</a></li>
+<li><a class="reference internal" href="#rescalestylevisitor">RescaleStyleVisitor</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="map.html"
+                        title="previous chapter">Map data and display classes</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="icon.html"
+                        title="next chapter">Icon</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/library/render/style.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="styling-features-for-display">
+<h1>Styling features for display<a class="headerlink" href="#styling-features-for-display" title="Permalink to this headline">¶</a></h1>
+<p>GeoTools Rendering process is controlled styling information that you provide. The data structures
+we use to describe styling are based on the Style Layer Descriptor (SLD) and Symbology Encoding (SE)
+specifications provided by the OGC. The SLD specification defines an XML document you can use to
+save and load your styles.</p>
+<p>This page is devoted to examples, to review the concepts consult the references below.</p>
+<p>References:</p>
+<ul class="simple">
+<li><a class="reference internal" href="../api/sld.html"><em>gt-api style layer descriptor</em></a> (interfaces)</li>
+<li><a class="reference internal" href="../opengis/se.html"><em>gt-opengis symbology encoding</em></a> (interfaces)</li>
+<li><a class="reference external" href="http://www.opengeospatial.org/standards/sld">http://www.opengeospatial.org/standards/sld</a> (style layer descriptor)</li>
+<li><a class="reference external" href="http://www.opengeospatial.org/standards/symbol">http://www.opengeospatial.org/standards/symbol</a> (symbology encoding)</li>
+</ul>
+<div class="section" id="stylefactory">
+<h2>StyleFactory<a class="headerlink" href="#stylefactory" title="Permalink to this headline">¶</a></h2>
+<p>We have three style factories offering various levels of standards compliance vs pragmatism.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="11%" />
+<col width="18%" />
+<col width="18%" />
+<col width="9%" />
+<col width="44%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Module</th>
+<th class="head">Class</th>
+<th class="head">Capability</th>
+<th class="head">Scope</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>gt-opengis</td>
+<td>StyleFactory</td>
+<td>get</td>
+<td>se</td>
+<td>Strictly limited to the SE standard</td>
+</tr>
+<tr class="row-odd"><td>gt-api</td>
+<td>StyleFactory</td>
+<td>get/set</td>
+<td>se / sld</td>
+<td>Supports GeoTools vendor extensions</td>
+</tr>
+<tr class="row-even"><td>gt-api</td>
+<td>StyleFactory2</td>
+<td>get/set</td>
+<td>se / sld</td>
+<td>Supports text label graphics</td>
+</tr>
+<tr class="row-odd"><td>gt-main</td>
+<td>StyleBuilder</td>
+<td>get/set/defaults</td>
+<td>se / sld</td>
+<td>Shorter methods, does not do everything</td>
+</tr>
+</tbody>
+</table>
+<p>Here are some examples of these classes in action:</p>
+<ul>
+<li><p class="first">StyleFactory</p>
+<p>The gt-opengis StyleFactory allows you to create read-only instances.</p>
+<p>Here is a quick example showing the creation of a PointSymbolizer:</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="c1">//</span>
+    <span class="n">org</span><span class="o">.</span><span class="na">opengis</span><span class="o">.</span><span class="na">style</span><span class="o">.</span><span class="na">StyleFactory</span> <span class="n">sf</span> <span class="o">=</span> <span class="n">CommonFactoryFinder</span><span class="o">.</span><span class="na">getStyleFactory</span><span class="o">();</span>
+    <span class="n">FilterFactory2</span> <span class="n">ff</span> <span class="o">=</span> <span class="n">CommonFactoryFinder</span><span class="o">.</span><span class="na">getFilterFactory2</span><span class="o">();</span>
+    
+    <span class="c1">//</span>
+    <span class="c1">// create the graphical mark used to represent a city</span>
+    <span class="n">Stroke</span> <span class="n">stroke</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="na">stroke</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="s">&quot;#000000&quot;</span><span class="o">),</span> <span class="kc">null</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
+    <span class="n">Fill</span> <span class="n">fill</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="na">fill</span><span class="o">(</span><span class="kc">null</span><span class="o">,</span> <span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="n">Color</span><span class="o">.</span><span class="na">BLUE</span><span class="o">),</span> <span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="mf">1.0</span><span class="o">));</span>
+    
+    <span class="c1">// OnLineResource implemented by gt-metadata - so no factory!</span>
+    <span class="n">OnLineResourceImpl</span> <span class="n">svg</span> <span class="o">=</span> <span class="k">new</span> <span class="n">OnLineResourceImpl</span><span class="o">(</span><span class="k">new</span> <span class="n">URI</span><span class="o">(</span><span class="s">&quot;file:city.svg&quot;</span><span class="o">));</span>
+    <span class="n">svg</span><span class="o">.</span><span class="na">freeze</span><span class="o">();</span> <span class="c1">// freeze to prevent modification at runtime</span>
+    
+    <span class="n">OnLineResourceImpl</span> <span class="n">png</span> <span class="o">=</span> <span class="k">new</span> <span class="n">OnLineResourceImpl</span><span class="o">(</span><span class="k">new</span> <span class="n">URI</span><span class="o">(</span><span class="s">&quot;file:city.png&quot;</span><span class="o">));</span>
+    <span class="n">png</span><span class="o">.</span><span class="na">freeze</span><span class="o">();</span> <span class="c1">// freeze to prevent modification at runtime</span>
+    
+    <span class="c1">//</span>
+    <span class="c1">// List of symbols is considered in order with the rendering engine choosing</span>
+    <span class="c1">// the first one it can handle. Allowing for svg, png, mark order</span>
+    <span class="n">List</span><span class="o">&lt;</span><span class="n">GraphicalSymbol</span><span class="o">&gt;</span> <span class="n">symbols</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">GraphicalSymbol</span><span class="o">&gt;();</span>
+    <span class="n">symbols</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">sf</span><span class="o">.</span><span class="na">externalGraphic</span><span class="o">(</span><span class="n">svg</span><span class="o">,</span> <span class="s">&quot;svg&quot;</span><span class="o">,</span> <span class="kc">null</span><span class="o">));</span> <span class="c1">// svg preferred</span>
+    <span class="n">symbols</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">sf</span><span class="o">.</span><span class="na">externalGraphic</span><span class="o">(</span><span class="n">png</span><span class="o">,</span> <span class="s">&quot;png&quot;</span><span class="o">,</span> <span class="kc">null</span><span class="o">));</span> <span class="c1">// png preferred</span>
+    <span class="n">symbols</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">sf</span><span class="o">.</span><span class="na">mark</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="s">&quot;circle&quot;</span><span class="o">),</span> <span class="n">fill</span><span class="o">,</span> <span class="n">stroke</span><span class="o">));</span> <span class="c1">// simple circle backup plan</span>
+    
+    <span class="n">Expression</span> <span class="n">opacity</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span> <span class="c1">// use default</span>
+    <span class="n">Expression</span> <span class="n">size</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="mi">10</span><span class="o">);</span>
+    <span class="n">Expression</span> <span class="n">rotation</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span> <span class="c1">// use default</span>
+    <span class="n">AnchorPoint</span> <span class="n">anchor</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span> <span class="c1">// use default</span>
+    <span class="n">Displacement</span> <span class="n">displacement</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span> <span class="c1">// use default</span>
+    
+    <span class="c1">// define a point symbolizer of a small circle</span>
+    <span class="n">Graphic</span> <span class="n">circle</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="na">graphic</span><span class="o">(</span><span class="n">symbols</span><span class="o">,</span> <span class="n">opacity</span><span class="o">,</span> <span class="n">size</span><span class="o">,</span> <span class="n">rotation</span><span class="o">,</span> <span class="n">anchor</span><span class="o">,</span> <span class="n">displacement</span><span class="o">);</span>
+    <span class="n">PointSymbolizer</span> <span class="n">pointSymbolizer</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="na">pointSymbolizer</span><span class="o">(</span><span class="s">&quot;point&quot;</span><span class="o">,</span> <span class="n">ff</span><span class="o">.</span><span class="na">property</span><span class="o">(</span><span class="s">&quot;the_geom&quot;</span><span class="o">),</span> <span class="kc">null</span><span class="o">,</span>
+            <span class="kc">null</span><span class="o">,</span> <span class="n">circle</span><span class="o">);</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">StyleFactory2</p>
+<p>This gt-api interface allows one additional non standard trick; it allows us to place
+an icon behind text labels. This is a popular technique used for example to place a
+&#8220;label shield&#8221; behind hi-way signs.</p>
+</li>
+<li><p class="first">StyleFactory</p>
+<p>This gt-api interface allows access to all the GeoTools vendor specific options.</p>
+<p>It has a slightly different style of programming where mutable instances are creating allowing
+you to call both get and set methods.</p>
+<p>You are of course not advised to udpate a style while it is being used to draw.</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="c1">//</span>
+    <span class="c1">// We are using the GeoTools styleFactory that allows access to get/set methods</span>
+    <span class="n">org</span><span class="o">.</span><span class="na">geotools</span><span class="o">.</span><span class="na">styling</span><span class="o">.</span><span class="na">StyleFactory</span> <span class="n">sf</span> <span class="o">=</span> <span class="n">CommonFactoryFinder</span><span class="o">.</span><span class="na">getStyleFactory</span><span class="o">();</span>
+    <span class="n">FilterFactory2</span> <span class="n">ff</span> <span class="o">=</span> <span class="n">CommonFactoryFinder</span><span class="o">.</span><span class="na">getFilterFactory2</span><span class="o">();</span>
+    
+    <span class="n">StyledLayerDescriptor</span> <span class="n">sld</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="na">createStyledLayerDescriptor</span><span class="o">();</span>
+    <span class="n">sld</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;sld&quot;</span><span class="o">);</span>
+    <span class="n">sld</span><span class="o">.</span><span class="na">setTitle</span><span class="o">(</span><span class="s">&quot;Example&quot;</span><span class="o">);</span>
+    <span class="n">sld</span><span class="o">.</span><span class="na">setAbstract</span><span class="o">(</span><span class="s">&quot;Example Style Layer Descriptor&quot;</span><span class="o">);</span>
+    
+    <span class="n">UserLayer</span> <span class="n">layer</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="na">createUserLayer</span><span class="o">();</span>
+    <span class="n">layer</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;layer&quot;</span><span class="o">);</span>
+    
+    <span class="c1">//</span>
+    <span class="c1">// define constraint limited what features the sld applies to</span>
+    <span class="n">FeatureTypeConstraint</span> <span class="n">constraint</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="na">createFeatureTypeConstraint</span><span class="o">(</span><span class="s">&quot;Feature&quot;</span><span class="o">,</span> <span class="n">Filter</span><span class="o">.</span><span class="na">INCLUDE</span><span class="o">,</span>
+            <span class="kc">null</span><span class="o">);</span>
+    
+    <span class="n">layer</span><span class="o">.</span><span class="na">layerFeatureConstraints</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="n">constraint</span><span class="o">);</span>
+    
+    <span class="c1">//</span>
+    <span class="c1">// create a &quot;user defined&quot; style</span>
+    <span class="n">Style</span> <span class="n">style</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="na">createStyle</span><span class="o">();</span>
+    <span class="n">style</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;style&quot;</span><span class="o">);</span>
+    <span class="n">style</span><span class="o">.</span><span class="na">getDescription</span><span class="o">().</span><span class="na">setTitle</span><span class="o">(</span><span class="s">&quot;User Style&quot;</span><span class="o">);</span>
+    <span class="n">style</span><span class="o">.</span><span class="na">getDescription</span><span class="o">().</span><span class="na">setAbstract</span><span class="o">(</span><span class="s">&quot;Definition of Style&quot;</span><span class="o">);</span>
+    
+    <span class="c1">//</span>
+    <span class="c1">// define feature type styles used to actually define how features are rendered</span>
+    <span class="n">FeatureTypeStyle</span> <span class="n">featureTypeStyle</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="na">createFeatureTypeStyle</span><span class="o">();</span>
+    
+    <span class="c1">// RULE 1</span>
+    <span class="c1">// first rule to draw cities</span>
+    <span class="n">Rule</span> <span class="n">rule1</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="na">createRule</span><span class="o">();</span>
+    <span class="n">rule1</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;rule1&quot;</span><span class="o">);</span>
+    <span class="n">rule1</span><span class="o">.</span><span class="na">getDescription</span><span class="o">().</span><span class="na">setTitle</span><span class="o">(</span><span class="s">&quot;City&quot;</span><span class="o">);</span>
+    <span class="n">rule1</span><span class="o">.</span><span class="na">getDescription</span><span class="o">().</span><span class="na">setAbstract</span><span class="o">(</span><span class="s">&quot;Rule for drawing cities&quot;</span><span class="o">);</span>
+    <span class="n">rule1</span><span class="o">.</span><span class="na">setFilter</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">less</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">property</span><span class="o">(</span><span class="s">&quot;POPULATION&quot;</span><span class="o">),</span> <span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="mi">50000</span><span class="o">)));</span>
+    
+    <span class="c1">//</span>
+    <span class="c1">// create the graphical mark used to represent a city</span>
+    <span class="n">Stroke</span> <span class="n">stroke</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="na">stroke</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="s">&quot;#000000&quot;</span><span class="o">),</span> <span class="kc">null</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
+    <span class="n">Fill</span> <span class="n">fill</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="na">fill</span><span class="o">(</span><span class="kc">null</span><span class="o">,</span> <span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="n">Color</span><span class="o">.</span><span class="na">BLUE</span><span class="o">),</span> <span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="mf">1.0</span><span class="o">));</span>
+    
+    <span class="c1">// OnLineResource implemented by gt-metadata - so no factory!</span>
+    <span class="n">OnLineResourceImpl</span> <span class="n">svg</span> <span class="o">=</span> <span class="k">new</span> <span class="n">OnLineResourceImpl</span><span class="o">(</span><span class="k">new</span> <span class="n">URI</span><span class="o">(</span><span class="s">&quot;file:city.svg&quot;</span><span class="o">));</span>
+    <span class="n">svg</span><span class="o">.</span><span class="na">freeze</span><span class="o">();</span> <span class="c1">// freeze to prevent modification at runtime</span>
+    
+    <span class="n">OnLineResourceImpl</span> <span class="n">png</span> <span class="o">=</span> <span class="k">new</span> <span class="n">OnLineResourceImpl</span><span class="o">(</span><span class="k">new</span> <span class="n">URI</span><span class="o">(</span><span class="s">&quot;file:city.png&quot;</span><span class="o">));</span>
+    <span class="n">png</span><span class="o">.</span><span class="na">freeze</span><span class="o">();</span> <span class="c1">// freeze to prevent modification at runtime</span>
+    
+    <span class="c1">//</span>
+    <span class="c1">// List of symbols is considered in order with the rendering engine choosing</span>
+    <span class="c1">// the first one it can handle. Allowing for svg, png, mark order</span>
+    <span class="n">List</span><span class="o">&lt;</span><span class="n">GraphicalSymbol</span><span class="o">&gt;</span> <span class="n">symbols</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">GraphicalSymbol</span><span class="o">&gt;();</span>
+    <span class="n">symbols</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">sf</span><span class="o">.</span><span class="na">externalGraphic</span><span class="o">(</span><span class="n">svg</span><span class="o">,</span> <span class="s">&quot;svg&quot;</span><span class="o">,</span> <span class="kc">null</span><span class="o">));</span> <span class="c1">// svg preferred</span>
+    <span class="n">symbols</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">sf</span><span class="o">.</span><span class="na">externalGraphic</span><span class="o">(</span><span class="n">png</span><span class="o">,</span> <span class="s">&quot;png&quot;</span><span class="o">,</span> <span class="kc">null</span><span class="o">));</span> <span class="c1">// png preferred</span>
+    <span class="n">symbols</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">sf</span><span class="o">.</span><span class="na">mark</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="s">&quot;circle&quot;</span><span class="o">),</span> <span class="n">fill</span><span class="o">,</span> <span class="n">stroke</span><span class="o">));</span> <span class="c1">// simple circle backup plan</span>
+    
+    <span class="n">Expression</span> <span class="n">opacity</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span> <span class="c1">// use default</span>
+    <span class="n">Expression</span> <span class="n">size</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="mi">10</span><span class="o">);</span>
+    <span class="n">Expression</span> <span class="n">rotation</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span> <span class="c1">// use default</span>
+    <span class="n">AnchorPoint</span> <span class="n">anchor</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span> <span class="c1">// use default</span>
+    <span class="n">Displacement</span> <span class="n">displacement</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span> <span class="c1">// use default</span>
+    
+    <span class="c1">// define a point symbolizer of a small circle</span>
+    <span class="n">Graphic</span> <span class="n">city</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="na">graphic</span><span class="o">(</span><span class="n">symbols</span><span class="o">,</span> <span class="n">opacity</span><span class="o">,</span> <span class="n">size</span><span class="o">,</span> <span class="n">rotation</span><span class="o">,</span> <span class="n">anchor</span><span class="o">,</span> <span class="n">displacement</span><span class="o">);</span>
+    <span class="n">PointSymbolizer</span> <span class="n">pointSymbolizer</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="na">pointSymbolizer</span><span class="o">(</span><span class="s">&quot;point&quot;</span><span class="o">,</span> <span class="n">ff</span><span class="o">.</span><span class="na">property</span><span class="o">(</span><span class="s">&quot;the_geom&quot;</span><span class="o">),</span> <span class="kc">null</span><span class="o">,</span>
+            <span class="kc">null</span><span class="o">,</span> <span class="n">city</span><span class="o">);</span>
+    
+    <span class="n">rule1</span><span class="o">.</span><span class="na">symbolizers</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="n">pointSymbolizer</span><span class="o">);</span>
+    
+    <span class="n">featureTypeStyle</span><span class="o">.</span><span class="na">rules</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="n">rule1</span><span class="o">);</span>
+    
+    <span class="c1">//</span>
+    <span class="c1">// RULE 2 Default</span>
+    
+    <span class="n">List</span><span class="o">&lt;</span><span class="n">GraphicalSymbol</span><span class="o">&gt;</span> <span class="n">dotSymbols</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">GraphicalSymbol</span><span class="o">&gt;();</span>
+    <span class="n">dotSymbols</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">sf</span><span class="o">.</span><span class="na">mark</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="s">&quot;circle&quot;</span><span class="o">),</span> <span class="kc">null</span><span class="o">,</span> <span class="kc">null</span><span class="o">));</span>
+    <span class="n">Graphic</span> <span class="n">dotGraphic</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="na">graphic</span><span class="o">(</span><span class="n">dotSymbols</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="mi">3</span><span class="o">),</span> <span class="kc">null</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
+    <span class="n">PointSymbolizer</span> <span class="n">dotSymbolizer</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="na">pointSymbolizer</span><span class="o">(</span><span class="s">&quot;dot&quot;</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="n">dotGraphic</span><span class="o">);</span>
+    <span class="n">List</span><span class="o">&lt;</span><span class="n">org</span><span class="o">.</span><span class="na">opengis</span><span class="o">.</span><span class="na">style</span><span class="o">.</span><span class="na">Symbolizer</span><span class="o">&gt;</span> <span class="n">symbolizers</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">org</span><span class="o">.</span><span class="na">opengis</span><span class="o">.</span><span class="na">style</span><span class="o">.</span><span class="na">Symbolizer</span><span class="o">&gt;();</span>
+    <span class="n">symbolizers</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">dotSymbolizer</span><span class="o">);</span>
+    <span class="n">Filter</span> <span class="n">other</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span> <span class="c1">// null will mark this rule as &quot;other&quot; accepting all remaining features</span>
+    <span class="n">Rule</span> <span class="n">rule2</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="na">rule</span><span class="o">(</span><span class="s">&quot;default&quot;</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="n">Double</span><span class="o">.</span><span class="na">MIN_VALUE</span><span class="o">,</span> <span class="n">Double</span><span class="o">.</span><span class="na">MAX_VALUE</span><span class="o">,</span> <span class="n">symbolizers</span><span class="o">,</span>
+            <span class="n">other</span><span class="o">);</span>
+    <span class="n">featureTypeStyle</span><span class="o">.</span><span class="na">rules</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="n">rule2</span><span class="o">);</span>
+    
+    <span class="n">style</span><span class="o">.</span><span class="na">featureTypeStyles</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="n">featureTypeStyle</span><span class="o">);</span>
+    
+    <span class="n">layer</span><span class="o">.</span><span class="na">userStyles</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="n">style</span><span class="o">);</span>
+    
+    <span class="n">sld</span><span class="o">.</span><span class="na">layers</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="n">layer</span><span class="o">);</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">StyleBuilder</p>
+<p>Since a Style is composed of a complex set of objects, a StyleBuilder object is provided for
+you to conveniently build simple styles without the need to build all of the style elements
+by hand.</p>
+<p>For example, you can create a PolygonSymbolizer and then create a Style out of it with a
+single method call: the builder will generate a default FeatureTypeStyle and the Rule for you.</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="c1">//</span>
+    <span class="c1">// We are using the GeoTools StyleBuilder that is helpful for quickly making things</span>
+    <span class="n">StyleBuilder</span> <span class="n">builder</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StyleBuilder</span><span class="o">();</span>
+    <span class="n">FilterFactory2</span> <span class="n">ff</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">getFilterFactory</span><span class="o">();</span>
+    
+    <span class="c1">// RULE 1</span>
+    <span class="c1">// first rule to draw cities</span>
+    
+    <span class="c1">// define a point symbolizer representing a city</span>
+    <span class="n">Graphic</span> <span class="n">city</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">createGraphic</span><span class="o">();</span>
+    <span class="n">city</span><span class="o">.</span><span class="na">setSize</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="mi">10</span><span class="o">));</span>
+    <span class="n">city</span><span class="o">.</span><span class="na">graphicalSymbols</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="n">builder</span><span class="o">.</span><span class="na">createExternalGraphic</span><span class="o">(</span><span class="s">&quot;file:city.svg&quot;</span><span class="o">,</span> <span class="s">&quot;svg&quot;</span><span class="o">));</span> <span class="c1">// svg</span>
+                                                                                        <span class="c1">// preferred</span>
+    <span class="n">city</span><span class="o">.</span><span class="na">graphicalSymbols</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="n">builder</span><span class="o">.</span><span class="na">createExternalGraphic</span><span class="o">(</span><span class="s">&quot;file:city.png&quot;</span><span class="o">,</span> <span class="s">&quot;png&quot;</span><span class="o">));</span> <span class="c1">// png next</span>
+    <span class="n">city</span><span class="o">.</span><span class="na">graphicalSymbols</span><span class="o">().</span><span class="na">add</span><span class="o">(</span>
+            <span class="n">builder</span><span class="o">.</span><span class="na">createMark</span><span class="o">(</span><span class="n">StyleBuilder</span><span class="o">.</span><span class="na">MARK_CIRCLE</span><span class="o">,</span> <span class="n">Color</span><span class="o">.</span><span class="na">BLUE</span><span class="o">,</span> <span class="n">Color</span><span class="o">.</span><span class="na">BLACK</span><span class="o">,</span> <span class="mi">1</span><span class="o">));</span>
+    <span class="n">PointSymbolizer</span> <span class="n">pointSymbolizer</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">createPointSymbolizer</span><span class="o">(</span><span class="n">city</span><span class="o">,</span> <span class="s">&quot;the_geom&quot;</span><span class="o">);</span>
+    
+    <span class="n">Rule</span> <span class="n">rule1</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">createRule</span><span class="o">(</span><span class="n">pointSymbolizer</span><span class="o">);</span>
+    <span class="n">rule1</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;rule1&quot;</span><span class="o">);</span>
+    <span class="n">rule1</span><span class="o">.</span><span class="na">getDescription</span><span class="o">().</span><span class="na">setTitle</span><span class="o">(</span><span class="s">&quot;City&quot;</span><span class="o">);</span>
+    <span class="n">rule1</span><span class="o">.</span><span class="na">getDescription</span><span class="o">().</span><span class="na">setAbstract</span><span class="o">(</span><span class="s">&quot;Rule for drawing cities&quot;</span><span class="o">);</span>
+    <span class="n">rule1</span><span class="o">.</span><span class="na">setFilter</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">less</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">property</span><span class="o">(</span><span class="s">&quot;POPULATION&quot;</span><span class="o">),</span> <span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="mi">50000</span><span class="o">)));</span>
+    
+    <span class="c1">//</span>
+    <span class="c1">// RULE 2 Default</span>
+    <span class="n">Graphic</span> <span class="n">dotGraphic</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">createGraphic</span><span class="o">(</span><span class="kc">null</span><span class="o">,</span> <span class="n">builder</span><span class="o">.</span><span class="na">createMark</span><span class="o">(</span><span class="n">StyleBuilder</span><span class="o">.</span><span class="na">MARK_CIRCLE</span><span class="o">),</span>
+            <span class="kc">null</span><span class="o">);</span>
+    <span class="n">PointSymbolizer</span> <span class="n">dotSymbolize</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">createPointSymbolizer</span><span class="o">(</span><span class="n">dotGraphic</span><span class="o">);</span>
+    <span class="n">Rule</span> <span class="n">rule2</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">createRule</span><span class="o">(</span><span class="n">dotSymbolize</span><span class="o">);</span>
+    <span class="n">rule2</span><span class="o">.</span><span class="na">setIsElseFilter</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+    
+    <span class="c1">//</span>
+    <span class="c1">// define feature type styles used to actually define how features are rendered</span>
+    <span class="n">Rule</span> <span class="n">rules</span><span class="o">[]</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Rule</span><span class="o">[]</span> <span class="o">{</span> <span class="n">rule1</span><span class="o">,</span> <span class="n">rule2</span> <span class="o">};</span>
+    <span class="n">FeatureTypeStyle</span> <span class="n">featureTypeStyle</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">createFeatureTypeStyle</span><span class="o">(</span><span class="s">&quot;Feature&quot;</span><span class="o">,</span> <span class="n">rules</span><span class="o">);</span>
+    
+    <span class="c1">//</span>
+    <span class="c1">// create a &quot;user defined&quot; style</span>
+    <span class="n">Style</span> <span class="n">style</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">createStyle</span><span class="o">();</span>
+    <span class="n">style</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;style&quot;</span><span class="o">);</span>
+    <span class="n">style</span><span class="o">.</span><span class="na">getDescription</span><span class="o">().</span><span class="na">setTitle</span><span class="o">(</span><span class="s">&quot;User Style&quot;</span><span class="o">);</span>
+    <span class="n">style</span><span class="o">.</span><span class="na">getDescription</span><span class="o">().</span><span class="na">setAbstract</span><span class="o">(</span><span class="s">&quot;Definition of Style&quot;</span><span class="o">);</span>
+    <span class="n">style</span><span class="o">.</span><span class="na">featureTypeStyles</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="n">featureTypeStyle</span><span class="o">);</span>
+</pre></div>
+</div>
+<p>StlyeBuilder also helps by filling in many defaults values. The use of defaults is
+less of an issue now as the rendering system is able to correctly handle null as a default
+for many cases such as default symbol size.</p>
+</li>
+</ul>
+<p><strong>What to use</strong></p>
+<p>For working with symbology encoding StyleFactory is recommended as it defines a small
+number of easy to use methods. There are however no helpful methods and shortcuts
+but you have the advantage of less methods to trip over). Since everything is in plain
+sight you may discover some tricky advanced abilities that may not obvious using
+StyleBuilder.</p>
+<p>For working with style layer descriptor use StyleBuilder to quickly create objects
+with their default values filled in; and then configure them as needed using setters.</p>
+<p>Internally we have:</p>
+<ul class="simple">
+<li>StyleFactoryImpl2 that creates the raw objects; this is an implementation
+of the simple <strong>gt-opengis</strong> StyleFactory.</li>
+<li>StyleFactoryImpl makes use of a aelegate to create the objects; and then allows for a wider
+range of create methods defined by <strong>gt-api</strong> StyleFactory</li>
+<li>StyleBuilder which as expected uses a FilterFactory and a StyleFactory in order to get the job done.</li>
+</ul>
+</div>
+<div class="section" id="style-layer-descriptor">
+<h2>Style Layer Descriptor<a class="headerlink" href="#style-layer-descriptor" title="Permalink to this headline">¶</a></h2>
+<p>GeoTools styling is built on the style layer descriptor data model shown below (from <a class="reference internal" href="../api/sld.html"><em>gt-api</em></a>).</p>
+<img alt="../../_images/sld.PNG" src="../../_images/sld.PNG" />
+<p>GeoTools rendering tends to focus the &#8220;User Style&#8221; which we represent <strong>Style</strong> to let you control how
+your Map is rendered.</p>
+<ul>
+<li><p class="first">Style</p>
+<p>The Style interface matches up with the &#8220;Style Layer Descriptor&#8221; 1.0 specification
+(so if you need explanations or examples please review the OGC documentation for more information).</p>
+</li>
+</ul>
+<div class="section" id="create">
+<h3>Create<a class="headerlink" href="#create" title="Permalink to this headline">¶</a></h3>
+<p>To create a StyleLayerDescriptor object using a StyleFactory:</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="n">StyleFactory</span> <span class="n">styleFactory</span> <span class="o">=</span> <span class="n">CommonFactoryFinder</span><span class="o">.</span><span class="na">getStyleFactory</span><span class="o">();</span>
+    
+    <span class="n">StyledLayerDescriptor</span> <span class="n">sld</span> <span class="o">=</span> <span class="n">styleFactory</span><span class="o">.</span><span class="na">createStyledLayerDescriptor</span><span class="o">();</span>
+    <span class="n">sld</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;example&quot;</span><span class="o">);</span>
+    <span class="n">sld</span><span class="o">.</span><span class="na">setAbstract</span><span class="o">(</span><span class="s">&quot;Example Style Layer Descriptor&quot;</span><span class="o">);</span>
+    
+    <span class="n">UserLayer</span> <span class="n">layer</span> <span class="o">=</span> <span class="n">styleFactory</span><span class="o">.</span><span class="na">createUserLayer</span><span class="o">();</span>
+    <span class="n">layer</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;layer&quot;</span><span class="o">);</span>
+    
+    <span class="n">FeatureTypeConstraint</span> <span class="n">constraint</span> <span class="o">=</span> <span class="n">styleFactory</span><span class="o">.</span><span class="na">createFeatureTypeConstraint</span><span class="o">(</span><span class="s">&quot;Feature&quot;</span><span class="o">,</span>
+            <span class="n">Filter</span><span class="o">.</span><span class="na">INCLUDE</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
+    
+    <span class="n">layer</span><span class="o">.</span><span class="na">layerFeatureConstraints</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="n">constraint</span><span class="o">);</span>
+    
+    <span class="n">Style</span> <span class="n">style</span> <span class="o">=</span> <span class="n">styleFactory</span><span class="o">.</span><span class="na">createStyle</span><span class="o">();</span>
+    
+    <span class="n">style</span><span class="o">.</span><span class="na">getDescription</span><span class="o">().</span><span class="na">setTitle</span><span class="o">(</span><span class="s">&quot;Style&quot;</span><span class="o">);</span>
+    <span class="n">style</span><span class="o">.</span><span class="na">getDescription</span><span class="o">().</span><span class="na">setAbstract</span><span class="o">(</span><span class="s">&quot;Definition of Style&quot;</span><span class="o">);</span>
+    
+    <span class="c1">// define feature type styles used to actually</span>
+    <span class="c1">// define how features are rendered</span>
+    <span class="c1">//</span>
+    <span class="n">layer</span><span class="o">.</span><span class="na">userStyles</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="n">style</span><span class="o">);</span>
+    
+    <span class="n">sld</span><span class="o">.</span><span class="na">layers</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="n">layer</span><span class="o">);</span>
+</pre></div>
+</div>
+<p>This is the last time we will talk about StyleLayerDescriptor object - it is not really that useful in
+controlling the rendering process.</p>
+</div>
+<div class="section" id="access">
+<h3>Access<a class="headerlink" href="#access" title="Permalink to this headline">¶</a></h3>
+<p>To go from a StyleLayerDescriptor object to something useful:</p>
+<div class="highlight-python"><div class="highlight"><pre>FeatureTypeStyle useful[] = SLD.featureTypeStyles( sld );
+</pre></div>
+</div>
+<p>Or find a style that is compatible with your feature type:</p>
+<div class="highlight-python"><div class="highlight"><pre>FeatureTypeStyle applicable = SLD.featureTypeStyle( sld, schema );
+</pre></div>
+</div>
+</div>
+<div class="section" id="document">
+<h3>Document<a class="headerlink" href="#document" title="Permalink to this headline">¶</a></h3>
+<p>The Styled Layer Descriptor Reference Document OpenGIS standard defines an XML document we use to persist our GeoTools Style objects. This standard is the authoritative definition as far as functionally goes, if you find any place where we are out of line please send us a bug report.</p>
+<p>How to parse an SLD:</p>
+<ul>
+<li><p class="first">You can create a Style using an SLD document (an XML file format defined by the Style Layer Descriptor 1.0 specification):</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="c1">// create the parser with the sld configuration</span>
+    <span class="n">org</span><span class="o">.</span><span class="na">geotools</span><span class="o">.</span><span class="na">xml</span><span class="o">.</span><span class="na">Configuration</span> <span class="n">configuration</span> <span class="o">=</span> <span class="k">new</span> <span class="n">org</span><span class="o">.</span><span class="na">geotools</span><span class="o">.</span><span class="na">sld</span><span class="o">.</span><span class="na">SLDConfiguration</span><span class="o">();</span>
+    <span class="n">org</span><span class="o">.</span><span class="na">geotools</span><span class="o">.</span><span class="na">xml</span><span class="o">.</span><span class="na">Parser</span> <span class="n">parser</span> <span class="o">=</span> <span class="k">new</span> <span class="n">org</span><span class="o">.</span><span class="na">geotools</span><span class="o">.</span><span class="na">xml</span><span class="o">.</span><span class="na">Parser</span><span class="o">(</span><span class="n">configuration</span><span class="o">);</span>
+    
+    <span class="c1">// the xml instance document above</span>
+    <span class="n">InputStream</span> <span class="n">xml</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FileInputStream</span><span class="o">(</span><span class="s">&quot;markTest.sld&quot;</span><span class="o">);</span>
+    
+    <span class="c1">// parse</span>
+    <span class="n">StyledLayerDescriptor</span> <span class="n">sld</span> <span class="o">=</span> <span class="o">(</span><span class="n">StyledLayerDescriptor</span><span class="o">)</span> <span class="n">parser</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">xml</span><span class="o">);</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">SAX StyleReader</p>
+<p>A SAX based StyleReader is also available for GeoTools 2.2 code:</p>
+<div class="highlight-python"><div class="highlight"><pre>private Style loadStyleFromXml() throws Exception {
+    java.net.URL base = getClass().getResource(&quot;rs-testData&quot;);
+
+    StyleFactory factory = StyleFactory.createStyleFactory();
+    java.net.URL surl = new java.net.URL(base + &quot;/markTest.sld&quot;);
+
+    //A class to read and parse an SLD file based on verion 0.7.2 of the OGC
+    SLDStyle stylereader = new SLDStyle(factory, surl);
+    Style[] style = stylereader.readXML();
+
+    return style[0];
+}
+</pre></div>
+</div>
+</li>
+</ul>
+<p>How to write a SLD File:</p>
+<ul>
+<li><p class="first">GeoTools has an XML Transfer written up allowing you to generate an SLD file:</p>
+<div class="highlight-python"><div class="highlight"><pre>SLDTransformer styleTransform = new SLDTransformer();
+String xml = styleTransform.transform(sld);
+</pre></div>
+</div>
+</li>
+<li><p class="first">How to write an SLD file using only a Style</p>
+<p>The above code example requires a complete StyleLayerDescriptor document in order to make a valid sld file.</p>
+<p>Here is how you can wrap up your Style object for output:</p>
+<div class="highlight-python"><div class="highlight"><pre>StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
+UserLayer layer = styleFactory.createUserLayer();
+layer.setLayerFeatureConstraints(new FeatureTypeConstraint[] {null});
+sld.addStyledLayer(layer);
+layer.addUserStyle(style);
+
+SLDTransformer styleTransform = new SLDTransformer();
+String xml = styleTransform.transform(sld);
+</pre></div>
+</div>
+</li>
+</ul>
+<p>XML:</p>
+<ul>
+<li><p class="first">The file <a class="reference download internal" href="../../_downloads/markTest.sld"><code class="xref download docutils literal"><span class="pre">markTest.sld</span></code></a>
+contains the following XML:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;StyledLayerDescriptor version=&quot;0.7.2&quot;&gt;
+&lt;!-- a named layer is the basic building block of an sld document --&gt;
+&lt;NamedLayer&gt;
+&lt;Name&gt;A Random Layer&lt;/Name&gt;
+&lt;title&gt;The title of the layer&lt;/title&gt;
+&lt;abstract&gt;
+A longer and some would say less random peice of text
+that allows you to describe the latyer in more detail
+&lt;/abstract&gt;
+&lt;!-- with in a layer you have Named Styles --&gt;
+&lt;UserStyle&gt;
+    &lt;!-- again they have names, titles and abstracts --&gt;
+  &lt;Name&gt;MyStyle&lt;/Name&gt;
+    &lt;!-- FeatureTypeStyles describe how to render different features --&gt;
+    &lt;FeatureTypeStyle&gt;
+        &lt;FeatureTypeName&gt;testPoint&lt;/FeatureTypeName&gt;
+        &lt;rule&gt;
+            &lt;PointSymbolizer&gt;
+                &lt;graphic&gt;
+                    &lt;size&gt;&lt;PropertyName&gt;size&lt;/PropertyName&gt;&lt;/size&gt;
+                    &lt;rotation&gt;&lt;PropertyName&gt;rotation&lt;/PropertyName&gt;&lt;/rotation&gt;
+                    &lt;mark&gt;
+                        &lt;wellknownname&gt;&lt;PropertyName&gt;name&lt;/PropertyName&gt;&lt;/wellknownname&gt;
+                        &lt;Fill&gt;
+                            &lt;!-- CssParameters allowed are fill (the color) and fill-opacity --&gt;
+                            &lt;CssParameter name=&quot;fill&quot;&gt;#FF0000&lt;/CssParameter&gt;
+                            &lt;CssParameter name=&quot;fill-opacity&quot;&gt;0.5&lt;/CssParameter&gt;
+                        &lt;/Fill&gt;
+                    &lt;/mark&gt;
+                &lt;/graphic&gt;
+            &lt;/PointSymbolizer&gt;
+        &lt;/rule&gt;
+    &lt;/FeatureTypeStyle&gt;
+    &lt;FeatureTypeStyle&gt;
+        &lt;FeatureTypeName&gt;labelPoint&lt;/FeatureTypeName&gt;
+        &lt;rule&gt;
+            &lt;TextSymbolizer&gt;
+                &lt;Label&gt;&lt;PropertyName&gt;name&lt;/PropertyName&gt;&lt;/Label&gt;
+                &lt;Font&gt;
+                    &lt;CssParameter name=&quot;font-family&quot;&gt;SansSerif&lt;/CssParameter&gt;
+                    &lt;CssParameter name=&quot;font-Size&quot;&gt;
+                        &lt;literal&gt;10&lt;/literal&gt;
+                    &lt;/CssParameter&gt;
+                &lt;/Font&gt;
+                
+                &lt;LabelPlacement&gt;
+                    &lt;PointPlacement&gt;
+                        &lt;AnchorPoint&gt;
+                            &lt;AnchorPointX&gt;&lt;PropertyName&gt;X&lt;/PropertyName&gt; &lt;/AnchorPointX&gt;
+                            &lt;AnchorPointY&gt;&lt;PropertyName&gt;Y&lt;/PropertyName&gt; &lt;/AnchorPointY&gt;
+                        &lt;/AnchorPoint&gt;
+                    &lt;/PointPlacement&gt;
+                &lt;/LabelPlacement&gt;
+                &lt;Fill&gt;
+                    &lt;CssParameter name=&quot;fill&quot;&gt;#000000&lt;/CssParameter&gt;
+                &lt;/Fill&gt;
+                &lt;Halo/&gt;
+            &lt;/TextSymbolizer&gt;
+            &lt;PointSymbolizer&gt;
+                &lt;graphic&gt;
+                    &lt;size&gt;4&lt;/size&gt;
+                    &lt;mark&gt;
+                        &lt;wellknownname&gt;circle&lt;/wellknownname&gt;
+                        &lt;Fill&gt;
+                            &lt;!-- CssParameters allowed are fill (the color) and fill-opacity --&gt;
+                            &lt;CssParameter name=&quot;fill&quot;&gt;#FF0000&lt;/CssParameter&gt;
+                        &lt;/Fill&gt;
+                    &lt;/mark&gt;
+                &lt;/graphic&gt;
+            &lt;/PointSymbolizer&gt;
+        &lt;/rule&gt;
+    &lt;/FeatureTypeStyle&gt;
+&lt;/UserStyle&gt;
+&lt;/NamedLayer&gt;
+&lt;/StyledLayerDescriptor&gt;
+</pre></div>
+</div>
+</li>
+<li><p class="first">The same style can be created using the StyleBuilder:</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="n">StyleBuilder</span> <span class="n">sb</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StyleBuilder</span><span class="o">();</span>
+    <span class="n">FilterFactory</span> <span class="n">ff</span> <span class="o">=</span> <span class="n">sb</span><span class="o">.</span><span class="na">getFilterFactory</span><span class="o">();</span>
+    <span class="n">Style</span> <span class="n">style</span> <span class="o">=</span> <span class="n">sb</span><span class="o">.</span><span class="na">createStyle</span><span class="o">();</span>
+    <span class="n">style</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;MyStyle&quot;</span><span class="o">);</span>
+    
+    <span class="c1">// &quot;testPoint&quot; feature type style</span>
+    <span class="n">Mark</span> <span class="n">testMark</span> <span class="o">=</span> <span class="n">sb</span><span class="o">.</span><span class="na">createMark</span><span class="o">(</span><span class="n">sb</span><span class="o">.</span><span class="na">attributeExpression</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">),</span> <span class="n">sb</span><span class="o">.</span><span class="na">createFill</span><span class="o">(</span><span class="n">Color</span><span class="o">.</span><span class="na">RED</span><span class="o">,</span> <span class="mf">0.5</span><span class="o">),</span>
+            <span class="kc">null</span><span class="o">);</span>
+    <span class="n">Graphic</span> <span class="n">graph</span> <span class="o">=</span> <span class="n">sb</span><span class="o">.</span><span class="na">createGraphic</span><span class="o">(</span><span class="kc">null</span><span class="o">,</span> <span class="k">new</span> <span class="n">Mark</span><span class="o">[]</span> <span class="o">{</span> <span class="n">testMark</span> <span class="o">},</span> <span class="kc">null</span><span class="o">,</span> <span class="n">sb</span><span class="o">.</span><span class="na">literalExpression</span><span class="o">(</span><span class="mi">1</span><span class="o">),</span>
+            <span class="n">sb</span><span class="o">.</span><span class="na">attributeExpression</span><span class="o">(</span><span class="s">&quot;size&quot;</span><span class="o">),</span> <span class="n">sb</span><span class="o">.</span><span class="na">attributeExpression</span><span class="o">(</span><span class="s">&quot;rotation&quot;</span><span class="o">));</span>
+    <span class="n">style</span><span class="o">.</span><span class="na">featureTypeStyles</span><span class="o">().</span><span class="na">add</span><span class="o">(</span>
+            <span class="n">sb</span><span class="o">.</span><span class="na">createFeatureTypeStyle</span><span class="o">(</span><span class="s">&quot;testPoint&quot;</span><span class="o">,</span> <span class="n">sb</span><span class="o">.</span><span class="na">createPointSymbolizer</span><span class="o">(</span><span class="n">graph</span><span class="o">)));</span>
+    
+    <span class="c1">// &quot;labelPoint&quot; feature type style</span>
+    <span class="n">AnchorPoint</span> <span class="n">anchorPoint</span> <span class="o">=</span> <span class="n">sb</span><span class="o">.</span><span class="na">createAnchorPoint</span><span class="o">(</span><span class="n">sb</span><span class="o">.</span><span class="na">attributeExpression</span><span class="o">(</span><span class="s">&quot;X&quot;</span><span class="o">),</span>
+            <span class="n">sb</span><span class="o">.</span><span class="na">attributeExpression</span><span class="o">(</span><span class="s">&quot;Y&quot;</span><span class="o">));</span>
+    <span class="n">PointPlacement</span> <span class="n">pointPlacement</span> <span class="o">=</span> <span class="n">sb</span><span class="o">.</span><span class="na">createPointPlacement</span><span class="o">(</span><span class="n">anchorPoint</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span>
+            <span class="n">sb</span><span class="o">.</span><span class="na">literalExpression</span><span class="o">(</span><span class="mi">0</span><span class="o">));</span>
+    <span class="n">TextSymbolizer</span> <span class="n">textSymbolizer</span> <span class="o">=</span> <span class="n">sb</span><span class="o">.</span><span class="na">createTextSymbolizer</span><span class="o">(</span><span class="n">sb</span><span class="o">.</span><span class="na">createFill</span><span class="o">(</span><span class="n">Color</span><span class="o">.</span><span class="na">BLACK</span><span class="o">),</span> <span class="k">new</span> <span class="n">Font</span><span class="o">[]</span> <span class="o">{</span>
+            <span class="n">sb</span><span class="o">.</span><span class="na">createFont</span><span class="o">(</span><span class="s">&quot;Lucida Sans&quot;</span><span class="o">,</span> <span class="mi">10</span><span class="o">),</span> <span class="n">sb</span><span class="o">.</span><span class="na">createFont</span><span class="o">(</span><span class="s">&quot;Arial&quot;</span><span class="o">,</span> <span class="mi">10</span><span class="o">)</span> <span class="o">},</span> <span class="n">sb</span><span class="o">.</span><span class="na">createHalo</span><span class="o">(),</span>
+            <span class="n">sb</span><span class="o">.</span><span class="na">attributeExpression</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">),</span> <span class="n">pointPlacement</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
+    <span class="n">Mark</span> <span class="n">circle</span> <span class="o">=</span> <span class="n">sb</span><span class="o">.</span><span class="na">createMark</span><span class="o">(</span><span class="n">StyleBuilder</span><span class="o">.</span><span class="na">MARK_CIRCLE</span><span class="o">,</span> <span class="n">Color</span><span class="o">.</span><span class="na">RED</span><span class="o">);</span>
+    <span class="n">Graphic</span> <span class="n">graph2</span> <span class="o">=</span> <span class="n">sb</span><span class="o">.</span><span class="na">createGraphic</span><span class="o">(</span><span class="kc">null</span><span class="o">,</span> <span class="n">circle</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">4</span><span class="o">,</span> <span class="mi">0</span><span class="o">);</span>
+    <span class="n">PointSymbolizer</span> <span class="n">pointSymbolizer</span> <span class="o">=</span> <span class="n">sb</span><span class="o">.</span><span class="na">createPointSymbolizer</span><span class="o">(</span><span class="n">graph2</span><span class="o">);</span>
+    <span class="n">style</span><span class="o">.</span><span class="na">featureTypeStyles</span><span class="o">().</span><span class="na">add</span><span class="o">(</span>
+            <span class="n">sb</span><span class="o">.</span><span class="na">createFeatureTypeStyle</span><span class="o">(</span><span class="s">&quot;labelPoint&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">Symbolizer</span><span class="o">[]</span> <span class="o">{</span> <span class="n">textSymbolizer</span><span class="o">,</span>
+                    <span class="n">pointSymbolizer</span> <span class="o">}));</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="symbology-encoding">
+<h2>Symbology Encoding<a class="headerlink" href="#symbology-encoding" title="Permalink to this headline">¶</a></h2>
+<p>The feature type style data model captures the symbology encoding information describing how a feature should be drawn on the screen and will represent the bulk of our examples.</p>
+<img alt="../../_images/se.PNG" src="../../_images/se.PNG" />
+<div class="section" id="featuretypestyle">
+<h3>FeatureTypeStyle<a class="headerlink" href="#featuretypestyle" title="Permalink to this headline">¶</a></h3>
+<p>A FeatureTypeStyle declares a part of a style that is specifically geared toward a FeatureType,
+that is, features will be rendered according to this FeatureTypeStyle only if their FeatureType
+is the same as the FeatureType declared in the FeatureTypeStyle or a descendent.</p>
+<p>When defining a Style you will spend the majority of time working with FeatureTypeStyle.  A FeatureTypeStyle is specifically geared toward drawing features.</p>
+<p>The level of detail is similar to CSS in that you need to define some Rules saying when to draw, and some symbolizers saying how to draw it. Individual symbolizers will use expressions to access feature content (as an example TextSymbolizer will use an expression you provide to construct the text to display).</p>
+<ul>
+<li><p class="first">FeatureTypeStyle.getName(): machine readable name</p>
+</li>
+<li><p class="first">FeatureTypeStyle.getDescriptor(): human readable title and description</p>
+</li>
+<li><p class="first">FeatureTypeStyle.featureTypeNames(): the Name here is important; it must match the Features you want to draw.</p>
+<p>Features will be rendered according a FeatureTypeStyle only if their
+FeatureType name matches what is recorded in the FeatureTypeStyle or a
+descendant.</p>
+<p>For most practical purposes you will set featureTypeName to be &#8220;Feature&#8221; to act as a wild card.</p>
+</li>
+<li><p class="first">FeatureTypeStyle.semanticTypeIdentifiers(): used to quickly limit based on the kind of vector data (point, line or polygon)</p>
+</li>
+</ul>
+<p>Here is a quick example that will draw any &#8220;Feature&#8221; using a PointSymbolizer:</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="n">StyleBuilder</span> <span class="n">styleBuilder</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StyleBuilder</span><span class="o">();</span>
+    <span class="n">Style</span> <span class="n">style</span> <span class="o">=</span> <span class="n">styleBuilder</span><span class="o">.</span><span class="na">createStyle</span><span class="o">();</span>
+    
+    <span class="n">PointSymbolizer</span> <span class="n">pointSymbolizer</span> <span class="o">=</span> <span class="n">styleBuilder</span><span class="o">.</span><span class="na">createPointSymbolizer</span><span class="o">();</span>
+    
+    <span class="n">Graphic</span> <span class="n">graphic</span> <span class="o">=</span> <span class="n">styleBuilder</span><span class="o">.</span><span class="na">createGraphic</span><span class="o">();</span>
+    <span class="n">ExternalGraphic</span> <span class="n">external</span> <span class="o">=</span> <span class="n">styleBuilder</span><span class="o">.</span><span class="na">createExternalGraphic</span><span class="o">(</span><span class="s">&quot;file:///C:/images/house.gif&quot;</span><span class="o">,</span>
+            <span class="s">&quot;image/gif&quot;</span><span class="o">);</span>
+    <span class="n">graphic</span><span class="o">.</span><span class="na">graphicalSymbols</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="n">external</span><span class="o">);</span>
+    <span class="n">graphic</span><span class="o">.</span><span class="na">graphicalSymbols</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="n">styleBuilder</span><span class="o">.</span><span class="na">createMark</span><span class="o">(</span><span class="s">&quot;circle&quot;</span><span class="o">));</span>
+    
+    <span class="n">pointSymbolizer</span><span class="o">.</span><span class="na">setGraphic</span><span class="o">(</span><span class="n">graphic</span><span class="o">);</span>
+    
+    <span class="n">Rule</span> <span class="n">rule</span> <span class="o">=</span> <span class="n">styleBuilder</span><span class="o">.</span><span class="na">createRule</span><span class="o">(</span><span class="n">pointSymbolizer</span><span class="o">);</span>
+    <span class="n">FeatureTypeStyle</span> <span class="n">featureTypeStyle</span> <span class="o">=</span> <span class="n">styleBuilder</span><span class="o">.</span><span class="na">createFeatureTypeStyle</span><span class="o">(</span><span class="s">&quot;Feature&quot;</span><span class="o">,</span> <span class="n">rule</span><span class="o">);</span>
+    <span class="n">style</span><span class="o">.</span><span class="na">featureTypeStyles</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="n">featureTypeStyle</span><span class="o">);</span>
+    
+</pre></div>
+</div>
+<p>Of note is how the PointSymbolizer will first try and use C:imageshouse.gif (ie an external graphic) and if that fails it will use a circle (ie a mark).</p>
+<p>Notes on handling of features:</p>
+<ul>
+<li><p class="first">Each FeatureTypeStyle that applies is used. That means, the layer will be drawn multiple times if the styles
+contain more than one FeatureTypeStyle that matches the FeatureType of the features in the layer.</p>
+</li>
+<li><p class="first">FeatureTypeStyles are painted in order: a FeatureTypeStyle is painted only once the previous one in the list
+has been completely painted</p>
+</li>
+<li><p class="first">Each feature is then passed to the rules and their list of symbolizers</p>
+</li>
+<li><p class="first">This means that a single feature can be painted more than once, if more than one rule matches it, or
+if the rules contain more than one symbolizer.</p>
+</li>
+<li><p class="first">The full set of rules and symbolizers in the current FeatureTypeStyle
+is applied to the current Feature before considering the next one.</p>
+<p>The last consideration is important when you need to draw, for example, roads with a double line
+such as a wide black line below a thin white line. This is possible using two FeatureTypeStyles,
+since using a Rule with a couple of symbolizers will generate a map that doesn&#8217;t look good at
+road intersections.</p>
+<p>Example of style with two FeatureTypeStyles:</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="n">StyleFactory</span> <span class="n">styleFactory</span> <span class="o">=</span> <span class="n">CommonFactoryFinder</span><span class="o">.</span><span class="na">getStyleFactory</span><span class="o">();</span>
+    <span class="n">FilterFactory2</span> <span class="n">filterFactory</span> <span class="o">=</span> <span class="n">CommonFactoryFinder</span><span class="o">.</span><span class="na">getFilterFactory2</span><span class="o">();</span>
+    
+    <span class="n">Style</span> <span class="n">style</span> <span class="o">=</span> <span class="n">styleFactory</span><span class="o">.</span><span class="na">getDefaultStyle</span><span class="o">();</span>
+    
+    <span class="c1">// Feature type style 1</span>
+    <span class="n">FeatureTypeStyle</span> <span class="n">fts</span> <span class="o">=</span> <span class="n">styleFactory</span><span class="o">.</span><span class="na">createFeatureTypeStyle</span><span class="o">();</span>
+    <span class="n">fts</span><span class="o">.</span><span class="na">featureTypeNames</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">NameImpl</span><span class="o">(</span><span class="s">&quot;feature-type-1&quot;</span><span class="o">));</span>
+    <span class="n">style</span><span class="o">.</span><span class="na">featureTypeStyles</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="n">fts</span><span class="o">);</span>
+    
+    <span class="c1">// Feature type style 2</span>
+    <span class="n">FeatureTypeStyle</span> <span class="n">fts2</span> <span class="o">=</span> <span class="n">styleFactory</span><span class="o">.</span><span class="na">createFeatureTypeStyle</span><span class="o">();</span>
+    <span class="n">fts2</span><span class="o">.</span><span class="na">featureTypeNames</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">NameImpl</span><span class="o">(</span><span class="s">&quot;feature-type-2&quot;</span><span class="o">));</span>
+    
+    <span class="c1">// creating the rule 1</span>
+    <span class="n">Rule</span> <span class="n">rule1</span> <span class="o">=</span> <span class="n">styleFactory</span><span class="o">.</span><span class="na">createRule</span><span class="o">();</span>
+    <span class="n">rule1</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;rule1&quot;</span><span class="o">);</span>
+    <span class="n">Filter</span> <span class="n">aFilter</span> <span class="o">=</span> <span class="n">filterFactory</span><span class="o">.</span><span class="na">id</span><span class="o">(</span><span class="n">Collections</span><span class="o">.</span><span class="na">singleton</span><span class="o">(</span><span class="n">filterFactory</span><span class="o">.</span><span class="na">featureId</span><span class="o">(</span><span class="s">&quot;FID&quot;</span><span class="o">)));</span>
+    <span class="n">rule1</span><span class="o">.</span><span class="na">setFilter</span><span class="o">(</span><span class="n">aFilter</span><span class="o">);</span>
+    <span class="n">fts2</span><span class="o">.</span><span class="na">rules</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="n">rule1</span><span class="o">);</span>
+    
+    <span class="c1">// creating the rule 2</span>
+    <span class="n">Rule</span> <span class="n">rule2</span> <span class="o">=</span> <span class="n">styleFactory</span><span class="o">.</span><span class="na">createRule</span><span class="o">();</span>
+    <span class="n">rule2</span><span class="o">.</span><span class="na">setIsElseFilter</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+    <span class="n">rule2</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;rule2&quot;</span><span class="o">);</span>
+    <span class="n">fts2</span><span class="o">.</span><span class="na">rules</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="n">rule2</span><span class="o">);</span>
+    
+    <span class="n">style</span><span class="o">.</span><span class="na">featureTypeStyles</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="n">fts2</span><span class="o">);</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">For an in depth discussion of the rendering process please refer to * <a class="reference internal" href="../../tutorial/map/style.html"><em>style</em></a> (tutorial)</p>
+</li>
+</ul>
+</div>
+<div class="section" id="rule">
+<h3>Rule<a class="headerlink" href="#rule" title="Permalink to this headline">¶</a></h3>
+<p>A FeatureTypeStyle contains one or more rules, these rules are considered in order with the possibility of an &#8220;else&#8221; Rule being
+used to render any remaining features.</p>
+<p>A rule is based on the following:</p>
+<ul>
+<li><p class="first">minimum/maximum scale: if set and the current scale is outside the specified range, the rule won&#8217;t apply and thus its symbolizers won&#8217;t be used</p>
+</li>
+<li><p class="first">Filter: that is applied to the features, only the features matching the filter will be painted
+according to the Rule symbolizers.</p>
+<p>As an alternative, the rule can have an &#8220;else filter&#8221;. This special kind of filter catches all of the
+features that still haven&#8217;t been symbolized by previous rules with a regular filter.</p>
+</li>
+</ul>
+<p>FeatureTypeStyle used <strong>featureTypename</strong> to sort out what kind of features we are dealing with. Rules are used to refine this contents, possibly filtering according to feature attributes or scale, to determine specifically what we are going to draw.</p>
+<p>Pay Attention to:</p>
+<ul class="simple">
+<li>minimum and maximum map scale, if set and the current scale is outside the specified range, the rule won&#8217;t apply and thus its symbolizers won&#8217;t be used</li>
+<li>Filter that is used to select features to draw, only the features matching the filter will be painted</li>
+<li>A rule can have an &#8220;else filter&#8221;. This special kind of filter catches all of the features that still haven&#8217;t been symbolized by previous rules with a regular filter).</li>
+</ul>
+<p>Once FeatureTypeStyle and Rules have determined that a Feature is going to be drawn; the Rule makes use of a list of of Symbolizers to define how the content is painted:</p>
+<ul class="simple">
+<li>A Symbolizer describes how to represent a feature on the screen based on the feature contents (geometry and attributes).</li>
+<li>Each rule can have a list of Symbolizer attached to it.</li>
+<li>symbolizers are used like a display language to produce pixels on the display device.</li>
+</ul>
+</div>
+<div class="section" id="symbolizer">
+<h3>Symbolizer<a class="headerlink" href="#symbolizer" title="Permalink to this headline">¶</a></h3>
+<p>A symbolizer describes how a feature should appear on a map.  Each rule has a list of symbolizers which it applies in order.</p>
+<img alt="../../_images/symbolizer3.PNG" src="../../_images/symbolizer3.PNG" />
+<p>As you can see, there are many kind of symbolizers, for points, lines, polygons, labels and raster data.</p>
+<p>You don&#8217;t need to match the symbolizer with the specific geometry contained in the feature, the renderer will try to do the most appropriate thing on a case by case basis. For example, TextSymbolizer applies to all kinds of geometries, and will generate labels on the map. If you apply a PolygonSymbolizer to a line, the line will be closed to form a polygon, and then the polygon symbolizer will be applied.</p>
+<img alt="../../_images/symbolizer2.PNG" src="../../_images/symbolizer2.PNG" />
+<p>The GeoTools Symbolizer interface offers a couple of advantages over the base standard:</p>
+<ul>
+<li><p class="first">getGeometry()</p>
+</li>
+<li><p class="first">setGeometry( Expression )</p>
+<p>The ability to define a geometry using an expression allows the use of a function to &#8220;preprocess&#8221; your geometry
+prior to it being considered for rendering.</p>
+<p>This is a little bit tricky (as functions like buffer will make your geometry bigger) but the result is worthwhile
+in the amount of flexibility it offers.</p>
+</li>
+</ul>
+<p>Notes on the use of symbolizers:</p>
+<ul>
+<li><p class="first">The symbolizer describes not just the shape that should appear but also such graphical properties as color and opacity</p>
+</li>
+<li><p class="first">Symbolizers do have a default behaviour, after creating a Symbolizer you should supplying parameters to overide the default settings</p>
+</li>
+<li><p class="first">The original details of this object are taken from the OGC Styled-Layer Descriptor Report (OGC 01-077) version 0.7.2.</p>
+</li>
+<li><p class="first">Renderers can use this information when displaying styled features.
+Though it must be remembered that not all renderers will be able to fully represent
+strokes as set out by this interface. For example, opacity may not be supported.</p>
+</li>
+<li><p class="first">The graphical parameters and their values are derived from SVG/CSS2 standards with
+names and semantics which are as close as possible.</p>
+</li>
+<li><p class="first">The most important thing to note here is that symbolizer component objects are
+composed of Expression objects, which means that they may be made dependent on
+Feature attributes.</p>
+<p>For example, you can create a mathematical expression that links some Feature
+attribute to the line width.</p>
+<p>Thus, you have two ways to symbolize different features with different styles:</p>
+<ul class="simple">
+<li>By using more than one rule with different filters, and then building symbolizers with literal expressions.
+This is a good way to create a classified map, in which colours, line styles and so on depend on the range the attribute value
+falls into.</li>
+<li>By directly linking a symbolizer property to an attribute value;</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="point-symbolizer">
+<h3>Point Symbolizer<a class="headerlink" href="#point-symbolizer" title="Permalink to this headline">¶</a></h3>
+<p>Used to draw a point location, the actual graphic drawn is referred to as a Mark with the option to use
+some well known marks (circle, square etc..) or your own external graphics such as PNG icons.</p>
+<p>Examples:</p>
+<ul>
+<li><p class="first">GeoServer SLD cookbook</p>
+<p><a class="reference external" href="http://docs.geoserver.org/stable/en/user/styling/sld-cookbook/points.html">Points</a></p>
+</li>
+<li><p class="first">Quick example creating a PointSymbolizer using StyleBuilder:</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="c1">// &quot;testPoint&quot; feature type style</span>
+    <span class="n">StyleBuilder</span> <span class="n">sb</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StyleBuilder</span><span class="o">();</span>
+    <span class="n">FilterFactory2</span> <span class="n">ff</span> <span class="o">=</span> <span class="n">sb</span><span class="o">.</span><span class="na">getFilterFactory</span><span class="o">();</span>
+    
+    <span class="n">Mark</span> <span class="n">testMark</span> <span class="o">=</span> <span class="n">sb</span><span class="o">.</span><span class="na">createMark</span><span class="o">(</span><span class="n">sb</span><span class="o">.</span><span class="na">attributeExpression</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">),</span> <span class="n">sb</span><span class="o">.</span><span class="na">createFill</span><span class="o">(</span><span class="n">Color</span><span class="o">.</span><span class="na">RED</span><span class="o">,</span> <span class="mf">0.5</span><span class="o">),</span>
+            <span class="kc">null</span><span class="o">);</span>
+    <span class="n">Graphic</span> <span class="n">graph</span> <span class="o">=</span> <span class="n">sb</span><span class="o">.</span><span class="na">createGraphic</span><span class="o">(</span><span class="kc">null</span><span class="o">,</span> <span class="c1">// An external graphics if needed</span>
+            <span class="k">new</span> <span class="n">Mark</span><span class="o">[]</span> <span class="o">{</span> <span class="n">testMark</span> <span class="o">},</span> <span class="c1">// a Mark if not an external graphics</span>
+            <span class="kc">null</span><span class="o">,</span> <span class="c1">// aSymbol</span>
+            <span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="mi">1</span><span class="o">),</span> <span class="c1">// opacity</span>
+            <span class="n">ff</span><span class="o">.</span><span class="na">property</span><span class="o">(</span><span class="s">&quot;size&quot;</span><span class="o">),</span> <span class="c1">// read from feature &quot;size&quot; attribute</span>
+            <span class="n">ff</span><span class="o">.</span><span class="na">property</span><span class="o">(</span><span class="s">&quot;rotation&quot;</span><span class="o">));</span> <span class="c1">// rotation, here read into the feature</span>
+    <span class="n">PointSymbolizer</span> <span class="n">aPointSymbolizer</span> <span class="o">=</span> <span class="n">sb</span><span class="o">.</span><span class="na">createPointSymbolizer</span><span class="o">(</span><span class="n">graph</span><span class="o">);</span>
+    
+    <span class="c1">// creation of the style</span>
+    <span class="n">Style</span> <span class="n">style</span> <span class="o">=</span> <span class="n">sb</span><span class="o">.</span><span class="na">createStyle</span><span class="o">(</span><span class="n">aPointSymbolizer</span><span class="o">);</span>
+</pre></div>
+</div>
+<p>Here is the same style as an xml fragments:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;PointSymbolizer&gt;
+    &lt;graphic&gt;
+        &lt;size&gt;&lt;PropertyName&gt;size&lt;/PropertyName&gt;&lt;/size&gt;
+        &lt;rotation&gt;&lt;PropertyName&gt;rotation&lt;/PropertyName&gt;&lt;/rotation&gt;
+        &lt;mark&gt;
+            &lt;wellknownname&gt;&lt;PropertyName&gt;name&lt;/PropertyName&gt;&lt;/wellknownname&gt;
+            &lt;Fill&gt;
+                &lt;!-- CssParameters allowed are fill
+                (the color) and fill-opacity --&gt;
+                &lt;CssParameter name=&quot;fill&quot;&gt;#FF0000&lt;/CssParameter&gt;
+                &lt;CssParameter name=&quot;fill-opacity&quot;&gt;0.5&lt;/CssParameter&gt;
+            &lt;/Fill&gt;
+        &lt;/mark&gt;
+    &lt;/graphic&gt;
+&lt;/PointSymbolizer&gt;
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="linesymbolizer">
+<h3>LineSymbolizer<a class="headerlink" href="#linesymbolizer" title="Permalink to this headline">¶</a></h3>
+<p>Used to control how lines (or edges) are drawn.</p>
+<p>Examples:</p>
+<ul>
+<li><p class="first">GeoServer SLD cookbook</p>
+<p><a class="reference external" href="http://docs.geoserver.org/stable/en/user/styling/sld-cookbook/lines.html">Lines</a> .</p>
+</li>
+</ul>
+</div>
+<div class="section" id="polygonsymbolizer">
+<h3>PolygonSymbolizer<a class="headerlink" href="#polygonsymbolizer" title="Permalink to this headline">¶</a></h3>
+<p>Used to control how solid shapes are drawn.</p>
+<p>Examples:</p>
+<ul>
+<li><p class="first">GeoServer SLD cookbook</p>
+<p><a class="reference external" href="http://docs.geoserver.org/stable/en/user/styling/sld-cookbook/polygons.html">Polygons</a> .</p>
+</li>
+<li><p class="first">Quick example using StyleBuilder to create a PolygonSymbolizer:</p>
+</li>
+</ul>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="n">StyleBuilder</span> <span class="n">styleBuilder</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StyleBuilder</span><span class="o">();</span>
+    <span class="n">FilterFactory2</span> <span class="n">ff</span> <span class="o">=</span> <span class="n">CommonFactoryFinder</span><span class="o">.</span><span class="na">getFilterFactory2</span><span class="o">();</span>
+    
+    <span class="n">PolygonSymbolizer</span> <span class="n">polygonSymbolizer</span> <span class="o">=</span> <span class="n">styleBuilder</span><span class="o">.</span><span class="na">createPolygonSymbolizer</span><span class="o">(</span><span class="n">Color</span><span class="o">.</span><span class="na">BLUE</span><span class="o">);</span>
+    <span class="n">polygonSymbolizer</span><span class="o">.</span><span class="na">getFill</span><span class="o">().</span><span class="na">setOpacity</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="mf">0.5</span><span class="o">));</span> <span class="c1">// 50% blue</span>
+    
+    <span class="n">polygonSymbolizer</span><span class="o">.</span><span class="na">setStroke</span><span class="o">(</span><span class="n">styleBuilder</span><span class="o">.</span><span class="na">createStroke</span><span class="o">(</span><span class="n">Color</span><span class="o">.</span><span class="na">BLACK</span><span class="o">,</span> <span class="mf">2.0</span><span class="o">));</span>
+    
+    <span class="c1">// will create a default feature type style and rule etc...</span>
+    <span class="n">Style</span> <span class="n">style</span> <span class="o">=</span> <span class="n">styleBuilder</span><span class="o">.</span><span class="na">createStyle</span><span class="o">(</span><span class="n">polygonSymbolizer</span><span class="o">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="textsymbolizer">
+<h3>TextSymbolizer<a class="headerlink" href="#textsymbolizer" title="Permalink to this headline">¶</a></h3>
+<p>Used to control the labelling system; labels are generated by TextSymbolizers and
+thrown into the rendering engine which detect overlaps, sorts things out according
+to priorities you have defined and decides on a final label placement.</p>
+<p>This mays TextSymbolizer a little bit odd in that it does not get the final say on how labels are rendered on a pixel by pixel basis.</p>
+<p>Examples:</p>
+<ul>
+<li><p class="first">GeoServer SLD cookbook</p>
+<ul class="simple">
+<li><a class="reference external" href="http://docs.geoserver.org/stable/en/user/styling/sld-cookbook/points.html#point-with-default-label">Point Labels</a></li>
+<li><a class="reference external" href="http://docs.geoserver.org/stable/en/user/styling/sld-cookbook/lines.html#line-with-default-label">Line Labels</a></li>
+<li><a class="reference external" href="http://docs.geoserver.org/stable/en/user/styling/sld-cookbook/polygons.html#polygon-with-default-label">Polygon Labels</a></li>
+</ul>
+</li>
+<li><p class="first">Here is a quick example of creating a TextSymbolizer with StyleBuilder:</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="c1">// &quot;labelPoint&quot; feature type style</span>
+    <span class="n">StyleBuilder</span> <span class="n">sb</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StyleBuilder</span><span class="o">();</span>
+    <span class="n">FilterFactory2</span> <span class="n">ff</span> <span class="o">=</span> <span class="n">sb</span><span class="o">.</span><span class="na">getFilterFactory</span><span class="o">();</span>
+    
+    <span class="c1">// creation of the TextSymbolizer</span>
+    <span class="n">AnchorPoint</span> <span class="n">anchorPoint</span> <span class="o">=</span> <span class="n">sb</span><span class="o">.</span><span class="na">createAnchorPoint</span><span class="o">(</span><span class="n">sb</span><span class="o">.</span><span class="na">attributeExpression</span><span class="o">(</span><span class="s">&quot;X&quot;</span><span class="o">),</span>
+            <span class="n">sb</span><span class="o">.</span><span class="na">attributeExpression</span><span class="o">(</span><span class="s">&quot;Y&quot;</span><span class="o">));</span>
+    <span class="n">PointPlacement</span> <span class="n">pointPlacement</span> <span class="o">=</span> <span class="n">sb</span><span class="o">.</span><span class="na">createPointPlacement</span><span class="o">(</span><span class="n">anchorPoint</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span>
+            <span class="n">sb</span><span class="o">.</span><span class="na">literalExpression</span><span class="o">(</span><span class="mi">0</span><span class="o">));</span>
+    <span class="n">TextSymbolizer</span> <span class="n">textSymbolizer</span> <span class="o">=</span> <span class="n">sb</span><span class="o">.</span><span class="na">createTextSymbolizer</span><span class="o">(</span><span class="n">sb</span><span class="o">.</span><span class="na">createFill</span><span class="o">(</span><span class="n">Color</span><span class="o">.</span><span class="na">BLACK</span><span class="o">),</span> <span class="k">new</span> <span class="n">Font</span><span class="o">[]</span> <span class="o">{</span>
+            <span class="n">sb</span><span class="o">.</span><span class="na">createFont</span><span class="o">(</span><span class="s">&quot;Lucida Sans&quot;</span><span class="o">,</span> <span class="mi">10</span><span class="o">),</span> <span class="n">sb</span><span class="o">.</span><span class="na">createFont</span><span class="o">(</span><span class="s">&quot;Arial&quot;</span><span class="o">,</span> <span class="mi">10</span><span class="o">)</span> <span class="o">},</span> <span class="n">sb</span><span class="o">.</span><span class="na">createHalo</span><span class="o">(),</span>
+            <span class="n">sb</span><span class="o">.</span><span class="na">attributeExpression</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">),</span> <span class="n">pointPlacement</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
+    
+    <span class="c1">// creation of the Point symbolizer</span>
+    <span class="n">Mark</span> <span class="n">circle</span> <span class="o">=</span> <span class="n">sb</span><span class="o">.</span><span class="na">createMark</span><span class="o">(</span><span class="n">StyleBuilder</span><span class="o">.</span><span class="na">MARK_CIRCLE</span><span class="o">,</span> <span class="n">Color</span><span class="o">.</span><span class="na">RED</span><span class="o">);</span>
+    <span class="n">Graphic</span> <span class="n">graph2</span> <span class="o">=</span> <span class="n">sb</span><span class="o">.</span><span class="na">createGraphic</span><span class="o">(</span><span class="kc">null</span><span class="o">,</span> <span class="n">circle</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">4</span><span class="o">,</span> <span class="mi">0</span><span class="o">);</span>
+    <span class="n">PointSymbolizer</span> <span class="n">pointSymbolizer</span> <span class="o">=</span> <span class="n">sb</span><span class="o">.</span><span class="na">createPointSymbolizer</span><span class="o">(</span><span class="n">graph2</span><span class="o">);</span>
+    
+    <span class="c1">// creation of the style</span>
+    <span class="n">Style</span> <span class="n">style</span> <span class="o">=</span> <span class="n">sb</span><span class="o">.</span><span class="na">createStyle</span><span class="o">();</span>
+    <span class="n">FeatureTypeStyle</span> <span class="n">featureTypeStyle</span> <span class="o">=</span> <span class="n">sb</span><span class="o">.</span><span class="na">createFeatureTypeStyle</span><span class="o">(</span><span class="s">&quot;labelPoint&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">Symbolizer</span><span class="o">[]</span> <span class="o">{</span>
+            <span class="n">textSymbolizer</span><span class="o">,</span> <span class="n">pointSymbolizer</span> <span class="o">});</span>
+    <span class="n">style</span><span class="o">.</span><span class="na">featureTypeStyles</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="n">featureTypeStyle</span><span class="o">);</span>
+    
+    <span class="c1">// creation of the style</span>
+</pre></div>
+</div>
+<p>Here is the same example as an xml fragment:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;TextSymbolizer&gt;
+    &lt;Label&gt;&lt;PropertyName&gt;name&lt;/PropertyName&gt;&lt;/Label&gt;
+    &lt;Font&gt;
+        &lt;CssParameter name=&quot;font-family&quot;&gt;Lucida Sans&lt;/CssParameter&gt;
+        &lt;CssParameter name=&quot;font-Size&quot;&gt;
+            &lt;literal&gt;10&lt;/literal&gt;
+        &lt;/CssParameter&gt;
+    &lt;/Font&gt;
+    &lt;LabelPlacement&gt;
+        &lt;PointPlacement&gt;
+            &lt;AnchorPoint&gt;
+                &lt;AnchorPointX&gt;&lt;PropertyName&gt;X&lt;/PropertyName&gt; &lt;/AnchorPointX&gt;
+                &lt;AnchorPointY&gt;&lt;PropertyName&gt;Y&lt;/PropertyName&gt; &lt;/AnchorPointY&gt;
+            &lt;/AnchorPoint&gt;
+        &lt;/PointPlacement&gt;
+    &lt;/LabelPlacement&gt;
+    &lt;Fill&gt;
+        &lt;CssParameter name=&quot;fill&quot;&gt;#000000&lt;/CssParameter&gt;
+    &lt;/Fill&gt;
+    &lt;Halo/&gt;
+&lt;/TextSymbolizer&gt;
+&lt;PointSymbolizer&gt;
+    &lt;graphic&gt;
+        &lt;size&gt;4&lt;/size&gt;
+        &lt;mark&gt;
+            &lt;wellknownname&gt;circle&lt;/wellknownname&gt;
+            &lt;Fill&gt;
+                &lt;!-- CssParameters allowed are fill
+                (the color) and fill-opacity --&gt;
+                &lt;CssParameter name=&quot;fill&quot;&gt;#FF0000&lt;/CssParameter&gt;
+            &lt;/Fill&gt;
+        &lt;/mark&gt;
+    &lt;/graphic&gt;
+&lt;/PointSymbolizer&gt;
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="raster-symbolizer">
+<h3>Raster Symbolizer<a class="headerlink" href="#raster-symbolizer" title="Permalink to this headline">¶</a></h3>
+<p>Used to control the rendering of raster data with full &#8220;color map&#8221; control.</p>
+<ul class="simple">
+<li>GeoServer SLD cookbook<ul>
+<li><a class="reference external" href="http://docs.geoserver.org/stable/en/user/styling/sld-cookbook/rasters.html">Rasters</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="stylevisitor">
+<h2>StyleVisitor<a class="headerlink" href="#stylevisitor" title="Permalink to this headline">¶</a></h2>
+<p>Just like with the FilterVisitor interface we are going to use these implementation to navigate over a nested data structure and either copy what we see, or modify it as we go.</p>
+<p>While the StyleVisitor interface will let modify a style in place we have never found that to be a good idea (at best opening your code up to magic threading issues with what is probably a very active rendering thread).</p>
+<p>The generic StyleVisitor interface is everything you would expect from the Gang of Four Visitor pattern, it has a visit methods one for each significant interface in a Style object.</p>
+<p>To use a StyleVisitor pass it to a Style (or any style object) using the accepts method:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">style</span><span class="o">.</span><span class="n">accepts</span><span class="p">(</span> <span class="n">styleVisitor</span> <span class="p">);</span>
+</pre></div>
+</div>
+<p>You will find that not all Style objects accept a StyleVisitor; as an example Font does not. This is not really a problem - but it is something to keep in mind when writing your own visitor.</p>
+<p><strong>Ready to Use Implementations</strong></p>
+<p>There are a number of ready to use implementations; while we have provided some examples on this page please explore what is available in the library - you can do this quikly by checking the javadocs.</p>
+<ul class="simple">
+<li>StyleAttributeExtractor - return all the attributes mentioned by this style; used by the renderer when constructing a Query</li>
+<li>DuplicatingStyleVisitor - return a copy of the style</li>
+<li>RescaleStyleVisitor - return a copy of the style modified for display at a different scale.</li>
+</ul>
+<p><strong>Implementation Tips</strong></p>
+<p>If you are used to simple visitors on list like data structures you are in for a surprise - StyleVisitor does not navigate the Style object structure on its own you are going to have to do the work.:</p>
+<div class="highlight-python"><div class="highlight"><pre>class YourStyleVisitor implements StyleVisitor {
+    ...
+    public void visit(Halo halo) {
+        // do your work here
+
+        // make sure you visit the &quot;child&quot; objects
+        if( halo.getFill() != null ) halo.getFill().accepts( this );
+        if( halo.getRadius() != null ) halo.getRadius().accepts( this );
+    }
+    ...
+}
+</pre></div>
+</div>
+<p>We should have an AbstractStyleVisitor for you to start from; perhaps you would like to write it for us?</p>
+<div class="section" id="duplicatingstylevisitor">
+<h3>DuplicatingStyleVisitor<a class="headerlink" href="#duplicatingstylevisitor" title="Permalink to this headline">¶</a></h3>
+<p>DuplicatingStyleVisitor will copy any style object; it keeps track of what is copied using an internal stack (this means it is not thread safe!).:</p>
+<div class="highlight-python"><div class="highlight"><pre>DuplicatingStyleVisitor xerox = new DuplicatingStyleVisitor();
+style.accepts( xerox );
+Style copy = (Style) xerox.getCopy();
+</pre></div>
+</div>
+<p>Please note this works for everything:</p>
+<div class="highlight-python"><div class="highlight"><pre>DuplicatingStyleVisitor xerox = new DuplicatingStyleVisitor();
+lineSymbolizer.accepts( xerox );
+LineSymbolizer copy = (LineSymbolizer) xerox.getCopy();
+</pre></div>
+</div>
+</div>
+<div class="section" id="rescalestylevisitor">
+<h3>RescaleStyleVisitor<a class="headerlink" href="#rescalestylevisitor" title="Permalink to this headline">¶</a></h3>
+<p>RescaleStyleVisitor can be used to scale up a provided style; something that is useful when printing. The SLD specification is pretty careful about working with pixels at all times (this is annoying when you switch to 300 DPI).:</p>
+<div class="highlight-python"><div class="highlight"><pre>RescaleStyleVisitor scale = new RescaleStyleVisitor(5.0);
+style.accepts( scale );
+Style bigger = (Style) scale.getCopy();
+</pre></div>
+</div>
+<p>Please note that this also returns a copy; while you could modify a style in place using a visitor we find that life is too short for threading issues.:</p>
+<div class="highlight-python"><div class="highlight"><pre>RescaleStyleVisitor scale = new RescaleStyleVisitor(5.0);
+lineSymbolizer.accepts( scale );
+LineSymbolizer bigger = (LineSymbolizer) scale.getCopy();
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="icon.html" title="Icon"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="map.html" title="Map data and display classes"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" >Render</a> &raquo;</li>
+        <li><a href="#">Styling features for display</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,408 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Code Generation &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../../index.html" />
+    <link rel="up" title="Internals" href="index.html" />
+    <link rel="next" title="Purchase Order Tutorial" href="tutorial.html" />
+    <link rel="prev" title="Configuration" href="configuration.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../../index.html" >Library</a> &raquo;</li>
+          <li><a href="../index.html" >XML</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Internals</a> &raquo;</li>
+        <li><a href="#">Code Generation</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Code Generation</a><ul>
+<li><a class="reference internal" href="#plugin-configuration">Plugin Configuration</a></li>
+<li><a class="reference internal" href="#configuration-parameter-reference">Configuration Parameter Reference</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="configuration.html"
+                        title="previous chapter">Configuration</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="tutorial.html"
+                        title="next chapter">Purchase Order Tutorial</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/library/xml/internal/code.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="code-generation">
+<h1>Code Generation<a class="headerlink" href="#code-generation" title="Permalink to this headline">¶</a></h1>
+<p>The xmlcodegen maven plugin provides a code generator which can be used to generate bindings and other classes used in the geotools xml framework. The code generator feeds off a single schema file and generates a number of java classes.</p>
+<div class="section" id="plugin-configuration">
+<h2>Plugin Configuration<a class="headerlink" href="#plugin-configuration" title="Permalink to this headline">¶</a></h2>
+<p>To use the plugin in a project, the following configuration must first be added to the pom of the project:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;build&gt;
+   &lt;plugins&gt;
+        ...
+        &lt;plugin&gt;
+           &lt;groupId&gt;org.geotools.maven&lt;/groupId&gt;
+           &lt;artifactId&gt;xmlcodegen&lt;/artifactId&gt;
+           &lt;version&gt;8-SNAPSHOT&lt;/version&gt;
+           &lt;configuration&gt;
+               &lt;schemaLocation&gt;po.xsd&lt;/schemaLocation&gt;
+               &lt;schemaSourceDirectory&gt;${basedir}/src/main/resources&lt;/schemaSourceDirectory&gt;
+               &lt;destinationPackage&gt;org.geotools.po.bindings&lt;/destinationPackage&gt;
+               &lt;generateConfiguration&gt;true&lt;/generateConfiguration&gt;
+               &lt;generateBindingInterface&gt;true&lt;/generateBindingInterface&gt;
+               &lt;generateSchemaLocationResolver&gt;true&lt;/generateSchemaLocationResolver&gt;
+               &lt;bindingConstructorArguments&gt;
+                   &lt;bindingConstructorArgument&gt;
+                       &lt;name&gt;factory&lt;/name&gt;
+                       &lt;type&gt;org.geotools.po.ObjectFactory&lt;/type&gt;
+                   &lt;/bindingConstructorArgument&gt;
+               &lt;/bindingConstructorArguments&gt;
+           &lt;/configuration&gt;
+       &lt;/plugin&gt;
+       ...
+   &lt;/plugins&gt;
+&lt;/build&gt;
+</pre></div>
+</div>
+<p>In the above, po.xsd should be replaced with an actual schema file. Once configured the plugin can be executed with the following command:</p>
+<div class="highlight-python"><div class="highlight"><pre>mvn org.geotools.maven:xmlcodegen:generate
+</pre></div>
+</div>
+<p>The output of the command will look something like the following:</p>
+<div class="highlight-python"><div class="highlight"><pre>[INFO] Generating bindings...
+8/Jan/2007 9:56:00 org.geotools.maven.xmlcodegen.BindingGenerator generate
+INFO: Generating binding for Items
+8/Jan/2007 9:56:00 org.geotools.maven.xmlcodegen.BindingGenerator generate
+INFO: Generating binding for PurchaseOrderType
+8/Jan/2007 9:56:00 org.geotools.maven.xmlcodegen.BindingGenerator generate
+INFO: Generating binding for SKU
+8/Jan/2007 9:56:00 org.geotools.maven.xmlcodegen.BindingGenerator generate
+INFO: Generating binding for USAddress
+8/Jan/2007 9:56:00 org.geotools.maven.xmlcodegen.BindingGenerator generate
+INFO: Generating binding for Items_item
+[INFO] Generating parser configuration...
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESSFUL
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 4 seconds
+[INFO] Finished at: Mon Jan 08 09:56:00 PST 2007
+[INFO] Final Memory: 7M/12M
+[INFO] ------------------------------------------------------------------------
+</pre></div>
+</div>
+<p>By default, the code generator will generate the following classes:</p>
+<ul class="simple">
+<li>A binding for each type in the schema</li>
+<li>A subclass of org.geotools.xml.Configuration for the schema</li>
+<li>A subclass of org.geotools.xml.BindingConfiguration</li>
+<li>An interface containing the qualified names of all elements, attributes, and types defined in the schema</li>
+</ul>
+<p>The plugin contains may configuration options which can be used to modify this default behaviour.</p>
+<p><strong>Example: gt-xsd-gml3 GMLSchema</strong></p>
+<p>This example demonstrates how to generate (just) GMLSchema.java, a file containing a type constant for every GML 3.1.1 XSD type, for gt-xsd-gml3, the GeoTools GML 3.1.1 support module.</p>
+<ol class="arabic">
+<li><p class="first">Build xmlcodegen</p>
+<p>In build/maven/xmlcodegen:</p>
+<div class="highlight-python"><div class="highlight"><pre>mvn clean install
+</pre></div>
+</div>
+</li>
+<li><p class="first">Generate the schema</p>
+<p>In modules/extension/xsd/xsd-gml3:</p>
+<div class="highlight-python"><div class="highlight"><pre>mvn -o xmlcodegen:generateSchema
+</pre></div>
+</div>
+</li>
+<li><p class="first">Move and clean up the schema</p>
+<p>There are still some manual changes to perform:</p>
+<ul>
+<li><p class="first">The default location of the schema source file is wrong. Move it, replacing the current GMLSchema.java:</p>
+<div class="highlight-python"><div class="highlight"><pre>mv src/main/java/GMLSchema.java src/main/java/org/geotools/gml3/GMLSchema.java
+</pre></div>
+</div>
+</li>
+<li><p class="first">The Java package is wrong. Add to the top of GMLSchema.java:</p>
+<div class="highlight-python"><div class="highlight"><pre>package org.geotools.gml3;
+</pre></div>
+</div>
+</li>
+<li><p class="first">Java imports are wrong, Fix GMLSchema.java imports in Eclipse with Ctrl-Shift-O.</p>
+</li>
+</ul>
+</li>
+</ol>
+</div>
+<div class="section" id="configuration-parameter-reference">
+<h2>Configuration Parameter Reference<a class="headerlink" href="#configuration-parameter-reference" title="Permalink to this headline">¶</a></h2>
+<p>The code generator plugins offers the following goals:</p>
+<ul class="simple">
+<li>xmlcodegen:generate - Generates the parser/encoding configuration and bindings</li>
+<li>xmlcodegen:generateSchema - Generates the class that represents the xml schema as a geotools feature model schema</li>
+</ul>
+<p><strong>Common Configuration</strong></p>
+<p>Many configuration parameters are shared between the above goals. The following is a list of all the common configuration parameters:</p>
+<ul>
+<li><p class="first">schemaLocation (no default)</p>
+<p>Location of the *.xsd file defining the schema. This can be a relative or aboslute path. For relative paths, the schemaSourceDirectory and schemaLookupDirectories parameters are used.:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;schemaLocation&gt;po.xsd&lt;/schemaLocation&gt;
+&lt;schemaLocation&gt;/home/bob/filter.xsd&lt;/schemaLocation&gt;
+</pre></div>
+</div>
+</li>
+<li><p class="first">schemaSourceDirectory (default src/main/xsd)</p>
+<p>Directory containing the schema specified by schemaLocation, and optionally any other schemas referenced by it.:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;schemaSourceDirectory&gt;src/main/resources&lt;/schemaSourceDirectory&gt;
+&lt;schemaSourceDirectory&gt;/home/bob/schemas&lt;/schemaSourceDirectory&gt;
+</pre></div>
+</div>
+</li>
+<li><p class="first">schemaLookupDirectories (no default)</p>
+<p>List of additional directories to be used to locate referenced schemas.:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;schemaLookupDirectories&gt;
+   &lt;schemaLookupDirectory&gt;/home/bob/schemas&lt;/schemaLookupDirectory&gt;
+   &lt;schemaLookupDirectory&gt;/home/bob/otherSchemas&lt;/schemaLookupDirectory&gt;
+&lt;/schemaLookupDirectories&gt;
+</pre></div>
+</div>
+</li>
+<li><p class="first">targetPrefix (no default)</p>
+<p>The prefix to be mapped to the &#8216;targetNamespace&#8217; of the schema.:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;targetPrefix&gt;po&lt;/targetPrefix&gt;
+</pre></div>
+</div>
+</li>
+<li><p class="first">destinationPackage (no default)</p>
+<p>Name of java package in which to place generated files into. If unspecified the root of the default ( empty ) package is used.:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;destinationPackage&gt;org.geotools.po&lt;/destinationPackage&gt;
+</pre></div>
+</div>
+</li>
+<li><p class="first">outputDirectory (default src/main/java)</p>
+<p>Base location of where generated files should be written. If the destinationPackage is also specified it is appended to this location.:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;outputDirectory&gt;/home/bob/xml&lt;/outputDirectory&gt;
+&lt;outputDirectory&gt;src/other/java&lt;/outputDirectory&gt;
+</pre></div>
+</div>
+</li>
+<li><p class="first">overwriteExistingFiles (default false)</p>
+<p>Flag controlling wether existing files should be overwritten by newly generated files.:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;overwriteExistingFiles&gt;true&lt;/overwriteExistingFiles&gt;
+</pre></div>
+</div>
+</li>
+<li><p class="first">relativeSchemaReference (default false)</p>
+<p>Treat all relative schema references (include and import) as relative to the schema (XSD) resource in which they are found, rather than looking for them in compiled classes or <code class="docutils literal"><span class="pre">schemaLookupDirectories</span></code>. This requires all included/imported schemas to be present in the expected relative filesystem location. The main advantage of this approach is that it supports schema files that have cyclic dependencies (e.g. GML 3.2):</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;relativeSchemaReference&gt;true&lt;/relativeSchemaReference&gt;
+</pre></div>
+</div>
+</li>
+</ul>
+<p><strong>Generate Configuration</strong></p>
+<p>The following configuration parameters apply only to the <strong>generate</strong> goal:</p>
+<ul>
+<li><p class="first">generateXsd (default true)</p>
+<p>Flag controlling wether the interface containing all the qualified element, attribute, and type names for the schema is generated.:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;generateXsd&gt;false&lt;/generateXsd&gt;
+</pre></div>
+</div>
+</li>
+<li><p class="first">generateConfiguration (default true)</p>
+<p>Flag controlling wether the Configuration for the schema should be generated.:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;generateConfiguration&gt;false&lt;/generateConfiguration&gt;
+</pre></div>
+</div>
+</li>
+<li><p class="first">generateAttributeBindings (default false)</p>
+<p>Flag controlling wether bindings for attributes declared in the schema should be generated.:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;generateAttributeBindings&gt;true&lt;/generateAttributeBindings&gt;
+</pre></div>
+</div>
+</li>
+<li><p class="first">generateElementBindings (default false)</p>
+<p>Flag controlling wether bindings for elements declared in the schema should be generated.:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;generateElementBindings&gt;true&lt;/generateElementBindings&gt;
+</pre></div>
+</div>
+</li>
+<li><p class="first">generateTypeBindings (default true)</p>
+<p>Flag controlling wether bindings for types declared in the schema should be generated.:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;generateTypeBindings&gt;false&lt;/generateTypeBindings&gt;
+</pre></div>
+</div>
+</li>
+<li><p class="first">includes (default none)</p>
+<p>Inclusion filter for attribute, element, and type bindings. An inclusion is specified by the name of the attribute, element, or type.:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;includes&gt;
+  &lt;include&gt;PurchaseOrderType&lt;/include&gt;
+  &lt;include&gt;AbstractFeatureType&lt;/include&gt;
+  &lt;include&gt;PropertyIsNotEqualTo&lt;/include&gt;
+&lt;/includes&gt;
+</pre></div>
+</div>
+</li>
+<li><p class="first">bindingConstructorArguments (defaults none)</p>
+<p>List of name, class pairs which define the constructor arguments for each generated binding.:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;bindingConstructorArguments&gt;
+  &lt;bindingConstructorArgument&gt;
+    &lt;name&gt;factory&lt;/name&gt;
+    &lt;type&gt;org.geotools.po.ObjectFactory&lt;/type&gt;
+  &lt;/bindingConstructorArgument&gt;
+&lt;bindingConstructorArguments&gt;
+&lt;bindingConstructorArguments&gt;
+  &lt;bindingConstructorArgument&gt;
+    &lt;name&gt;filterFactory&lt;/name&gt;
+    &lt;value&gt;org.opengis.filter.FilterFactory&lt;/value&gt;
+  &lt;/bindingConstructorArgument&gt;
+  &lt;bindingConstructorArgument&gt;
+    &lt;name&gt;geometryFactory&lt;/name&gt;
+    &lt;value&gt;com.vividsolutions.jts.geom.GeometryFactory&lt;/value&gt;
+  &lt;/bindingConstructorArgument&gt;
+&lt;bindingConstructorArguments&gt;
+</pre></div>
+</div>
+</li>
+</ul>
+<p><strong>GenerateSchema Configuration</strong></p>
+<p>The following configuration parameters apply only to the generateSchema goal:</p>
+<ul>
+<li><p class="first">includeComplexTypes (default true)</p>
+<p>Controls whether complex types from the xml schema are included in the generated geotools schema</p>
+</li>
+<li><p class="first">includeSimpleTypes (default true)</p>
+<p>Controls whether simple types from the xml schema are included in the generated geotools schema.</p>
+</li>
+<li><p class="first">followComplexTypes (default false)</p>
+<p>Controls whether the contents of complex xml types are processed during schema generation. Setting this parameter to true will cause the generator to create geotools types which model exactly their corresponding xml schema types in term of base types and composition:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;followComplexTypes&gt;true&lt;/followComplexTypes&gt;
+</pre></div>
+</div>
+</li>
+<li><p class="first">cyclicTypeSupport (default false)</p>
+<p>Support complex xml types that are cyclically defined, such as <code class="docutils literal"><span class="pre">gmd:CI_CitationType</span></code> from GML 3.2. Types in the generated Schema file will be defined using <code class="docutils literal"><span class="pre">AbstractLazyAttributeType</span></code> and <code class="docutils literal"><span class="pre">AbstractLazyComplexType</span></code> from <code class="docutils literal"><span class="pre">gt-main</span></code>. A <code class="docutils literal"><span class="pre">main()</span></code> method is also included in the generated Schema class to aid testing. This option is best used with <code class="docutils literal"><span class="pre">followComplexTypes</span></code> set to <code class="docutils literal"><span class="pre">true</span></code>, although if you are working with a multi-package schema such as GML 3.2, you will likely need to bootstrap with <code class="docutils literal"><span class="pre">followComplexTypes</span></code> set to <code class="docutils literal"><span class="pre">false</span></code> to generate skeleton Schema files that you can import before recreating them all with <code class="docutils literal"><span class="pre">followComplexTypes</span></code> set to <code class="docutils literal"><span class="pre">true</span></code>:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;cyclicTypeSupport&gt;true&lt;/cyclicTypeSupport&gt;
+</pre></div>
+</div>
+</li>
+<li><p class="first">imports (default none)</p>
+<p>List of geotools schema classes to include as an import when generating the schema.:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;imports&gt;
+  &lt;import&gt;org.geotools.xml.XLINKSchema&lt;/import&gt;
+&lt;/imports&gt;
+</pre></div>
+</div>
+</li>
+<li><p class="first">printRecursionPaths (default false)</p>
+<p>Causes the generator to print out information about how it recurses through the xml schema</p>
+</li>
+<li><p class="first">maxRecrusionDepth (default 15)</p>
+<p>Causes the generator to stop recursion and throw back an error when it reaches a particular recursion depth. This will happen if the schema has circular dependencies among its contents.</p>
+</li>
+<li><p class="first">typebindings (default none)</p>
+<p>Override the default mapping of XSD complex types to Java types in generated <em>Schema.java</em>. By default, XSD complex types are mapped to Java ComplexTypeImpl bound to Collection, but for complex types represented by atomic Java types (such a geometries), it may be preferable to map these to AttributeTypeImpl with a binding to the atomic Java type.:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;typeBindings&gt;
+   &lt;typeBinding&gt;
+        &lt;name&gt;PointPropertyType&lt;/name&gt;
+        &lt;binding&gt;com.vividsolutions.jts.geom.Point&lt;/binding&gt;
+    &lt;/typeBinding&gt;
+    &lt;typeBinding&gt;
+        &lt;name&gt;PointType&lt;/name&gt;
+        &lt;binding&gt;com.vividsolutions.jts.geom.Point&lt;/binding&gt;
+     &lt;/typeBinding&gt;
+&lt;/typeBindings&gt;
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="tutorial.html" title="Purchase Order Tutorial"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="configuration.html" title="Configuration"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../../index.html" >Library</a> &raquo;</li>
+          <li><a href="../index.html" >XML</a> &raquo;</li>
+          <li><a href="index.html" >Internals</a> &raquo;</li>
+        <li><a href="#">Code Generation</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

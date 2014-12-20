@@ -1,0 +1,187 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Internals &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../../index.html" />
+    <link rel="up" title="XML" href="../index.html" />
+    <link rel="next" title="Overview" href="overview.html" />
+    <link rel="prev" title="XML FAQ" href="../faq.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../../index.html" >Library</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">XML</a> &raquo;</li>
+        <li><a href="#">Internals</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../faq.html"
+                        title="previous chapter">XML FAQ</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="overview.html"
+                        title="next chapter">Overview</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/library/xml/internal/index.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="internals">
+<h1>Internals<a class="headerlink" href="#internals" title="Permalink to this headline">¶</a></h1>
+<p>The following material has been prepared by Justin Deolivera documenting the GTXML framework:</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bindings.html">Bindings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="code.html">Code Generation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Purchase Order Tutorial</a></li>
+</ul>
+</div>
+<p>Generated objects matching the xml schema:</p>
+<ul class="simple">
+<li><a class="reference internal" href="../../../extension/ogc/ows.html"><em>net.opengis.ows</em></a> : open web services schema</li>
+<li><a class="reference internal" href="../../../extension/ogc/wfs.html"><em>net.opengis.wfs</em></a> : web feature service</li>
+<li><a class="reference internal" href="../../../extension/ogc/wps.html"><em>net.opengis.wps</em></a> : web processing service schema</li>
+<li><a class="reference internal" href="../../../extension/ogc/wcs.html"><em>net.opengis.wcs</em></a> : web coverage service schema</li>
+<li><a class="reference internal" href="../../../extension/ogc/wfsv.html"><em>net.opengis.wfsv</em></a> : web feature service schema</li>
+<li><a class="reference internal" href="../../../extension/ogc/xlink.html"><em>org.w3.xlink</em></a> : xlink schema</li>
+</ul>
+<p>Schema and bindings plugins:</p>
+<ul class="simple">
+<li><a class="reference internal" href="../../../extension/xsd/core.html"><em>gt-xsd-core</em></a> : Basic types defined by XML schema</li>
+<li><a class="reference internal" href="../../../extension/xsd/fes.html"><em>gt-xsd-fes</em></a> : filter 2.0</li>
+<li><a class="reference internal" href="../../../extension/xsd/filter.html"><em>gt-xsd-filter</em></a> : filter 1.0 (used by ogc cat and wfs)</li>
+<li><a class="reference internal" href="../../../extension/xsd/kml.html"><em>gt-xsd-kml</em></a> : keyhole markup language</li>
+<li><a class="reference internal" href="../../../extension/xsd/wfs.html"><em>gt-xsd-wfs</em></a> : web feature service</li>
+<li><a class="reference internal" href="../../../extension/xsd/wps.html"><em>gt-xsd-wps</em></a> : web processing service</li>
+<li><a class="reference internal" href="../../../extension/xsd/gml3.html"><em>gt-xsd-gml3</em></a> : geographic markup language 3</li>
+<li><a class="reference internal" href="../../../extension/xsd/gml2.html"><em>gt-xsd-gml2</em></a> : geographinc markup language 2</li>
+<li><a class="reference internal" href="../../../extension/xsd/ows.html"><em>gt-xsd-ows</em></a> : open web services</li>
+<li><a class="reference internal" href="../../../extension/xsd/wcs.html"><em>gt-xsd-wcs</em></a> : web coverage service</li>
+<li><a class="reference internal" href="../../../extension/xsd/wms.html"><em>gt-xsd-wms</em></a> : web map service</li>
+<li><a class="reference internal" href="../../../extension/xsd/sld.html"><em>gt-xsd-sld</em></a> : style layer descriptor</li>
+</ul>
+<p><strong>XML Development FAQ</strong></p>
+<p>Frequently asked questions for binding developers.</p>
+<ul>
+<li><p class="first">Q: NullPointerException in createURIWithCache when parsing?</p>
+<p>When I try to parse a document, i get the following error:</p>
+<div class="highlight-python"><div class="highlight"><pre>java.lang.NullPointerException
+    at org.eclipse.emf.common.util.URI.createURIWithCache(URI.java:560)
+    at org.eclipse.emf.common.util.URI.createURI(URI.java:494)
+    at org.eclipse.xsd.impl.XSDSchemaDirectiveImpl.resolve(XSDSchemaDirectiveImpl.java:389)
+    at org.eclipse.xsd.impl.XSDImportImpl.importSchema(XSDImportImpl.java:476)
+    at org.eclipse.xsd.impl.XSDSchemaImpl.resolveSchema(XSDSchemaImpl.java:2120)
+    at org.eclipse.xsd.impl.XSDSchemaImpl.resolveNamedComponent(XSDSchemaImpl.java:2143)
+   ...
+</pre></div>
+</div>
+<p>What this means is that somewhere in your instance document, or in a schema it references,
+a relative uri cannot be resolved to an absolute location.</p>
+<p>Possible solutions:</p>
+<ul class="simple">
+<li>Ensure that the getSchemaLocationResolver method has been implemented for the Configuration
+class of your schema. The Code Generator can be used to create a schema location resolver
+specific to your schema.</li>
+<li>Ensure the Configuration class for your schema declares all the necessary dependencies.</li>
+</ul>
+</li>
+<li><p class="first">Q: empty xml element when trying to encode my objects?</p>
+<p>When I try to encode an object ( for instance a polygon ), I get an empty xml element:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;ogc:Contains&gt;
+   &lt;ogc:PropertyName&gt;SERVICEBBOX&lt;/ogc:PropertyName&gt;
+   &lt;gml:Polygon /&gt; &lt;!-- Polygon isn&#39;t well generated  --&gt;
+&lt;/ogc:Contains&gt;
+</pre></div>
+</div>
+<p>What this means is that the encoding for the element ( Polygon in this case )
+has not yet been implemented. Please post the problem to the users list.</p>
+</li>
+</ul>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="overview.html" title="Overview"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="../faq.html" title="XML FAQ"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../../index.html" >Library</a> &raquo;</li>
+          <li><a href="../index.html" >XML</a> &raquo;</li>
+        <li><a href="#">Internals</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

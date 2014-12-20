@@ -1,0 +1,306 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Format &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../../index.html" />
+    <link rel="up" title="Internal" href="index.html" />
+    <link rel="next" title="GridCoverage" href="../grid.html" />
+    <link rel="prev" title="Internal" href="index.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../../index.html" >Library</a> &raquo;</li>
+          <li><a href="../index.html" >Coverage</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Internal</a> &raquo;</li>
+        <li><a href="#">Format</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Format</a><ul>
+<li><a class="reference internal" href="#available-plugins">Available Plugins</a></li>
+<li><a class="reference internal" href="#simple-imagery">Simple Imagery</a></li>
+<li><a class="reference internal" href="#mosaics-and-pyramids">Mosaics and Pyramids</a></li>
+<li><a class="reference internal" href="#multi-dimensional">Multi-dimensional</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Internal</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../grid.html"
+                        title="next chapter">GridCoverage</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/library/coverage/internal/format.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="format">
+<h1>Format<a class="headerlink" href="#format" title="Permalink to this headline">¶</a></h1>
+<p>The standard way to access an external data source to create GeoTools GridCoverage instances currently requires creating several classes:</p>
+<ol class="arabic simple">
+<li>A javax.imageio.ImageReader class to access the data source and providing the methods to create:</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>java.awt.image.RenderedImage</li>
+<li>javax.imageio.metadata.IIOMetadata instance defining both:<ul>
+<li>the meaning of the numeric values in the RenderedImage; and</li>
+<li>the georeferencing parameters to geolocate the image</li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li>A builder of the GridCoverage2D which uses the above information to create an instance.</li>
+</ol>
+<p>The gt-opengis module documentation explains the concepts behind this work. It should eventually be possible to reduce the effort required of programmers wishing to use this part of the library (in particular a standard way to define all the different kinds of metadata for grid coverages).</p>
+<p>This page explores some of the examples available today.</p>
+<p><strong>ImageReader</strong></p>
+<p>The process of creating a plugin for a new GridCoverage format starts with creating an ImageReader to access the contents of the original data source. We have a range of implementations in you can work from illustrating both disk and database image formats being supported.</p>
+<p>This ImageReader will need to provide both a RenderedImage and an object which extends IIOMetaData since the interface calls for these methods.</p>
+<p>The final step involves writing a class which can create a GridCoverage2D. That class will need to get the RenderedImage from the ImageReader and will need to parse the IIOMetaData instance also obtained from the ImageReader to extract the required information on both the meaning of the data and the georeferencing of the image. With that information, the class will use the GridCoverageFactory in the coverage module to instantiate the GridCoverage2d.</p>
+<ul class="simple">
+<li>Unfortunately, we have not yet arrived at a design sufficiently powerful and flexible to handle the creation of GridCoverage instances from all the different kinds of data a user can have. Therefore, it is the programmer using the GeoTools library who must create a system to generate a new GridCoverage for each data file type they need to access. It is up to that programmer, based on the knowledge of the data format and the data contents of the files their applications use, to extract any generalization which they can get to avoid having to write a new class for every file.</li>
+<li>Some work has been done in GeoAPI and GeoTools to start to create a more general framework. For example, the class that builds a GridCoverage is generally called a GridCoverageReader since it is based on an ImageReader&#8212;there is even an interface of that name in GeoAPI. Unfortunately, this is work in progress and the API will probably change once we start work to finalize the standard way to acces grid data. Programmers today should ignore all that work and build their own. However, the unsupported module coverageio and coverageio-netcdf may have useful ideas for programmers who wish to look at that code.</li>
+</ul>
+<p>This page refers to the DEM example from the gt-opengis explanation of GridCoverage.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="15%" />
+<col width="30%" />
+<col width="21%" />
+<col width="33%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">RAW Data</th>
+<th class="head">Category</th>
+<th class="head">Value</th>
+<th class="head">Colour</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>-9999</td>
+<td>QualitativeCategory</td>
+<td>NaN</td>
+<td>new Color(0,0,0,0)</td>
+</tr>
+<tr class="row-odd"><td>-8888</td>
+<td>QualitativeCategory</td>
+<td>NaN</td>
+<td>Color.WHITE</td>
+</tr>
+<tr class="row-even"><td>0:5000</td>
+<td>QuantitativeCategory</td>
+<td>-99:400 foot</td>
+<td>Color.BLUE:Color.GREEN</td>
+</tr>
+</tbody>
+</table>
+<p><strong>ImageReader</strong></p>
+<p>The ImageReader class is part of the javax.imageio package. It is an abstract class which needs only a few methods defined to work the critical ones being:</p>
+<ul class="simple">
+<li>getImageMetadata(..): IIOMetaData</li>
+<li>read(..): BufferedImage</li>
+</ul>
+<p>The key difficulty, apart from being able to generate the image, being how to build the IIOMetaData object. In our case, we subclass that object adding the metadata information we will need.</p>
+<p>The core functionality of this class follows the standard Java Image I/O framework which is explained in the package documentation which includes the useful Java Image I/O API Guide.</p>
+<ul>
+<li><p class="first">The metadata which is required to build the GridCoverage2D objects may be contained in the image file itself, as is frequently the case in complex file formats such as NetCDF, or may have to be obtained from the user based on their knowledge of the files they are using.</p>
+<p>The programmer, obviously, can choose where in their input chain they wish to obtain from the user the required information. Because sometimes the information can be obtained from the file, it seems reasonable to place this query at the level of the image reader; however, that implies designing the exchange of this information through the IIOMetaData file. Alternatively, the programmer could obtaine the required information in the next step.</p>
+</li>
+</ul>
+<p><strong>GridCoverage2D</strong></p>
+<p>We must also create a class which is able to draw on the ImageReader we created above and use its contents to create the GridCoverage2D. This is merely a matter of using the ImageReader to get all the required pieces and reassembling those pieces to work for the Factory we use to create the GridCoverage2D.</p>
+<p>The ImageReader can furnish the required RenderedImage using the read(..) method. The rest of the required information which is described below will need to be extracted from the IIOMetaData object obtained from the getImageMetadata(..) method (depending, as explained in the note above, on where the programmer decides to obtain all the required metadata).</p>
+<p>The builder will have to wrap up the following steps.</p>
+<ol class="arabic">
+<li><p class="first">Create the Categories</p>
+<p>For each band in the input data matrix, we need to create one or more Category objects.</p>
+<p>The Category instances will differ depending on how they are constructed and be either a qualitative category or a quantitative category.</p>
+<p>For the example in the previous section, we would create three category objects:</p>
+<div class="highlight-python"><div class="highlight"><pre>Color[] colorramp = {
+   Color.BLUE,
+   Color.GREEN
+};
+Category[] catset = {
+    new Category(&quot;NoData&quot;, new Color(0,0,0,0), -9999),
+    new Category(&quot;Clouds&quot;, Color.WHITE, -8888),
+    new Category(&quot;Elevation off benchmark&quot;,
+                 colorramp,
+                 NumberRange.create(0, 5000),
+                 NumberRange.create(-100.0, 400.0))
+};
+</pre></div>
+</div>
+</li>
+<li><p class="first">Create the SampleDimension</p>
+<p>With an array of categories and a unit we can create a SampleDimension. In our case we use the constructor of GridSampleDimension.</p>
+<p>For the DEM example, we would have:</p>
+<div class="highlight-python"><div class="highlight"><pre>GridSampleDimension[] sampdims = {
+   new GridSampleDimension(&quot;Elevation data&quot;, catset, NonSI.FOOT)
+};
+</pre></div>
+</div>
+</li>
+<li><p class="first">Create the georeferencing information</p>
+<p>The easy way to do this is to create an Envelope with the right CRS and the coordinates of the corners. This will only work for GridCoverage instances which are axis aligned, with axes in the right order, and which do not have any unusual information.</p>
+<p>For our DEM example, we would do:</p>
+<div class="highlight-python"><div class="highlight"><pre>double westmost  =  2.0; //Degrees
+double soutmost  = 51.0;
+double eastmost  =  3.0;
+double northmost = 52.0;
+Envelope env = new Envelope2D(DefaultGeographicCRS.WGS84,
+                              westmost,
+                              soutmost,
+                              eastmost-westmost,
+                              northmost-soutmost);
+</pre></div>
+</div>
+<p>More complex cases can be handled by having the user create the actual MathTransform which should be used to go from the pixel row/column offset to georeferenced space.</p>
+</li>
+<li><p class="first">Create the GridCoverage</p>
+<p>Finally we have all the pieces to create the GridCoverage itself. We need to find a factory and then use it.</p>
+<p>For our DEM example, we would do:</p>
+<div class="highlight-python"><div class="highlight"><pre>RenderedImage img = myImageReader.read(..);
+//Using null for the hints, we get the first factory the finder obtains.
+GridCoverageFactory fac = CoverageFactoryFinder.getGridCoverageFactory(null);
+GridCoverage2D myGridCoverage = fac.create(&quot;Paris Elevation&quot;, img, env, sampdims, null, null);
+</pre></div>
+</div>
+<p>These steps can all be wrapped up into the builder class.</p>
+</li>
+</ol>
+<div class="section" id="available-plugins">
+<h2>Available Plugins<a class="headerlink" href="#available-plugins" title="Permalink to this headline">¶</a></h2>
+<p>Keeping the above implementation advice in mind we can review some of the plugin modules that support reading and writing of images from or to file or databases.</p>
+<p>The simple plugins provide access to a single file format of two dimensional images. More complex plugins can read, sometimes even create, image tiles mosaicing original data sets which can be very large, possibly much larger than available memory, into manageable pieces or tiles providing hierarchical levels of generalisations in pyramids or combinations of the pyramids and mosaics. Other complex plugins can handle more complex file formats such as the multi-dimensional file formats used to store temporal series of images, or multi-valued imagery.</p>
+<p>These implementations show a range of design approaches and you are free to explore your own ideas.</p>
+<p>We do have some ideas for a common approach we would like to see pursued:</p>
+<ul class="simple">
+<li>develop a standard set of metadata elements through which we can describe all the various data sets we encounter</li>
+<li>helpful base classes to assist in implementation</li>
+</ul>
+<p>For now the available plugins are each creating different solutions based on the particular data types and contents on which they are working.</p>
+</div>
+<div class="section" id="simple-imagery">
+<h2>Simple Imagery<a class="headerlink" href="#simple-imagery" title="Permalink to this headline">¶</a></h2>
+<p>Several plugins provide access to simple imagery, generally a single 2 dimensional block of pixels. These Input/Output (I/O) packages are provided in separate plugins modules to GeoTools often in the &#8216;plugin&#8217; group of modules.</p>
+<p>These plugins use either the geo-referencing information stored in the file format itself or use a second file with the geo-referencing information, a so-called &#8216;world&#8217; file in the &#8216;image+world file&#8217; type formats.</p>
+<p>Because GeoTools has not yet defined a single approach to for creating GridCoverages, alternative approaches have emerged for reading and writing GridCoverages from external sources. Previous sections have discussed how a user can create their own system to read and write files. This section presents the approaches used in the plugin system.</p>
+<p>For now, the following plugins have documentation available.</p>
+<ul class="simple">
+<li>ArcGrid Plugin</li>
+<li>GeoTIFF Plugin</li>
+<li>GTOPO30 Plugin</li>
+<li>Image plus World File Plugin</li>
+</ul>
+</div>
+<div class="section" id="mosaics-and-pyramids">
+<h2>Mosaics and Pyramids<a class="headerlink" href="#mosaics-and-pyramids" title="Permalink to this headline">¶</a></h2>
+<p>GeoTools provides modules capable of working with tiles of images which form mosaics or pyramids. Such tilings are very useful where programs need to provide efficient access to imagery either to small sections of a large image or at several levels of resolution to enable zooming.</p>
+<p>GeoSolutions has created a set of modules in the plugins group to read mosaics and pyramids from pre-generated files.</p>
+<ul class="simple">
+<li>Image Mosaic Plugin</li>
+<li>Image Pyramid Plugin</li>
+</ul>
+<p>Christian Mueller has created the imagemosaic-jdbc module to read pre-generated tiles which are stored in a database.</p>
+<ul class="simple">
+<li>Image Mosaicing Pyramidal JDBC Plugin</li>
+</ul>
+<p>An alternative approach has been created in the coverageio module of the unsupported module group.</p>
+</div>
+<div class="section" id="multi-dimensional">
+<h2>Multi-dimensional<a class="headerlink" href="#multi-dimensional" title="Permalink to this headline">¶</a></h2>
+<p>There are also several approaches to handling multi-dimensional data, again with different approaches taken by different groups. Usually these groups are working with NetCDF files from different organisations (and thus have different conventions to contend with).</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="../grid.html" title="GridCoverage"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="index.html" title="Internal"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../../index.html" >Library</a> &raquo;</li>
+          <li><a href="../index.html" >Coverage</a> &raquo;</li>
+          <li><a href="index.html" >Internal</a> &raquo;</li>
+        <li><a href="#">Format</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

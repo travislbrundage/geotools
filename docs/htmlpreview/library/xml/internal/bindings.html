@@ -1,0 +1,660 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Bindings &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../../index.html" />
+    <link rel="up" title="Internals" href="index.html" />
+    <link rel="next" title="Configuration" href="configuration.html" />
+    <link rel="prev" title="Overview" href="overview.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../../index.html" >Library</a> &raquo;</li>
+          <li><a href="../index.html" >XML</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Internals</a> &raquo;</li>
+        <li><a href="#">Bindings</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Bindings</a><ul>
+<li><a class="reference internal" href="#binding-target">Binding Target</a></li>
+<li><a class="reference internal" href="#binding-type">Binding Type</a></li>
+<li><a class="reference internal" href="#binding-execution">Binding Execution</a></li>
+<li><a class="reference internal" href="#simple-bindings">Simple Bindings</a></li>
+<li><a class="reference internal" href="#complex-bindings">Complex Bindings</a></li>
+<li><a class="reference internal" href="#binding-context">Binding Context</a></li>
+<li><a class="reference internal" href="#binding-testing">Binding Testing</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="overview.html"
+                        title="previous chapter">Overview</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="configuration.html"
+                        title="next chapter">Configuration</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/library/xml/internal/bindings.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="bindings">
+<h1>Bindings<a class="headerlink" href="#bindings" title="Permalink to this headline">¶</a></h1>
+<p>A binding is what transforms xml into a java object and vice versa. Bindings can be attached to the following types of xml &#8220;components&#8221;:</p>
+<ul class="simple">
+<li>elements</li>
+<li>attributes</li>
+<li>simple types</li>
+<li>complex types</li>
+</ul>
+<p>More specifically, a binding is an instanceof of <strong>org.geotools.xml.Binding</strong>:</p>
+<div class="highlight-python"><div class="highlight"><pre>interface Binding {
+  /**
+   * @return The qualified name of the target for the binding.
+   */
+  QName getTarget();
+
+  /**
+   * @return The java type this binding maps to.
+   */
+  Class getType();
+
+  /**
+   * @return The execution mode of the binding, one of the constants AFTER,
+   * BEFORE, or OVERRIDE.
+   *
+   */
+  int getExecutionMode();
+}
+</pre></div>
+</div>
+<div class="section" id="binding-target">
+<h2>Binding Target<a class="headerlink" href="#binding-target" title="Permalink to this headline">¶</a></h2>
+<p>Bindings must declare the component they are attached to, known as the target for the binding.:</p>
+<div class="highlight-python"><div class="highlight"><pre>QName getTarget();
+</pre></div>
+</div>
+<p>This is achieved with a qualified name, an instance of <strong>javax.xml.namespace.QName</strong>. A qualified name is made up of:</p>
+<ul class="simple">
+<li>a namespace uri, and</li>
+<li>a local parse</li>
+</ul>
+<p>Examples:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="37%" />
+<col width="23%" />
+<col width="40%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Namespace</th>
+<th class="head">Local</th>
+<th class="head">Component</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference external" href="http://www.geotools.org/po">http://www.geotools.org/po</a></td>
+<td>purchaseOrder</td>
+<td>Global &#8220;purchaseOrder&#8221; element</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="http://www.w3.org/2001/XMLSchema">http://www.w3.org/2001/XMLSchema</a></td>
+<td>int</td>
+<td>Simple type &#8220;int&#8221;</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="http://www.opengis.net/gml">http://www.opengis.net/gml</a></td>
+<td>AbstractFeatureType</td>
+<td>Complex type &#8220;AbstractFeatureType&#8221;</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="binding-type">
+<h2>Binding Type<a class="headerlink" href="#binding-type" title="Permalink to this headline">¶</a></h2>
+<p>The job of a binding is to transform between objects and xml. Along with the target xml component, a binding declares the type of the resulting java object.:</p>
+<div class="highlight-python"><div class="highlight"><pre>Class getType();
+</pre></div>
+</div>
+<p>Examples:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="62%" />
+<col width="38%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Target</th>
+<th class="head">Type (Java Class)</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference external" href="http://www.geotools.org/po">http://www.geotools.org/po</a>, purchaseOrder</td>
+<td>org.geotools.po.PurchaseOrder</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="http://www.w3.org/2001/XMLSchema">http://www.w3.org/2001/XMLSchema</a>, int</td>
+<td>java.lang.Integer</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="http://www.opengis.net/gml">http://www.opengis.net/gml</a>, AbstractFeatureType</td>
+<td>org.geotools.feature.Feature</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="binding-execution">
+<h2>Binding Execution<a class="headerlink" href="#binding-execution" title="Permalink to this headline">¶</a></h2>
+<p>When an element or attribute in an xml document is being parsed, a Binding Execution Chain is created for it under your control:</p>
+<div class="highlight-python"><div class="highlight"><pre>int getExecutionMode();
+</pre></div>
+</div>
+<p>The bindings in the chain are executed one after another and the result is the final representation of the element / attribute as a java object. Each binding receives the value produced by the binding before it.</p>
+<p>Consider the following xml snippet, in which an element named &#8220;integerElement&#8221; which is of type &#8220;xs:integer&#8221; is being parsed:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;integerElement&gt;25&lt;/integerElement&gt;
+</pre></div>
+</div>
+<p>By default, a binding execution chain is made up of the following bindings:</p>
+<ul class="simple">
+<li>A binding for the element or attribute itself ( optional )</li>
+<li>A binding for the type of the element / attribute</li>
+<li>Bindings for each super type in the type hierarchy of the element / attribute</li>
+</ul>
+<p>So for the above example, the following bindings would form the binding execution chain:</p>
+<img alt="../../../_images/bindingChain1.png" src="../../../_images/bindingChain1.png" />
+<p>Once the binding chain has been formed, it is executed in order, with the input to the chain being the &#8220;raw&#8221; text of the element. At each binding a tranformation occurs and is passed onto the next binding in the chain. The end result of which is the final transformed value for the element.</p>
+<img alt="../../../_images/bindingChain2.png" src="../../../_images/bindingChain2.png" />
+<p>The default execution behaviour is to execute after its &#8220;parent&#8221; binding has executed. However a binding may also specify different execution behaviour, called its <strong>Execution Mode</strong>:</p>
+<ul>
+<li><p class="first">After</p>
+<p>Binding executes after its parent. The input to the binding is the output of its parent. This is the default execution mode for Simple Bindings</p>
+</li>
+<li><p class="first">Before</p>
+<p>Binding executes before its parent. The output of the binding is then the input to its parent.</p>
+</li>
+<li><p class="first">Override</p>
+<p>Binding completely overrides its immediate parent and all grandparents. The input to the binding is the &#8220;raw&#8221; value of
+the element or attribute.</p>
+<p>The execution mode which should be used really depends on both the xml type hierarchy involved, and the java object model it maps too. Continuing with the above example, in the end the desired result is to turn the string &#8220;25&#8221;, into the integer 25. Using four bindings as suggested above seems to be overkill.</p>
+<p>A more logical approach would be to have the &#8220;integer&#8221; binding perform the transformation directly. This can be achieved by having the integer binding declare its execution mode to be &#8220;OVERRIDE&#8221;:</p>
+</li>
+</ul>
+<img alt="../../../_images/bindingChain3.png" src="../../../_images/bindingChain3.png" />
+<ul>
+<li><p class="first">Encoding</p>
+<p>Similar to parsing, encoding is executed via a binding chain. The input to the chain is the object itself and the output is xml. The formation of the chain for encoding is identical to that of parsing. So for the previous example the binding chain that would result is:</p>
+</li>
+</ul>
+<img alt="../../../_images/bindingChain5.png" src="../../../_images/bindingChain5.png" />
+</div>
+<div class="section" id="simple-bindings">
+<h2>Simple Bindings<a class="headerlink" href="#simple-bindings" title="Permalink to this headline">¶</a></h2>
+<p>Types in xml schema fall into two categories: Simple and Complex. For this reason bindings also fall into the same two categories.</p>
+<p>Simple bindings are used to parse and encode elements and attributes which have simple types. The api for simple bindings looks like:</p>
+<div class="highlight-python"><div class="highlight"><pre>/**
+ * Parses an instance component (element or attribute) into an object
+ * representation.
+ */
+ Object parse(InstanceComponent instance, Object value) throws Exception;
+
+/**
+ * Performs the encoding of the object as a String.
+ *
+ *
+ */
+ String encode(Object object, String value) throws Exception;
+</pre></div>
+</div>
+<ul>
+<li><p class="first">Parsing:</p>
+<div class="highlight-python"><div class="highlight"><pre>Object parse(InstanceComponent instance, Object value) throws Exception;
+</pre></div>
+</div>
+<p>The parse method for simple bindings takes two parameters:</p>
+<ul class="simple">
+<li>instance: The instance component ( element or attribute ) that is being parsed as an instance of org.geotools.xml.InstanceComponent</li>
+<li>value: The parsed value of the element / attribute created by the previous binding in the execution chain ( explained in greater detail above ). If the binding is the first in the chain, this value is the raw text of the element / attribute as a String.</li>
+</ul>
+<p>The return value of the method is the transformed object. Continuing with the &#8220;xs:integer&#8221; example, an implementation could be:</p>
+<div class="highlight-python"><div class="highlight"><pre>Object parse(InstanceComponent instance, Object value) throws Exception {
+  return Integer.parseInt( (String) value );
+}
+</pre></div>
+</div>
+</li>
+<li><p class="first">Encoding:</p>
+<div class="highlight-python"><div class="highlight"><pre>String encode(Object object, String value) throws Exception;
+</pre></div>
+</div>
+<p>The encode method for simple bindings must serialize the element or attribute as a string.</p>
+<p>It takes two parameters:</p>
+<ul class="simple">
+<li>object: The object to serialize or encode as xml</li>
+<li>value: The string value as encoded by the previous binding in the execution chain. If the binding is the first in the chain, the value is the result of calling toString() on the object parameter.</li>
+</ul>
+<p>The return value of the method is the serialized value for the object.
+The example of &#8220;xs:integer&#8221; can be implemented as:</p>
+<div class="highlight-python"><div class="highlight"><pre>String encode(Object object, String value) throws Exception {
+  Integer integer = (Integer) object;
+  return integer.toString();
+}
+</pre></div>
+</div>
+</li>
+<li><p class="first">AbstractSimpleBinding</p>
+<p>The class org.geotools.xml.AbstractSimpleBinding is available for subclassing
+by binding writers.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="complex-bindings">
+<h2>Complex Bindings<a class="headerlink" href="#complex-bindings" title="Permalink to this headline">¶</a></h2>
+<p>Complex bindings are used to parse and encode elements which have complex types.</p>
+<p>The interface for complex bindings looks like:</p>
+<div class="highlight-python"><div class="highlight"><pre>/**
+ * Parses a complex element from an instance document into an object
+ * representation.
+ *
+ */
+Object parse(ElementInstance instance, Node node, Object value) throws Exception;
+
+/**
+ * Performs the encoding of the object into its xml representation.
+ *
+ */
+Element encode(Object object, Document document, Element value) throws Exception;
+
+/**
+ * Returns a property of a particular object which corresponds to the
+ * specified name.
+ *
+ */
+Object getProperty(Object object, QName name) throws Exception;
+</pre></div>
+</div>
+<ul>
+<li><p class="first">Parsing:</p>
+<div class="highlight-python"><div class="highlight"><pre>Object parse(ElementInstance instance, Node node, Object value) throws Exception;
+</pre></div>
+</div>
+<p>The parse method for a complex binding takes three parameters:</p>
+<ul class="simple">
+<li>instance: The element instance being parsed, an instance of <strong>org.geotools.xml.ElementInstance</strong></li>
+<li>nocde:: A node in the current &#8220;parse tree&#8221; ( explained below ) at the time the binding is being executed, an instance of Node</li>
+<li>value: The parsed value as produced by the previous binding in the execution chain. This value is null for the first binding in the chain.</li>
+</ul>
+<p>Complex types by defintion are xml elements which are composed of other xml elements and attributes. A complex object could be defined as an object which is composed of other objects. Parsing a complex object really just amounts to rounding up objects for child elements, and composing the resulting object accordingly.</p>
+<p>Parsing of complex elements occurs on the trailing edge. At which point all child elements and attributes have been parsed and placed in the &#8220;parse tree&#8221;. The parse tree is an instance of Node. The Node interface contains methods for obtaining parsed values of child elements and attributes.</p>
+<p>A complex binding must use the parse tree to obtain the values that it needs to compose the resulting object.</p>
+<p>As an example, consider the binding for the &#8220;PurchaseOrderType&#8221; from the purchase order schema.:</p>
+<div class="highlight-python"><div class="highlight"><pre>Object parse(ElementInstance instance, Node node, Object value) throws     Exception {
+    PurchaseOrder po = new PurchaseOrder();
+
+    //mandatory child elements
+    po.setShipTo( (USAddress) node.getChildValue( &quot;shipTo&quot; ) );
+    po.setBillto( (USAddress) node.getChildValue( &quot;billTo&quot; ) );
+    po.setItems( (Items) node.getChildValue( &quot;Items&quot; ) );
+
+    //optinal child elements
+    if ( node.hasChild( &quot;comment&quot; ) ) {
+      po.setComment( (String) node.getChildValue( &quot;comment&quot; ) );
+    }
+
+    //attributes
+    po.setOrderDate( (Date) node.getAttributeValue( &quot;orderDate&quot; ) );
+
+    return po;
+}
+</pre></div>
+</div>
+</li>
+<li><p class="first">Encoding:</p>
+<div class="highlight-python"><div class="highlight"><pre>Element encode(Object object, Document document, Element value) throws Exception;
+</pre></div>
+</div>
+<p>The encode method for a complex binding must transform the object into a DOM element. It takes three parameters:</p>
+<ul class="simple">
+<li>object: The object to encode</li>
+<li>document: A document used to create DOM components</li>
+<li>value: A value as an element which is the result of the previous binding in the execution chain. For the first binding in the chain this is an empty element ( no attributes, children, or text )</li>
+</ul>
+<p>The return value of the method is the encoded element. Often this is the same element passed in ( the value parameter ), with some content added to it.</p>
+<p>The getProperty method for a complex binding is used to retreive properties from an object being encoded.:</p>
+<div class="highlight-python"><div class="highlight"><pre>Object getProperty(Object object, QName name) throws Exception;
+</pre></div>
+</div>
+<p>The returned objects themselves are then encoded down the line. For an object being encoded as an element, each property corresponds to a child element or attribite.</p>
+<p>The method takes two parameters:</p>
+<ul class="simple">
+<li>object: The object being encoded, this is the same object as in the encode method</li>
+<li>name: The qualified name of the property to retrieve</li>
+</ul>
+<p>The return value of the method is the property itself, or null if it does not exist.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">A multi-valued property is an element declaration in which the &#8220;maxOccurs&#8221; attribute is greater then 1. In this case, the getProperty method may return a collction, an array, or an iterator for the property.</p>
+</div>
+<p>The entire encoding process for a complex binding is split over these two methods.</p>
+<p>Consider the &#8220;PurchaseOrderType&#8221; example:</p>
+<div class="highlight-python"><div class="highlight"><pre>Element encode(Object object, Document document, Element value) throws Exception {
+     return value;
+}
+
+Object getProperty(Object object, QName name) throws Exception {
+  PurchaseOrder purchaseOrder = (PurchaseOrder) object;
+
+  if ( &quot;shipTo&quot;.equals( name.getLocalPart() ) ) {
+      return purchaseOrder.getShipTo();
+  }
+
+  if ( &quot;billTo&quot;.equals( name.getLocalPart() ) ) {
+      return purchaseOrder.getBillTo();
+  }
+
+  ...
+
+}
+</pre></div>
+</div>
+<p>In the above example all of the work is dont in the getProperty method. This is often the case. However there are situations where the encode method is necessary.</p>
+<ul class="simple">
+<li>For types with &#8220;open-ended&#8221; or &#8220;extensible&#8221; content ( think AbstractFeatureType from the gml schema ). Since the content is open ended the schema does not contain the necessary information to retrieve the property</li>
+<li>For types with &#8220;mixed&#8221; content ( ie, can have child elements and text ). In this situation the child elements can be encoded with getProperty, and the text content can be be encoded in encode.</li>
+</ul>
+</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>While it is often not necessary to implement the encode method for a complex binding, the binding writer has the freedom to do so.</p>
+<p>The above example would function exactly the same written as the following:</p>
+<div class="highlight-python"><div class="highlight"><pre>Element encode(Object object, Document document, Element value) throws Exception {
+  PurchaseOrder purchaseOrder = (PurchaseOrder) object;
+
+  USAddress shipTo = purchaseOrder.getShipTo();
+
+  Element shipToElement = document.createElement( &quot;shipTo&quot; );
+  value.appendChild( shipToElement );
+
+  Element name = document.createElement( &quot;name&quot; );
+  name.appendChild( document.createTextNode( shipTo.getName() ) );
+  shipToElement.appendChild( name );
+
+  Element street = document.createElement( &quot;street&quot; );
+  street.appendChild( document.createTextNode( shipTo.getStreet() ) );
+  shipToElement.appendChild( street );
+
+  ...
+
+  Element billToElement = document.createElement( &quot;billTo&quot; );
+  value.appendChild( billToElement );
+
+  ...
+
+  return value;
+}
+
+Object getProperty(Object object, QName name) throws Exception {
+   return null;
+}
+</pre></div>
+</div>
+<p class="last">In this example, all the work is done in the encode method. However it is evident that the second example results in much more work for the binding implementor which is why teh first method is often preferred.</p>
+</div>
+<ul>
+<li><p class="first">AbstractComplexBinding</p>
+<p>The class org.geotools.xml.AbstractCompledxBinding is available for subclassing by binding writers.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="binding-context">
+<h2>Binding Context<a class="headerlink" href="#binding-context" title="Permalink to this headline">¶</a></h2>
+<p>Often bindings have dependencies on other types of objects. The most common case is a factory used to create objects. Bindings work with the concept of Constructor Injection, in which any dependencies a binding has on another object is listed as a parameter in its constructor.</p>
+<p>Let us consider the &#8220;PurchaseOrderType&#8221; example once again:</p>
+<div class="highlight-python"><div class="highlight"><pre>class PurchaseOrderTypeBinding extends AbstractComplexBinding {
+
+  PurchaseOrderFactory factory;
+
+  public PurchaseOrderTypeBinding( PurchaseOrderFactory factory ) }
+    this.factory = factory;
+  }
+
+  ...
+}
+</pre></div>
+</div>
+<p>In the above, the binding declares a dependency on a factory which it will use to construct objects. You may be asking the question Where does this factory come from?. The answer is the Binding Context.</p>
+<p>The Binding Context is used to create bindings. More specifically a binding is created within a binding context. Which means that all dependencies ( a PurchaseOrderFactory in this case ) must also be present in the binding context. For those of you familiar with the concept of Inversion of Control (IoC) it may not surprise you that the binding context is nothing more then a PicoContainer instance.</p>
+<p>The Binding Context is described further in the Configuration section.</p>
+</div>
+<div class="section" id="binding-testing">
+<h2>Binding Testing<a class="headerlink" href="#binding-testing" title="Permalink to this headline">¶</a></h2>
+<p>The <strong>org.geotools.xml.test.XMLTestSupport</strong> class is used as a base class for binding unit tests.</p>
+<p>Subclasses of XMLTestSupport need to provide the configuration the binding under test is part of. For instance:</p>
+<div class="highlight-python"><div class="highlight"><pre>public class POBindingTest extends XMLTestSupport {
+
+   protected Configuration createConfiguration() {
+       return new POConfiguration();
+   }
+}
+</pre></div>
+</div>
+<p>The class provides convenience methods for testing various aspects of all bindings such as:</p>
+<ul>
+<li><p class="first">Parse Testing</p>
+<p>Each binding unit test has a member of type org.w3c.dom.Document. It is meant to be used to build up an instance document to be parsed by the parser. The instance document contains the content that the binding under test will parse. The document must be built up from a test method. Once built up, the parse method is called to parse the instance document into an object.:</p>
+<div class="highlight-python"><div class="highlight"><pre> /**
+  * Parses the built document.
+  * &lt;p&gt;
+  * This method should be called after building the entire document.
+  *
+  * &lt;/p&gt;
+  * @throws Exception
+  */
+protected Object parse() throws Exception;
+</pre></div>
+</div>
+<p>The method takes no parameters. An example usage:</p>
+<div class="highlight-python"><div class="highlight"><pre>public class POBindingTest extends XMLTestSupport {
+
+   ...
+
+   public void testPurchaseOrderTypeParse() throws Exception {
+       //build up the document
+       Element purchaseOrderElement = document.createElementNS( &quot;http://www.geotools.org/po&quot;, &quot;PurchaseOrder&quot; );
+       document.appendChild( purchaseOrderElement );
+       purchaseOrder.setAttribute( &quot;orderDate&quot;, &quot;2007-01-19&quot; );
+
+       Element shipToElement = document.createElementNS( &quot;http://www.geotools.org/po&quot;, &quot;ShipTo&quot; );
+       purchaseOrderElement.appendChild( shipToElement );
+       shipToElement.setAttribute( &quot;country&quot;, &quot;Canada&quot;) );
+       ...
+
+       //call parse
+       PurchaseOrder purchaseOrder = (PurchaseOrder) parse();
+
+       //make assertions
+       assertEquals( new Date(&quot;2007-01-19&quot;), purchaseOrder.getOrderDate() );
+       ...
+   }
+}
+</pre></div>
+</div>
+</li>
+<li><p class="first">Encode Testing</p>
+<p>The encode method is used to encode an object into an instance document. It must be called after the object tree in which the binding will encode has been built up.:</p>
+<div class="highlight-python"><div class="highlight"><pre>/**
+  * Encodes an object, element name pair.
+  *
+  * @param object The object to encode.
+  * @param element The name of the element to encode.
+  *
+  * @return The object encoded.
+  * @throws Exception
+  */
+ protected Document encode( Object object, QName element ) throws Exception;
+</pre></div>
+</div>
+<p>The method takes two parameters:</p>
+<ul class="simple">
+<li>object: the object to be encoded</li>
+<li>element: the qualified name of the element which maps to the object</li>
+</ul>
+<p>The method returns a org.w3c.dom.Document object which is the root of the encoded document.</p>
+<p>An example usage:</p>
+<div class="highlight-python"><div class="highlight"><pre>public class POBindingTest extends XMLTestSupport {
+
+   ...
+
+   public void testPurchaseOrderTypeEncode() throws Exception {
+       //build up the object
+       PurchaseOrder purchaseOrder = new PurchaseOrder();
+       purchaseOrder.setOrderDate( new Date(&quot;2007-01-19&quot;) );
+
+       USAddress shipTo = new USAddress();
+       shipTo.setCountry( &quot;Canada&quot; );
+       ..
+       purchaseOrder.setShipTo( shipTo);
+
+       //encode the object
+       Document document = encode( purchaseOrder, new QName( &quot;http://www.geotools.org/po&quot;, &quot;PurchaseOrder&quot; ) );
+
+       //make assertions
+       assertEquals( &quot;2007-01-19&quot;, document.getDocuemntElement().getAttribute( &quot;orderDate&quot; ) );
+       ...
+     }
+}
+</pre></div>
+</div>
+</li>
+<li><p class="first">Type Mapping Testing</p>
+<p>Part of testing a binding is being sure of which type of object it returns. To acheive this the binding method can be used to obtain an instance of a particular binding.:</p>
+<div class="highlight-python"><div class="highlight"><pre>/**
+ * Convenience method for obtaining an instance of a binding.
+ *
+ * @param name The qualified name of the element,attribute,or type the
+ * binding &quot;binds&quot; to, the key of the binding in the container.
+ *
+ * @return The binding.
+ */
+protected Binding binding( QName name );
+</pre></div>
+</div>
+<p>The method takes a single parameter which is the qualified name of an element, attribute, or type. It returns the binding which is bound to the name. With the binding instance available, its mapped type can be asserted.</p>
+<p>An example usage:</p>
+<div class="highlight-python"><div class="highlight"><pre>public class POBindingTest extends XMLTestSupport {
+
+   ...
+
+   public void testPurchaseOrderTypeType() {
+     //get an instance of the binding
+     Binding binding = binding( new QName( &quot;http://www.geotools.org/po&quot;, &quot;PurchaseOrderType&quot; ) );
+
+     //assert the type
+     assertEquals( PurchaseOrder.class, binding.getType() ):
+   }
+</pre></div>
+</div>
+</li>
+<li><p class="first">Execution Testing</p>
+<p>In much the same way that the binding method shown above is used to assert type mapping, it can be used to assert execution mode as well.:</p>
+<div class="highlight-python"><div class="highlight"><pre>public class POBindingTest extends XMLTestSupport {
+
+   ...
+
+   public void testPurchaseOrderTypeExecutionMode() {
+     //get an instance of the binding
+     Binding binding = binding( new QName( &quot;http://www.geotools.org/po&quot;, &quot;PurchaseOrderType&quot; ) );
+
+     //assert the type
+     assertEquals( Binding.OVERRIDE,  binding.getExecutionMode() ):
+   }
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="configuration.html" title="Configuration"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="overview.html" title="Overview"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../../index.html" >Library</a> &raquo;</li>
+          <li><a href="../index.html" >XML</a> &raquo;</li>
+          <li><a href="index.html" >Internals</a> &raquo;</li>
+        <li><a href="#">Bindings</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

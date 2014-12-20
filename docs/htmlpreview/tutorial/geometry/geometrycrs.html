@@ -1,0 +1,865 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Geometry CRS Tutorial &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../index.html" />
+    <link rel="up" title="Tutorials" href="../index.html" />
+    <link rel="next" title="Query Tutorial" href="../filter/query.html" />
+    <link rel="prev" title="Feature Tutorial" href="../feature/csv2shp.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Tutorials</a> &raquo;</li>
+        <li><a href="#">Geometry CRS Tutorial</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Geometry CRS Tutorial</a><ul>
+<li><a class="reference internal" href="#welcome">Welcome</a></li>
+<li><a class="reference internal" href="#crs-lab-application">CRS Lab Application</a><ul>
+<li><a class="reference internal" href="#validate-geometry">Validate Geometry</a></li>
+<li><a class="reference internal" href="#export-reprojected-shapefile">Export Reprojected Shapefile</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#running-the-application">Running the Application</a></li>
+<li><a class="reference internal" href="#things-to-try">Things to Try</a></li>
+<li><a class="reference internal" href="#geometry">Geometry</a><ul>
+<li><a class="reference internal" href="#point">Point</a></li>
+<li><a class="reference internal" href="#line">Line</a></li>
+<li><a class="reference internal" href="#polygon">Polygon</a></li>
+<li><a class="reference internal" href="#why-not-use-java-shape">Why not use Java Shape</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#coordinate-reference-system">Coordinate Reference System</a><ul>
+<li><a class="reference internal" href="#epsg-codes">EPSG Codes</a></li>
+<li><a class="reference internal" href="#axis-order">Axis Order</a><ul>
+<li><a class="reference internal" href="#workarounds">Workarounds</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#for-more-information">For more Information</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../feature/csv2shp.html"
+                        title="previous chapter">Feature Tutorial</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../filter/query.html"
+                        title="next chapter">Query Tutorial</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/tutorial/geometry/geometrycrs.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="geometry-crs-tutorial">
+<h1>Geometry CRS Tutorial<a class="headerlink" href="#geometry-crs-tutorial" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="welcome">
+<h2>Welcome<a class="headerlink" href="#welcome" title="Permalink to this headline">¶</a></h2>
+<p>Welcome to Geospatial for Java. This workbook is aimed at Java developers who
+are new to geospatial and would like to get started.</p>
+<p>Please set up your
+development environment prior to starting this tutorial. We will list the maven
+dependencies required at the start of the workbook.</p>
+<p>This work book covers the dirty raw underbelly of the GIS world; yes I am afraid
+we are talking about <em>Math</em>. However please do not be afraid, all the math
+amounts to is shapes drawn on the earth.</p>
+<p>This workbook is constructed in a code first manner, allowing you to work
+through the code example and read on if you have any questions.</p>
+<p>This workbook is featured as part of OSDC2011, FOSS4G 2010 and FOSS4G 2009 conferences.</p>
+<p>Jody Garnett</p>
+<blockquote>
+<div>Jody Garnett is the lead architect for the uDig project; and on the steering
+committee for GeoTools; GeoServer and uDig. Taking the role of geospatial
+consultant a bit too literally Jody has presented workshops and training
+courses on every continent (except Antarctica). Jody Garnett is an employee
+of LISAsoft.</div></blockquote>
+<p>Michael Bedward</p>
+<blockquote>
+<div>Michael Bedward is a researcher with the NSW Department of Environment and
+Climate Change and an active contributor to the GeoTools users&#8217; list. He has
+a particularly wide grasp of all the possible mistakes one can make using
+GeoTools.</div></blockquote>
+</div>
+<div class="section" id="crs-lab-application">
+<h2>CRS Lab Application<a class="headerlink" href="#crs-lab-application" title="Permalink to this headline">¶</a></h2>
+<p>This tutorial gives a visual demonstration of coordinate reference systems by
+displaying a shapefile and shows how changing the map projection morphs
+the geometry of the features.</p>
+<ol class="arabic simple">
+<li>Please ensure your pom.xml includes the following:</li>
+</ol>
+<div class="highlight-xml"><div class="highlight"><pre>    <span class="nt">&lt;dependencies&gt;</span>
+        <span class="nt">&lt;dependency&gt;</span>
+            <span class="nt">&lt;groupId&gt;</span>org.geotools<span class="nt">&lt;/groupId&gt;</span>
+            <span class="nt">&lt;artifactId&gt;</span>gt-shapefile<span class="nt">&lt;/artifactId&gt;</span>
+            <span class="nt">&lt;version&gt;</span>${geotools.version}<span class="nt">&lt;/version&gt;</span>
+        <span class="nt">&lt;/dependency&gt;</span>
+        <span class="nt">&lt;dependency&gt;</span>
+            <span class="nt">&lt;groupId&gt;</span>org.geotools<span class="nt">&lt;/groupId&gt;</span>
+            <span class="nt">&lt;artifactId&gt;</span>gt-swing<span class="nt">&lt;/artifactId&gt;</span>
+            <span class="nt">&lt;version&gt;</span>${geotools.version}<span class="nt">&lt;/version&gt;</span>
+        <span class="nt">&lt;/dependency&gt;</span>
+        <span class="nt">&lt;dependency&gt;</span>
+            <span class="nt">&lt;groupId&gt;</span>org.geotools<span class="nt">&lt;/groupId&gt;</span>
+            <span class="nt">&lt;artifactId&gt;</span>gt-epsg-hsql<span class="nt">&lt;/artifactId&gt;</span>
+            <span class="nt">&lt;version&gt;</span>${geotools.version}<span class="nt">&lt;/version&gt;</span>
+        <span class="nt">&lt;/dependency&gt;</span>
+    <span class="nt">&lt;/dependencies&gt;</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li>Create the <strong>CRSLab.java</strong> file and copy and paste the following code:</li>
+</ol>
+<div class="highlight-java"><div class="highlight"><pre><span class="kn">package</span> <span class="nn">org.geotools.tutorial.crs</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.awt.event.ActionEvent</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.io.File</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.io.Serializable</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.HashMap</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Map</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">javax.swing.Action</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javax.swing.JButton</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javax.swing.JOptionPane</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javax.swing.JToolBar</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javax.swing.SwingWorker</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">com.vividsolutions.jts.geom.Geometry</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.geotools.data.DataStore</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.data.DataStoreFactorySpi</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.data.DefaultTransaction</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.data.FeatureWriter</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.data.FileDataStore</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.data.FileDataStoreFinder</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.data.Query</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.data.Transaction</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.data.shapefile.ShapefileDataStoreFactory</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.data.simple.SimpleFeatureCollection</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.data.simple.SimpleFeatureIterator</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.data.simple.SimpleFeatureSource</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.data.simple.SimpleFeatureStore</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.feature.simple.SimpleFeatureTypeBuilder</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.geometry.jts.JTS</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.map.FeatureLayer</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.map.Layer</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.map.MapContent</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.referencing.CRS</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.styling.SLD</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.styling.Style</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.swing.JMapFrame</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.swing.JProgressWindow</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.swing.action.SafeAction</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.swing.data.JFileDataStoreChooser</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.opengis.feature.Feature</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.opengis.feature.FeatureVisitor</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.opengis.feature.simple.SimpleFeature</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.opengis.feature.simple.SimpleFeatureType</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.opengis.feature.type.FeatureType</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.opengis.referencing.crs.CoordinateReferenceSystem</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.opengis.referencing.operation.MathTransform</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.opengis.util.ProgressListener</span><span class="o">;</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * This is a visual example of changing the coordinate reference system of a feature layer.</span>
+<span class="cm"> */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">CRSLab</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="n">File</span> <span class="n">sourceFile</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="n">SimpleFeatureSource</span> <span class="n">featureSource</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="n">MapContent</span> <span class="n">map</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+        <span class="n">CRSLab</span> <span class="n">lab</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CRSLab</span><span class="o">();</span>
+        <span class="n">lab</span><span class="o">.</span><span class="na">displayShapefile</span><span class="o">();</span>
+    <span class="o">}</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li>Notice that we are customizing the JMapFrame by adding two buttons to its
+toolbar: one to check that feature geometries are valid (e.g. polygon
+boundaries are closed) and one to export reprojected feature data.</li>
+</ol>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">displayShapefile</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+        <span class="n">sourceFile</span> <span class="o">=</span> <span class="n">JFileDataStoreChooser</span><span class="o">.</span><span class="na">showOpenFile</span><span class="o">(</span><span class="s">&quot;shp&quot;</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">sourceFile</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="n">FileDataStore</span> <span class="n">store</span> <span class="o">=</span> <span class="n">FileDataStoreFinder</span><span class="o">.</span><span class="na">getDataStore</span><span class="o">(</span><span class="n">sourceFile</span><span class="o">);</span>
+        <span class="n">featureSource</span> <span class="o">=</span> <span class="n">store</span><span class="o">.</span><span class="na">getFeatureSource</span><span class="o">();</span>
+
+        <span class="c1">// Create a map context and add our shapefile to it</span>
+        <span class="n">map</span> <span class="o">=</span> <span class="k">new</span> <span class="n">MapContent</span><span class="o">();</span>
+        <span class="n">Style</span> <span class="n">style</span> <span class="o">=</span> <span class="n">SLD</span><span class="o">.</span><span class="na">createSimpleStyle</span><span class="o">(</span><span class="n">featureSource</span><span class="o">.</span><span class="na">getSchema</span><span class="o">());</span>
+        <span class="n">Layer</span> <span class="n">layer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FeatureLayer</span><span class="o">(</span><span class="n">featureSource</span><span class="o">,</span> <span class="n">style</span><span class="o">);</span>
+        <span class="n">map</span><span class="o">.</span><span class="na">layers</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="n">layer</span><span class="o">);</span>
+
+        <span class="c1">// Create a JMapFrame with custom toolbar buttons</span>
+        <span class="n">JMapFrame</span> <span class="n">mapFrame</span> <span class="o">=</span> <span class="k">new</span> <span class="n">JMapFrame</span><span class="o">(</span><span class="n">map</span><span class="o">);</span>
+        <span class="n">mapFrame</span><span class="o">.</span><span class="na">enableToolBar</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+        <span class="n">mapFrame</span><span class="o">.</span><span class="na">enableStatusBar</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+
+        <span class="n">JToolBar</span> <span class="n">toolbar</span> <span class="o">=</span> <span class="n">mapFrame</span><span class="o">.</span><span class="na">getToolBar</span><span class="o">();</span>
+        <span class="n">toolbar</span><span class="o">.</span><span class="na">addSeparator</span><span class="o">();</span>
+        <span class="n">toolbar</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">JButton</span><span class="o">(</span><span class="k">new</span> <span class="n">ValidateGeometryAction</span><span class="o">()));</span>
+        <span class="n">toolbar</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">JButton</span><span class="o">(</span><span class="k">new</span> <span class="n">ExportShapefileAction</span><span class="o">()));</span>
+
+        <span class="c1">// Display the map frame. When it is closed the application will exit</span>
+        <span class="n">mapFrame</span><span class="o">.</span><span class="na">setSize</span><span class="o">(</span><span class="mi">800</span><span class="o">,</span> <span class="mi">600</span><span class="o">);</span>
+        <span class="n">mapFrame</span><span class="o">.</span><span class="na">setVisible</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+    <span class="o">}</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li>Here is how we have configured JMapFrame:<ul>
+<li>We have enabled a status line; this contains a button allowing the map
+coordinate reference system to be changed.</li>
+<li>We have enabled the toolbar and added two actions to it (which we will
+be defining in the next section).</li>
+</ul>
+</li>
+</ol>
+<div class="section" id="validate-geometry">
+<h3>Validate Geometry<a class="headerlink" href="#validate-geometry" title="Permalink to this headline">¶</a></h3>
+<p>Our toolbar action is implemented as a nested class, with most of the work being
+done by a helper method in the parent class.</p>
+<ol class="arabic simple">
+<li>Create the <strong>ValidateGeometryAction</strong> mentioned in the previous section
+as an inner class.</li>
+</ol>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="kd">class</span> <span class="nc">ValidateGeometryAction</span> <span class="kd">extends</span> <span class="n">SafeAction</span> <span class="o">{</span>
+        <span class="n">ValidateGeometryAction</span><span class="o">()</span> <span class="o">{</span>
+            <span class="kd">super</span><span class="o">(</span><span class="s">&quot;Validate geometry&quot;</span><span class="o">);</span>
+            <span class="n">putValue</span><span class="o">(</span><span class="n">Action</span><span class="o">.</span><span class="na">SHORT_DESCRIPTION</span><span class="o">,</span> <span class="s">&quot;Check each geometry&quot;</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">action</span><span class="o">(</span><span class="n">ActionEvent</span> <span class="n">e</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Throwable</span> <span class="o">{</span>
+            <span class="kt">int</span> <span class="n">numInvalid</span> <span class="o">=</span> <span class="n">validateFeatureGeometry</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span>
+            <span class="n">String</span> <span class="n">msg</span><span class="o">;</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">numInvalid</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;All feature geometries are valid&quot;</span><span class="o">;</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;Invalid geometries: &quot;</span> <span class="o">+</span> <span class="n">numInvalid</span><span class="o">;</span>
+            <span class="o">}</span>
+            <span class="n">JOptionPane</span><span class="o">.</span><span class="na">showMessageDialog</span><span class="o">(</span><span class="kc">null</span><span class="o">,</span> <span class="n">msg</span><span class="o">,</span> <span class="s">&quot;Geometry results&quot;</span><span class="o">,</span>
+                            <span class="n">JOptionPane</span><span class="o">.</span><span class="na">INFORMATION_MESSAGE</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li>This method checks the geometry associated with each feature in our shapefile
+for common problems (such as polygons not having closed boundaries).</li>
+</ol>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="kd">private</span> <span class="kt">int</span> <span class="nf">validateFeatureGeometry</span><span class="o">(</span><span class="n">ProgressListener</span> <span class="n">progress</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+        <span class="kd">final</span> <span class="n">SimpleFeatureCollection</span> <span class="n">featureCollection</span> <span class="o">=</span> <span class="n">featureSource</span><span class="o">.</span><span class="na">getFeatures</span><span class="o">();</span>
+
+        <span class="c1">// Rather than use an iterator, create a FeatureVisitor to check each fature</span>
+        <span class="kd">class</span> <span class="nc">ValidationVisitor</span> <span class="kd">implements</span> <span class="n">FeatureVisitor</span> <span class="o">{</span>
+            <span class="kd">public</span> <span class="kt">int</span> <span class="n">numInvalidGeometries</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+            <span class="kd">public</span> <span class="kt">void</span> <span class="nf">visit</span><span class="o">(</span><span class="n">Feature</span> <span class="n">f</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">SimpleFeature</span> <span class="n">feature</span> <span class="o">=</span> <span class="o">(</span><span class="n">SimpleFeature</span><span class="o">)</span> <span class="n">f</span><span class="o">;</span>
+                <span class="n">Geometry</span> <span class="n">geom</span> <span class="o">=</span> <span class="o">(</span><span class="n">Geometry</span><span class="o">)</span> <span class="n">feature</span><span class="o">.</span><span class="na">getDefaultGeometry</span><span class="o">();</span>
+                <span class="k">if</span> <span class="o">(</span><span class="n">geom</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">geom</span><span class="o">.</span><span class="na">isValid</span><span class="o">())</span> <span class="o">{</span>
+                    <span class="n">numInvalidGeometries</span><span class="o">++;</span>
+                    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Invalid Geoemtry: &quot;</span> <span class="o">+</span> <span class="n">feature</span><span class="o">.</span><span class="na">getID</span><span class="o">());</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+
+        <span class="n">ValidationVisitor</span> <span class="n">visitor</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ValidationVisitor</span><span class="o">();</span>
+
+        <span class="c1">// Pass visitor and the progress bar to feature collection</span>
+        <span class="n">featureCollection</span><span class="o">.</span><span class="na">accepts</span><span class="o">(</span><span class="n">visitor</span><span class="o">,</span> <span class="n">progress</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">visitor</span><span class="o">.</span><span class="na">numInvalidGeometries</span><span class="o">;</span>
+    <span class="o">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="export-reprojected-shapefile">
+<h3>Export Reprojected Shapefile<a class="headerlink" href="#export-reprojected-shapefile" title="Permalink to this headline">¶</a></h3>
+<div class="sidebar">
+<p class="first sidebar-title">FeatureIterator</p>
+<p class="last">Please close feature iterator after use to prevent resource leaks.</p>
+</div>
+<p>The next action will form a little utility that can  read in a shapefile and
+write out a shapefile in a different coordinate reference system.</p>
+<p>One important thing to pick up from this lab is how easy it is to create a
+MathTransform between two CoordinateReferenceSystems. You can use the
+MathTransform to transform points one at a time; or use the JTS utility class
+to create a copy of a Geometry with the points modified.</p>
+<p>We use similar steps to export a shapefile as used by the Csv2Shape example.
+In this case we are reading the contents from an existing shapefile using
+a <strong>FeatureIterator</strong>; and writing out the contents one at a time
+using a <strong>FeatureWriter</strong>. Please close these objects after use.</p>
+<ol class="arabic simple">
+<li>The action is a nested class that delegates to the exportToShapefile
+method in the parent class.</li>
+</ol>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="kd">class</span> <span class="nc">ExportShapefileAction</span> <span class="kd">extends</span> <span class="n">SafeAction</span> <span class="o">{</span>
+        <span class="n">ExportShapefileAction</span><span class="o">()</span> <span class="o">{</span>
+            <span class="kd">super</span><span class="o">(</span><span class="s">&quot;Export...&quot;</span><span class="o">);</span>
+            <span class="n">putValue</span><span class="o">(</span><span class="n">Action</span><span class="o">.</span><span class="na">SHORT_DESCRIPTION</span><span class="o">,</span> <span class="s">&quot;Export using current crs&quot;</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">action</span><span class="o">(</span><span class="n">ActionEvent</span> <span class="n">e</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Throwable</span> <span class="o">{</span>
+            <span class="n">exportToShapefile</span><span class="o">();</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li>Exporting reprojected data to a shapefile:</li>
+</ol>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">exportToShapefile</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+        <span class="n">SimpleFeatureType</span> <span class="n">schema</span> <span class="o">=</span> <span class="n">featureSource</span><span class="o">.</span><span class="na">getSchema</span><span class="o">();</span>
+        <span class="n">JFileDataStoreChooser</span> <span class="n">chooser</span> <span class="o">=</span> <span class="k">new</span> <span class="n">JFileDataStoreChooser</span><span class="o">(</span><span class="s">&quot;shp&quot;</span><span class="o">);</span>
+        <span class="n">chooser</span><span class="o">.</span><span class="na">setDialogTitle</span><span class="o">(</span><span class="s">&quot;Save reprojected shapefile&quot;</span><span class="o">);</span>
+        <span class="n">chooser</span><span class="o">.</span><span class="na">setSaveFile</span><span class="o">(</span><span class="n">sourceFile</span><span class="o">);</span>
+        <span class="kt">int</span> <span class="n">returnVal</span> <span class="o">=</span> <span class="n">chooser</span><span class="o">.</span><span class="na">showSaveDialog</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">returnVal</span> <span class="o">!=</span> <span class="n">JFileDataStoreChooser</span><span class="o">.</span><span class="na">APPROVE_OPTION</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="n">File</span> <span class="n">file</span> <span class="o">=</span> <span class="n">chooser</span><span class="o">.</span><span class="na">getSelectedFile</span><span class="o">();</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">file</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">sourceFile</span><span class="o">))</span> <span class="o">{</span>
+            <span class="n">JOptionPane</span><span class="o">.</span><span class="na">showMessageDialog</span><span class="o">(</span><span class="kc">null</span><span class="o">,</span> <span class="s">&quot;Cannot replace &quot;</span> <span class="o">+</span> <span class="n">file</span><span class="o">);</span>
+            <span class="k">return</span><span class="o">;</span>
+        <span class="o">}</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li>Set up a math transform used to process the data:</li>
+</ol>
+<div class="highlight-java"><div class="highlight"><pre>        <span class="n">CoordinateReferenceSystem</span> <span class="n">dataCRS</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="na">getCoordinateReferenceSystem</span><span class="o">();</span>
+        <span class="n">CoordinateReferenceSystem</span> <span class="n">worldCRS</span> <span class="o">=</span> <span class="n">map</span><span class="o">.</span><span class="na">getCoordinateReferenceSystem</span><span class="o">();</span>
+        <span class="kt">boolean</span> <span class="n">lenient</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span> <span class="c1">// allow for some error due to different datums</span>
+        <span class="n">MathTransform</span> <span class="n">transform</span> <span class="o">=</span> <span class="n">CRS</span><span class="o">.</span><span class="na">findMathTransform</span><span class="o">(</span><span class="n">dataCRS</span><span class="o">,</span> <span class="n">worldCRS</span><span class="o">,</span> <span class="n">lenient</span><span class="o">);</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li>Grab all features:</li>
+</ol>
+<div class="highlight-java"><div class="highlight"><pre>        <span class="n">SimpleFeatureCollection</span> <span class="n">featureCollection</span> <span class="o">=</span> <span class="n">featureSource</span><span class="o">.</span><span class="na">getFeatures</span><span class="o">();</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="5">
+<li>To create a new shapefile we will need to produce a FeatureType that is
+similar to our original. The only difference will be the
+CoordinateReferenceSystem of the geometry descriptor.</li>
+</ol>
+<div class="highlight-java"><div class="highlight"><pre>        <span class="n">DataStoreFactorySpi</span> <span class="n">factory</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ShapefileDataStoreFactory</span><span class="o">();</span>
+        <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Serializable</span><span class="o">&gt;</span> <span class="n">create</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Serializable</span><span class="o">&gt;();</span>
+        <span class="n">create</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&quot;url&quot;</span><span class="o">,</span> <span class="n">file</span><span class="o">.</span><span class="na">toURI</span><span class="o">().</span><span class="na">toURL</span><span class="o">());</span>
+        <span class="n">create</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&quot;create spatial index&quot;</span><span class="o">,</span> <span class="n">Boolean</span><span class="o">.</span><span class="na">TRUE</span><span class="o">);</span>
+        <span class="n">DataStore</span> <span class="n">dataStore</span> <span class="o">=</span> <span class="n">factory</span><span class="o">.</span><span class="na">createNewDataStore</span><span class="o">(</span><span class="n">create</span><span class="o">);</span>
+        <span class="n">SimpleFeatureType</span> <span class="n">featureType</span> <span class="o">=</span> <span class="n">SimpleFeatureTypeBuilder</span><span class="o">.</span><span class="na">retype</span><span class="o">(</span><span class="n">schema</span><span class="o">,</span> <span class="n">worldCRS</span><span class="o">);</span>
+        <span class="n">dataStore</span><span class="o">.</span><span class="na">createSchema</span><span class="o">(</span><span class="n">featureType</span><span class="o">);</span>
+
+        <span class="c1">//Get the name of the new Shapefile, which will be used to open the FeatureWriter</span>
+        <span class="n">String</span> <span class="n">createdName</span> <span class="o">=</span> <span class="n">dataStore</span><span class="o">.</span><span class="na">getTypeNames</span><span class="o">()[</span><span class="mi">0</span><span class="o">];</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="6">
+<li>We can now carefully open an iterator to go through the contents, and a
+writer to write out the new Shapefile.</li>
+</ol>
+<div class="highlight-java"><div class="highlight"><pre>        <span class="n">Transaction</span> <span class="n">transaction</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DefaultTransaction</span><span class="o">(</span><span class="s">&quot;Reproject&quot;</span><span class="o">);</span>
+        <span class="n">FeatureWriter</span><span class="o">&lt;</span><span class="n">SimpleFeatureType</span><span class="o">,</span> <span class="n">SimpleFeature</span><span class="o">&gt;</span> <span class="n">writer</span> <span class="o">=</span>
+                        <span class="n">dataStore</span><span class="o">.</span><span class="na">getFeatureWriterAppend</span><span class="o">(</span><span class="n">createdName</span><span class="o">,</span> <span class="n">transaction</span><span class="o">);</span>
+        <span class="n">SimpleFeatureIterator</span> <span class="n">iterator</span> <span class="o">=</span> <span class="n">featureCollection</span><span class="o">.</span><span class="na">features</span><span class="o">();</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="k">while</span> <span class="o">(</span><span class="n">iterator</span><span class="o">.</span><span class="na">hasNext</span><span class="o">())</span> <span class="o">{</span>
+                <span class="c1">// copy the contents of each feature and transform the geometry</span>
+                <span class="n">SimpleFeature</span> <span class="n">feature</span> <span class="o">=</span> <span class="n">iterator</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
+                <span class="n">SimpleFeature</span> <span class="n">copy</span> <span class="o">=</span> <span class="n">writer</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
+                <span class="n">copy</span><span class="o">.</span><span class="na">setAttributes</span><span class="o">(</span><span class="n">feature</span><span class="o">.</span><span class="na">getAttributes</span><span class="o">());</span>
+
+                <span class="n">Geometry</span> <span class="n">geometry</span> <span class="o">=</span> <span class="o">(</span><span class="n">Geometry</span><span class="o">)</span> <span class="n">feature</span><span class="o">.</span><span class="na">getDefaultGeometry</span><span class="o">();</span>
+                <span class="n">Geometry</span> <span class="n">geometry2</span> <span class="o">=</span> <span class="n">JTS</span><span class="o">.</span><span class="na">transform</span><span class="o">(</span><span class="n">geometry</span><span class="o">,</span> <span class="n">transform</span><span class="o">);</span>
+
+                <span class="n">copy</span><span class="o">.</span><span class="na">setDefaultGeometry</span><span class="o">(</span><span class="n">geometry2</span><span class="o">);</span>
+                <span class="n">writer</span><span class="o">.</span><span class="na">write</span><span class="o">();</span>
+            <span class="o">}</span>
+            <span class="n">transaction</span><span class="o">.</span><span class="na">commit</span><span class="o">();</span>
+            <span class="n">JOptionPane</span><span class="o">.</span><span class="na">showMessageDialog</span><span class="o">(</span><span class="kc">null</span><span class="o">,</span> <span class="s">&quot;Export to shapefile complete&quot;</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Exception</span> <span class="n">problem</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">problem</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+            <span class="n">transaction</span><span class="o">.</span><span class="na">rollback</span><span class="o">();</span>
+            <span class="n">JOptionPane</span><span class="o">.</span><span class="na">showMessageDialog</span><span class="o">(</span><span class="kc">null</span><span class="o">,</span> <span class="s">&quot;Export to shapefile failed&quot;</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+            <span class="n">writer</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+            <span class="n">iterator</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+            <span class="n">transaction</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="running-the-application">
+<h2>Running the Application<a class="headerlink" href="#running-the-application" title="Permalink to this headline">¶</a></h2>
+<p>To switch between map projections:</p>
+<ol class="arabic simple">
+<li>When you start the application you will be prompted for a shapefile to display.
+In the screenshots below we are using the <em>bc_border</em> map which can be
+downloaded as part of the <a class="reference external" href="http://udig.refractions.net/docs/data-v1_2.zip">uDig sample dataset</a></li>
+</ol>
+<a class="reference internal image-reference" href="../../_images/CRSLab_start.png"><img alt="../../_images/CRSLab_start.png" src="../../_images/CRSLab_start.png" style="width: 60%;" /></a>
+<ol class="arabic" start="2">
+<li><p class="first">GeoTools includes a very extensive database of map projections defined by
+EPSG reference numbers. For our example shapefile, an appropriate alternative
+map projection is <em>BC Albers</em>.</p>
+<p>You can find this quickly in the chooser list by typing 3005.</p>
+<p>When you click OK the map is displayed in the new projection:</p>
+</li>
+</ol>
+<a class="reference internal image-reference" href="../../_images/CRSLab_reprojected.png"><img alt="../../_images/CRSLab_reprojected.png" src="../../_images/CRSLab_reprojected.png" style="width: 60%;" /></a>
+<ol class="arabic" start="3">
+<li><p class="first">Note that when you move the mouse over the map the coordinates are now
+displayed in metres (the unit of measurement that applies to the <em>BC Albers</em>
+projection) rather than degrees.</p>
+</li>
+<li><dl class="first docutils">
+<dt>To return to the original projection, open the CRS chooser again and type</dt>
+<dd><p class="first"><strong>4326</strong> for the default geographic projection.</p>
+<p class="last">Notice that the map coordinates are now expressed in degrees once again.</p>
+</dd>
+</dl>
+</li>
+</ol>
+<p>Exporting the reprojected data:</p>
+<ol class="arabic">
+<li><p class="first">When you change the map projection for the display the shapefile remains
+unchanged.</p>
+<p>With the <em>bc_border</em> shapefile, the feature data are still in degrees but
+when we select the <em>BC Albers</em> projection the features are reprojected on
+the fly.</p>
+</li>
+<li><p class="first">Set the display of reprojected data (e.g. 3005 BC Albers for the <em>bc_border</em>
+shapefile).</p>
+</li>
+<li><p class="first">Click the <em>Validate geometry</em> button to check feature geometries are ok.</p>
+</li>
+<li><p class="first">If there are no geometry problems, click the <em>Export</em> button and enter a name
+and path for the new shapefile.</p>
+</li>
+</ol>
+</div>
+<div class="section" id="things-to-try">
+<h2>Things to Try<a class="headerlink" href="#things-to-try" title="Permalink to this headline">¶</a></h2>
+<p>Here are a couple things to try with the above application.</p>
+<ul>
+<li><p class="first">Have a look at the coordinates displayed at the bottom of the screen in
+EPSG:4326 and in EPSG:3005. You should be able to see that one is measured in
+degrees and the other measured in meters.</p>
+</li>
+<li><p class="first">Make a button to print out the map coordinate reference system as human
+readable &#8220;Well Known Text&#8221;. This is the same text format used by a
+shapefile&#8217;s &#8220;prj&#8221; side car file.</p>
+</li>
+<li><p class="first">It is bad manners to keep the user waiting; the SwingWorker class is part of
+Java 6. GeoTools also includes SwingWorker the <strong>gt-swing</strong> module for use in
+Java 5 applications.</p>
+<p>Replace your ValidateGeometryAction with the following:</p>
+</li>
+</ul>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="kd">class</span> <span class="nc">ValidateGeometryAction2</span> <span class="kd">extends</span> <span class="n">SafeAction</span> <span class="o">{</span>
+        <span class="n">ValidateGeometryAction2</span><span class="o">()</span> <span class="o">{</span>
+            <span class="kd">super</span><span class="o">(</span><span class="s">&quot;Validate geometry&quot;</span><span class="o">);</span>
+            <span class="n">putValue</span><span class="o">(</span><span class="n">Action</span><span class="o">.</span><span class="na">SHORT_DESCRIPTION</span><span class="o">,</span> <span class="s">&quot;Check each geometry&quot;</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">action</span><span class="o">(</span><span class="n">ActionEvent</span> <span class="n">e</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Throwable</span> <span class="o">{</span>
+            <span class="c1">// Here we use the SwingWorker helper class to run the validation routine in a</span>
+            <span class="c1">// background thread, otherwise the GUI would wait and the progress bar would not be</span>
+            <span class="c1">// displayed properly</span>
+            <span class="n">SwingWorker</span> <span class="n">worker</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SwingWorker</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Object</span><span class="o">&gt;()</span> <span class="o">{</span>
+                <span class="kd">protected</span> <span class="n">String</span> <span class="nf">doInBackground</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+                    <span class="c1">// For shapefiles with many features its nice to display a progress bar</span>
+                    <span class="kd">final</span> <span class="n">JProgressWindow</span> <span class="n">progress</span> <span class="o">=</span> <span class="k">new</span> <span class="n">JProgressWindow</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span>
+                    <span class="n">progress</span><span class="o">.</span><span class="na">setTitle</span><span class="o">(</span><span class="s">&quot;Validating feature geometry&quot;</span><span class="o">);</span>
+
+                    <span class="kt">int</span> <span class="n">numInvalid</span> <span class="o">=</span> <span class="n">validateFeatureGeometry</span><span class="o">(</span><span class="n">progress</span><span class="o">);</span>
+                    <span class="k">if</span> <span class="o">(</span><span class="n">numInvalid</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+                        <span class="k">return</span> <span class="s">&quot;All feature geometries are valid&quot;</span><span class="o">;</span>
+                    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                        <span class="k">return</span> <span class="s">&quot;Invalid geometries: &quot;</span> <span class="o">+</span> <span class="n">numInvalid</span><span class="o">;</span>
+                    <span class="o">}</span>
+                <span class="o">}</span>
+                <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">done</span><span class="o">()</span> <span class="o">{</span>
+                    <span class="k">try</span> <span class="o">{</span>
+                        <span class="n">Object</span> <span class="n">result</span> <span class="o">=</span> <span class="n">get</span><span class="o">();</span>
+                        <span class="n">JOptionPane</span><span class="o">.</span><span class="na">showMessageDialog</span><span class="o">(</span><span class="kc">null</span><span class="o">,</span> <span class="n">result</span><span class="o">,</span> <span class="s">&quot;Geometry results&quot;</span><span class="o">,</span>
+                                        <span class="n">JOptionPane</span><span class="o">.</span><span class="na">INFORMATION_MESSAGE</span><span class="o">);</span>
+                    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Exception</span> <span class="n">ignore</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="o">}</span>
+                <span class="o">}</span>
+            <span class="o">};</span>
+            <span class="c1">// This statement runs the validation method in a background thread</span>
+            <span class="n">worker</span><span class="o">.</span><span class="na">execute</span><span class="o">();</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+</pre></div>
+</div>
+<ul>
+<li><p class="first">Visit the JTS web site and look up how to simplify geometry. Modify the example
+to simplify the geometry before writing it out -  there are several  techniques
+to try (the TopologyPreservingSimplifier and DouglasPeuckerSimplifier classes
+are recommended).</p>
+<p>This exercise is a common form of data preparation.</p>
+</li>
+<li><p class="first">One thing that can be dangerous about geometry, especially ones you make
+yourself, is that they can be invalid.</p>
+<p>There are many tricks to fixing an invalid geometry. An easy place to start
+is to use geometry.buffer(0). Use this tip to build your own shapefile
+data cleaner.</p>
+</li>
+<li><p class="first">An alternate to doing all the geometry transformations by hand is to ask
+for the data in the projection required.</p>
+<p>This version of the export method shows how to use a <strong>Query</strong> object to
+retrieve reprojected features and write them to a new shapefile instead of
+transforming the features &#8216;by hand&#8217; as we did above.</p>
+</li>
+</ul>
+<div class="highlight-java"><div class="highlight"><pre>        <span class="n">Query</span> <span class="n">query</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Query</span><span class="o">(</span><span class="n">typeName</span><span class="o">);</span>
+        <span class="n">query</span><span class="o">.</span><span class="na">setCoordinateSystemReproject</span><span class="o">(</span><span class="n">map</span><span class="o">.</span><span class="na">getCoordinateReferenceSystem</span><span class="o">());</span>
+
+        <span class="n">SimpleFeatureCollection</span> <span class="n">featureCollection</span> <span class="o">=</span> <span class="n">featureSource</span><span class="o">.</span><span class="na">getFeatures</span><span class="o">(</span><span class="n">query</span><span class="o">);</span>
+
+        <span class="c1">// And create a new Shapefile with the results</span>
+        <span class="n">DataStoreFactorySpi</span> <span class="n">factory</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ShapefileDataStoreFactory</span><span class="o">();</span>
+
+        <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Serializable</span><span class="o">&gt;</span> <span class="n">create</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Serializable</span><span class="o">&gt;();</span>
+        <span class="n">create</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&quot;url&quot;</span><span class="o">,</span> <span class="n">file</span><span class="o">.</span><span class="na">toURI</span><span class="o">().</span><span class="na">toURL</span><span class="o">());</span>
+        <span class="n">create</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&quot;create spatial index&quot;</span><span class="o">,</span> <span class="n">Boolean</span><span class="o">.</span><span class="na">TRUE</span><span class="o">);</span>
+        <span class="n">DataStore</span> <span class="n">newDataStore</span> <span class="o">=</span> <span class="n">factory</span><span class="o">.</span><span class="na">createNewDataStore</span><span class="o">(</span><span class="n">create</span><span class="o">);</span>
+
+        <span class="n">newDataStore</span><span class="o">.</span><span class="na">createSchema</span><span class="o">(</span><span class="n">featureCollection</span><span class="o">.</span><span class="na">getSchema</span><span class="o">());</span>
+        <span class="n">Transaction</span> <span class="n">transaction</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DefaultTransaction</span><span class="o">(</span><span class="s">&quot;Reproject&quot;</span><span class="o">);</span>
+        <span class="n">SimpleFeatureStore</span> <span class="n">featureStore</span><span class="o">;</span>
+        <span class="n">featureStore</span> <span class="o">=</span> <span class="o">(</span><span class="n">SimpleFeatureStore</span><span class="o">)</span> <span class="n">newDataStore</span><span class="o">.</span><span class="na">getFeatureSource</span><span class="o">(</span><span class="n">typeName</span><span class="o">);</span>
+        <span class="n">featureStore</span><span class="o">.</span><span class="na">setTransaction</span><span class="o">(</span><span class="n">transaction</span><span class="o">);</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="n">featureStore</span><span class="o">.</span><span class="na">addFeatures</span><span class="o">(</span><span class="n">featureCollection</span><span class="o">);</span>
+            <span class="n">transaction</span><span class="o">.</span><span class="na">commit</span><span class="o">();</span>
+            <span class="n">JOptionPane</span><span class="o">.</span><span class="na">showMessageDialog</span><span class="o">(</span><span class="kc">null</span><span class="o">,</span> <span class="s">&quot;Export to shapefile complete&quot;</span><span class="o">,</span> <span class="s">&quot;Export&quot;</span><span class="o">,</span>
+                            <span class="n">JOptionPane</span><span class="o">.</span><span class="na">INFORMATION_MESSAGE</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Exception</span> <span class="n">problem</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">transaction</span><span class="o">.</span><span class="na">rollback</span><span class="o">();</span>
+            <span class="n">problem</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+            <span class="n">JOptionPane</span><span class="o">.</span><span class="na">showMessageDialog</span><span class="o">(</span><span class="kc">null</span><span class="o">,</span> <span class="s">&quot;Export to shapefile failed&quot;</span><span class="o">,</span> <span class="s">&quot;Export&quot;</span><span class="o">,</span>
+                            <span class="n">JOptionPane</span><span class="o">.</span><span class="na">ERROR_MESSAGE</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+            <span class="n">transaction</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="geometry">
+<h2>Geometry<a class="headerlink" href="#geometry" title="Permalink to this headline">¶</a></h2>
+<p>Geometry is literally the shape of GIS.</p>
+<p>Usually there is one geometry for a feature; and the attributes provide further
+description or measurement.  It is sometimes hard to think of the geometry as
+being another attribute. It helps if you consider situations where there are
+several representations of the same thing.</p>
+<p>We can represent the city of Sydney:</p>
+<ul class="simple">
+<li>as a single location, ie. a point</li>
+<li>as the city limits (so you can tell when you are inside Sydney), ie.  a polygon</li>
+</ul>
+<div class="section" id="point">
+<h3>Point<a class="headerlink" href="#point" title="Permalink to this headline">¶</a></h3>
+<p>Here is an example of creating a point using the Well-Known-Text (WKT) format.</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="n">GeometryFactory</span> <span class="n">geometryFactory</span> <span class="o">=</span> <span class="n">JTSFactoryFinder</span><span class="o">.</span><span class="na">getGeometryFactory</span><span class="o">(</span> <span class="kc">null</span> <span class="o">);</span>
+
+<span class="n">WKTReader</span> <span class="n">reader</span> <span class="o">=</span> <span class="k">new</span> <span class="n">WKTReader</span><span class="o">(</span> <span class="n">geometryFactory</span> <span class="o">);</span>
+<span class="n">Point</span> <span class="n">point</span> <span class="o">=</span> <span class="o">(</span><span class="n">Point</span><span class="o">)</span> <span class="n">reader</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="s">&quot;POINT (1 1)&quot;</span><span class="o">);</span>
+</pre></div>
+</div>
+<p>You can also create a Point by hand using the GeometryFactory directly.</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="n">GeometryFactory</span> <span class="n">geometryFactory</span> <span class="o">=</span> <span class="n">JTSFactoryFinder</span><span class="o">.</span><span class="na">getGeometryFactory</span><span class="o">(</span> <span class="kc">null</span> <span class="o">);</span>
+<span class="n">Coordinate</span> <span class="n">coord</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Coordinate</span><span class="o">(</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">1</span> <span class="o">);</span>
+<span class="n">Point</span> <span class="n">point</span> <span class="o">=</span> <span class="n">geometryFactory</span><span class="o">.</span><span class="na">createPoint</span><span class="o">(</span> <span class="n">coord</span> <span class="o">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="line">
+<h3>Line<a class="headerlink" href="#line" title="Permalink to this headline">¶</a></h3>
+<p>Here is an example of a WKT LineString.</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="n">GeometryFactory</span> <span class="n">geometryFactory</span> <span class="o">=</span> <span class="n">JTSFactoryFinder</span><span class="o">.</span><span class="na">getGeometryFactory</span><span class="o">(</span> <span class="kc">null</span> <span class="o">);</span>
+
+<span class="n">WKTReader</span> <span class="n">reader</span> <span class="o">=</span> <span class="k">new</span> <span class="n">WKTReader</span><span class="o">(</span> <span class="n">geometryFactory</span> <span class="o">);</span>
+<span class="n">LineString</span> <span class="n">line</span> <span class="o">=</span> <span class="o">(</span><span class="n">LineString</span><span class="o">)</span> <span class="n">reader</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="s">&quot;LINESTRING(0 2, 2 0, 8 6)&quot;</span><span class="o">);</span>
+</pre></div>
+</div>
+<p>A LineString is a sequence of segments in the same manner as a java String is a
+sequence of characters.</p>
+<p>Here is an example using the Geometry Factory.</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="n">GeometryFactory</span> <span class="n">geometryFactory</span> <span class="o">=</span> <span class="n">JTSFactoryFinder</span><span class="o">.</span><span class="na">getGeometryFactory</span><span class="o">(</span> <span class="kc">null</span> <span class="o">);</span>
+
+<span class="n">Coordinate</span><span class="o">[]</span> <span class="n">coords</span>  <span class="o">=</span>
+<span class="k">new</span> <span class="n">Coordinate</span><span class="o">[]</span> <span class="o">{</span><span class="k">new</span> <span class="n">Coordinate</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="mi">2</span><span class="o">),</span> <span class="k">new</span> <span class="n">Coordinate</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="mi">0</span><span class="o">),</span> <span class="k">new</span> <span class="n">Coordinate</span><span class="o">(</span><span class="mi">8</span><span class="o">,</span> <span class="mi">6</span><span class="o">)</span> <span class="o">};</span>
+
+<span class="n">LineString</span> <span class="n">line</span> <span class="o">=</span> <span class="n">geometryFactory</span><span class="o">.</span><span class="na">createLineString</span><span class="o">(</span><span class="n">coordinates</span><span class="o">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="polygon">
+<h3>Polygon<a class="headerlink" href="#polygon" title="Permalink to this headline">¶</a></h3>
+<p>A polygon is formed in WKT by constructing an outer ring, and then a series of holes.</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="n">GeometryFactory</span> <span class="n">geometryFactory</span> <span class="o">=</span> <span class="n">JTSFactoryFinder</span><span class="o">.</span><span class="na">getGeometryFactory</span><span class="o">(</span> <span class="kc">null</span> <span class="o">);</span>
+<span class="n">WKTReader</span> <span class="n">reader</span> <span class="o">=</span> <span class="k">new</span> <span class="n">WKTReader</span><span class="o">(</span> <span class="n">geometryFactory</span> <span class="o">);</span>
+<span class="n">Polygon</span> <span class="n">polygon</span> <span class="o">=</span> <span class="o">(</span><span class="n">Polygon</span><span class="o">)</span> <span class="n">reader</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="s">&quot;POLYGON((20 10, 30 0, 40 10, 30 20, 20 10))&quot;</span><span class="o">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="why-not-use-java-shape">
+<h3>Why not use Java Shape<a class="headerlink" href="#why-not-use-java-shape" title="Permalink to this headline">¶</a></h3>
+<p>Java Shape is actually very useful and covers ideas mentioned above – it is
+however very focused on drawing. Geometry allows us to handle the &#8220;information&#8221;
+part of Geographic  Information System – we can use it to create new geometry
+and test the relationships between geometries.</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="c1">// Create Geometry using other Geometry</span>
+<span class="n">Geometry</span> <span class="n">smoke</span> <span class="o">=</span> <span class="n">fire</span><span class="o">.</span><span class="na">buffer</span><span class="o">(</span> <span class="mi">10</span> <span class="o">);</span>
+<span class="n">Geometry</span> <span class="n">evacuate</span> <span class="o">=</span> <span class="n">cities</span><span class="o">.</span><span class="na">intersection</span><span class="o">(</span> <span class="n">smoke</span> <span class="o">);</span>
+
+<span class="c1">// test important relationships</span>
+<span class="kt">boolean</span> <span class="n">onFire</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="na">intersects</span><span class="o">(</span> <span class="n">fire</span> <span class="o">);</span>
+<span class="kt">boolean</span> <span class="n">thatIntoYou</span> <span class="o">=</span> <span class="n">me</span><span class="o">.</span><span class="na">disjoint</span><span class="o">(</span> <span class="n">you</span> <span class="o">);</span>
+<span class="kt">boolean</span> <span class="n">run</span> <span class="o">=</span> <span class="n">you</span><span class="o">.</span><span class="na">isWithinDistance</span><span class="o">(</span> <span class="n">fire</span><span class="o">,</span> <span class="mi">2</span> <span class="o">);</span>
+
+<span class="c1">// relationships actually captured as a fancy</span>
+<span class="c1">// String called an intersection matrix</span>
+<span class="c1">//</span>
+<span class="n">IntersectionMatrix</span> <span class="n">matrix</span> <span class="o">=</span> <span class="n">he</span><span class="o">.</span><span class="na">relate</span><span class="o">(</span> <span class="n">you</span> <span class="o">);</span>
+<span class="n">thatIntoYou</span> <span class="o">=</span> <span class="n">matrix</span><span class="o">.</span><span class="na">isDisjoint</span><span class="o">();</span>
+
+<span class="c1">// it really is a fancy string; you can do</span>
+<span class="c1">// pattern matching to sort out what the geometries</span>
+<span class="c1">// being compared are up to</span>
+<span class="kt">boolean</span> <span class="n">disjoint</span> <span class="o">=</span> <span class="n">matrix</span><span class="o">.</span><span class="na">matches</span><span class="o">(</span><span class="s">&quot;FF*FF****&quot;</span><span class="o">);</span>
+</pre></div>
+</div>
+<p>You are encouraged to read the javadocs for JTS which contains helpful definitions.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p>The disjoint predicate has the following equivalent definitions:</p>
+<ul class="last simple">
+<li>The two geometries have no point in common</li>
+<li>The DE-9IM Intersection Matrix for the two geometries is FF*FF****</li>
+<li>!g.intersects(this) (disjoint is the inverse of intersects)</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section" id="coordinate-reference-system">
+<h2>Coordinate Reference System<a class="headerlink" href="#coordinate-reference-system" title="Permalink to this headline">¶</a></h2>
+<p>Earlier we talked about the JTS library which provides our data model for
+Geometry. This is the real rocket science for map making – the idea of a shape
+and enough math to do something fun with it. But there is one question we have
+not answered yet – what does a geometry mean?</p>
+<p>You may think I am joking but the question is serious. A Geometry is just a
+bunch of math (a set of points in the mathematical sense). They have no meaning
+on their own.</p>
+<p>An easier example is the number 3. The number 3 has no meaning on
+its own. It is only when you attach a &#8220;unit&#8221; that  the number 3 can represent a
+concept. 3 metres. 3 feet. 3 score years.</p>
+<p>In order to provide a Geometry with meaning we need to know what those
+individual points mean. We need to know where they are located – and the data
+structure that tells us this is called the Coordinate Reference System.</p>
+<p>The Coordinate Reference System defines a couple of
+concepts for us:</p>
+<ul>
+<li><p class="first">It defines the axis used – along with the units of measure.</p>
+<p>So you can have lat measured in degrees , and lon measured in degrees from the
+equator.</p>
+<p>Or you can have x measured in metres, and y measured in metres which is very
+handy for calculating distances or areas.</p>
+</li>
+<li><p class="first">It defines the shape of the world. No really it does – not all coordinate
+reference systems imagine the same shape of the world. The CRS used by Google
+pretends the world is a perfect sphere, while the CRS used by &#8220;EPSG:4326&#8221; has a
+different shape in mind – so if you mix them up your data will be drawn in the
+wrong place.</p>
+</li>
+</ul>
+<p>As a programmer I view the coordinate reference system idea as a neat hack.
+Everyone is really talking about points in 3D space here – and rather than
+having to record x,y,z all the time we are cheating and only recording two
+points (lat,lon) and using a model of the shape of the earth in order to
+calculate z.</p>
+<div class="section" id="epsg-codes">
+<h3>EPSG Codes<a class="headerlink" href="#epsg-codes" title="Permalink to this headline">¶</a></h3>
+<p>The first group that cared about this stuff enough to write it down
+in database form was the European Petroleum Standards Group (EPSG). The database
+is distributed in Microsoft Access and is ported into all kinds of other forms
+including the gt-hsql jar included with GeoTools.</p>
+<dl class="docutils">
+<dt>EPSG:4326</dt>
+<dd><p class="first">EPSG Projection 4326 - WGS 84</p>
+<a class="reference internal image-reference" href="../../_images/epsg4326.png"><img alt="../../_images/epsg4326.png" src="../../_images/epsg4326.png" style="width: 120.0px; height: 120.0px;" /></a>
+<p>This is the big one: information measured by lat/lon using decimal degrees.</p>
+<p><code class="docutils literal"><span class="pre">CRS.decode(&quot;EPSG:4326&quot;);</span></code></p>
+<p class="last"><cite>DefaultGeographicCRS.WGS84;`</cite></p>
+</dd>
+<dt>EPSG: 3785</dt>
+<dd><p class="first">Popular Visualisation CRS / Mercator</p>
+<a class="reference internal image-reference" href="../../_images/epsg3785.png"><img alt="../../_images/epsg3785.png" src="../../_images/epsg3785.png" style="width: 120.0px; height: 120.0px;" /></a>
+<p>The official code for the &#8220;Google map&#8221; projection used by a lot of web mapping
+applications.  It is nice to pretend the world is a sphere (it makes your math
+very fast). However it looks really odd if you draw a square in Oslo.</p>
+<p class="last"><code class="docutils literal"><span class="pre">CRS.decode(&quot;EPSG:3785&quot;);</span></code></p>
+</dd>
+<dt>EPSG:3005</dt>
+<dd><p class="first">NAD83 / BC Albers</p>
+<a class="reference internal image-reference" href="../../_images/epsg3005.png"><img alt="../../_images/epsg3005.png" src="../../_images/epsg3005.png" style="width: 120.0px; height: 120.0px;" /></a>
+<p>Example of an &#8220;equal area&#8221; projection for the west coast of Canada. The axes
+are measured in metres which is handy for calculating distance or area.</p>
+<p class="last"><code class="docutils literal"><span class="pre">CRS.decode(&quot;EPSG:3005&quot;);</span></code></p>
+</dd>
+</dl>
+<p>Note that both EPSG:4326 and EPSG:3785 are using lat/lon – but arrive at a very
+different shape for their map.</p>
+</div>
+<div class="section" id="axis-order">
+<h3>Axis Order<a class="headerlink" href="#axis-order" title="Permalink to this headline">¶</a></h3>
+<div class="sidebar">
+<p class="first sidebar-title">Why</p>
+<p class="last">When navigating by stars you can figure out latitude by the angle to the
+north star – but you need to guess for longitude based on how many days you
+have been traveling. Hence y/x order.</p>
+</div>
+<p>This is also where I need to make a public apology. As computer scientists we
+occasionally get fed up when we work in a domain where &#8220;they are doing it
+wrong&#8221;. Map making is an example of this. When we arrived on the scene maps were
+always recording position in latitude, followed by longitude; that is, with the
+north-south axis first and the east-west access second. When you draw that on
+the screen quickly it looks like the world is sideways as the coordinates are
+in&#8221;y/x&#8221; to my way of thinking and you need to swap them before drawing.</p>
+<a class="reference internal image-reference" href="../../_images/axisOrder.png"><img alt="../../_images/axisOrder.png" src="../../_images/axisOrder.png" style="width: 88.8px; height: 177.6px;" /></a>
+<p>We are so used to working in x/y order that we would end up assuming it was
+supposed to be this way – and have been fighting with map makers ever since.</p>
+<p>So if you see some data in &#8220;EPSG:4326&#8221; you have no idea if it is in x/y order or
+in y/x order.</p>
+<p>We have finally sorted out an alternative; rather than EPSG:4326 we are supposed
+to use &#8220;urn:ogc:def:crs:EPSG:6.6:4326&#8221;. If you ever see that you can be sure
+that a) someone really knows what they are doing and b) the data is recorded in
+exactly the order defined by the EPSG database.</p>
+<div class="section" id="workarounds">
+<h4>Workarounds<a class="headerlink" href="#workarounds" title="Permalink to this headline">¶</a></h4>
+<p>You can perform a workaround on a case by case basis:</p>
+<div class="highlight-python"><div class="highlight"><pre>CRSAuthorityFactory   factory = CRS.getAuthorityFactory(true);
+CoordinateReferenceSystem crs = factory.createCoordinateReferenceSystem(&quot;EPSG:4326&quot;);
+</pre></div>
+</div>
+<p>Or you can set a global hint to force GeoTools to use x/y order:</p>
+<div class="highlight-python"><div class="highlight"><pre>static void main( String args []){
+   System.setProperty(&quot;org.geotools.referencing.forceXY&quot;, &quot;true&quot;);
+
+   ....
+}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="for-more-information">
+<h3>For more Information<a class="headerlink" href="#for-more-information" title="Permalink to this headline">¶</a></h3>
+<dl class="docutils">
+<dt><a class="reference external" href="http://www.epsg-registry.org/">EPSG registry</a></dt>
+<dd>This is <em>the</em> place to go to look up map projections. You can search by
+geographic area, name and type and epsg code.</dd>
+<dt><a class="reference external" href="http://gist.fsv.cvut.cz:8080/webref/">Online coordinate conversion tool</a></dt>
+<dd>Produced by Jan Jezek and powered by GeoTools.</dd>
+<dt><a class="reference external" href="http://en.wikibooks.org/wiki/Coordinate_Reference_Systems_and_Positioning">Wikibook: Coordinate Reference Systems and Positioning</a></dt>
+<dd>A summary page with some useful definition and links to more detailed information</dd>
+</dl>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="../filter/query.html" title="Query Tutorial"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="../feature/csv2shp.html" title="Feature Tutorial"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Tutorials</a> &raquo;</li>
+        <li><a href="#">Geometry CRS Tutorial</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,664 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Factory Tutorial &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../index.html" />
+    <link rel="up" title="Tutorials" href="index.html" />
+    <link rel="next" title="Function Tutorial" href="function.html" />
+    <link rel="prev" title="AffineTransformation Tutorial" href="affinetransform.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Tutorials</a> &raquo;</li>
+        <li><a href="#">Factory Tutorial</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Factory Tutorial</a><ul>
+<li><a class="reference internal" href="#review">Review</a><ul>
+<li><a class="reference internal" href="#step-1-interface">Step 1 Interface</a></li>
+<li><a class="reference internal" href="#step-2-factory">Step 2 Factory</a></li>
+<li><a class="reference internal" href="#step-3-factoryregistery">Step 3 FactoryRegistery</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#direct-use-of-factoryregistry">Direct use of FactoryRegistry</a></li>
+<li><a class="reference internal" href="#defining-your-own-factoryfinder">Defining your own FactoryFinder</a></li>
+<li><a class="reference internal" href="#factoryiteratorproviders">FactoryIteratorProviders</a><ul>
+<li><a class="reference internal" href="#abstract">Abstract</a></li>
+<li><a class="reference internal" href="#plugin-checklist">Plugin Checklist</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="affinetransform.html"
+                        title="previous chapter">AffineTransformation Tutorial</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="function.html"
+                        title="next chapter">Function Tutorial</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/tutorial/factory.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="factory-tutorial">
+<h1>Factory Tutorial<a class="headerlink" href="#factory-tutorial" title="Permalink to this headline">¶</a></h1>
+<p>We are going to use FunctionFactory as an introduction to the GeoTools plug-in system.</p>
+<p>In the <a class="reference internal" href="../welcome/architecture.html"><em>Architecture</em></a> we saw the difference between the core GeoTools library and plug-ins that
+contribute functionality. One thing that makes a plug-in work is the &#8220;Factory SPI&#8221; plug-ins system
+(this is actually a part of Java not something we made up).</p>
+<p>Reference:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://download.oracle.com/javase/tutorial/sound/SPI-intro.html">http://download.oracle.com/javase/tutorial/sound/SPI-intro.html</a></li>
+<li><a class="reference external" href="http://c2.com/cgi/wiki?ObserverPattern">http://c2.com/cgi/wiki?ObserverPattern</a></li>
+<li><a class="reference external" href="http://gsraj.tripod.com/design/creational/factory/factory.html">http://gsraj.tripod.com/design/creational/factory/factory.html</a></li>
+<li><a class="reference external" href="http://www.eclipse.org/articles/Article-Plug-in-architecture/plugin_architecture.html">http://www.eclipse.org/articles/Article-Plug-in-architecture/plugin_architecture.html</a></li>
+</ul>
+<div class="section" id="review">
+<h2>Review<a class="headerlink" href="#review" title="Permalink to this headline">¶</a></h2>
+<p>Each plugin jar has:</p>
+<ul>
+<li><p class="first">META-INF/services folder</p>
+<p>The folder contains a list of files (one for each interface name)</p>
+</li>
+<li><p class="first">The files contain a list of classes that implement that interface</p>
+</li>
+</ul>
+<p>This page is where we explain how this all works.</p>
+<p>GeoTools is extended using the <strong>Factory</strong> and <strong>FactoryRegistry</strong> classes. The standard Factory
+Pattern gives us a clue about what is about to happen:</p>
+<dl class="docutils">
+<dt>FACTORY PATTERN</dt>
+<dd>a Factory is an object that creates other objects.</dd>
+</dl>
+<p>Here is where the fun begins ...</p>
+<div class="section" id="step-1-interface">
+<h3>Step 1 Interface<a class="headerlink" href="#step-1-interface" title="Permalink to this headline">¶</a></h3>
+<p>The first step is to define your interface; in this case we are going to use the Function
+interface already provided by GeoTools.</p>
+<img alt="../_images/filter_function.PNG" src="../_images/filter_function.PNG" />
+<p>GeoTools loves to work with interfaces, and this is the reason why (it is the first step
+of making a plug-in based library).</p>
+<p>We are going to use <strong>Function</strong> as an example for this discussion:</p>
+<div class="highlight-python"><div class="highlight"><pre>public interface Function extends Expression {
+    String getName();
+    List&lt;Expression&gt; getParameters();
+    Literal getFallbackValue();
+}
+public interface Expression {
+    Object evaluate(Object object);
+    &lt;T&gt; T evaluate( Object object, Class&lt;T&gt; context );
+    Object accept(ExpressionVisitor visitor, Object extraData);
+}
+</pre></div>
+</div>
+<ol class="arabic">
+<li><p class="first">Here is a quick implementation of snapping a point to a line:</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="kn">package</span> <span class="nn">org.geotools.tutorial.function</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.util.List</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.geotools.filter.capability.FunctionNameImpl</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.util.Converters</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.opengis.filter.capability.FunctionName</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.opengis.filter.expression.Expression</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.opengis.filter.expression.ExpressionVisitor</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.opengis.filter.expression.Function</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.opengis.filter.expression.Literal</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">com.vividsolutions.jts.geom.Coordinate</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.vividsolutions.jts.geom.Geometry</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.vividsolutions.jts.geom.Point</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.vividsolutions.jts.linearref.LinearLocation</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.vividsolutions.jts.linearref.LocationIndexedLine</span><span class="o">;</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Quick function that illustrates snapping to a line.</span>
+<span class="cm"> * </span>
+<span class="cm"> * @author jody</span>
+<span class="cm"> */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SnapFunction</span> <span class="kd">implements</span> <span class="n">Function</span> <span class="o">{</span>
+
+    <span class="kd">static</span> <span class="n">FunctionName</span> <span class="n">NAME</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FunctionNameImpl</span><span class="o">(</span><span class="s">&quot;snap&quot;</span><span class="o">,</span> <span class="n">Point</span><span class="o">.</span><span class="na">class</span><span class="o">,</span>
+            <span class="n">FunctionNameImpl</span><span class="o">.</span><span class="na">parameter</span><span class="o">(</span><span class="s">&quot;point&quot;</span><span class="o">,</span><span class="n">Point</span><span class="o">.</span><span class="na">class</span><span class="o">),</span>
+            <span class="n">FunctionNameImpl</span><span class="o">.</span><span class="na">parameter</span><span class="o">(</span><span class="s">&quot;line&quot;</span><span class="o">,</span><span class="n">Geometry</span><span class="o">.</span><span class="na">class</span><span class="o">));</span>
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Expression</span><span class="o">&gt;</span> <span class="n">parameters</span><span class="o">;</span>
+    
+    <span class="kd">private</span> <span class="kd">final</span> <span class="n">Literal</span> <span class="n">fallback</span><span class="o">;</span>
+    
+    <span class="kd">public</span> <span class="nf">SnapFunction</span><span class="o">(</span><span class="n">List</span><span class="o">&lt;</span><span class="n">Expression</span><span class="o">&gt;</span> <span class="n">parameters</span><span class="o">,</span> <span class="n">Literal</span> <span class="n">fallback</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">parameters</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="n">NullPointerException</span><span class="o">(</span><span class="s">&quot;parameters required&quot;</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">parameters</span><span class="o">.</span><span class="na">size</span><span class="o">()</span> <span class="o">!=</span> <span class="mi">2</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="n">IllegalArgumentException</span><span class="o">(</span>
+                    <span class="s">&quot;snap( point, line) requires two parameters only&quot;</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">parameters</span> <span class="o">=</span> <span class="n">parameters</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">fallback</span> <span class="o">=</span> <span class="n">fallback</span><span class="o">;</span>
+    <span class="o">}</span>
+    
+    <span class="kd">public</span> <span class="n">Object</span> <span class="nf">evaluate</span><span class="o">(</span><span class="n">Object</span> <span class="n">object</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">evaluate</span><span class="o">(</span><span class="n">object</span><span class="o">,</span> <span class="n">Point</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="o">}</span>
+    
+    <span class="kd">public</span> <span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">T</span> <span class="nf">evaluate</span><span class="o">(</span><span class="n">Object</span> <span class="n">object</span><span class="o">,</span> <span class="n">Class</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">context</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">Expression</span> <span class="n">pointExpression</span> <span class="o">=</span> <span class="n">parameters</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+        <span class="n">Point</span> <span class="n">point</span> <span class="o">=</span> <span class="n">pointExpression</span><span class="o">.</span><span class="na">evaluate</span><span class="o">(</span><span class="n">object</span><span class="o">,</span> <span class="n">Point</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    
+        <span class="n">Expression</span> <span class="n">lineExpression</span> <span class="o">=</span> <span class="n">parameters</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
+        <span class="n">Geometry</span> <span class="n">line</span> <span class="o">=</span> <span class="n">lineExpression</span><span class="o">.</span><span class="na">evaluate</span><span class="o">(</span><span class="n">object</span><span class="o">,</span> <span class="n">Geometry</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    
+        <span class="n">LocationIndexedLine</span> <span class="n">index</span> <span class="o">=</span> <span class="k">new</span> <span class="n">LocationIndexedLine</span><span class="o">(</span><span class="n">line</span><span class="o">);</span>
+    
+        <span class="n">LinearLocation</span> <span class="n">location</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="na">project</span><span class="o">(</span><span class="n">point</span><span class="o">.</span><span class="na">getCoordinate</span><span class="o">());</span>
+    
+        <span class="n">Coordinate</span> <span class="n">snap</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="na">extractPoint</span><span class="o">(</span><span class="n">location</span><span class="o">);</span>
+    
+        <span class="n">Point</span> <span class="n">pt</span> <span class="o">=</span> <span class="n">point</span><span class="o">.</span><span class="na">getFactory</span><span class="o">().</span><span class="na">createPoint</span><span class="o">(</span><span class="n">snap</span><span class="o">);</span>
+    
+        <span class="k">return</span> <span class="n">Converters</span><span class="o">.</span><span class="na">convert</span><span class="o">(</span><span class="n">pt</span><span class="o">,</span> <span class="n">context</span><span class="o">);</span> <span class="c1">// convert to requested format</span>
+    <span class="o">}</span>
+    
+    <span class="kd">public</span> <span class="n">Object</span> <span class="nf">accept</span><span class="o">(</span><span class="n">ExpressionVisitor</span> <span class="n">visitor</span><span class="o">,</span> <span class="n">Object</span> <span class="n">extraData</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">visitor</span><span class="o">.</span><span class="na">visit</span><span class="o">(</span><span class="k">this</span><span class="o">,</span> <span class="n">extraData</span><span class="o">);</span>
+    <span class="o">}</span>
+    
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">getName</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">NAME</span><span class="o">.</span><span class="na">getName</span><span class="o">();</span>
+    <span class="o">}</span>
+    
+    <span class="kd">public</span> <span class="n">FunctionName</span> <span class="nf">getFunctionName</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">NAME</span><span class="o">;</span>
+    <span class="o">}</span>
+    
+    <span class="kd">public</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Expression</span><span class="o">&gt;</span> <span class="nf">getParameters</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">parameters</span><span class="o">;</span>
+    <span class="o">}</span>
+    
+    <span class="kd">public</span> <span class="n">Literal</span> <span class="nf">getFallbackValue</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">fallback</span><span class="o">;</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">The mechanics of using a LocationIndexLine are covered in <a class="reference internal" href="../library/jts/snap.html"><em>Snap a Point to a Line</em></a>
+if you are interested.</p>
+</li>
+<li><p class="first">One thing to notice is the definition of FunctionName used to describe valid parameters to
+user of our new function.</p>
+<p>By convention we define this as a static final SnapFunction.NAME, this is however only a
+convention (which will help in implementing the next section).</p>
+</li>
+</ol>
+</div>
+<div class="section" id="step-2-factory">
+<h3>Step 2 Factory<a class="headerlink" href="#step-2-factory" title="Permalink to this headline">¶</a></h3>
+<p>Interfaces are not allowed to have constructors, so anything that would been a Constructor is
+defined as a Factory interface.</p>
+<p>To continue with our example:</p>
+<div class="highlight-python"><div class="highlight"><pre>public interface FunctionFactory {
+    List&lt;FunctionName&gt; getFunctionNames();
+    Function function(String name, List&lt;Expression&gt; args, Literal fallback);
+}
+</pre></div>
+</div>
+<p>The factory above describes what functions are available, and allows for Function
+creation. So far everything looks normal. The above is exactly how the plain &#8220;Factory Pattern&#8221;
+usually works - hopefully it is familiar to you?</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Factories are named after the interface they are responsible for; thus FunctionFactory.</p>
+</div>
+<p>Variations:</p>
+<ul class="simple">
+<li>Many factories just have a single create method (this is called the factory method)
+We have a couple of examples of this in GeoTools including DataStoreFactorySpi</li>
+<li>Some factories have several create method allowing a compatible set of objects to be created
+together.  We have a couple of examples of these abstract factories, such as FeatureTypeFactory.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Some GeoTools factories extend the Factory interface, but this is optional. This Factory
+interface is useful only for factories that can be configured through a set of Hints.</p>
+</div>
+<p>To continue with our implementation we will define ExampleFunctionFactory:</p>
+<ol class="arabic">
+<li><p class="first">Create ExampleFunctionFactory implementing FunctionFactory</p>
+</li>
+<li><p class="first">Fill in the information as shown:</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="kn">package</span> <span class="nn">org.geotools.tutorial.function</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.util.ArrayList</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Collections</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.List</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.geotools.feature.NameImpl</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.filter.FunctionFactory</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.opengis.feature.type.Name</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.opengis.filter.capability.FunctionName</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.opengis.filter.expression.Expression</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.opengis.filter.expression.Function</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.opengis.filter.expression.Literal</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ExampleFunctionFactory</span> <span class="kd">implements</span> <span class="n">FunctionFactory</span> <span class="o">{</span>    
+    
+    <span class="kd">public</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">FunctionName</span><span class="o">&gt;</span> <span class="nf">getFunctionNames</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">List</span><span class="o">&lt;</span><span class="n">FunctionName</span><span class="o">&gt;</span> <span class="n">functionList</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">FunctionName</span><span class="o">&gt;();</span>
+        <span class="n">functionList</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">SnapFunction</span><span class="o">.</span><span class="na">NAME</span><span class="o">);</span>        
+        <span class="k">return</span> <span class="n">Collections</span><span class="o">.</span><span class="na">unmodifiableList</span><span class="o">(</span> <span class="n">functionList</span> <span class="o">);</span>
+    <span class="o">}</span>    
+    <span class="kd">public</span> <span class="n">Function</span> <span class="nf">function</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">,</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Expression</span><span class="o">&gt;</span> <span class="n">args</span><span class="o">,</span> <span class="n">Literal</span> <span class="n">fallback</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">function</span><span class="o">(</span><span class="k">new</span> <span class="n">NameImpl</span><span class="o">(</span><span class="n">name</span><span class="o">),</span> <span class="n">args</span><span class="o">,</span> <span class="n">fallback</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="n">Function</span> <span class="nf">function</span><span class="o">(</span><span class="n">Name</span> <span class="n">name</span><span class="o">,</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Expression</span><span class="o">&gt;</span> <span class="n">args</span><span class="o">,</span> <span class="n">Literal</span> <span class="n">fallback</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span><span class="o">(</span> <span class="n">SnapFunction</span><span class="o">.</span><span class="na">NAME</span><span class="o">.</span><span class="na">getFunctionName</span><span class="o">().</span><span class="na">equals</span><span class="o">(</span><span class="n">name</span><span class="o">)){</span>
+            <span class="k">return</span> <span class="k">new</span> <span class="n">SnapFunction</span><span class="o">(</span> <span class="n">args</span><span class="o">,</span> <span class="n">fallback</span> <span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span> <span class="c1">// we do not implement that function</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">We make reference to the static final SnapFunction.NAME.</p>
+<p>While we mentioned this as only a convention, you are free to create a
+new new FunctionNameImpl(&#8220;snap&#8221;, &#8220;point&#8221;, &#8220;line&#8221;) as part of the getFunctionNames() method.
+This has the advantage of avoiding loading SnapFunction until a user requests it by name.</p>
+</li>
+<li><p class="first">We can now register our factory.</p>
+<p>Create the file:</p>
+<ul class="simple">
+<li>META_INF/services/org.geotools.filter.FunctionFactory</li>
+</ul>
+</li>
+<li><p class="first">Fill in the following contents (one implementation class per line):</p>
+<div class="highlight-python"><div class="highlight"><pre>or.geotools.tutorial.function.ExampleFunctionFactory
+</pre></div>
+</div>
+</li>
+<li><p class="first">That is it SnapFunction is now published!</p>
+</li>
+</ol>
+</div>
+<div class="section" id="step-3-factoryregistery">
+<h3>Step 3 FactoryRegistery<a class="headerlink" href="#step-3-factoryregistery" title="Permalink to this headline">¶</a></h3>
+<p>Geotools 2.2 uses javax.imageio.ServiceRegistry magic (where this plug-in system originated from).
+Please note that the FactoryRegistry will cache the factories already found. Since factories
+are stateless this should not be a problem.</p>
+</div>
+</div>
+<div class="section" id="direct-use-of-factoryregistry">
+<h2>Direct use of FactoryRegistry<a class="headerlink" href="#direct-use-of-factoryregistry" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p class="first">You can directly use FactoryRegistery in your own code:</p>
+<div class="highlight-python"><div class="highlight"><pre>Set categories = Collections.singleton(new Class[] {FunctionFactory.class,});
+FactoryRegistry registry = new FactoryRegistry(categories);
+
+Iterator iterator = registry.getProviders(FunctionFactory.class);
+</pre></div>
+</div>
+</li>
+<li><p class="first">Internally The <strong>FactoryRegistry</strong> will look up key in System properties.</p>
+<ul class="simple">
+<li>If key doesn&#8217;t exist or a SecurityException is thrown, fall through.</li>
+<li>Otherwise attempt to instantiate the given class.</li>
+</ul>
+</li>
+<li><p class="first">Then FactoryRegistry will search the resource paths for the key in META-INF/services.</p>
+<ul class="simple">
+<li>If the resource is found, the file is read and the class is instantiated.</li>
+<li>If the resource does not exist, fall through.</li>
+</ul>
+</li>
+<li><p class="first">This means that FactoryRegistry will be able find any FunctionFactory that is provied on
+the CLASSPATH.</p>
+</li>
+</ol>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">GeoTools already has a FactoryRegistry for handling FunctionFactory, as part of
+CommonFactory finder. There is however nothing stopping you from using your
+own FactoryRegistry (other than wasting resources).</p>
+</div>
+</div>
+<div class="section" id="defining-your-own-factoryfinder">
+<h2>Defining your own FactoryFinder<a class="headerlink" href="#defining-your-own-factoryfinder" title="Permalink to this headline">¶</a></h2>
+<p>It is noted that FactoryRegistry is not synchronized, to protect for this you can wrap the
+direct use up in a FactoryFinder, which also provide type-safety.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Finders are named after the interface they are responsible for; thus FunctionFinder.</p>
+</div>
+<p>Here is an use of FactoryRegistry as part of FactoryFinder:</p>
+<ol class="arabic">
+<li><p class="first">Create the FactoryRegistry in a lazy fashion, listing the interfaces you are interested
+in obtaining (known as categories).</p>
+</li>
+<li><p class="first">GeoTools traditionally holds a FactoryRegistry in a &#8220;Finder&#8221; class:</p>
+<ul class="simple">
+<li>Create ExampleFinder</li>
+</ul>
+</li>
+<li><p class="first">Fill in the following details:</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="kn">package</span> <span class="nn">org.geotools.tutorial.function</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.util.Iterator</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Set</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.geotools.factory.FactoryCreator</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.factory.FactoryFinder</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.factory.FactoryRegistry</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.factory.GeoTools</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.factory.Hints</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.filter.FunctionFactory</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.resources.LazySet</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.opengis.filter.FilterFactory</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ExampleFinder</span> <span class="kd">extends</span> <span class="n">FactoryFinder</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="n">FactoryCreator</span> <span class="n">registry</span><span class="o">;</span>
+    
+    <span class="kd">private</span> <span class="kd">static</span> <span class="n">FactoryRegistry</span> <span class="nf">getServiceRegistry</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">assert</span> <span class="n">Thread</span><span class="o">.</span><span class="na">holdsLock</span><span class="o">(</span><span class="n">ExampleFinder</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">registry</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">Class</span><span class="o">&lt;?&gt;</span> <span class="n">categories</span><span class="o">[]</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Class</span><span class="o">&lt;?&gt;[]</span> <span class="o">{</span> <span class="n">FunctionFactory</span><span class="o">.</span><span class="na">class</span> <span class="o">};</span>
+            <span class="n">registry</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FactoryCreator</span><span class="o">(</span> <span class="n">categories</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">registry</span><span class="o">;</span>
+    <span class="o">}</span>
+    
+    <span class="cm">/**</span>
+<span class="cm">     * Returns a set of all available implementations for the {@link FilterFactory} interface.</span>
+<span class="cm">     *</span>
+<span class="cm">     * @param  hints An optional map of hints, or {@code null} if none.</span>
+<span class="cm">     * @return Set of available filter factory implementations.</span>
+<span class="cm">     */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">synchronized</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">FunctionFactory</span><span class="o">&gt;</span> <span class="nf">getFilterFactories</span><span class="o">(</span><span class="n">Hints</span> <span class="n">hints</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">hints</span> <span class="o">=</span> <span class="n">mergeSystemHints</span><span class="o">(</span><span class="n">hints</span><span class="o">);</span>
+        <span class="n">Iterator</span><span class="o">&lt;</span><span class="n">FunctionFactory</span><span class="o">&gt;</span> <span class="n">serviceProviders</span> <span class="o">=</span> <span class="n">getServiceRegistry</span><span class="o">().</span><span class="na">getServiceProviders</span><span class="o">(</span>
+                <span class="n">FunctionFactory</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="n">hints</span><span class="o">);</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="n">LazySet</span><span class="o">&lt;</span><span class="n">FunctionFactory</span><span class="o">&gt;(</span><span class="n">serviceProviders</span><span class="o">);</span>
+    <span class="o">}</span>
+        
+    <span class="cm">/** Allow the classpath to be rescanned */</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">synchronized</span> <span class="kt">void</span> <span class="nf">scanForPlugins</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">registry</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">registry</span><span class="o">.</span><span class="na">scanForPlugins</span><span class="o">();</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">The above is an example only, please use FunctionFinder</p>
+</li>
+</ol>
+<p>Tips for implementing your own FactoryFinder:</p>
+<ul class="simple">
+<li>The code example makes use of LazySet, this keeps us from having to check the classpath each time.</li>
+<li>The utility method addDefaultHints is used to apply the global GeoTools configuration to the hints
+supplied by the user.</li>
+<li>As shown above you can add some helper methods for client code. Often this is used to perform
+searches based on some criteria, or used to locate the &#8220;best&#8221; factory for a given task.</li>
+</ul>
+</div>
+<div class="section" id="factoryiteratorproviders">
+<h2>FactoryIteratorProviders<a class="headerlink" href="#factoryiteratorproviders" title="Permalink to this headline">¶</a></h2>
+<p>FactoryIteratorProviders is used to support other Plugin mechanisms.</p>
+<p>By default the &#8220;Factory SPI&#8221; mechanism is used to locate the Factories provided by a
+FactoryFinder (and FactoryRegistry). However in order to support other plugin mechanisms
+the Factories has a method addFactoryIteratorProvider(...). This method allows a developer
+to add an iterator that knows how to process another extension mechanism. For example, in
+eclipse one would add a FactoryIteratorProvider that returns a provider that knows how to
+process eclipse extension points and can create factories from the eclipse extensions.</p>
+<div class="section" id="abstract">
+<h3>Abstract<a class="headerlink" href="#abstract" title="Permalink to this headline">¶</a></h3>
+<p>Now that we have helped client code make use of our interface, the next step is to provide
+an abstract class to help those developing an implementation.</p>
+<p>Most Geotools Factories are kind enough to give you an Abstract superclass to start your
+implementation efforts from. When making your own Factories this is a good example to follow.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">By asking developers to extend an abstract class you can help protect them from any
+additional methods that are added to the interface in the future.</p>
+</div>
+<ol class="arabic">
+<li><p class="first">Here is an example <strong>AbstractFunction</strong> to get a feel for what is involved.</p>
+<p>This is not part of GeoTools (yet) - it just shows the approach used:</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="kn">package</span> <span class="nn">org.geotools.tutorial.function</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.util.Collections</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.List</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.geotools.util.Converters</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.opengis.filter.capability.FunctionName</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.opengis.filter.expression.Expression</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.opengis.filter.expression.ExpressionVisitor</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.opengis.filter.expression.Function</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.opengis.filter.expression.Literal</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">AbstractFunction</span> <span class="kd">implements</span> <span class="n">Function</span> <span class="o">{</span>
+    <span class="kd">protected</span> <span class="kd">final</span> <span class="n">FunctionName</span> <span class="n">name</span><span class="o">;</span>
+    <span class="kd">protected</span> <span class="kd">final</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Expression</span><span class="o">&gt;</span> <span class="n">params</span><span class="o">;</span>
+    <span class="kd">protected</span> <span class="kd">final</span> <span class="n">Literal</span> <span class="n">fallback</span><span class="o">;</span>
+    
+    <span class="kd">protected</span> <span class="nf">AbstractFunction</span><span class="o">(</span><span class="n">FunctionName</span> <span class="n">name</span><span class="o">,</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Expression</span><span class="o">&gt;</span> <span class="n">args</span><span class="o">,</span> <span class="n">Literal</span> <span class="n">fallback</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">params</span> <span class="o">=</span> <span class="n">args</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">fallback</span> <span class="o">=</span> <span class="n">fallback</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="kd">abstract</span> <span class="n">Object</span> <span class="nf">evaluate</span><span class="o">(</span><span class="n">Object</span> <span class="n">object</span><span class="o">);</span>
+    <span class="kd">public</span> <span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">T</span> <span class="nf">evaluate</span><span class="o">(</span><span class="n">Object</span> <span class="n">object</span><span class="o">,</span> <span class="n">Class</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">context</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">Object</span> <span class="n">value</span> <span class="o">=</span> <span class="n">evaluate</span><span class="o">(</span><span class="n">object</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">Converters</span><span class="o">.</span><span class="na">convert</span><span class="o">(</span><span class="n">value</span><span class="o">,</span> <span class="n">context</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="n">Object</span> <span class="nf">accept</span><span class="o">(</span><span class="n">ExpressionVisitor</span> <span class="n">visitor</span><span class="o">,</span> <span class="n">Object</span> <span class="n">extraData</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">visitor</span><span class="o">.</span><span class="na">visit</span><span class="o">(</span><span class="k">this</span><span class="o">,</span> <span class="n">extraData</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">getName</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">name</span><span class="o">.</span><span class="na">getName</span><span class="o">();</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="n">FunctionName</span> <span class="nf">getFunctionName</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">name</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Expression</span><span class="o">&gt;</span> <span class="nf">getParameters</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">Collections</span><span class="o">.</span><span class="na">unmodifiableList</span><span class="o">(</span><span class="n">params</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="n">Literal</span> <span class="nf">getFallbackValue</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">fallback</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="c1">// helper methods</span>
+    <span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">T</span> <span class="nf">eval</span><span class="o">(</span> <span class="n">Object</span> <span class="n">feature</span><span class="o">,</span> <span class="kt">int</span> <span class="n">index</span><span class="o">,</span> <span class="n">Class</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">type</span> <span class="o">){</span>
+        <span class="n">Expression</span> <span class="n">expr</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">index</span><span class="o">);</span>
+        <span class="n">Object</span> <span class="n">value</span> <span class="o">=</span> <span class="n">expr</span><span class="o">.</span><span class="na">evaluate</span><span class="o">(</span> <span class="n">feature</span><span class="o">,</span> <span class="n">type</span> <span class="o">);</span>        
+        <span class="k">return</span> <span class="n">type</span><span class="o">.</span><span class="na">cast</span><span class="o">(</span><span class="n">value</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Here is a sample use.</p>
+<p>Note we have cut down on the number of methods the developer needs to fill in, and we have
+provided a helper method to avoid some of the &#8220;boiler plate&#8221; cut and paste coding associated
+with evaluating a parameter:</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="kn">package</span> <span class="nn">org.geotools.tutorial.function</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.util.ArrayList</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Collections</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.List</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.geotools.feature.NameImpl</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.filter.FunctionFactory</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.filter.capability.FunctionNameImpl</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.opengis.feature.type.Name</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.opengis.filter.capability.FunctionName</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.opengis.filter.expression.Expression</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.opengis.filter.expression.Function</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.opengis.filter.expression.Literal</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">com.vividsolutions.jts.geom.Coordinate</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.vividsolutions.jts.geom.Geometry</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ExampleFunctionFactory2</span> <span class="kd">implements</span> <span class="n">FunctionFactory</span> <span class="o">{</span>    
+    <span class="kd">private</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">FunctionName</span><span class="o">&gt;</span> <span class="n">functionList</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="n">FunctionName</span> <span class="n">FIRST</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FunctionNameImpl</span><span class="o">(</span><span class="s">&quot;first&quot;</span><span class="o">,</span><span class="s">&quot;geometry&quot;</span><span class="o">);</span>
+    <span class="kd">public</span> <span class="kd">synchronized</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">FunctionName</span><span class="o">&gt;</span> <span class="nf">getFunctionNames</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">if</span><span class="o">(</span> <span class="n">functionList</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">){</span>
+            <span class="n">functionList</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">FunctionName</span><span class="o">&gt;();</span>
+            <span class="n">functionList</span><span class="o">.</span><span class="na">add</span><span class="o">(</span> <span class="n">FIRST</span> <span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">Collections</span><span class="o">.</span><span class="na">unmodifiableList</span><span class="o">(</span> <span class="n">functionList</span> <span class="o">);</span>
+    <span class="o">}</span>    
+    <span class="kd">public</span> <span class="n">Function</span> <span class="nf">function</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">,</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Expression</span><span class="o">&gt;</span> <span class="n">args</span><span class="o">,</span> <span class="n">Literal</span> <span class="n">fallback</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">function</span><span class="o">(</span><span class="k">new</span> <span class="n">NameImpl</span><span class="o">(</span><span class="n">name</span><span class="o">),</span> <span class="n">args</span><span class="o">,</span> <span class="n">fallback</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="n">Function</span> <span class="nf">function</span><span class="o">(</span><span class="n">Name</span> <span class="n">name</span><span class="o">,</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Expression</span><span class="o">&gt;</span> <span class="n">args</span><span class="o">,</span> <span class="n">Literal</span> <span class="n">fallback</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span><span class="o">(</span><span class="k">new</span> <span class="n">NameImpl</span><span class="o">(</span><span class="s">&quot;first&quot;</span><span class="o">).</span><span class="na">equals</span><span class="o">(</span><span class="n">name</span><span class="o">)){</span>
+            <span class="k">return</span> <span class="k">new</span> <span class="n">AbstractFunction</span><span class="o">(</span> <span class="n">FIRST</span><span class="o">,</span> <span class="n">args</span><span class="o">,</span> <span class="n">fallback</span> <span class="o">){</span>
+                <span class="kd">public</span> <span class="n">Geometry</span> <span class="nf">evaluate</span><span class="o">(</span><span class="n">Object</span> <span class="n">object</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="n">Geometry</span> <span class="n">geom</span> <span class="o">=</span> <span class="n">eval</span><span class="o">(</span><span class="n">object</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="n">Geometry</span><span class="o">.</span><span class="na">class</span> <span class="o">);</span>
+                    <span class="n">Coordinate</span> <span class="n">coordinate</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="na">getCoordinate</span><span class="o">();</span>
+                    <span class="k">return</span> <span class="n">geom</span><span class="o">.</span><span class="na">getFactory</span><span class="o">().</span><span class="na">createPoint</span><span class="o">(</span><span class="n">coordinate</span><span class="o">);</span>
+                <span class="o">}</span>
+            <span class="o">};</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span> <span class="c1">// we do not implement that function</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">You can see how that would help in quickly banging out a set of functions.</p>
+</li>
+</ol>
+</div>
+<div class="section" id="plugin-checklist">
+<h3>Plugin Checklist<a class="headerlink" href="#plugin-checklist" title="Permalink to this headline">¶</a></h3>
+<p><strong>To allow clients to contribute a plugin</strong></p>
+<ol class="arabic">
+<li><p class="first">Define an interface</p>
+<p>Example: Foo</p>
+</li>
+<li><p class="first">Define factory interface</p>
+<p>Example: FooFactory</p>
+</li>
+<li><p class="first">Define FactoryFinder</p>
+<p>Example: FooFactoryFinder</p>
+</li>
+<li><p class="first">Define an Abstract class for implementors</p>
+<p>Example: AbstractFoo</p>
+</li>
+</ol>
+<p><strong>To allow client code access to plug-ins</strong></p>
+<ol class="arabic">
+<li><p class="first">Make your FactoryFinder public</p>
+<p>Example:  FooFinder</p>
+</li>
+</ol>
+<p><strong>When implementing a Plugin</strong></p>
+<ol class="arabic">
+<li><p class="first">Create your implementation</p>
+<p>Example:  MyFoo</p>
+</li>
+<li><p class="first">Create you extension factory</p>
+<p>Example: MyFooFactory</p>
+</li>
+<li><p class="first">Register with META-INF/services</p>
+<p>Example: META-INF/services/Foo</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="function.html" title="Function Tutorial"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="affinetransform.html" title="AffineTransformation Tutorial"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="index.html" >Tutorials</a> &raquo;</li>
+        <li><a href="#">Factory Tutorial</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

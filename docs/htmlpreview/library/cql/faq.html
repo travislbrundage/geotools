@@ -1,0 +1,179 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>CQL FAQ &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../index.html" />
+    <link rel="up" title="CQL" href="index.html" />
+    <link rel="next" title="Internal" href="internal.html" />
+    <link rel="prev" title="CQL" href="index.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">CQL</a> &raquo;</li>
+        <li><a href="#">CQL FAQ</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">CQL FAQ</a><ul>
+<li><a class="reference internal" href="#q-what-is-cql-used-for">Q: What is CQL used for?</a></li>
+<li><a class="reference internal" href="#q-what-version-of-cql-is-implemented">Q: What version of CQL is implemented?</a></li>
+<li><a class="reference internal" href="#q-can-i-just-try-cql-out">Q: Can I just try CQL out?</a></li>
+<li><a class="reference internal" href="#q-what-does-ecql-offer">Q: What does ECQL offer?</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">CQL</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="internal.html"
+                        title="next chapter">Internal</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/library/cql/faq.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="cql-faq">
+<h1>CQL FAQ<a class="headerlink" href="#cql-faq" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="q-what-is-cql-used-for">
+<h2>Q: What is CQL used for?<a class="headerlink" href="#q-what-is-cql-used-for" title="Permalink to this headline">¶</a></h2>
+<p>The <strong>CQL</strong> utility class has static methods to parse an input String into either a <strong>Filter</strong>
+or an <strong>Expression</strong>.</p>
+<p>Here is the most common use for the CQL class - asking for Features:</p>
+<div class="highlight-java"><div class="highlight"><pre>        <span class="n">Filter</span> <span class="n">filter</span> <span class="o">=</span> <span class="n">CQL</span><span class="o">.</span><span class="na">toFilter</span><span class="o">(</span><span class="s">&quot;population &gt;= 10000000&quot;</span><span class="o">);</span>
+</pre></div>
+</div>
+<p>The CQL utility class produced is a Filter; you can create Filters by hand (using a FilterFactory) but this is much easier.</p>
+</div>
+<div class="section" id="q-what-version-of-cql-is-implemented">
+<h2>Q: What version of CQL is implemented?<a class="headerlink" href="#q-what-version-of-cql-is-implemented" title="Permalink to this headline">¶</a></h2>
+<p>The input string defining the query predicate that CQL accepts has to respond to the grammar
+of the OGC Common Query Language, defined in the Catalog Service for Web, v2.0.1, from the OGC.</p>
+<p>We&#8217;ve added a couple extensions and fixes to that grammar in order to fix a bug in the definition
+of temporal expressions and to leverage its use in the GeoTools library.</p>
+</div>
+<div class="section" id="q-can-i-just-try-cql-out">
+<h2>Q: Can I just try CQL out?<a class="headerlink" href="#q-can-i-just-try-cql-out" title="Permalink to this headline">¶</a></h2>
+<p>If you&#8217;re developing with GeoTools, you can easily try out the CQL parser by depending on the <strong>gt-cql</strong>
+jar and running the <strong>CQL</strong> class as a normal Java application.</p>
+<p>It will present a prompt on the console (standard input) from where you can input cql strings and
+will get back the corresponding Filter in xml encoding.:</p>
+<div class="highlight-python"><div class="highlight"><pre>Expression Tester (&quot;quit&quot; to finish)
+&gt;attr &gt; 10
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;ogc:PropertyIsGreaterThan xmlns=&quot;http://www.opengis.net/ogc&quot;
+                           xmlns:ogc=&quot;http://www.opengis.net/ogc&quot;
+                           xmlns:gml=&quot;http://www.opengis.net/gml&quot;&gt;
+  &lt;ogc:PropertyName&gt;attr&lt;/ogc:PropertyName&gt;
+  &lt;ogc:Literal&gt;10&lt;/ogc:Literal&gt;
+&lt;/ogc:PropertyIsGreaterThan&gt;
+
+&gt;quit
+Bye!
+</pre></div>
+</div>
+</div>
+<div class="section" id="q-what-does-ecql-offer">
+<h2>Q: What does ECQL offer?<a class="headerlink" href="#q-what-does-ecql-offer" title="Permalink to this headline">¶</a></h2>
+<p>The ECQL class offers an extension of the basic CQL language, it is backward compatable so
+the following still works:</p>
+<div class="highlight-java"><div class="highlight"><pre>        <span class="n">Filter</span> <span class="n">filter</span> <span class="o">=</span> <span class="n">ECQL</span><span class="o">.</span><span class="na">toFilter</span><span class="o">(</span><span class="s">&quot;POPULTATION &gt;= 1000&quot;</span><span class="o">);</span>
+</pre></div>
+</div>
+<p>The ECQL has a syntax more flexible and nearest to the natural language.
+By example, ECQL allows to use an expression in the left hand of comparison
+as is showed in the following example</p>
+<div class="highlight-java"><div class="highlight"><pre>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="internal.html" title="Internal"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="index.html" title="CQL"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" >CQL</a> &raquo;</li>
+        <li><a href="#">CQL FAQ</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

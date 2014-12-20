@@ -1,0 +1,508 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>How to Use GeoTools &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../index.html" />
+    <link rel="up" title="Welcome" href="index.html" />
+    <link rel="next" title="Use of Standards" href="standards.html" />
+    <link rel="prev" title="Architecture" href="architecture.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Welcome</a> &raquo;</li>
+        <li><a href="#">How to Use GeoTools</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">How to Use GeoTools</a><ul>
+<li><a class="reference internal" href="#adding-geotools-to-your-application">Adding GeoTools to your Application</a></li>
+<li><a class="reference internal" href="#module-matrix">Module Matrix</a></li>
+<li><a class="reference internal" href="#public-api">Public API</a><ul>
+<li><a class="reference internal" href="#interfaces-for-concepts-and-ideas">Interfaces for Concepts and Ideas</a></li>
+<li><a class="reference internal" href="#classes-for-implementation">Classes for Implementation</a></li>
+<li><a class="reference internal" href="#factories-for-creation">Factories for Creation</a><ul>
+<li><a class="reference internal" href="#separation-of-concerns">Separation of Concerns</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#how-to-create">How to Create</a><ul>
+<li><a class="reference internal" href="#creating-in-geotools">Creating in GeoTools</a></li>
+<li><a class="reference internal" href="#factoryfinder-reference">FactoryFinder Reference</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#where-to-get-a-factory">Where to get a Factory</a><ul>
+<li><a class="reference internal" href="#factoryfinder">FactoryFinder</a><ul>
+<li><a class="reference internal" href="#about-factoryspi">About FactorySPI</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#application-specific-alternatives">Application specific Alternatives</a><ul>
+<li><a class="reference internal" href="#container">Container</a></li>
+<li><a class="reference internal" href="#jndi">JNDI</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#direct-use-of-factory">Direct use of Factory</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="architecture.html"
+                        title="previous chapter">Architecture</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="standards.html"
+                        title="next chapter">Use of Standards</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/welcome/use.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="how-to-use-geotools">
+<h1>How to Use GeoTools<a class="headerlink" href="#how-to-use-geotools" title="Permalink to this headline">¶</a></h1>
+<p>GeoTools provides an excellent series of tutorials to help you get started:</p>
+<ul class="simple">
+<li><a class="reference internal" href="../tutorial/quickstart/index.html"><em>Quickstart</em></a></li>
+</ul>
+<div class="section" id="adding-geotools-to-your-application">
+<h2>Adding GeoTools to your Application<a class="headerlink" href="#adding-geotools-to-your-application" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Maven (recommended):</dt>
+<dd><p class="first">The quickstart is writen with the maven build system in mind. The maven build
+system is very good at sorting out dependencies between lots of little jars - and
+is the recommended way to start using GeoTools.</p>
+<p>Both Eclipse and NetBeans offer maven integration, for details please review
+the Eclipse Quickstart and NetBeans quickstart.</p>
+<p class="last">Using maven in concert with your IDE, and looking over the pictures on this page is
+recommended.</p>
+</dd>
+<dt>Download:</dt>
+<dd><p class="first">Traditionally users just dump all the jars into their IDE and have a go, please be
+advised that some of the jars will be in conflict.</p>
+<ol class="arabic simple">
+<li>Dump everything from a binary distribution of GeoTools into your IDE</li>
+<li>Remove all the jars that say epsg in them - except for the gt2-epsg jar.</li>
+<li>Ensure your JRE has JAI and ImageIO if you are doing raster work</li>
+<li>Ignore the rest of this page</li>
+</ol>
+<p class="last">For detailed step-by-step instructions review the Eclipse quickstart and
+Netbeans quickstart. Instructions for downloading and selecting jars
+are provided at the end of the document as an alternative.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="module-matrix">
+<h2>Module Matrix<a class="headerlink" href="#module-matrix" title="Permalink to this headline">¶</a></h2>
+<p>The GeoTools library is live and online! So you can check up on modules, plugins and
+extensions you are about to use:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://docs.codehaus.org/display/GEOTOOLS/Module+Matrix">http://docs.codehaus.org/display/GEOTOOLS/Module+Matrix</a></li>
+</ul>
+<p>This page includes a description of how good each module is (more stars is better). If there
+are any serious problems (ie a red star) you may want to click on the module name to find out
+more information.</p>
+<p>The Module Matrix also lists unsupported modules allowing you to check on current status.</p>
+</div>
+<div class="section" id="public-api">
+<h2>Public API<a class="headerlink" href="#public-api" title="Permalink to this headline">¶</a></h2>
+<p>As an open source library you are free to call any of the GeoTools classes needed for your
+application to be delivered on time.</p>
+<p>However, GeoTools offers a clean approach which should cause the least amount of disruption
+to your code during library upgrades as GeoTools matures.</p>
+<p>GeoTools cleanly separates out several groups of application programming interfaces (API)
+from the internal implementation of the library.</p>
+<p>If you write your code against these interfaces they offer a stable target as the library
+upgrades. In the event these interfaces are changed (sometimes standards change on us) the
+interfaces will be deprecated for a single release cycle allowing you a chance to upgrade.</p>
+<div class="section" id="interfaces-for-concepts-and-ideas">
+<h3>Interfaces for Concepts and Ideas<a class="headerlink" href="#interfaces-for-concepts-and-ideas" title="Permalink to this headline">¶</a></h3>
+<p>Formally these interfaces come from three locations:</p>
+<ul class="simple">
+<li>gt-opengis - interfaces backed by ISO and OGC standards (as explained in the Use of Standards page).</li>
+<li>jts topology suite - geometry library implementing the Simple Features for SQL (SFSQL) OGC standard.</li>
+<li>gt-api - interfaces provided by GeoTools.</li>
+</ul>
+<p>We also have one stalled work in progress:</p>
+<ul class="simple">
+<li>gt-opengis has a set of ISO19107 geometry interfaces (anyone interested in curves and 3D?)</li>
+</ul>
+<p>These interfaces represent spatial concepts and data structures in your application and are suitable
+for use in method signatures.</p>
+</div>
+<div class="section" id="classes-for-implementation">
+<h3>Classes for Implementation<a class="headerlink" href="#classes-for-implementation" title="Permalink to this headline">¶</a></h3>
+<p>While interfaces are used to represent the data structures employed by GeoTools, we also provide
+public classes to get the job done.</p>
+<p>Public classes are provided for the purpose of:</p>
+<ul class="simple">
+<li>Utility classes to make things easier to work with. Examples are the CQL, DataUtilities and JTS
+classes. Each of these provide public methods to help you make the most of the services provided
+by GeoTools.</li>
+<li>Helping glue the library together at runtime - an example is the FactoryFinders which allow you
+to look up available implementations on the CLASSPATH.</li>
+<li>GeoTools &#8220;Extensions&#8221; provide additional services on top of the library and require additional
+public classes to make this happen. An example is the ColorBrewer class provied by gt-brewer.</li>
+</ul>
+<p>You can make use of public classes in these modules directly, in all cases they are utilities to
+get the job done. These classes are suitable for use in your import section. There is no need to
+use these classes in your method signatures as they do not represent data structures.</p>
+</div>
+<div class="section" id="factories-for-creation">
+<h3>Factories for Creation<a class="headerlink" href="#factories-for-creation" title="Permalink to this headline">¶</a></h3>
+<p>Interfaces only define what a data structure should look like, and do not provide a way to create
+an object. In Java the work around is to provide a &#8220;factory&#8221; that provides &#8220;create&#8221; methods which
+you can use instead of <strong>new</strong>.</p>
+<p>GeoTools provides Factory classes allowing you to create the various objects used by the library,
+such as Features, Styles, Filters, CoordinateReferencingSystems, and DataStores.</p>
+<p>GeoTools provides a FactoryFinder system to locate the available factory implementations on the
+CLASSPATH. By using a FactoryFinder your code can be built to function using only interfaces.</p>
+<p>For more information review the page How to Create Something which outlines how to locate an
+appropriate implementation at runtime.</p>
+<div class="section" id="separation-of-concerns">
+<h4>Separation of Concerns<a class="headerlink" href="#separation-of-concerns" title="Permalink to this headline">¶</a></h4>
+<p>While you could find and use each of the various Factory implementations directly this would
+introduce a <strong>dependency</strong> between your code and that exact implementation. This idea of
+depending on a specific implementation makes your code brittle with respect to change, and prevents
+you from taking advantage of a better implementation when it is made available in the future.</p>
+<p>Bad practice with direct dependency on ShapeFileDataStoreFactory:</p>
+<div class="highlight-python"><div class="highlight"><pre>ShapefileDataStoreFactory factory = new ShapefileDataStoreFactory();
+ShapeFileDataStore = factory.createDataStore( file );
+</pre></div>
+</div>
+<p>This code example would have been fine for GeoTools 2.1, however for GeoTools 2.2 an &#8220;indexed&#8221;
+shapefile datastore was created with far better performance.</p>
+<p>Here is a replacement that allows GeoTools to return an indexed datastore if one is available:</p>
+<div class="highlight-python"><div class="highlight"><pre>DataStore dataStore = DataStoreFinder.getDataStore( file );
+</pre></div>
+</div>
+<p>The DataStoreFinder class looks up all the DataStoreFactory implementations available on the
+CLASSPATH and sorts out which one can make a DataStore to access the provided file.</p>
+</div>
+</div>
+</div>
+<div class="section" id="how-to-create">
+<h2>How to Create<a class="headerlink" href="#how-to-create" title="Permalink to this headline">¶</a></h2>
+<p>Code leveraging GeoTools usually works against the Java interfaces only but interfaces in Java
+don&#8217;t provide any way to create actual objects. GeoTools therefore provides Factories which are
+concrete implementations through whose interface users can create actual GeoTools objects such as
+Features, Styles, Filters, DataStores, and MathTransforms.</p>
+<p>This page explains how to use the FactoryFinder system to find the appropriate Factory
+implementations to instantiate particular objects. The section page will show alternative approaches
+to obtain and use a particular implementation of an appropriate DataStore interface; those examples
+show the utility of the FactoryFinder system.</p>
+<div class="section" id="creating-in-geotools">
+<h3>Creating in GeoTools<a class="headerlink" href="#creating-in-geotools" title="Permalink to this headline">¶</a></h3>
+<p>To create an implementation (and not get your hands dirty by depending on a specific class) Java
+developers are asked to use a Factory. Other languages like scala allow the definition of a
+constructors as part of the interface itself.</p>
+<p>In GeoTools we use a &#8220;FactoryFinder&#8221; to look for a factory implementation on the classpath.</p>
+<p>Here is a quick example showing how to create and use a Filter:</p>
+<div class="highlight-python"><div class="highlight"><pre>FilterFactory2 factory = CommonFactoryFinder.getFilterFactory2( null );
+Filter filter = factory.less( factory.property( &quot;size&quot; ), factory.literal( 2 ) );
+
+if( filter.evaulate( feature )){
+   System.out.println( feature.getId() + &quot; had a size larger than 2&quot; );
+}
+</pre></div>
+</div>
+<p>In this example we:</p>
+<ol class="arabic">
+<li><p class="first">Found an object which implements the GeoAPI FilterFactory2 interface using a FactoryFinder.</p>
+<p>(CommonFactoryFinder gave us FilterFactoryImpl in this case)</p>
+</li>
+<li><p class="first">Used the Factory to produce our Instance.</p>
+<p>(FilterFactoryImpl.less(..) method was used to create a PropertyIsLessThan Filter)</p>
+</li>
+<li><p class="first">Used the instance to accomplish something.</p>
+<p>(we used the filter to check the size of a Feature )</p>
+</li>
+</ol>
+</div>
+<div class="section" id="factoryfinder-reference">
+<h3>FactoryFinder Reference<a class="headerlink" href="#factoryfinder-reference" title="Permalink to this headline">¶</a></h3>
+<p>There is a loose naming convention where we try and have a clear progression from interface name,
+factory name to factory finder name.</p>
+<p>However in practice we found it useful to gather many of the common factories together into a
+common class for lookup.</p>
+<p>CommonFactoryFinder</p>
+<ul class="simple">
+<li>FilterFactory</li>
+<li>StyleFactory</li>
+<li>Function</li>
+<li>FeatureLockFactory</li>
+<li>FileDataStore - factory used to work with file datastores</li>
+<li>FeatureFactory - factory used to create features</li>
+<li>FeatureTypeFactory - factory used to create feature type description</li>
+<li>FeatureCollections - factory used to create feature collection</li>
+</ul>
+<p>For access to feature (ie vector) information:</p>
+<ul class="simple">
+<li>DataAccessFinder - listing DataAccessFactory for working with feature data</li>
+<li>DataStoreFinder - lists DataStoreFactorySpi limited to simple features</li>
+<li>FileDataStoreFinder - Create of FileDataStoreFactorySpi instances limited to file formats</li>
+</ul>
+<p>For access to coverage (ie raster) information:</p>
+<ul class="simple">
+<li>GridFormatFinder - access to GridFormatFactorySpi supporting raster formats</li>
+<li>CoverageFactoryFinder - access to GridCoverageFactory</li>
+</ul>
+<p>JTSFactoryFinder - used to create JTS GeometryFactory and PercisionModel</p>
+<ul class="simple">
+<li>GeometryFactory</li>
+<li>PrecisionModel</li>
+</ul>
+<p>ReferencingFactoryFinder - used to list referencing factories</p>
+<ul class="simple">
+<li>DatumFactory</li>
+<li>CSFactory</li>
+<li>DatumAuthorityFactory</li>
+<li>CSAuthorityFactory</li>
+<li>CRSAuthorityFactory</li>
+<li>MathTransformFactory</li>
+<li>CoordinateOperationFactory</li>
+<li>CoordinateOperationAuthorityFactory</li>
+</ul>
+</div>
+</div>
+<div class="section" id="where-to-get-a-factory">
+<h2>Where to get a Factory<a class="headerlink" href="#where-to-get-a-factory" title="Permalink to this headline">¶</a></h2>
+<p>It really depends on your application, depending on your environment you may locate a factory by either:</p>
+<ul class="simple">
+<li>Using a GeoTools &#8220;FactoryFinder&#8221;. Most factory finders are provided by the main module. They will hunt down an implementation on the CLASSPATH for you to use.</li>
+<li>Use of &#8220;Container&#8221; - you may find an implementation provided as part of your application container (especially for a Java EE application). You can take this approach in normal applications with a container implementation like Spring, or PicoContainer</li>
+<li>Use of &#8220;JNDI&#8221; - your application may also store an implementation in JNDI (this approach is often used to locate a DataSource in a JEE application)</li>
+<li>Direct use of a known factory. You can always create a new Factory yourself and make use of it to create interfaces.</li>
+<li>Direct use of an implementation. You may decide to duck the factory game completely and make use of a specific implementation using new.</li>
+</ul>
+<p>These examples will usually use a factory finder of some sort. For the details please review the How to Find a Factory page.</p>
+<div class="section" id="factoryfinder">
+<h3>FactoryFinder<a class="headerlink" href="#factoryfinder" title="Permalink to this headline">¶</a></h3>
+<p>While the use of Factories has become common place (especially in development environments like Spring). GeoTools has its own &#8220;FactoryFinder&#8221; classes, unique to project, which is how the library looks up what plugins are available for use.</p>
+<p>These facilities are also available for use in your own application.</p>
+<p>FactoryFinder uses the &#8220;built-in&#8221; Java plug-in system known as Factory Service Provide Interface. This technique allows a jar to indicate what services it makes available (in this case implementations of a factory interface).</p>
+<p>To make this easier to use we have a series of utility classes called &#8220;FactoryFinders&#8221;. These classes work as a match maker - looking around at what is available on the CLASSPATH. They will perform the &#8220;search&#8221; and locate a the implementation you need.</p>
+<p>Here is an example:</p>
+<div class="highlight-python"><div class="highlight"><pre>FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory( null );
+</pre></div>
+</div>
+<div class="section" id="about-factoryspi">
+<h4>About FactorySPI<a class="headerlink" href="#about-factoryspi" title="Permalink to this headline">¶</a></h4>
+<p>The &#8220;FactorySPI&#8221; system is the out of the box plug in system that ships with Java. That is why we like it - we are sure you already are using the Java software after all. The SPI part is pronounced &#8220;spy&#8221; and stands for Service, Provider, Interface.</p>
+<p>The FactorySPI system has a look on your CLASSPATH and locates implementations of a requested service scattered around all the jars you have. It does this by looking in the jar MANIFEST folder in a services directory.</p>
+<p>Factory SPI is a runtime plugin system; so your application can &#8220;discover&#8221; and use new abilities that GeoTools provides over time. As our shapefile support gets better and better your application will notice and make use of the best implementation for the job.</p>
+<p>If you are curious you can make use of the FactorySPI system yourself to locate anything we got going on in GeoTools:</p>
+<div class="highlight-python"><div class="highlight"><pre>Hints hints = GeoTools.getDefaultHints();
+FactoryRegistry registry = new FactoryCreator(Arrays.asList(new Class[] {FilterFactory.class,}));
+Iterator i = registry.getServiceProviders( FilterFactory.class, null, hints );
+while( i.hasNext() ){
+    FilterFactory factory = (FilterFactory) i.next();
+}
+</pre></div>
+</div>
+<p>Notes:</p>
+<ul class="simple">
+<li>keep you FactoryRegistery around, hold it in a static field or global lookup service such as JNDI.</li>
+<li>The registry usually creates one instance (the first time you ask) and will return it to you again next time</li>
+<li>Specifically it will create you one instance per configuration (ie that Hints object), so if you ask again using the same hints you will get the same instance back</li>
+</ul>
+<p>Think of FactoryRegistry keeping instances as singletons for you.  In the same manner as it is a Java best practice (when making a singleton) to &#8220;partition&#8221; by ThreadGroup (so different applets use different singletons). FactoryRegistry does not follow this practice - it uses Hints to &#8220;partition&#8221; - so two applets that are configured the same will end up using the same FilterFactory.</p>
+</div>
+</div>
+<div class="section" id="application-specific-alternatives">
+<h3>Application specific Alternatives<a class="headerlink" href="#application-specific-alternatives" title="Permalink to this headline">¶</a></h3>
+<p>Here are a couple of alternatives for stitching together your application.</p>
+<div class="section" id="container">
+<h4>Container<a class="headerlink" href="#container" title="Permalink to this headline">¶</a></h4>
+<p>A container is a great way to take care of a lot of the boiler plate
+code involved in working with factories. Much of this documentation
+will use PicoContainer (just because it is small), while many real
+world applications use the Spring container.</p>
+<p>A container is basically a Map where you can look up instances.
+In common use the instances are factories, and what makes a container
+valuable is its ability automate the process of &#8220;wiring up&#8221; the
+factories together.</p>
+<p>Popular techniques:</p>
+<ul class="simple">
+<li>reflection - picocontainer looks the constructors using reflection to see if any of the required parameters are available</li>
+<li>configuration - Spring uses a big xml file marking how each factory is created</li>
+</ul>
+<p>The other nice thing is the container can put off creating the
+factories until you actually ask for them.:</p>
+<div class="highlight-python"><div class="highlight"><pre>container.registerImplementationClass( PositionFactory.class, PositionFactoryImpl.class );
+container.registerImplementationClass( CoordinateFactory.class, CoordinateFactoryImpl.class );
+container.registerImplementationClass( PrimitiveFactory.class, PrimitiveFactoryImpl.class );
+container.registerImplementationClass( ComplexFactory.class, ComplexFactoryImpl.class );
+container.registerImplementationClass( AggregateFactory.class AggregateFactoryImpl.class );
+
+container.registerInstance( CoordianteReferenceSystem.class, CRS.decode(&quot;EPSG:4326&quot;) );
+
+WKTParser parser = (WKTParser) container.newInstance( WKTParser.class );
+</pre></div>
+</div>
+<p>In the above example the WKTParser needs to be constructed with a PositionFactory, CoordinateFactory, PrimitiveFactory and ComplexFactory. Each one of these factories can only be constructed for a specific CoordinateReferenceSystem.</p>
+<p>If we were not using a container to manage our factories it would of taken three times the number of lines of code just to set up a WKTParser.</p>
+</div>
+<div class="section" id="jndi">
+<h4>JNDI<a class="headerlink" href="#jndi" title="Permalink to this headline">¶</a></h4>
+<p>If you are writing a Java EE Application there is a big global map in the sky called &#8220;InitialContext&#8221;. Literally this is a map you can do look up by name and find Java instances in. It is so global in fact that the instances will be shared between applications.</p>
+<p>This idea of a global cross application map is great for configuration and common services. If you are working with a Java EE application you will often find such things as:</p>
+<ul class="simple">
+<li>a CRSAuthorityFactory registered for any code wanting to use the referencing module</li>
+<li>a database listed under the Name &#8220;jdbc/EPSG&#8221; used to hold the EPSG tables</li>
+<li>a GeometryFactory, or FeatureTypeFactory and so on ...</li>
+</ul>
+<p>Here is the GeoTools code that looks up a DataSource for an EPSG authority:</p>
+<div class="highlight-python"><div class="highlight"><pre>Context context = JNDI.getInitialContext(null);
+DataSource source = (DataSource) context.lookup(&quot;jdbc/EPSG&quot;);
+</pre></div>
+</div>
+<p>The JNDI interfaces are shipped with Java; and two implementations are provided (one to talk to LDAP directories such as organisations deploy for email address information, and another for configuration information stored on the file system with your JRE).</p>
+<p>The difference between JNDI and a Container:</p>
+<ul>
+<li><p class="first">JNDI is not a container - it is an interface that ships with Java that
+lets you ask things of a &#8220;directory service&#8221;.</p>
+<p>A Java EE Application Server runs programs in a &#8220;container&#8221; and part
+of the &#8220;container configuration&#8221; is making sure that JNDI is set up
+and pointing to the Services (ie global variables) that the
+Application Server makes available to all applications.</p>
+<p>This same directory service can be used by you to share global
+variables between applications. Some things like the CRSAuthority
+can be treated as a &#8220;utility&#8221; and it makes sense to only have one
+of them for use from several applications at once.</p>
+</li>
+</ul>
+<p>Because making use of an application container is a good idea, and too hard to set up. There are a lot of alternative &#8220;light weight&#8221; containers available. Examples include pico container, JBoss container, Spring container and many many more. These containers focus on the storing of global variables (and making a lot of the difficult configuration automatic - like what factory needs to be created first).</p>
+</div>
+</div>
+<div class="section" id="direct-use-of-factory">
+<h3>Direct use of Factory<a class="headerlink" href="#direct-use-of-factory" title="Permalink to this headline">¶</a></h3>
+<p>Sometimes you just need to go ahead and code it like you mean it. The GeoTools plugin system does have its place and purpose; but if you know exactly what you are doing; or want to test an exact situation you can dodge the plugin system and do the work by hand.</p>
+<p>You can just use a specific factory that is known to you:</p>
+<div class="highlight-python"><div class="highlight"><pre>DataStoreFactorySpi factory = new ShapefileDataStoreFactory();
+
+File file = new File(&quot;example.shp&quot;);
+Map map = Collections.singletonMap( &quot;url&quot;, file.toURL() );
+
+DataStore dataStore = factory.createDataStore( map );
+</pre></div>
+</div>
+<p>You are depending on a specific class here (so it is not a real plug-in based solution in which GeoTools can find you the best implementation for the job). There is a good chance however that the factory will set you up with a pretty good implementation.</p>
+<ul>
+<li><p class="first">Factory classes are Public in Name Only</p>
+<p>Factory classes are only public because we have to (so the factory
+finders can call them) - some programming environments such as OSGi
+will take special care to prevent you making direct use of these
+classes.</p>
+<p>If you are working on the uDig project you may find that class loader
+settings have prevented you from directly referring to one of these
+factory classes.</p>
+</li>
+</ul>
+<p>You can provide a &#8220;hint&#8221; asking the Factory Finder to retrieve you a specific instance:</p>
+<div class="highlight-python"><div class="highlight"><pre>Hints hints = new Hints( Hints.FILTER_FACTORY, &quot;org.geotools.filter.StrictFactory&quot; );
+FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory( hints );
+</pre></div>
+</div>
+<p>You can skip the whole Factory madness and just do normal Java coding:</p>
+<div class="highlight-python"><div class="highlight"><pre>File file = new File(&quot;example.shp&quot;);
+URI namespace = new URI(&quot;refractions&quot;);
+ShapefileDataStore shapefile = new ShapefileDataStore( example.toURL());
+shapefile.setNamespace(namespace);
+shapefile.setMemoryMapped(true);
+</pre></div>
+</div>
+<p>You are depending on a exact class here, violating the plug-in system and so on. Chances are that GeoTools should not let you do this (by making the constructor package visible and forcing you to use the associated DataStoreFactory instead).</p>
+<p>This option is fine for quick hacks, you may find that the ShapefileDataStore has additional methods (to handle such things as forcing the &#8220;prj&#8221; file to be rewritten):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">shapefile</span><span class="o">.</span><span class="n">forceSchemaCRS</span><span class="p">(</span> <span class="n">CRS</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span> <span class="s">&quot;EPSG:4326&quot;</span> <span class="p">)</span> <span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="standards.html" title="Use of Standards"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="architecture.html" title="Architecture"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="index.html" >Welcome</a> &raquo;</li>
+        <li><a href="#">How to Use GeoTools</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

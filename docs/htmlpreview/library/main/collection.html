@@ -1,0 +1,842 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>FeatureCollection &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../index.html" />
+    <link rel="up" title="Main" href="index.html" />
+    <link rel="next" title="Java2D Shape" href="shape.html" />
+    <link rel="prev" title="Feature" href="feature.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Main</a> &raquo;</li>
+        <li><a href="#">FeatureCollection</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">FeatureCollection</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#simplefeaturecollection">SimpleFeatureCollection</a><ul>
+<li><a class="reference internal" href="#from-datastore">From DataStore</a></li>
+<li><a class="reference internal" href="#defaultfeaturecollection">DefaultFeatureCollection</a></li>
+<li><a class="reference internal" href="#to-featuresource">To FeatureSource</a></li>
+<li><a class="reference internal" href="#existing-content">Existing Content</a></li>
+<li><a class="reference internal" href="#performance-options">Performance Options</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#contents">Contents</a><ul>
+<li><a class="reference internal" href="#direct">Direct</a></li>
+<li><a class="reference internal" href="#aggregate-functions">Aggregate Functions</a></li>
+<li><a class="reference internal" href="#classifier-functions">Classifier Functions</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#join">Join</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="feature.html"
+                        title="previous chapter">Feature</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="shape.html"
+                        title="next chapter">Java2D Shape</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/library/main/collection.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="featurecollection">
+<h1>FeatureCollection<a class="headerlink" href="#featurecollection" title="Permalink to this headline">¶</a></h1>
+<p>A <strong>FeatureCollection</strong> is a collection of Features similar to a JDBC <strong>ResultSet</strong>.</p>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>FeatureCollection is similar to a java Collection&lt;Feature&gt;. The crucial difference is the
+requirement to close each FeatureIterator after use in order to prevent memory and connection
+leaks.</p>
+<p>In addition to the above key requirement, FeatureCollection provides methods to review the
+FeatureType of the members, ask for the bounds (rather than just the size) and so on.</p>
+<p>With this in mind:</p>
+<ul>
+<li><p class="first">FeatureCollection is method compatible with java.util.Collection where possible</p>
+</li>
+<li><p class="first"><strong>Iterator</strong> need to be closed.</p>
+<p>As provided:</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="n">SimpleFeatureIterator</span> <span class="n">iterator</span> <span class="o">=</span> <span class="n">featureCollection</span><span class="o">.</span><span class="na">features</span><span class="o">();</span>
+    <span class="k">try</span> <span class="o">{</span>
+        <span class="k">while</span><span class="o">(</span> <span class="n">iterator</span><span class="o">.</span><span class="na">hasNext</span><span class="o">()</span> <span class="o">){</span>
+            <span class="n">SimpleFeature</span> <span class="n">feature</span> <span class="o">=</span> <span class="n">iterator</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
+            <span class="c1">// process feature</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="k">finally</span> <span class="o">{</span>
+        <span class="n">iterator</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+    <span class="o">}</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">All the content is of the same FeatureType as indicated by indicated by:</p>
+<div class="highlight-python"><div class="highlight"><pre>FeatureType type = featureCollection.getSchema();
+</pre></div>
+</div>
+</li>
+<li><p class="first">We cannot support the Java &#8216;for each&#8217; loop syntax; as we need to be sure to close our iterator().</p>
+</li>
+<li><p class="first">We can support the Java try-with-resource syntax:</p>
+<div class="highlight-python"><div class="highlight"><pre>try (SimpleFeatureIterator iterator = featureCollection.features()){
+     while( iterator.hasNext() ){
+           SimpleFeature feature = iterator.next();
+           ...
+     }
+}
+</pre></div>
+</div>
+</li>
+</ul>
+<p><strong>FeatureCollection</strong></p>
+<p>The interface provides the following methods:</p>
+<div class="highlight-python"><div class="highlight"><pre>public interface FeatureCollection&lt;T extends FeatureType, F extends Feature&gt; {
+  // feature access - close when done!
+  FeatureIterator&lt;F&gt; features()
+
+  // feature access with out the loop
+  void accepts(FeatureVisitor, ProgressListener);
+
+  T getSchema();
+
+  String getID();
+
+  // sub query
+  FeatureCollection&lt;T,F&gt; subCollection(Filter);
+  FeatureCollection&lt;T,F&gt; sort(SortBy);
+
+  // summary information
+  ReferencedEnvelope getBounds()
+  boolean isEmpty()
+  int size()
+
+  boolean contains(Object)
+  boolean containsAll(Collection&lt;?&gt;)
+
+  // convert to array
+  Object[] toArray()
+  &lt;O&gt; O[] toArray(O[])
+}
+</pre></div>
+</div>
+<p><strong>Streaming Results</strong></p>
+<p>A FeatureCollection is not an in memory snapshot of your data (as you might expect), we work with the assumption that GIS data is larger than you can fit into memory.</p>
+<p>Most implementations of FeatureCollection provide a memory footprint close to zero and each time you access the data will be loaded as you use it.</p>
+<p>Please note that you should not treat a FeatureCollection as a normal in memory Java collection - these are heavyweight objects and we must ask you to close any iterators you open.:</p>
+<div class="highlight-python"><div class="highlight"><pre>FeatureIterator&lt;SimpleFeature&gt; iterator = featureCollection.features();
+try {
+     while( iterator.hasNext() ){
+           SimpleFeature feature = iterator.next();
+           ...
+     }
+}
+finally {
+     iterator.close();
+}
+</pre></div>
+</div>
+<p>We ask that you treat interaction with FeatureCollection as a ResultSet carefully closing each object
+when you are done with it.</p>
+<p>In Java 7 this becomes easier with the try-with-resoruce syntax:</p>
+<div class="highlight-python"><div class="highlight"><pre>try (FeatureIterator&lt;SimpleFeature&gt; iterator = featureCollection.features()){
+     while( iterator.hasNext() ){
+           SimpleFeature feature = iterator.next();
+           ...
+     }
+}
+</pre></div>
+</div>
+</div>
+<div class="section" id="simplefeaturecollection">
+<h2>SimpleFeatureCollection<a class="headerlink" href="#simplefeaturecollection" title="Permalink to this headline">¶</a></h2>
+<p>Because Java Generics (ie &lt;T&gt; and &lt;F&gt;) are a little hard to read we introduced SimpleFeatureCollection to cover the common case:</p>
+<div class="highlight-python"><div class="highlight"><pre>public interface SimpleFeatureCollection extends FeatureCollection&lt;SimpleFeatureType,SimpleFeature&gt; {
+  // feature access - close when done!
+  SimpleFeatureIterator features()
+
+  // feature access with out the loop
+  void accepts(FeatureVisitor, ProgressListener);
+
+  SimpleFeatureType getSchema()
+  String getID()
+
+  // sub query
+  SimpleFeatureCollection subCollection(Filter)
+  SimpleFeatureCollection sort(SortBy)
+
+  // summary information
+  ReferencedEnvelope getBounds()
+  boolean isEmpty()
+  int size()
+
+  boolean contains(Object)
+  boolean containsAll(Collection&lt;?&gt;)
+
+  // convert to array
+  Object[] toArray()
+  &lt;O&gt; O[] toArray(O[])
+}
+</pre></div>
+</div>
+<p>This SimpleFeatureCollection interface is just syntactic sugar to avoid typing in
+FeatureCollection&lt;SimpleFeatureType,SimpleFeature&gt; all the time. If you need to
+safely convert you can use the DataUtilities.simple method:</p>
+<div class="highlight-python"><div class="highlight"><pre>SimpleFeatureCollection simpleCollection = DataUtilities.simple(collection);
+</pre></div>
+</div>
+<p>Creating a FeatureCollection is usually done for you as a result of a query, although we do have a number of implementations you can work with directly.</p>
+<div class="section" id="from-datastore">
+<h3>From DataStore<a class="headerlink" href="#from-datastore" title="Permalink to this headline">¶</a></h3>
+<p>The most common thing to do is grab a FeatureCollection from a file or service.:</p>
+<div class="highlight-python"><div class="highlight"><pre>File file = new File(&quot;example.shp&quot;);
+Map map = new HashMap();
+map.put( &quot;url&quot;, file.toURL() );
+DataStore dataStore = DataStoreFinder.getDataStore( Map map );
+
+SimpleFeatureSource featureSource = dataStore.getFeatureSource( typeName );
+SimpleFeatureCollection collection = featureSource.getFeatures();
+</pre></div>
+</div>
+<p>Please be aware that this is not a copy - the SimpleFeatureCollection above should be
+considered to be the same thing as the &#8220;example.shp&#8221;. Changes made to the collection
+will be written out to the shapefile.</p>
+<ul>
+<li><p class="first">Using a Query to order your Attributes</p>
+<p>Occasionally you will want to specify the exact order in which your attributes are
+presented to you, or even leave some attributes out altogether.</p>
+<blockquote>
+<div><p>Query query = new Query( typeName, filter);
+query.setPropertyNames( &#8220;geom&#8221;, &#8220;name&#8221; );
+SimpleFeatureCollection sorted = source.getFeatures(query);</p>
+</div></blockquote>
+<p>Please note that the resulting SimpleFeatureCollection.getSchema() will not match
+SimpleFeatureSource.getFeatureType(), since the attributes will now be limited to (and in the order) specified.</p>
+</li>
+<li><p class="first">Using a Query to Sort a SimpleFeatureCollection</p>
+<p>Sorting is available:</p>
+<div class="highlight-python"><div class="highlight"><pre>Query query = new Query( typeName, filter);
+SortBy sort = filterFactory.sort( sortField, SortOrder.DESCENDING);
+query.setSortBy( new SortBy[] { sort } );
+
+SimpleFeatureCollection sorted = source.getFeatures(query);
+</pre></div>
+</div>
+</li>
+<li><p class="first">Load into Memory</p>
+<p>If you would like to work with an in memory copy, you will need to explicitly take the following step:</p>
+<div class="highlight-python"><div class="highlight"><pre>SimpleFeatureCollection collection = myFeatureSource.getFeatures();
+SimpleFeatureCollection memory = DataUtilities.collection( collection );
+</pre></div>
+</div>
+<p>However as mentioned above this will be using the default TreeSet based feature collection implementation
+and will not be fast. How not fast? Well your shapefile access on disk may be faster (since it has a spatial index).</p>
+</li>
+</ul>
+</div>
+<div class="section" id="defaultfeaturecollection">
+<h3>DefaultFeatureCollection<a class="headerlink" href="#defaultfeaturecollection" title="Permalink to this headline">¶</a></h3>
+<p>GeoTools provides a default implementation of feature collection that can be used to gather up your features in memory; prior to writing them out to a DataStore.</p>
+<p>This default implementation of SimpleFeatureCollection uses a TreeMap sorted by FeatureId; so it does not offer very fast performance.</p>
+<p>To create a new DefaultFeatureCollection:</p>
+<div class="highlight-python"><div class="highlight"><pre>DefaultFeatureCollection featureCollection = new DefaultFeatureCollection();
+</pre></div>
+</div>
+<p>You can also create your collection with an &#8220;id&#8221;, which will can be used as a handle to tell your collections apart.:</p>
+<div class="highlight-python"><div class="highlight"><pre>DefaultFeatureCollection featureCollection = new DefaultFeatureCollection(&quot;internal&quot;);
+</pre></div>
+</div>
+<p>You can create new features and add them to this FeatureCollection as needed:</p>
+<div class="highlight-python"><div class="highlight"><pre>SimpleFeatureType TYPE = DataUtilities.createType(&quot;location&quot;,&quot;geom:Point,name:String&quot;);
+
+DefaultFeatureCollection featureCollection = new DefaultFeatureCollection(&quot;internal&quot;,TYPE);
+WKTReader2 wkt = new WKTReader2();
+
+featureCollection.add( SimpleFeatureBuilder.build( TYPE, new Object[]{ wkt.read(&quot;POINT(1,2)&quot;), &quot;name1&quot;}, null) );
+featureCollection.add( SimpleFeatureBuilder.build( TYPE, new Object[]{ wkt.read(&quot;POINT(4,4)&quot;), &quot;name2&quot;}, null) );
+</pre></div>
+</div>
+</div>
+<div class="section" id="to-featuresource">
+<h3>To FeatureSource<a class="headerlink" href="#to-featuresource" title="Permalink to this headline">¶</a></h3>
+<p>You often need to &#8220;wrap&#8221; up your FeatureCollection as a feature source in order to make effective use of it (SimpleFeatureSource supports the ability to query the contents, and can be used in a MapLayer for rendering).:</p>
+<div class="highlight-python"><div class="highlight"><pre>SimpleFeatureSource source = DataUtilities.source( collection );
+</pre></div>
+</div>
+</div>
+<div class="section" id="existing-content">
+<h3>Existing Content<a class="headerlink" href="#existing-content" title="Permalink to this headline">¶</a></h3>
+<p>The DataUtilities class has methods to create a feature collection from a range of sources:</p>
+<ul class="simple">
+<li>DataUtilities.collection(FeatureCollection&lt;SimpleFeatureType, SimpleFeature&gt;)</li>
+<li>DataUtilities.collection(FeatureReader&lt;SimpleFeatureType, SimpleFeature&gt;)</li>
+<li>DataUtilities.collection(List&lt;SimpleFeature&gt;)</li>
+<li>DataUtilities.collection(SimpleFeature)</li>
+<li>DataUtilities.collection(SimpleFeature[])</li>
+<li>DataUtilities.collection(SimpleFeatureIterator)</li>
+</ul>
+<p>For more information see <a class="reference internal" href="data.html"><em>DataUtilities</em></a>.</p>
+</div>
+<div class="section" id="performance-options">
+<h3>Performance Options<a class="headerlink" href="#performance-options" title="Permalink to this headline">¶</a></h3>
+<p>For GeoTools 2.7 we are making available a couple new implementations of FeatureCollection.</p>
+<p>These implementations of SimpleFeatureCollection will each offer different performance characteristics:</p>
+<ul>
+<li><p class="first">TreeSetFeatureCollection: the traditional TreeSet implementation used
+by default.</p>
+<p>Note this does not perform well with spatial queries as the contents are
+not indexed. However finding a feature by &#8220;id&#8221; can be performed quickly.</p>
+<p>It is designed to closely mirror the experience of working with
+content on disk (even down to duplicating the content it gives you in
+order to prevent any trouble if another thread makes a modification).</p>
+<p>DataUtilities.source( featureCollection ) will wrap
+TreeSetFeatureCollection in a CollectionFeatureSource.</p>
+</li>
+<li><p class="first">ListFeatureCollection: uses a list to hold contents; please be sure
+not to have more then one feature with the same id.</p>
+<p>The benefit here is being able to wrap a List you already have up as
+a FeatureCollection without copying the contents over one at a time.</p>
+<p>The result does not perform well as the contents are not indexed in anyway
+(either by a spatial index, or by feature id).</p>
+<p>DataUtilities.source( featureCollection ) will wrap
+ListFeatureCollection in a CollectionFeatureSource.</p>
+<p>Here is an example using the ListFeatureCollection:</p>
+<div class="highlight-python"><div class="highlight"><pre>SimpleFeatureType TYPE = DataUtilities.createType(&quot;location&quot;,&quot;geom:Point,name:String&quot;);
+WKTReader2 wkt = new WKTReader2();
+
+ArrayList&lt;SimpleFeature&gt; list = new ArrayList&lt;SimpleFeature&gt;();
+list.add( SimpleFeatureBuilder.build( TYPE, new Object[]{ wkt.read(&quot;POINT(1,2)&quot;), &quot;name1&quot;}, null) );
+list.add( SimpleFeatureBuilder.build( TYPE, new Object[]{ wkt.read(&quot;POINT(4,4)&quot;), &quot;name2&quot;}, null) );
+
+SimpleFeatureCollection collection = new ListFeatureCollection(TYPE,list);
+
+// O(N) access
+SimpleFeatureSource source = DataUtilities.source( collection );
+SimpleFeatureCollection features = source.getFeatures( filter );
+</pre></div>
+</div>
+<p>Please keep in mind that the original list is being used by the
+ListFeatureCollection; so the contents will not be copied making
+this a lean solution for getting your features bundled up. The flip
+side is that you should use the FeatureCollection methods to modify the
+contents after creation (so it can update the bounds).</p>
+</li>
+<li><p class="first">SpatialIndexFeatureCollection: uses a spatial index to hold on to
+contents for fast visual display in a MapLayer; you cannot add more
+content to this feature collection once it is used</p>
+<p>DataUtilities.source( featureCollection ) will wrap
+SpatialIndexFeatureCollection in a SpatialIndexFeatureSource
+that is able to take advantage of the spatial index.</p>
+<p>Here is an example using the SpatialIndexFeatureCollection:</p>
+<div class="highlight-python"><div class="highlight"><pre>final SimpleFeatureType TYPE = DataUtilities.createType(&quot;location&quot;,&quot;geom:Point,name:String&quot;);
+WKTReader2 wkt = new WKTReader2();
+
+SimpleFeatureCollection collection = new SpatialIndexFeatureCollection();
+collection.add( SimpleFeatureBuilder.build( TYPE, new Object[]{ wkt.read(&quot;POINT(1,2)&quot;), &quot;name1&quot;} ));
+collection.add( SimpleFeatureBuilder.build( TYPE, new Object[]{ wkt.read(&quot;POINT(4,4)&quot;), &quot;name1&quot;} ));
+
+// Fast spatial Access
+SimpleFeatureSource source = DataUtilities.source( collection );
+SimpleFeatureCollection features = source.getFeatures( filter );
+</pre></div>
+</div>
+<p>The SpatialIndexFeatureCollection is fast, but tricky to use. It will store the
+features itself, using a JTS STRtree spatial index. This means the contents of
+the feature collection cannot be modified after the index set up, and the index
+is set up the first time you query the collection (asking for size, bounds, or
+pretty much anything other then add ).</p>
+<p>To get the full benefit you need to use SimpleFeatureSource as shown above; it
+will make use of the spatial index when performing a filter.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="contents">
+<h2>Contents<a class="headerlink" href="#contents" title="Permalink to this headline">¶</a></h2>
+<p>A SimpleFeatureCollection method compatible with Java Collection&lt;Feature&gt;; this
+means that an Iterator is available for you to to access the contents.</p>
+<p>However you will need to close your iterator after use; so that any resources (such as database connections) are returned.</p>
+<div class="section" id="direct">
+<h3>Direct<a class="headerlink" href="#direct" title="Permalink to this headline">¶</a></h3>
+<p>The following lists several ways of reading data so you can choose the approach that suites you your needs. You may
+find the use of <strong>Iterator</strong> comfortable (but a bit troubling with try/catch code needed to close the iterator).
+<em>FeatureVisitor*</em> as it involves the fewest lines of code (but it &#8220;gobbles&#8221; all the error messages). On the other
+extreme <strong>FeatureReader</strong> makes all the error messages visible requiring a lot of try/catch code. Finally we
+have <strong>FeatureIterator</strong> when working on Java 1.4 code before generics were available.</p>
+<ul>
+<li><p class="first">Using FeatureIterator</p>
+<p>Use of iterator is straight forward; with the addition of a try/finally statement to
+ensure the iterator is closed after use.:</p>
+<div class="highlight-python"><div class="highlight"><pre>CoordinateReferenceSystem crs = features.getMemberType().getCRS();
+BoundingBox bounds = new ReferencedEnvelope( crs );
+
+FeatureIterator&lt;SimpleFeature&gt; iterator = features.iterator();
+try {
+    while( iterator.hasNext()){
+        SimpleFeature feature = iterator.next();
+        bounds.include( feature.getBounds() );
+    }
+}
+finally{
+    iterator.close();
+}
+</pre></div>
+</div>
+</li>
+<li><p class="first">Invalid Data</p>
+<p>Currently GeoTools follows a &#8220;fail first&#8221; policy; that is if the data does not exactly
+meet the requirements of the SimpleFeatureType a RuntimeException will be thrown.</p>
+<p>However often you may in want to just &#8220;skip&#8221; the troubled Feature and carry on; very few dataset&#8217;s are perfect.:</p>
+<div class="highlight-python"><div class="highlight"><pre>SimpleFeatureCollection featureCollection = featureSource.getFeatures(filter);
+FeatureIterator iterator = null;
+int count;
+int problems;
+try {
+   for( iterator = features.features(); iterator.hasNext(); count++){
+       try {
+           SimpleFeature feature = (SimpleFeature) iterator.next();
+           ...
+       }
+       catch( RuntimeException dataProblem ){
+           problems++;
+           lastProblem = dataProblem;
+       }
+   }
+}
+finally {
+   if( iterator != null ) iterator.close();
+}
+if( problems == 0 ){
+   System.out.println(&quot;Was able to read &quot;+count+&quot; features.&quot;);
+else {
+   System.out.println(&quot;Read &quot;+count + &quot;features, with &quot;+problems+&quot; failures&quot;);
+}
+</pre></div>
+</div>
+<p>Individual DataStores may be able to work with your data as it exists (invalid or not).</p>
+</li>
+<li><p class="first">Use of FeatureVisitor</p>
+<p>FeatureVisitor lets you traverse a FeatureCollection with less try/catch/finally boilerplate code.:</p>
+<div class="highlight-python"><div class="highlight"><pre>CoordinateReferenceSystem crs = features.getMemberType().getCRS();
+final BoundingBox bounds = new ReferencedEnvelope( crs );
+
+features.accepts( new AbstractFeatureVisitor(){
+    public void visit( Feature feature ) {
+        bounds.include( feature.getBounds() );
+    }
+}, new NullProgressListener() );
+</pre></div>
+</div>
+<p>You do not have to worry about exceptions, open or closing iterators and as an added bonus this may even be faster (depending on the number of cores you have available).</p>
+</li>
+<li><p class="first">Comparison with SimpleFeatureReader</p>
+<p>SimpleFeatureReader is a &#8220;low level&#8221; version of Iterator that is willing to throw IOExceptions,
+it is a little bit more difficult to use but you may find the extra level of detail worth it.:</p>
+<div class="highlight-python"><div class="highlight"><pre>SimpleFeatureReader reader = null;
+try {
+     reader = dataStore.getFeatureReader( typeName, filter, Transaction.AUTO_COMMIT );
+     while( reader.hasNext() ){
+          try {
+              SimpleFeature feature = reader.next();
+          }
+          catch( IllegalArgumentException badData ){
+              // skipping this feature since it has invalid data
+          }
+          catch( IOException unexpected ){
+              unexpected.printStackTrace();
+              break; // after an IOException the reader is &quot;broken&quot;
+          }
+     }
+}
+catch( IOException couldNotConnect){
+     couldNotConnect.printStackTrace();
+}
+finally {
+     if( reader != null ) reader.close();
+}
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="aggregate-functions">
+<h3>Aggregate Functions<a class="headerlink" href="#aggregate-functions" title="Permalink to this headline">¶</a></h3>
+<p>One step up from direct access is the use of an &#8220;aggregate&#8221; function that works on the entire FeatureCollection
+to build you a summary.</p>
+<p>Traditionally functions that work on a collection are called &#8220;aggregate functions&#8221;.
+In the world of databases and SQL these functions include &#8220;min&#8221;, &#8220;max&#8221;, &#8220;average&#8221; and &#8220;count&#8221;. GeoTools supports
+these basic concepts, and a few additions such as bounding box or unique values.</p>
+<p>Internally these functions are implemented as a FeatureVisitor; and are often optimised into raw SQL on supporting DataStores.</p>
+<p>Here are the aggregate functions that ship with GeoTools at the time of writing. For the authoritative list check javadocs.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="24%" />
+<col width="28%" />
+<col width="48%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Function</th>
+<th class="head">Visitor</th>
+<th class="head">Notes</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Collection_Average</td>
+<td>AverageVisitor</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>Collection_Bounds</td>
+<td>BoundsVisitor</td>
+<td>Should be the same as getBounds()</td>
+</tr>
+<tr class="row-even"><td>Collection_Count</td>
+<td>CountVisitor</td>
+<td>Should be the same as size()</td>
+</tr>
+<tr class="row-odd"><td>Collection_Max</td>
+<td>MaxVisitor</td>
+<td>With respect to comparable sort order</td>
+</tr>
+<tr class="row-even"><td>Collection_Median</td>
+<td>MedianVisitor</td>
+<td>With respect to comparable sort order</td>
+</tr>
+<tr class="row-odd"><td>Collection_Min</td>
+<td>MinVisitor</td>
+<td>With respect to comparable sort order</td>
+</tr>
+<tr class="row-even"><td>Collection_Nearest</td>
+<td>NearestVisitor</td>
+<td>Nearest value to the provided one</td>
+</tr>
+<tr class="row-odd"><td>Collection_Sum</td>
+<td>SumVisitor</td>
+<td>Restricted to Numeric content</td>
+</tr>
+<tr class="row-even"><td>Collection_Unique</td>
+<td>UniqueVisitor</td>
+<td>Set&lt;Object&gt; of unique values</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p class="first">Sum of a FeatureCollection</p>
+<p>Here is an example of using Collection_Sum on a FeatureCollection:</p>
+<div class="highlight-python"><div class="highlight"><pre>FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+Function sum = ff.function(&quot;Collection_Sum&quot;, ff.property(&quot;age&quot;));
+
+Object value = sum.evaluate( featureCollection );
+assertEquals( 41, value );
+</pre></div>
+</div>
+</li>
+<li><p class="first">Max of a FeatureCollection</p>
+<p>Here is an example of using Collection_Max on a FeatureCollection:</p>
+<div class="highlight-python"><div class="highlight"><pre>FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+Function sum = ff.function(&quot;Collection_Max&quot;, ff.property(&quot;age&quot;));
+
+Object value = sum.evaluate( featureCollection );
+assertEquals( 41, value );
+</pre></div>
+</div>
+<p>As an alternative you could directly use MaxVisitor:</p>
+<div class="highlight-python"><div class="highlight"><pre>Expression = ff.property(&quot;age&quot;);
+MaxVisitor maxVisitor = new MaxVisitor(expression);
+collection.accepts(maxVisitor, null);
+CalcResult result = maxVisitor.getResult();
+
+Object max = result.getValue();
+</pre></div>
+</div>
+<p>MaxVisitor is pretty good about handling numeric and string types
+(basically anything that is comparable should work).</p>
+<p>CalcResult is used to hold the value until you are interested in it;
+you can run the same visitor across several collections and look at
+the maximum for all of them.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="classifier-functions">
+<h3>Classifier Functions<a class="headerlink" href="#classifier-functions" title="Permalink to this headline">¶</a></h3>
+<p>Another set of aggregate functions are aimed at splitting your FeatureCollection
+up into useful groups. These functions produce a <strong>Classifier</strong> for your
+FeatureCollection, this concept is similar to a histogram.</p>
+<img alt="../../_images/classifier.PNG" src="../../_images/classifier.PNG" />
+<p>These classifiers are used:</p>
+<ul class="simple">
+<li>With the function &#8220;classifier&#8221; to sort features into groups</li>
+<li>With <a class="reference internal" href="../../extension/brewer/index.html"><em>gt-brewer</em></a> to produce attractive styles for visualisation of your data.</li>
+</ul>
+<p>Here are some examples of defining and working with classifiers:</p>
+<ol class="arabic">
+<li><p class="first">Create Classifier</p>
+<p>You can produce a Classifier for your FeatureCollection as follows:</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="n">FilterFactory2</span> <span class="n">ff</span> <span class="o">=</span> <span class="n">CommonFactoryFinder</span><span class="o">.</span><span class="na">getFilterFactory2</span><span class="o">();</span>
+    <span class="n">Function</span> <span class="n">classify</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">function</span><span class="o">(</span><span class="s">&quot;Quantile&quot;</span><span class="o">,</span> <span class="n">ff</span><span class="o">.</span><span class="na">property</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">),</span> <span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="mi">2</span><span class="o">));</span>
+    
+    <span class="n">Classifier</span> <span class="n">groups</span> <span class="o">=</span> <span class="o">(</span><span class="n">Classifier</span><span class="o">)</span> <span class="n">classify</span><span class="o">.</span><span class="na">evaluate</span><span class="o">(</span><span class="n">collection</span><span class="o">);</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">The following classifier functions are available.</p>
+<ul class="simple">
+<li>EqualInterval - classifier where each group represents the same sized range</li>
+<li>Jenks - generate the Jenks&#8217; Natural Breaks classification</li>
+<li>Quantile - classifier with an even number of items in each group</li>
+<li>StandardDeviation - generated using the standard deviation method</li>
+<li>UniqueInterval - variation of EqualInterval that takes into account unique values</li>
+</ul>
+<p>These functions produce the Java object <strong>Classifier</strong> as an output.</p>
+</li>
+<li><p class="first">Customising your Classifier</p>
+<p>You can think of the Classifier as a series of groups or bins into which you
+will sort Features.</p>
+<p>Each partition has a title which you can name as you please.:</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="n">groups</span><span class="o">.</span><span class="na">setTitle</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="s">&quot;Group A&quot;</span><span class="o">);</span>
+    <span class="n">groups</span><span class="o">.</span><span class="na">setTitle</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="s">&quot;Group B&quot;</span><span class="o">);</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Using Your Classifier to group Features</p>
+<p>You can then use this Classifier to sort features into the appropriate group:</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="c1">// groups is a classifier with &quot;Group A&quot; and &quot;Group B&quot;</span>
+    <span class="n">Function</span> <span class="n">sort</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">function</span><span class="o">(</span><span class="s">&quot;classify&quot;</span><span class="o">,</span> <span class="n">ff</span><span class="o">.</span><span class="na">property</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">),</span> <span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="n">groups</span><span class="o">));</span>
+    <span class="kt">int</span> <span class="n">slot</span> <span class="o">=</span> <span class="o">(</span><span class="n">Integer</span><span class="o">)</span> <span class="n">sort</span><span class="o">.</span><span class="na">evaluate</span><span class="o">(</span><span class="n">feature</span><span class="o">);</span>
+    
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">groups</span><span class="o">.</span><span class="na">getTitle</span><span class="o">(</span><span class="n">slot</span><span class="o">));</span> <span class="c1">// ie. &quot;Group A&quot;</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>You can think of a Classifier as a filter function similar to a Java <strong>switch</strong> statement.</p>
+</div>
+</div>
+<div class="section" id="join">
+<h2>Join<a class="headerlink" href="#join" title="Permalink to this headline">¶</a></h2>
+<p>GeoTools does not have any native ability to &#8220;Join&#8221; FeatureCollections; even though this is a very common request.</p>
+<p>References:</p>
+<ul>
+<li><p class="first">gt-validation additional examples</p>
+</li>
+<li><p class="first">:docL`filter` example using filters</p>
+</li>
+<li><p class="first">Join FeatureCollection</p>
+<p>You can go through one collection, and use each feature as a starting point for making
+a query resulting in a &#8220;Join&#8221;.</p>
+<p>In the following example we have:</p>
+<ul class="simple">
+<li>outer:  <strong>while</strong> loop for each polygon</li>
+<li>inner: <strong>FeatureVisitor</strong> looping through each point</li>
+</ul>
+<p>Thanks to Aaron Parks for sending us this example of using the bounding box of a polygon to
+quickly isolate interesting features; which can then be checked one by one for &#8220;intersects&#8221;
+(ie the features touch or overlap our polygon).</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="kt">void</span> <span class="nf">polygonInteraction</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">SimpleFeatureCollection</span> <span class="n">polygonCollection</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="n">SimpleFeatureCollection</span> <span class="n">fcResult</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="kd">final</span> <span class="n">DefaultFeatureCollection</span> <span class="n">found</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DefaultFeatureCollection</span><span class="o">();</span>
+    
+    <span class="n">FilterFactory2</span> <span class="n">ff</span> <span class="o">=</span> <span class="n">CommonFactoryFinder</span><span class="o">.</span><span class="na">getFilterFactory2</span><span class="o">();</span>
+    <span class="n">SimpleFeature</span> <span class="n">feature</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+    
+    <span class="n">Filter</span> <span class="n">polyCheck</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="n">Filter</span> <span class="n">andFil</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="n">Filter</span> <span class="n">boundsCheck</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+    
+    <span class="n">String</span> <span class="n">qryStr</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+    
+    
+    
+    <span class="n">SimpleFeatureIterator</span> <span class="n">it</span> <span class="o">=</span> <span class="n">polygonCollection</span><span class="o">.</span><span class="na">features</span><span class="o">();</span>
+    <span class="k">try</span> <span class="o">{</span>
+        <span class="k">while</span> <span class="o">(</span><span class="n">it</span><span class="o">.</span><span class="na">hasNext</span><span class="o">())</span> <span class="o">{</span>
+            <span class="n">feature</span> <span class="o">=</span> <span class="n">it</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
+            <span class="n">BoundingBox</span> <span class="n">bounds</span> <span class="o">=</span> <span class="n">feature</span><span class="o">.</span><span class="na">getBounds</span><span class="o">();</span>
+            <span class="n">boundsCheck</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">bbox</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">property</span><span class="o">(</span><span class="s">&quot;the_geom&quot;</span><span class="o">),</span> <span class="n">bounds</span><span class="o">);</span>
+            
+            <span class="n">Geometry</span> <span class="n">geom</span> <span class="o">=</span> <span class="o">(</span><span class="n">Geometry</span><span class="o">)</span> <span class="n">feature</span><span class="o">.</span><span class="na">getDefaultGeometry</span><span class="o">();</span>
+            <span class="n">polyCheck</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">intersects</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">property</span><span class="o">(</span><span class="s">&quot;the_geom&quot;</span><span class="o">),</span> <span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="n">geom</span><span class="o">));</span>
+            
+            <span class="n">andFil</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">and</span><span class="o">(</span><span class="n">boundsCheck</span><span class="o">,</span> <span class="n">polyCheck</span><span class="o">);</span>
+            
+            <span class="k">try</span> <span class="o">{</span>
+                <span class="n">fcResult</span> <span class="o">=</span> <span class="n">featureSource</span><span class="o">.</span><span class="na">getFeatures</span><span class="o">(</span><span class="n">andFil</span><span class="o">);</span>
+                <span class="c1">// go through results and copy out the found features</span>
+                <span class="n">fcResult</span><span class="o">.</span><span class="na">accepts</span><span class="o">(</span><span class="k">new</span> <span class="n">FeatureVisitor</span><span class="o">()</span> <span class="o">{</span>
+                    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">visit</span><span class="o">(</span><span class="n">Feature</span> <span class="n">feature</span><span class="o">)</span> <span class="o">{</span>
+                        <span class="n">found</span><span class="o">.</span><span class="na">add</span><span class="o">((</span><span class="n">SimpleFeature</span><span class="o">)</span> <span class="n">feature</span><span class="o">);</span>
+                    <span class="o">}</span>
+                <span class="o">},</span> <span class="kc">null</span><span class="o">);</span>
+            <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">IOException</span> <span class="n">e1</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Unable to run filter for &quot;</span> <span class="o">+</span> <span class="n">feature</span><span class="o">.</span><span class="na">getID</span><span class="o">()</span> <span class="o">+</span> <span class="s">&quot;:&quot;</span> <span class="o">+</span> <span class="n">e1</span><span class="o">);</span>
+                <span class="k">continue</span><span class="o">;</span>
+            <span class="o">}</span>
+            
+        <span class="o">}</span>
+    <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+        <span class="n">it</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Joining two Shapefiles</p>
+<p>The following example is adapted from some work Gabriella Turk posted to the geotools-user
+email list.</p>
+<p>Download:</p>
+<ul class="simple">
+<li><a class="reference download internal" href="../../_downloads/JoinExample.java"><code class="xref download docutils literal"><span class="pre">JoinExample.java</span></code></a></li>
+</ul>
+<p>Here is the interesting bit from the above file:</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">joinExample</span><span class="o">(</span><span class="n">SimpleFeatureSource</span> <span class="n">shapes</span><span class="o">,</span> <span class="n">SimpleFeatureSource</span> <span class="n">shapes2</span><span class="o">)</span>
+        <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+    <span class="n">SimpleFeatureType</span> <span class="n">schema</span> <span class="o">=</span> <span class="n">shapes</span><span class="o">.</span><span class="na">getSchema</span><span class="o">();</span>
+    <span class="n">String</span> <span class="n">typeName</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="na">getTypeName</span><span class="o">();</span>
+    <span class="n">String</span> <span class="n">geomName</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="na">getGeometryDescriptor</span><span class="o">().</span><span class="na">getLocalName</span><span class="o">();</span>
+    
+    <span class="n">SimpleFeatureType</span> <span class="n">schema2</span> <span class="o">=</span> <span class="n">shapes2</span><span class="o">.</span><span class="na">getSchema</span><span class="o">();</span>
+    <span class="n">String</span> <span class="n">typeName2</span> <span class="o">=</span> <span class="n">schema2</span><span class="o">.</span><span class="na">getTypeName</span><span class="o">();</span>
+    <span class="n">String</span> <span class="n">geomName2</span> <span class="o">=</span> <span class="n">schema2</span><span class="o">.</span><span class="na">getGeometryDescriptor</span><span class="o">().</span><span class="na">getLocalName</span><span class="o">();</span>
+    <span class="n">FilterFactory2</span> <span class="n">ff</span> <span class="o">=</span> <span class="n">CommonFactoryFinder</span><span class="o">.</span><span class="na">getFilterFactory2</span><span class="o">();</span>
+    
+    <span class="n">Query</span> <span class="n">outerGeometry</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Query</span><span class="o">(</span><span class="n">typeName</span><span class="o">,</span> <span class="n">Filter</span><span class="o">.</span><span class="na">INCLUDE</span><span class="o">,</span> <span class="k">new</span> <span class="n">String</span><span class="o">[]</span> <span class="o">{</span> <span class="n">geomName</span> <span class="o">});</span>
+    <span class="n">SimpleFeatureCollection</span> <span class="n">outerFeatures</span> <span class="o">=</span> <span class="n">shapes</span><span class="o">.</span><span class="na">getFeatures</span><span class="o">(</span><span class="n">outerGeometry</span><span class="o">);</span>
+    <span class="n">SimpleFeatureIterator</span> <span class="n">iterator</span> <span class="o">=</span> <span class="n">outerFeatures</span><span class="o">.</span><span class="na">features</span><span class="o">();</span>
+    <span class="kt">int</span> <span class="n">max</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+    <span class="k">try</span> <span class="o">{</span>
+        <span class="k">while</span> <span class="o">(</span><span class="n">iterator</span><span class="o">.</span><span class="na">hasNext</span><span class="o">())</span> <span class="o">{</span>
+            <span class="n">SimpleFeature</span> <span class="n">feature</span> <span class="o">=</span> <span class="n">iterator</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
+            <span class="k">try</span> <span class="o">{</span>
+                <span class="n">Geometry</span> <span class="n">geometry</span> <span class="o">=</span> <span class="o">(</span><span class="n">Geometry</span><span class="o">)</span> <span class="n">feature</span><span class="o">.</span><span class="na">getDefaultGeometry</span><span class="o">();</span>
+                <span class="k">if</span> <span class="o">(!</span><span class="n">geometry</span><span class="o">.</span><span class="na">isValid</span><span class="o">())</span> <span class="o">{</span>
+                    <span class="c1">// skip bad data</span>
+                    <span class="k">continue</span><span class="o">;</span>
+                <span class="o">}</span>
+                <span class="n">Filter</span> <span class="n">innerFilter</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="na">intersects</span><span class="o">(</span><span class="n">ff</span><span class="o">.</span><span class="na">property</span><span class="o">(</span><span class="n">geomName2</span><span class="o">),</span> <span class="n">ff</span><span class="o">.</span><span class="na">literal</span><span class="o">(</span><span class="n">geometry</span><span class="o">));</span>
+                <span class="n">Query</span> <span class="n">innerQuery</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Query</span><span class="o">(</span><span class="n">typeName2</span><span class="o">,</span> <span class="n">innerFilter</span><span class="o">,</span> <span class="n">Query</span><span class="o">.</span><span class="na">NO_NAMES</span><span class="o">);</span>
+                <span class="n">SimpleFeatureCollection</span> <span class="n">join</span> <span class="o">=</span> <span class="n">shapes2</span><span class="o">.</span><span class="na">getFeatures</span><span class="o">(</span><span class="n">innerQuery</span><span class="o">);</span>
+                <span class="kt">int</span> <span class="n">size</span> <span class="o">=</span> <span class="n">join</span><span class="o">.</span><span class="na">size</span><span class="o">();</span>
+                <span class="n">max</span> <span class="o">=</span> <span class="n">Math</span><span class="o">.</span><span class="na">max</span><span class="o">(</span><span class="n">max</span><span class="o">,</span> <span class="n">size</span><span class="o">);</span>
+            <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Exception</span> <span class="n">skipBadData</span><span class="o">)</span> <span class="o">{</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+        <span class="n">iterator</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+    <span class="o">}</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;At most &quot;</span> <span class="o">+</span> <span class="n">max</span> <span class="o">+</span> <span class="s">&quot; &quot;</span> <span class="o">+</span> <span class="n">typeName2</span> <span class="o">+</span> <span class="s">&quot; features in a single &quot;</span> <span class="o">+</span> <span class="n">typeName</span>
+            <span class="o">+</span> <span class="s">&quot; feature&quot;</span><span class="o">);</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>When run on the uDig sample dataset available here:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://udig.refractions.net/docs/data-v1_1.zip">http://udig.refractions.net/docs/data-v1_1.zip</a></li>
+</ul>
+<p>You can run an intersection test between pubs and municipaliy:</p>
+<div class="highlight-python"><div class="highlight"><pre>Welcome to GeoTools:2.5.SNAPSHOT
+At most 88 bc_pubs features in a single bc_municipality feature
+</pre></div>
+</div>
+<p>Here are a couple other examples for innerFilter to think about:</p>
+<ul class="simple">
+<li>ff.intersects( ff.property(geomName2), ff.literal( geometry )); // 88 pubs</li>
+<li>ff.dwithin(ff.property(geomName2), ff.literal( geometry ),1.0,&#8221;km&#8221;); // 60 pubs</li>
+<li>ff.not( ff.disjoint(ff.property(geomName2), ff.literal( geometry )) ); // 135 pubs!</li>
+<li>ff.beyond(ff.property(geomName2), ff.literal( geometry ),1.0,&#8221;km&#8221;); // 437 pubs</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="shape.html" title="Java2D Shape"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="feature.html" title="Feature"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+          <li><a href="index.html" >Main</a> &raquo;</li>
+        <li><a href="#">FeatureCollection</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

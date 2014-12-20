@@ -1,0 +1,346 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Maven Tips &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../index.html" />
+    <link rel="up" title="Using Maven" href="index.html" />
+    <link rel="next" title="Maven Testing" href="testing.html" />
+    <link rel="prev" title="Maven Build" href="build.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Building</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Using Maven</a> &raquo;</li>
+        <li><a href="#">Maven Tips</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Maven Tips</a><ul>
+<li><a class="reference internal" href="#really-building-all-modules">Really Building All Modules</a></li>
+<li><a class="reference internal" href="#parallel-builds">Parallel Builds</a></li>
+<li><a class="reference internal" href="#building-offline">Building Offline</a></li>
+<li><a class="reference internal" href="#no-snapshot-updates">No Snapshot Updates</a></li>
+<li><a class="reference internal" href="#building-an-individual-module">Building an Individual module</a></li>
+<li><a class="reference internal" href="#avoiding-tests">Avoiding Tests</a></li>
+<li><a class="reference internal" href="#resuming-after-a-failure">Resuming After a Failure</a></li>
+<li><a class="reference internal" href="#generate-a-web-site">Generate a Web Site</a></li>
+<li><a class="reference internal" href="#oracle-ojdbc14">Oracle ojdbc14</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="build.html"
+                        title="previous chapter">Maven Build</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="testing.html"
+                        title="next chapter">Maven Testing</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/build/maven/tips.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="maven-tips">
+<h1>Maven Tips<a class="headerlink" href="#maven-tips" title="Permalink to this headline">¶</a></h1>
+<p>Maven has a fair few tricks and tips associated with its use. The major benefit is with a consistent project structure (and pom.xml description) a number of plugins can be used.</p>
+<div class="section" id="really-building-all-modules">
+<h2>Really Building All Modules<a class="headerlink" href="#really-building-all-modules" title="Permalink to this headline">¶</a></h2>
+<p>GeoTools plays host to a number of experiment &#8220;unsupported&#8221; modules; if you would like to help out on any of these modules (or get a preview of new features):</p>
+<div class="highlight-python"><div class="highlight"><pre>mvn install -Dall
+</pre></div>
+</div>
+<p>The &#8220;-Dall&#8221; acts as a switch to part engages several profiles; you can also do this by hand with -P</p>
+<p>The following &#8220;profiles&#8221; are included by the &#8220;-Dall&#8221;:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="10%" />
+<col width="70%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Profile</th>
+<th class="head">-Dall</th>
+<th class="head">Builds</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">-Pgdal</span></code></td>
+<td>included</td>
+<td>include modules that depend on having gdal installed into your JRE</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">-Ppending</span></code></td>
+<td>included</td>
+<td>several experimental modules</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">-Praster</span></code></td>
+<td>included</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">-Pswing</span></code></td>
+<td>included</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">-Pworkflow</span></code></td>
+<td>included</td>
+<td>process and wps support</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">-Parchive</span></code></td>
+<td>&nbsp;</td>
+<td>modules that no longer work</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="parallel-builds">
+<h2>Parallel Builds<a class="headerlink" href="#parallel-builds" title="Permalink to this headline">¶</a></h2>
+<p>Maven 3 allows you to control your computing resources a bit more:</p>
+<div class="highlight-python"><div class="highlight"><pre>mvn install -Dall -T 2C
+</pre></div>
+</div>
+<p>The above command builds using two threads for each cpu core available.</p>
+<p>You can also set an exact number of threads to use:</p>
+<div class="highlight-python"><div class="highlight"><pre>mvn install -Dall -T 3
+</pre></div>
+</div>
+<p>You can experiment with different settings to determine what works best for your machine.</p>
+</div>
+<div class="section" id="building-offline">
+<h2>Building Offline<a class="headerlink" href="#building-offline" title="Permalink to this headline">¶</a></h2>
+<p>When working offline, you can bypass the checking of md5 and downloading files.</p>
+<p>To do this use the following:</p>
+<div class="highlight-python"><div class="highlight"><pre>C:\java\geotools\trunk&gt;mvn -o install
+</pre></div>
+</div>
+<p>By avoiding the check of md5 files you can take drastically reduce build time.</p>
+</div>
+<div class="section" id="no-snapshot-updates">
+<h2>No Snapshot Updates<a class="headerlink" href="#no-snapshot-updates" title="Permalink to this headline">¶</a></h2>
+<p>To work online, but just avoid checking SNAPSHOT dependencies:</p>
+<div class="highlight-python"><div class="highlight"><pre>C:\java\geotools\trunk&gt;mvn -nsu install
+</pre></div>
+</div>
+</div>
+<div class="section" id="building-an-individual-module">
+<h2>Building an Individual module<a class="headerlink" href="#building-an-individual-module" title="Permalink to this headline">¶</a></h2>
+<p>Provided you have done at least one complete build you should be able to build individual modules one-at-a-time.</p>
+<ol class="arabic">
+<li><p class="first">Change to the modules home directory:</p>
+<div class="highlight-python"><div class="highlight"><pre>cd modules/library/cql
+</pre></div>
+</div>
+</li>
+<li><p class="first">Use maven to compile - it should do a complete build:</p>
+<div class="highlight-python"><div class="highlight"><pre>mvn compile
+</pre></div>
+</div>
+</li>
+<li><p class="first">Use maven to update the local repository - it should run the test cases and install the jar in the local
+repository for other modules (or applications) to use when they build.:</p>
+<div class="highlight-python"><div class="highlight"><pre>mvn install
+</pre></div>
+</div>
+</li>
+</ol>
+<p>If you have not done a full build yet then the build may fail because it can&#8217;t find the jar for a module it depends on.</p>
+<ul>
+<li><p class="first">An error caused by not having another GT2 module installed can be a little misleading:</p>
+<div class="highlight-python"><div class="highlight"><pre>Error: unable to download main-2.1.x.jar
+</pre></div>
+</div>
+</li>
+<li><p class="first">Maven failed to find main-2.1,x.jar in the local repository where a full build should have put it</p>
+</li>
+<li><p class="first">Maven tried to download the file from the internet (and failed)</p>
+</li>
+<li><p class="first">If you see an error like that, either do a full build or change into the module which is missing (main in this case) and type.:</p>
+<div class="highlight-python"><div class="highlight"><pre>maven install
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="avoiding-tests">
+<h2>Avoiding Tests<a class="headerlink" href="#avoiding-tests" title="Permalink to this headline">¶</a></h2>
+<p>You may also notice that running the tests takes a fair amount of time. While these tests need to be run before you commit for the day, you may want to forgo the wait while experimenting.</p>
+<p>The following will build the tests - but not run them:</p>
+<div class="highlight-python"><div class="highlight"><pre>mvn -DskipTests install
+</pre></div>
+</div>
+<p>This is useful for installing the postgis module test jar; which is used by the postgis-version module as a dependency.</p>
+<p>The following will not even build the tests:</p>
+<div class="highlight-python"><div class="highlight"><pre>mvn -Dmaven.test.skip=true install
+</pre></div>
+</div>
+</div>
+<div class="section" id="resuming-after-a-failure">
+<h2>Resuming After a Failure<a class="headerlink" href="#resuming-after-a-failure" title="Permalink to this headline">¶</a></h2>
+<p>When doing a full build of GeoTools it can be disheartening when a build fails 90% of the way through causing you to fix and start again.</p>
+<p>The -rf (resume from) parameter of is useful in these cases. It is used to resume a multi-module build such as GeoTools from a specific location to avoid rebuilding those modules you have already successfully build.</p>
+<ol class="arabic">
+<li><p class="first">For instance, consider quickly building offline:</p>
+<div class="highlight-python"><div class="highlight"><pre>mvn install -o -Dall
+</pre></div>
+</div>
+</li>
+<li><p class="first">If <strong>modules/library/data</strong> failed due to a missing jar you can resume the build in online mode:</p>
+<div class="highlight-python"><div class="highlight"><pre>mvn install -rf modules/library/data
+</pre></div>
+</div>
+</li>
+</ol>
+<p>This same technique can be used to restart a build after fixing a failed test in a module.</p>
+</div>
+<div class="section" id="generate-a-web-site">
+<h2>Generate a Web Site<a class="headerlink" href="#generate-a-web-site" title="Permalink to this headline">¶</a></h2>
+<p>Maven reports can be generated by the following command, to be executed from the directory that contains the parent pom.xml file:</p>
+<div class="highlight-python"><div class="highlight"><pre>mvn site:site
+</pre></div>
+</div>
+<p>The site are created in target/site directory of every module. An aggregated javadoc is also created in the parent target/site/apidocs directory.</p>
+</div>
+<div class="section" id="oracle-ojdbc14">
+<h2>Oracle ojdbc14<a class="headerlink" href="#oracle-ojdbc14" title="Permalink to this headline">¶</a></h2>
+<p>We are not in position to publish everything in a public maven repository. The ojdbc14 JDBC driver
+(required to run oracle online tests) will need to be installed by hand.</p>
+<p>If you have access to the real driver you can rebuild the <code class="docutils literal"><span class="pre">jdbc-oracle</span></code> plugin
+with ojdbc14 driver.                                               &#8211;&gt;</p>
+<ol class="arabic">
+<li><p class="first">Download the ojdbc14.jar from oracle</p>
+</li>
+<li><p class="first">Install the ojdbc14.jar into your local maven repository:</p>
+<div class="highlight-python"><div class="highlight"><pre>mvn install:install-file -Dfile=ojdbc14.jar \
+    -DgroupId=com.oracle -DartifactId=ojdbc14 \
+    -Dversion=10.2.0.3.0 -Dpackaging=jar -DgeneratePom=true
+</pre></div>
+</div>
+<p>Producing output similar to the following:</p>
+<div class="highlight-python"><div class="highlight"><pre>[INFO] Scanning for projects...
+[INFO]
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Maven Stub Project (No POM) 1
+[INFO] ------------------------------------------------------------------------
+[INFO]
+[INFO] --- maven-install-plugin:2.3.1:install-file (default-cli) @ standalone-pom ---
+[INFO] Installing /Volumes/Fiore/jody/Downloads/geoserver-2.2.1-oracle-plugin/ojdbc14.jar
+       to /Users/jody/.m2/repository/com/oracle/ojdbc14/10.2.0.3.0/ojdbc14-10.2.0.3.0.jar
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 0.935s
+[INFO] Finished at: Tue Nov 27 16:20:16 EST 2012
+[INFO] Final Memory: 3M/81M
+[INFO] ------------------------------------------------------------------------
+</pre></div>
+</div>
+</li>
+<li><p class="first">You can then supply -Doracle=true on the command line when building:</p>
+<div class="highlight-python"><div class="highlight"><pre>cd modules/plugins/jdbc/jdbc-oracle
+mvn clean install -Doracle=true
+</pre></div>
+</div>
+<p>The <code class="docutils literal"><span class="pre">gt-jdbc-oracle</span></code> plugin is now deployed in your repository with a dependency
+on the ojdbc oracle driver.</p>
+</li>
+<li><p class="first">Or when setting up eclipse:</p>
+<div class="highlight-python"><div class="highlight"><pre>mvn eclipse:eclipse -Dall -Doracle=true
+</pre></div>
+</div>
+<p>The eclipse .project and .classpath generated now includes a reference to the ojdbc oracle
+driver.</p>
+</li>
+<li><p class="first">Or when running online tests:</p>
+<div class="highlight-python"><div class="highlight"><pre>cd modules/plugin/jdbc/jdbc-oracle/
+mvn test -Doracle=true -P online
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="testing.html" title="Maven Testing"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="build.html" title="Maven Build"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Building</a> &raquo;</li>
+          <li><a href="index.html" >Using Maven</a> &raquo;</li>
+        <li><a href="#">Maven Tips</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

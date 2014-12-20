@@ -1,0 +1,245 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Overview &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../../index.html" />
+    <link rel="up" title="Internals" href="index.html" />
+    <link rel="next" title="Bindings" href="bindings.html" />
+    <link rel="prev" title="Internals" href="index.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../../index.html" >Library</a> &raquo;</li>
+          <li><a href="../index.html" >XML</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Internals</a> &raquo;</li>
+        <li><a href="#">Overview</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Overview</a><ul>
+<li><a class="reference internal" href="#parsing-overview">Parsing Overview</a></li>
+<li><a class="reference internal" href="#encoding-overview">Encoding Overview</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Internals</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="bindings.html"
+                        title="next chapter">Bindings</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/library/xml/internal/overview.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="overview">
+<h1>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="parsing-overview">
+<h2>Parsing Overview<a class="headerlink" href="#parsing-overview" title="Permalink to this headline">¶</a></h2>
+<p>Parsing the process of transforming xml elements and attributes in an instance document into java objects.</p>
+<img alt="../../../_images/parserOverview.png" src="../../../_images/parserOverview.png" />
+<p>During parsing an xml schema is used to assist in the transformation. The parser uses the schema to determine which types of objects various elements and attributes should be transformed into.</p>
+<ol class="arabic">
+<li><p class="first">Schema Resolution</p>
+<p>The first step in parsing an instance document is figuring out the schema for it. Typically in a document which conforms to a particular schema all the information about the schema is present on the root element of the document. For example:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;po:purchaseOrder
+   xmlns:po=&quot;http://www.geotools.org/po&quot;
+   xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+   xsi:schemaLocation=&quot;http://www.geotools.org/po po.xsd&quot;&gt;
+   ...
+</pre></div>
+</div>
+<p>The key attribute is <strong>xsi:schemaLocation</strong> which contains a <strong>namespace-schema location</strong> mapping. In the above example the mappings tells us that the schema for the namespace &#8220;<a class="reference external" href="http://www.geotools.org/po">http://www.geotools.org/po</a>&#8221; can be found in a file named &#8220;po.xsd&#8221;. The parser uses this mapping to locate the schema for the document. This is known as Schema Resolution. Once the schema has been &#8220;resolved&#8221;, it parsed and processing proceeds to the next phase.</p>
+</li>
+<li><p class="first">Element and Attribute Binding</p>
+<p>Once the schema for the document has been resolved the rest of the document is parsed. As elements and attributes are processed the schema is used to lookup information to assist in parsing the document. The term parsing used here really refers to the act of transforming an element or attribute into a java object. This transformation is performed by a binding.</p>
+<p>For each element and attribute that is parsed, a binding is located for it. To locate a binding for an element or attribute, the declaration for it is located in the schema. The rules that dictate how element and attribute declarations are resolved are detailed here.</p>
+<p>Once a declaration has been found, a set of &#8220;bindings&#8221; for the declaration are derived. For a single element or attribute, the following bindings may be derived:</p>
+<ul class="simple">
+<li>A binding for the element or attribute itself</li>
+<li>A binding for the type of the element or attribute</li>
+<li>A binding for each base type</li>
+</ul>
+<p>As an example, consider processing the &#8220;purchaseOrder&#8221; element shown above. The following bindings would be derived:</p>
+<ul class="simple">
+<li>The &#8220;purchaseOrder&#8221; global element declaration</li>
+<li>The &#8220;PurchaseOrderType&#8221; type defintion ( the declared type of the &#8220;purchaseOrder&#8221; element )</li>
+<li>The &#8220;anyType&#8221; type definition ( the base type of all complex type definitions )</li>
+</ul>
+<p>Once a set of bindings has been located, they are executed in a defined order, and the element or attribute is transformed into an object. Binding derivation and execution is explained in greater detail here.</p>
+</li>
+<li><p class="first">Document Processing</p>
+<p>As an instance document is parsed, elements and attributes are transformed into objects. The parser can be thought of as a stack computer in which transformed objects are pushed on a stack to later be consumed by other objects. The following diagram pictorially represents the various states of the stack while an instance document is parsed.</p>
+<ul>
+<li><p class="first">Stack is empty as the parser begins to process the instance document</p>
+<img alt="../../../_images/parserExecution0.png" src="../../../_images/parserExecution0.png" />
+</li>
+<li><p class="first">Leading edge of the &#8220;purhaseOrder&#8221; element is reached. On the leading edge of an element, all of its attributes are parsed. In this case the &#8220;orderDate&#8221; attribute is parsed into a java.util.Date object, and placed on the stack.</p>
+<img alt="../../../_images/parserExecution1.png" src="../../../_images/parserExecution1.png" />
+</li>
+<li><p class="first">Leading edge of the &#8220;shipTo&#8221; element is reached, and attributes parsed.</p>
+<img alt="../../../_images/parserExecution2.png" src="../../../_images/parserExecution2.png" />
+</li>
+<li><p class="first">Leading and trailing edges of the &#8220;street&#8221; element are reached. For elements themselves, transformation occurs on the trailing edge. In this case, the street element is transformed to a java.lang.String, and placed on the stack.</p>
+<img alt="../../../_images/parserExecution3.png" src="../../../_images/parserExecution3.png" />
+</li>
+<li><p class="first">Similar to State 3, elements transformed and placed on stack.</p>
+<img alt="../../../_images/parserExecution4.png" src="../../../_images/parserExecution4.png" />
+</li>
+<li><p class="first">Similar to State 4, elements transformed and placed on stack.</p>
+<img alt="../../../_images/parserExecution5.png" src="../../../_images/parserExecution5.png" />
+</li>
+<li><p class="first">Trailing edge of the &#8220;shipTo&#8221; element. At this state, all the child elements have been processed and exist on the stack. In processing the shipTo element all the values which correspond to child elements and attributes are popped off the stack and used to compose the resulting object for the shipTo element, an instance of Address. The transformed object is then placed on the stack.</p>
+<img alt="../../../_images/parserExecution6.png" src="../../../_images/parserExecution6.png" />
+</li>
+<li><p class="first">Trailing edge of the &#8220;purchaseOrder&#8221; element, similar to State 6, the objects created for child elements and attributes are used to compose the resulting purchaseOrder object, an instance of PurchaseOrder.</p>
+<img alt="../../../_images/parserExecution7.png" src="../../../_images/parserExecution7.png" />
+</li>
+<li><p class="first">Instance document has been processed. The stack contains the single object which corresponds to the root element of the document, in this case &#8220;purchaseOrder&#8221;.</p>
+<img alt="../../../_images/parserExecution8.png" src="../../../_images/parserExecution8.png" />
+</li>
+</ul>
+</li>
+</ol>
+</div>
+<div class="section" id="encoding-overview">
+<h2>Encoding Overview<a class="headerlink" href="#encoding-overview" title="Permalink to this headline">¶</a></h2>
+<p>Encoding is the process of serializing a hierarchy of objects as xml.</p>
+<blockquote>
+<div><img alt="../../../_images/encoderOverview.png" src="../../../_images/encoderOverview.png" />
+</div></blockquote>
+<p>During encoding an xml schema is used to determine how various objects should be encoded as elemements / attributes, and to navigate through the hierachy of objects.</p>
+<ol class="arabic">
+<li><p class="first">Element and Attribute Binding</p>
+<p>As objects are encoded the xml schema is used to locate bindings to perform the encoding process. During encoding bindings serve two roles:</p>
+<ul class="simple">
+<li>Serialization of objects as elements and attributes</li>
+<li>Navigation among objects by determining which objects correspond to child elements and attributes of a particular element</li>
+</ul>
+<p>Binding derivation for encoding is identical as it is for parsing, explained here.</p>
+</li>
+<li><p class="first">Object Processing</p>
+<p>As an object tree is encoded individual objects are serialized as elements and attributes. The following diagram pictorially represents how the encoding process works.</p>
+<ul>
+<li><p class="first">The first step is to encode the root element of the document, the &#8220;PurchaseOrder element , which corresponds to the top object in the tree</p>
+<img alt="../../../_images/encoderExecution1.png" src="../../../_images/encoderExecution1.png" />
+</li>
+<li><p class="first">Next the the elements type, &#8220;PurchaseOrderType&#8221;, is used to move the process forward and infer the next object to encode. The type yields the attribute &#8220;orderDate&#8221;.</p>
+<img alt="../../../_images/encoderExecution2.png" src="../../../_images/encoderExecution2.png" />
+</li>
+<li><p class="first">Continuing through the contents of &#8220;PurchaseOrderType&#8221; is the &#8220;shipTo&#8221; element.</p>
+<img alt="../../../_images/encoderExecution3.png" src="../../../_images/encoderExecution3.png" />
+</li>
+<li><p class="first">Since the &#8220;shipTo&#8221; element is complex, the encoding process recurses into its type, &#8220;USAddress&#8221;, and continues on. The type yields the &#8220;country&#8221; attribute.</p>
+<img alt="../../../_images/encoderExecution4.png" src="../../../_images/encoderExecution4.png" />
+</li>
+<li><p class="first">Continuing through the contents of &#8220;USAddress&#8221; is the &#8220;street&#8221; element.</p>
+<img alt="../../../_images/encoderExecution5.png" src="../../../_images/encoderExecution5.png" />
+</li>
+<li><p class="first">And the &#8220;state&#8221; element</p>
+<img alt="../../../_images/encoderExecution6.png" src="../../../_images/encoderExecution6.png" />
+</li>
+<li><p class="first">And the &#8220;zip&#8221; element.</p>
+<img alt="../../../_images/encoderExecution7.png" src="../../../_images/encoderExecution7.png" />
+</li>
+<li><p class="first">All the contents of the &#8220;USAddress&#8221; type have been completed, the &#8220;shipTo&#8221; element is closed and recursion pops back to the surrounding type</p>
+<img alt="../../../_images/encoderExecution8.png" src="../../../_images/encoderExecution8.png" />
+</li>
+<li><p class="first">All the contents of the &#8220;PurchaseOrderType&#8221; have been completed, the &#8220;purchaseOrder&#8221; element is closed. Being the root element of the document there is no containing type and the encoding process is stopped.</p>
+<img alt="../../../_images/encoderExecution9.png" src="../../../_images/encoderExecution9.png" />
+</li>
+</ul>
+</li>
+</ol>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="bindings.html" title="Bindings"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="index.html" title="Internals"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../../index.html" >Library</a> &raquo;</li>
+          <li><a href="../index.html" >XML</a> &raquo;</li>
+          <li><a href="index.html" >Internals</a> &raquo;</li>
+        <li><a href="#">Overview</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

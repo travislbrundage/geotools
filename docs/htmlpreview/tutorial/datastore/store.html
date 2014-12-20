@@ -1,0 +1,777 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Implementing FeatureStore &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../index.html" />
+    <link rel="up" title="ContentDataStore Tutorial" href="index.html" />
+    <link rel="next" title="Using FeatureStore" href="write.html" />
+    <link rel="prev" title="Using FeatureSource" href="read.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Tutorials</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">ContentDataStore Tutorial</a> &raquo;</li>
+        <li><a href="#">Implementing FeatureStore</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Implementing FeatureStore</a><ul>
+<li><a class="reference internal" href="#csvdatastorefactory">CSVDataStoreFactory</a></li>
+<li><a class="reference internal" href="#csvdatastore">CSVDataStore</a></li>
+<li><a class="reference internal" href="#csvfeaturestore">CSVFeatureStore</a></li>
+<li><a class="reference internal" href="#csvfeaturewriter">CSVFeatureWriter</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="read.html"
+                        title="previous chapter">Using FeatureSource</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="write.html"
+                        title="next chapter">Using FeatureStore</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/tutorial/datastore/store.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="implementing-featurestore">
+<h1>Implementing FeatureStore<a class="headerlink" href="#implementing-featurestore" title="Permalink to this headline">¶</a></h1>
+<p>In this part we will complete the CSVDataStore. At the end of this section we
+will have a full functional CSVDataStore supporting both read and write operations.</p>
+<div class="figure" id="id1">
+<img alt="../../_images/CSVDataStoreWrite.png" src="../../_images/CSVDataStoreWrite.png" />
+<p class="caption"><span class="caption-text">CSVDataStore Read-Write</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+<p>The DataStore API provides three categories of public methods involved in making content writable.</p>
+<ul class="simple">
+<li>DataStore.createSchema( featureType ) - sets up a new entry for content of the provided type</li>
+<li>DataStore.getFeatureWriter( typeName ) - a low-level iterator that allows writing</li>
+<li>DataStore.getFeatureSource( typeName ) - read-only FeatureSource or FeatureStore for read-write</li>
+</ul>
+<p>The infrastructure to support this functionality is quite extensive. A few highlights from the above diagram:</p>
+<ul class="simple">
+<li>ContentState.listerners - event notification for changed content</li>
+<li>ContentState.tx  - transaction object used by clients to stash session callbacks</li>
+<li>ContentState.transactionState: provides transaction independence between threads working on the same content.</li>
+</ul>
+<div class="section" id="csvdatastorefactory">
+<h2>CSVDataStoreFactory<a class="headerlink" href="#csvdatastorefactory" title="Permalink to this headline">¶</a></h2>
+<p>Now that we are going to be writing files we can fill in the createNewDataStore method.</p>
+<ol class="arabic">
+<li><p class="first">Open up CSVDataStoreFactory and fill in the method <strong>createNewDataStore( Map params )</strong> which we skipped over earlier.</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">Logger</span> <span class="n">LOGGER</span> <span class="o">=</span> <span class="n">Logging</span><span class="o">.</span><span class="na">getLogger</span><span class="o">(</span><span class="s">&quot;org.geotools.data.csv&quot;</span><span class="o">);</span>
+    <span class="kd">public</span> <span class="n">DataStore</span> <span class="nf">createNewDataStore</span><span class="o">(</span><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Serializable</span><span class="o">&gt;</span> <span class="n">params</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+        <span class="n">File</span> <span class="n">file</span> <span class="o">=</span> <span class="o">(</span><span class="n">File</span><span class="o">)</span> <span class="n">FILE_PARAM</span><span class="o">.</span><span class="na">lookUp</span><span class="o">(</span><span class="n">params</span><span class="o">);</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">file</span><span class="o">.</span><span class="na">exists</span><span class="o">()</span> <span class="o">){</span>
+            <span class="n">LOGGER</span><span class="o">.</span><span class="na">warning</span><span class="o">(</span><span class="s">&quot;File already exsists: &quot;</span><span class="o">+</span><span class="n">file</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="n">CSVDataStore</span><span class="o">(</span><span class="n">file</span><span class="o">);</span>
+    <span class="o">}</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">The above code snippet introduces a GeoTools Logger we can use for warnings.</p>
+<p>Because GeoTools is a well mannered library it can be configured to use different logging
+engines. This allows it to integrate smoothly with larger projects.</p>
+</li>
+<li><p class="first">To see this change in context review <a class="reference download internal" href="../../_downloads/CSVDataStoreFactory.java"><code class="xref download docutils literal"><span class="pre">CSVDataStoreFactory.java</span></code></a>
+from the <strong>gt-csv</strong> plugin.</p>
+</li>
+</ol>
+<p>There is no DataStoreFinder method for creating new content. We expect this method to be called
+from a content creation wizard that already is making use of the DataStoreFactory.</p>
+</div>
+<div class="section" id="csvdatastore">
+<h2>CSVDataStore<a class="headerlink" href="#csvdatastore" title="Permalink to this headline">¶</a></h2>
+<p>Returning to CSVDataStore we have a number of new methods to override to support write
+functionality.</p>
+<ol class="arabic">
+<li><p class="first">Introduce the createSchema( featureType ) method used to set up a new file.</p>
+<p>Our CSV format has several limitations:</p>
+<ul class="simple">
+<li>Representing Points, using LAT and LON columns</li>
+<li>Attributes are assumed to be Strings (this is a text format after all)</li>
+<li>CoordinateReferenceSystem is limited to WGS84</li>
+</ul>
+<p>Add createSchema( featureType ):</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">createSchema</span><span class="o">(</span><span class="n">SimpleFeatureType</span> <span class="n">featureType</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+        <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">header</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;();</span>
+        <span class="n">GeometryDescriptor</span> <span class="n">geometryDescrptor</span> <span class="o">=</span> <span class="n">featureType</span><span class="o">.</span><span class="na">getGeometryDescriptor</span><span class="o">();</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">geometryDescrptor</span> <span class="o">!=</span> <span class="kc">null</span>
+                <span class="o">&amp;&amp;</span> <span class="n">CRS</span><span class="o">.</span><span class="na">equalsIgnoreMetadata</span><span class="o">(</span><span class="n">DefaultGeographicCRS</span><span class="o">.</span><span class="na">WGS84</span><span class="o">,</span>
+                        <span class="n">geometryDescrptor</span><span class="o">.</span><span class="na">getCoordinateReferenceSystem</span><span class="o">())</span>
+                <span class="o">&amp;&amp;</span> <span class="n">geometryDescrptor</span><span class="o">.</span><span class="na">getType</span><span class="o">().</span><span class="na">getBinding</span><span class="o">().</span><span class="na">isAssignableFrom</span><span class="o">(</span><span class="n">Point</span><span class="o">.</span><span class="na">class</span><span class="o">))</span> <span class="o">{</span>
+            <span class="n">header</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">&quot;LAT&quot;</span><span class="o">);</span>
+            <span class="n">header</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">&quot;LON&quot;</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="n">IOException</span><span class="o">(</span><span class="s">&quot;Unable use LAT/LON to represent &quot;</span> <span class="o">+</span> <span class="n">geometryDescrptor</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">for</span> <span class="o">(</span><span class="n">AttributeDescriptor</span> <span class="n">descriptor</span> <span class="o">:</span> <span class="n">featureType</span><span class="o">.</span><span class="na">getAttributeDescriptors</span><span class="o">())</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">descriptor</span> <span class="k">instanceof</span> <span class="n">GeometryDescriptor</span><span class="o">)</span>
+                <span class="k">continue</span><span class="o">;</span>
+            <span class="n">header</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">descriptor</span><span class="o">.</span><span class="na">getLocalName</span><span class="o">());</span>
+        <span class="o">}</span>
+        <span class="c1">// Write out header, producing an empty file of the correct type</span>
+        <span class="n">CsvWriter</span> <span class="n">writer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CsvWriter</span><span class="o">(</span><span class="k">new</span> <span class="n">FileWriter</span><span class="o">(</span><span class="n">file</span><span class="o">),</span><span class="sc">&#39;,&#39;</span><span class="o">);</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="n">writer</span><span class="o">.</span><span class="na">writeRecord</span><span class="o">(</span> <span class="n">header</span><span class="o">.</span><span class="na">toArray</span><span class="o">(</span><span class="k">new</span> <span class="n">String</span><span class="o">[</span><span class="n">header</span><span class="o">.</span><span class="na">size</span><span class="o">()]));</span>
+        <span class="o">}</span>
+        <span class="k">finally</span> <span class="o">{</span>
+            <span class="n">writer</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">And revise our implementation of <strong>createFeatureSource( ContentEntry )</strong>.</p>
+<p>While we will still return a <strong>FeatureSource</strong>, we have the option of returning a the subclass
+<strong>FeatureStore</strong> for read-write files.</p>
+<p>The <strong>FeatureStore</strong> interface provides additional methods allowing the modification of content.</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="nd">@Override</span>
+    <span class="kd">protected</span> <span class="n">ContentFeatureSource</span> <span class="nf">createFeatureSource</span><span class="o">(</span><span class="n">ContentEntry</span> <span class="n">entry</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">file</span><span class="o">.</span><span class="na">canWrite</span><span class="o">())</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="k">new</span> <span class="n">CSVFeatureStore</span><span class="o">(</span><span class="n">entry</span><span class="o">,</span> <span class="n">Query</span><span class="o">.</span><span class="na">ALL</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="k">new</span> <span class="n">CSVFeatureSource</span><span class="o">(</span><span class="n">entry</span><span class="o">,</span> <span class="n">Query</span><span class="o">.</span><span class="na">ALL</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">If you would like to review the <strong>gt-csv</strong> plugin has the completed <a class="reference download internal" href="../../_downloads/CSVDataStore.java"><code class="xref download docutils literal"><span class="pre">CSVDataStore.java</span></code></a>
+file.</p>
+</li>
+</ol>
+</div>
+<div class="section" id="csvfeaturestore">
+<h2>CSVFeatureStore<a class="headerlink" href="#csvfeaturestore" title="Permalink to this headline">¶</a></h2>
+<p>CSVFFeatureStore has an interesting design constraint:</p>
+<ul class="simple">
+<li>It implements FeatureStore, which extends FeatureSource</li>
+<li>It extends the base class ContentFeatureStore, which handles most of the heavy lifting</li>
+</ul>
+<p>So what is the trouble? Java only allows single inheritance - forcing us to account for all the
+work we did reading features in CSVFeatureSource.</p>
+<p>Many first generation DataStore implementations practiced cut and paste coding, meaning fixes would
+often get applied in one spot and not another making for a frustrating debugging experience.</p>
+<p>Instead we are going to use a <strong>delegate</strong> CSVFeatureStore, hidden from public view, simply to
+call its methods for reading. This prevents code duplication, makinng the code easier to maintain,
+at the coast of some up front complexity.</p>
+<div class="figure" id="id2">
+<img alt="../../_images/CSVFeatureStore.png" src="../../_images/CSVFeatureStore.png" />
+<p class="caption"><span class="caption-text">CSVFeatureStore</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</div>
+<p>We have to play a few tickets to ensure both the CSVFeatureStore and its hidden CSVFeatureSource
+are always on the same transaction, but other than that this approach is working well.</p>
+<ol class="arabic">
+<li><p class="first">Create <strong>CSVFeatureStore</strong>:</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="kn">package</span> <span class="nn">org.geotools.tutorial.csv</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.io.IOException</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.geotools.data.FeatureReader</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.data.FeatureWriter</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.data.Query</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.data.QueryCapabilities</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.data.ResourceInfo</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.data.Transaction</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.data.store.ContentEntry</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.data.store.ContentFeatureStore</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.data.store.ContentState</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.geometry.jts.ReferencedEnvelope</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.opengis.feature.FeatureVisitor</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.opengis.feature.simple.SimpleFeature</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.opengis.feature.simple.SimpleFeatureType</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.opengis.feature.type.Name</span><span class="o">;</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Read-write access to CSV File.</span>
+<span class="cm"> * </span>
+<span class="cm"> * @author Jody Garnett (Boundless)</span>
+<span class="cm"> * @author Ian Turton (Envitia)</span>
+<span class="cm"> */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">CSVFeatureStore</span> <span class="kd">extends</span> <span class="n">ContentFeatureStore</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="nf">CSVFeatureStore</span><span class="o">(</span><span class="n">ContentEntry</span> <span class="n">entry</span><span class="o">,</span> <span class="n">Query</span> <span class="n">query</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kd">super</span><span class="o">(</span><span class="n">entry</span><span class="o">,</span> <span class="n">query</span><span class="o">);</span>
+    <span class="o">}</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Our first responsibility is to implement a CSVFeatureWriter for internal use. Transaction and Event
+Notification are handled by wrappers applied to our CSVFeatureWriter.</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="c1">//</span>
+    <span class="c1">// CSVFeatureStore implementations</span>
+    <span class="c1">//</span>
+    <span class="nd">@Override</span>
+    <span class="kd">protected</span> <span class="n">FeatureWriter</span><span class="o">&lt;</span><span class="n">SimpleFeatureType</span><span class="o">,</span> <span class="n">SimpleFeature</span><span class="o">&gt;</span> <span class="nf">getWriterInternal</span><span class="o">(</span><span class="n">Query</span> <span class="n">query</span><span class="o">,</span>
+            <span class="kt">int</span> <span class="n">flags</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="n">CSVFeatureWriter</span><span class="o">(</span><span class="n">getState</span><span class="o">(),</span> <span class="n">query</span><span class="o">);</span>
+    <span class="o">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>In general the &#8220;Gang of Four&#8221; decorator pattern is used to layer functionality around the
+raw <strong>FeatureReader</strong> and <strong>FeatureWriters</strong> you provided. This is very similar to the design
+of the <strong>java-io</strong> library (where a BufferedInputStream can be wrapped around a raw
+FileInputStream).</p>
+<p>You can control what decorators/wrappers are applied, by as shown in the following table.</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="57%" />
+<col width="43%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Handle</th>
+<th class="head">Override</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>reprojection</td>
+<td>canReproject()</td>
+</tr>
+<tr class="row-odd"><td>filtering</td>
+<td>canFilter()</td>
+</tr>
+<tr class="row-even"><td>max feature limiting</td>
+<td>canLimit()</td>
+</tr>
+<tr class="row-odd"><td>sorting</td>
+<td>canSort()</td>
+</tr>
+<tr class="row-even"><td>locking</td>
+<td>canLock()</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p class="last">As an example if your data format supported an attribute index you would be
+in position to override canSort() to return true if an index was available
+for sorting.</p>
+</div>
+</li>
+<li><p class="first">Next we can set up our delegate, taking care to ensure both use the same Transaction.</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="cm">/**</span>
+<span class="cm">     * Delegate used for FeatureSource methods (We do this because Java cannot inherit from both ContentFeatureStore and CSVFeatureSource at the same</span>
+<span class="cm">     * time</span>
+<span class="cm">     */</span>
+    <span class="n">CSVFeatureSource</span> <span class="n">delegate</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CSVFeatureSource</span><span class="o">(</span><span class="n">entry</span><span class="o">,</span> <span class="n">query</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nd">@Override</span>
+        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setTransaction</span><span class="o">(</span><span class="n">Transaction</span> <span class="n">transaction</span><span class="o">)</span> <span class="o">{</span>
+            <span class="kd">super</span><span class="o">.</span><span class="na">setTransaction</span><span class="o">(</span><span class="n">transaction</span><span class="o">);</span>
+            <span class="n">CSVFeatureStore</span><span class="o">.</span><span class="na">this</span><span class="o">.</span><span class="na">setTransaction</span><span class="o">(</span><span class="n">transaction</span><span class="o">);</span> <span class="c1">// Keep these two implementations on the same transaction</span>
+        <span class="o">}</span>
+    <span class="o">};</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setTransaction</span><span class="o">(</span><span class="n">Transaction</span> <span class="n">transaction</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kd">super</span><span class="o">.</span><span class="na">setTransaction</span><span class="o">(</span><span class="n">transaction</span><span class="o">);</span>
+        <span class="k">if</span><span class="o">(</span> <span class="n">delegate</span><span class="o">.</span><span class="na">getTransaction</span><span class="o">()</span> <span class="o">!=</span> <span class="n">transaction</span> <span class="o">){</span>
+            <span class="n">delegate</span><span class="o">.</span><span class="na">setTransaction</span><span class="o">(</span> <span class="n">transaction</span> <span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Use the delegate to implement the internal ContentDataStore methods.</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="c1">//</span>
+    <span class="c1">// Internal Delegate Methods</span>
+    <span class="c1">// Implement FeatureSource methods using CSVFeatureSource implementation</span>
+    <span class="c1">//</span>
+    <span class="nd">@Override</span>
+    <span class="kd">protected</span> <span class="n">SimpleFeatureType</span> <span class="nf">buildFeatureType</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">delegate</span><span class="o">.</span><span class="na">buildFeatureType</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">protected</span> <span class="n">ReferencedEnvelope</span> <span class="nf">getBoundsInternal</span><span class="o">(</span><span class="n">Query</span> <span class="n">query</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">delegate</span><span class="o">.</span><span class="na">getBoundsInternal</span><span class="o">(</span><span class="n">query</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">protected</span> <span class="kt">int</span> <span class="nf">getCountInternal</span><span class="o">(</span><span class="n">Query</span> <span class="n">query</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">delegate</span><span class="o">.</span><span class="na">getCountInternal</span><span class="o">(</span><span class="n">query</span><span class="o">);</span>
+    <span class="o">}</span>
+    
+    <span class="nd">@Override</span>
+    <span class="kd">protected</span> <span class="n">FeatureReader</span><span class="o">&lt;</span><span class="n">SimpleFeatureType</span><span class="o">,</span> <span class="n">SimpleFeature</span><span class="o">&gt;</span> <span class="nf">getReaderInternal</span><span class="o">(</span><span class="n">Query</span> <span class="n">query</span><span class="o">)</span>
+            <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">delegate</span><span class="o">.</span><span class="na">getReaderInternal</span><span class="o">(</span><span class="n">query</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="nd">@Override</span>
+    <span class="kd">protected</span> <span class="kt">boolean</span> <span class="nf">handleVisitor</span><span class="o">(</span><span class="n">Query</span> <span class="n">query</span><span class="o">,</span> <span class="n">FeatureVisitor</span> <span class="n">visitor</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">delegate</span><span class="o">.</span><span class="na">handleVisitor</span><span class="o">(</span><span class="n">query</span><span class="o">,</span> <span class="n">visitor</span><span class="o">);</span>
+    <span class="o">}</span>
+</pre></div>
+</div>
+<dl class="docutils">
+<dt>We have to do one &#8220;fix&#8221; to allow handle visitor method to be called - add the following to</dt>
+<dd><p class="first last"><strong>CSVFeatureSource</strong>.</p>
+</dd>
+</dl>
+<div class="highlight-java"><div class="highlight"><pre>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Why does this work - because Java visibility rules are insane.
+Even though the method is marked <em>protected</em> it now has <em>package</em>
+visibility can be called by its peer CSVFeatureStore.</p>
+</div>
+</li>
+<li><p class="first">Use the delegate to implement the public FeatureSource methods.</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="c1">//</span>
+    <span class="c1">// Public Delegate Methods</span>
+    <span class="c1">// Implement FeatureSource methods using CSVFeatureSource implementation</span>
+    <span class="c1">//</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="n">CSVDataStore</span> <span class="nf">getDataStore</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">delegate</span><span class="o">.</span><span class="na">getDataStore</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="n">ContentEntry</span> <span class="nf">getEntry</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">delegate</span><span class="o">.</span><span class="na">getEntry</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="n">Transaction</span> <span class="nf">getTransaction</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">delegate</span><span class="o">.</span><span class="na">getTransaction</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="n">ContentState</span> <span class="nf">getState</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">delegate</span><span class="o">.</span><span class="na">getState</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="n">ResourceInfo</span> <span class="nf">getInfo</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">delegate</span><span class="o">.</span><span class="na">getInfo</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="n">Name</span> <span class="nf">getName</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">delegate</span><span class="o">.</span><span class="na">getName</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="n">QueryCapabilities</span> <span class="nf">getQueryCapabilities</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">delegate</span><span class="o">.</span><span class="na">getQueryCapabilities</span><span class="o">();</span>
+    <span class="o">}</span>
+    <span class="c1">// public start</span>
+
+<span class="o">}</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">You can see what this looks like in context by reviewing <code class="xref download docutils literal"><span class="pre">CSVFeatureStore.java</span> <span class="pre">&lt;/../src/main/java/org/geotools/tutorial/csv2/CSVFeatureStore.java</span></code>
+from the <strong>gt-csv</strong> plugin.</p>
+</li>
+</ol>
+</div>
+<div class="section" id="csvfeaturewriter">
+<h2>CSVFeatureWriter<a class="headerlink" href="#csvfeaturewriter" title="Permalink to this headline">¶</a></h2>
+<p>This class uses an interesting trick to simulate updating a file in place, while still supporting
+streaming operation. We will be outputting content to a temporary file, leaving the original for
+concurrent processes such as rendering. When streaming is closed the temporary file is moved into the correct location to effect the change.</p>
+<div class="figure" id="id3">
+<img alt="../../_images/CSVFeatureWriter.png" src="../../_images/CSVFeatureWriter.png" />
+<p class="caption"><span class="caption-text">CSVFeatureWriter</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+</div>
+<p>To avoid duplicating all the work we put into <strong>CSVFeatureReader</strong> this code uses the same delegate
+trick encountered earlier.</p>
+<p>A couple common questions:</p>
+<ul>
+<li><p class="first">Q: How do you make a Transaction out of our simple reader?</p>
+<p>ContentFeatureSource uses wrappers (or delegates) to process the data on the fly.</p>
+<p>Example: So if a Filter is provided the wrapper will skip over features so the user only sees the content
+they requested?</p>
+</li>
+<li><p class="first">Q: How do you know what wrappers to use?</p>
+<p>ContentFeatureSource checks to see if a wrapper is needed, and if so uses the MaxFetureReader
+wrapper.</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="c1">// max feature limit</span>
+<span class="k">if</span> <span class="o">(</span> <span class="o">!</span><span class="n">canLimit</span><span class="o">()</span> <span class="o">)</span> <span class="o">{</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">query</span><span class="o">.</span><span class="na">getMaxFeatures</span><span class="o">()</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="n">query</span><span class="o">.</span><span class="na">getMaxFeatures</span><span class="o">()</span> <span class="o">&lt;</span> <span class="n">Integer</span><span class="o">.</span><span class="na">MAX_VALUE</span> <span class="o">)</span> <span class="o">{</span>
+      <span class="n">reader</span> <span class="o">=</span> <span class="k">new</span> <span class="n">MaxFeatureReader</span><span class="o">&lt;</span><span class="n">SimpleFeatureType</span><span class="o">,</span> <span class="n">SimpleFeature</span><span class="o">&gt;(</span><span class="n">reader</span><span class="o">,</span> <span class="n">query</span><span class="o">.</span><span class="na">getMaxFeatures</span><span class="o">());</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>MaxFeatureWrapper counts the features that are returned, and returns hasNext() false
+once the configured limit has been reached:</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">hasNext</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+  <span class="k">return</span> <span class="o">(</span><span class="n">featureReader</span><span class="o">.</span><span class="na">hasNext</span><span class="o">()</span> <span class="o">&amp;&amp;</span> <span class="o">(</span><span class="n">counter</span> <span class="o">&lt;</span> <span class="n">maxFeatures</span><span class="o">));</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Q: How does that work with transactions?</p>
+<p>ContentState managed a DiffTransactionState used to capture each modification. Each change is
+recorded by FeatureId (a feature recorded for each add or modification, or null recorded
+for a delete).</p>
+<div class="figure" id="id4">
+<img alt="../../_images/Transaction.png" src="../../_images/Transaction.png" />
+<p class="caption"><span class="caption-text">Transaction and DiffTransactionState</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+</div>
+<p>As CSVFeatureReader is used to access the file contents, a wrapper checks the Diff
+and dynamically modifies the content to match any outstnding edits. When it reaches the end of
+your file, it keeps going listing any features that were added.</p>
+</li>
+<li><p class="first">Q: That is fine for transaction independence, what if two FeatueSources are using the
+same Transaction?</p>
+<p>Those two FeatureSources would be configured with the same ContentState, and thus have the same
+view of the world.</p>
+<p>The ContentDataStore API is divided into two levels:</p>
+<ul>
+<li><p class="first">Public classes focused on ease of use for client code - examples include DataStore,
+FeatureSource, Transaction.</p>
+<img alt="../../_images/public.png" src="../../_images/public.png" />
+</li>
+<li><p class="first">Private classes focused on ease of development for DataStore developers - examples include
+ContentEntry, ContentEntry, BatchFeatureEvent</p>
+<img alt="../../_images/Internal.png" src="../../_images/Internal.png" />
+</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Our first generation DataStore implementations tried to produce a similar effect using a
+series of HashMaps, with suitably scary consequences for code readability. If any additional
+information is required by your DataStore implementation you are actively encouraged to
+subclass ContentState.</p>
+</div>
+</li>
+<li><p class="first">Q: Wait what about when I am not using a Transaction? How do I get a ContentState?</p>
+<p>When the use has not specified a Transaction we default to the use of Transaction.AUTO_COMMIT.</p>
+<p>This makes the ContentState recorded for Transaction.AUTO_COMMIT special in that it represents
+the point of truth on the files current status. The bounds recorded for Transaction.AUTO_COMMIT
+are the bounds of the file. The number of features recorded for Transaction.AUTO_COMMIT are the
+the number of features recorded in the file.</p>
+</li>
+</ul>
+<p>Now that we have some idea of what is riding on top, lets implement our CSVFeatureWriter:</p>
+<ol class="arabic">
+<li><p class="first">Create the file CSVFeatureWriter.java:</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="kn">package</span> <span class="nn">org.geotools.tutorial.csv</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.io.File</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.io.FileWriter</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.io.IOException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.nio.file.Files</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.nio.file.StandardCopyOption</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.NoSuchElementException</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.geotools.data.DataUtilities</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.data.FeatureWriter</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.data.Query</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.data.store.ContentState</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.geotools.feature.simple.SimpleFeatureBuilder</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.opengis.feature.Property</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.opengis.feature.simple.SimpleFeature</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.opengis.feature.simple.SimpleFeatureType</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">com.csvreader.CsvReader</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.csvreader.CsvWriter</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.vividsolutions.jts.geom.Point</span><span class="o">;</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Iterator supporting writing of feature content.</span>
+<span class="cm"> *</span>
+<span class="cm"> * @author Jody Garnett (Boundless)</span>
+<span class="cm"> * @author Lee Breisacher</span>
+<span class="cm"> */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">CSVFeatureWriter</span> <span class="kd">implements</span> <span class="n">FeatureWriter</span><span class="o">&lt;</span><span class="n">SimpleFeatureType</span><span class="o">,</span> <span class="n">SimpleFeature</span><span class="o">&gt;</span> <span class="o">{</span>
+    <span class="cm">/** State of current transaction */</span>
+    <span class="kd">private</span> <span class="n">ContentState</span> <span class="n">state</span><span class="o">;</span>
+
+    <span class="cm">/** Delegate handing reading of original file */</span>
+    <span class="kd">private</span> <span class="n">CSVFeatureReader</span> <span class="n">delegate</span><span class="o">;</span>
+    
+    <span class="cm">/** Temporary file used to stage output */</span>
+    <span class="kd">private</span> <span class="n">File</span> <span class="n">temp</span><span class="o">;</span>
+
+    <span class="cm">/** CsvWriter used for temp file output */</span>
+    <span class="kd">private</span> <span class="n">CsvWriter</span> <span class="n">csvWriter</span><span class="o">;</span>
+
+    <span class="cm">/** Current feature available for modification, may be null if feature removed */</span>
+    <span class="kd">private</span> <span class="n">SimpleFeature</span> <span class="n">currentFeature</span><span class="o">;</span>
+    
+    <span class="cm">/** Flag indicating we have reached the end of the file */</span>
+    <span class="kd">private</span> <span class="kt">boolean</span> <span class="n">appending</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+    
+    <span class="cm">/** Row count used to generate FeatureId when appending */</span>
+    <span class="kt">int</span> <span class="n">nextRow</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Our construct is responsible for a lot of activities:</p>
+<ul class="simple">
+<li>Setting up a temporary file for output</li>
+<li>Creating a CsvWriter for output</li>
+<li>Quickly making a copy of the file if we are just interested in appending</li>
+<li>Starting the file off with a copy of the headers</li>
+<li>Creating a delegate to read the origional file</li>
+</ul>
+<p>Putting all that together:</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="kd">public</span> <span class="nf">CSVFeatureWriter</span><span class="o">(</span><span class="n">ContentState</span> <span class="n">state</span><span class="o">,</span> <span class="n">Query</span> <span class="n">query</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">state</span> <span class="o">=</span> <span class="n">state</span><span class="o">;</span>
+        <span class="n">String</span> <span class="n">typeName</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="na">getTypeName</span><span class="o">();</span>
+        <span class="n">File</span> <span class="n">file</span> <span class="o">=</span> <span class="o">((</span><span class="n">CSVDataStore</span><span class="o">)</span> <span class="n">state</span><span class="o">.</span><span class="na">getEntry</span><span class="o">().</span><span class="na">getDataStore</span><span class="o">()).</span><span class="na">file</span><span class="o">;</span>
+        <span class="n">File</span> <span class="n">directory</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="na">getParentFile</span><span class="o">();</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">temp</span> <span class="o">=</span> <span class="n">File</span><span class="o">.</span><span class="na">createTempFile</span><span class="o">(</span><span class="n">typeName</span> <span class="o">+</span> <span class="n">System</span><span class="o">.</span><span class="na">currentTimeMillis</span><span class="o">(),</span> <span class="s">&quot;csv&quot;</span><span class="o">,</span> <span class="n">directory</span><span class="o">);</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">csvWriter</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CsvWriter</span><span class="o">(</span><span class="k">new</span> <span class="n">FileWriter</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">temp</span><span class="o">),</span> <span class="sc">&#39;,&#39;</span><span class="o">);</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">delegate</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CSVFeatureReader</span><span class="o">(</span><span class="n">state</span><span class="o">,</span><span class="n">query</span><span class="o">);</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">csvWriter</span><span class="o">.</span><span class="na">writeRecord</span><span class="o">(</span><span class="n">delegate</span><span class="o">.</span><span class="na">reader</span><span class="o">.</span><span class="na">getHeaders</span><span class="o">());</span>
+    <span class="o">}</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Add FeatureWriter.getFeatureType() implementation:</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="n">SimpleFeatureType</span> <span class="nf">getFeatureType</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">state</span><span class="o">.</span><span class="na">getFeatureType</span><span class="o">();</span>
+    <span class="o">}</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Add hasNext() implementation, making use of delegate before switching over to
+returning false when appending.</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">hasNext</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+        <span class="k">if</span><span class="o">(</span> <span class="n">csvWriter</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">){</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="n">IOException</span><span class="o">(</span><span class="s">&quot;Writer has been closed&quot;</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">appending</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="kc">false</span><span class="o">;</span> <span class="c1">// reader has no more contents</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">delegate</span><span class="o">.</span><span class="na">hasNext</span><span class="o">();</span>
+    <span class="o">}</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">The <em>next()</em> method is used for two purposes:</p>
+<ul class="simple">
+<li>To access Features for modification or removal (when working through existing content)</li>
+<li>To create new Features (when working past the end of the file)</li>
+</ul>
+<p>The <em>next()</em> implementation has a couple of interesting tricks:</p>
+<ul class="simple">
+<li>Care is taken to write out the currentFeature if required</li>
+<li>The next feature is fetched from the delegate; or</li>
+<li>when appending a new feature is created for the user to fill in with attributes</li>
+</ul>
+<p>Here is what that looks like:</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="n">SimpleFeature</span> <span class="nf">next</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">IllegalArgumentException</span><span class="o">,</span>
+            <span class="n">NoSuchElementException</span> <span class="o">{</span>
+        <span class="k">if</span><span class="o">(</span> <span class="n">csvWriter</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">){</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="n">IOException</span><span class="o">(</span><span class="s">&quot;Writer has been closed&quot;</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">currentFeature</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">this</span><span class="o">.</span><span class="na">write</span><span class="o">();</span> <span class="c1">// the previous one was not written, so do it now.</span>
+        <span class="o">}</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="k">if</span><span class="o">(</span> <span class="o">!</span><span class="n">appending</span> <span class="o">){</span>
+                <span class="k">if</span><span class="o">(</span> <span class="n">delegate</span><span class="o">.</span><span class="na">reader</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">delegate</span><span class="o">.</span><span class="na">hasNext</span><span class="o">()</span> <span class="o">){</span>
+                    <span class="k">this</span><span class="o">.</span><span class="na">currentFeature</span> <span class="o">=</span> <span class="n">delegate</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
+                    <span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">currentFeature</span><span class="o">;</span>
+                <span class="o">}</span>
+                <span class="k">else</span> <span class="o">{</span>
+                    <span class="k">this</span><span class="o">.</span><span class="na">appending</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+            <span class="n">SimpleFeatureType</span> <span class="n">featureType</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="na">getFeatureType</span><span class="o">();</span>
+            <span class="n">String</span> <span class="n">fid</span> <span class="o">=</span> <span class="n">featureType</span><span class="o">.</span><span class="na">getTypeName</span><span class="o">()+</span><span class="s">&quot;.&quot;</span><span class="o">+</span><span class="n">nextRow</span><span class="o">;</span>
+            <span class="n">Object</span> <span class="n">values</span><span class="o">[]</span> <span class="o">=</span> <span class="n">DataUtilities</span><span class="o">.</span><span class="na">defaultValues</span><span class="o">(</span> <span class="n">featureType</span> <span class="o">);</span>
+            
+            <span class="k">this</span><span class="o">.</span><span class="na">currentFeature</span> <span class="o">=</span> <span class="n">SimpleFeatureBuilder</span><span class="o">.</span><span class="na">build</span><span class="o">(</span> <span class="n">featureType</span><span class="o">,</span> <span class="n">values</span><span class="o">,</span> <span class="n">fid</span> <span class="o">);</span>
+            <span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">currentFeature</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">catch</span> <span class="o">(</span><span class="n">IllegalArgumentException</span> <span class="n">invalid</span> <span class="o">){</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="n">IOException</span><span class="o">(</span><span class="s">&quot;Unable to create feature:&quot;</span><span class="o">+</span><span class="n">invalid</span><span class="o">.</span><span class="na">getMessage</span><span class="o">(),</span><span class="n">invalid</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>There are a large number of utility classes to perform common functions, take a look around
+before building somehting yourself.</p>
+<ul class="last simple">
+<li>DataUtilities: Mix of methods helping developers use DataStore, with a few methods to help
+implementors perform common tasks. Acts as Facade for a wide range of services</li>
+<li>SimpleFeatureBuilder: used to ease interaction with FeatureFactory</li>
+</ul>
+</div>
+</li>
+</ol>
+<ol class="arabic" start="7">
+<li><p class="first">Add remove() implementation, marking the currentFeature as null.</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="cm">/**</span>
+<span class="cm">     * Mark our {@link #currentFeature} feature as null, it will be skipped when written effectively removing it.</span>
+<span class="cm">     */</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">remove</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">currentFeature</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span> <span class="c1">// just mark it done which means it will not get written out.</span>
+    <span class="o">}</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<ol class="arabic" start="6">
+<li><p class="first">Add write() implementation:</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">write</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">currentFeature</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span><span class="o">;</span> <span class="c1">// current feature has been deleted</span>
+        <span class="o">}</span>
+        <span class="k">for</span> <span class="o">(</span><span class="n">Property</span> <span class="n">property</span> <span class="o">:</span> <span class="n">currentFeature</span><span class="o">.</span><span class="na">getProperties</span><span class="o">())</span> <span class="o">{</span>
+            <span class="n">Object</span> <span class="n">value</span> <span class="o">=</span> <span class="n">property</span><span class="o">.</span><span class="na">getValue</span><span class="o">();</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">value</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">this</span><span class="o">.</span><span class="na">csvWriter</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="s">&quot;&quot;</span><span class="o">);</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">value</span> <span class="k">instanceof</span> <span class="n">Point</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">Point</span> <span class="n">point</span> <span class="o">=</span> <span class="o">(</span><span class="n">Point</span><span class="o">)</span> <span class="n">value</span><span class="o">;</span>
+                <span class="k">this</span><span class="o">.</span><span class="na">csvWriter</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="n">Double</span><span class="o">.</span><span class="na">toString</span><span class="o">(</span><span class="n">point</span><span class="o">.</span><span class="na">getX</span><span class="o">()));</span>
+                <span class="k">this</span><span class="o">.</span><span class="na">csvWriter</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="n">Double</span><span class="o">.</span><span class="na">toString</span><span class="o">(</span><span class="n">point</span><span class="o">.</span><span class="na">getY</span><span class="o">()));</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="n">String</span> <span class="n">txt</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="na">toString</span><span class="o">();</span>
+                <span class="k">this</span><span class="o">.</span><span class="na">csvWriter</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="n">txt</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">csvWriter</span><span class="o">.</span><span class="na">endRecord</span><span class="o">();</span>
+        <span class="n">nextRow</span><span class="o">++;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">currentFeature</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span> <span class="c1">// indicate that it has been written</span>
+    <span class="o">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Previous implementations would make a copy of the feature to return. When write was called
+copy would be compared to the origional to see if any change had been made. Why? So that an
+appropriate event notification could be sent out.</p>
+<p class="last">This is another case where a wrapper has been created, and applied by ContentFeatureStore.</p>
+</div>
+</li>
+</ol>
+<ol class="arabic" start="8">
+<li><p class="first">Like the constructor the implementation of <em>close()</em> has a number of responsibilities.</p>
+<p>To implement close() we must remember to write out any remaining features in the delegate
+before closing our new file.</p>
+<p>The last thing our FeatureWriter must do is replace the existing File with our new one.</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">close</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+        <span class="k">if</span><span class="o">(</span> <span class="n">csvWriter</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">){</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="n">IOException</span><span class="o">(</span><span class="s">&quot;Writer alread closed&quot;</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">currentFeature</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">this</span><span class="o">.</span><span class="na">write</span><span class="o">();</span> <span class="c1">// the previous one was not written, so do it now.</span>
+        <span class="o">}</span>
+        <span class="c1">// Step 1: Write out remaining contents (if applicable)</span>
+        <span class="k">while</span> <span class="o">(</span><span class="n">hasNext</span><span class="o">())</span> <span class="o">{</span>
+            <span class="n">next</span><span class="o">();</span>
+            <span class="n">write</span><span class="o">();</span>
+        <span class="o">}</span>
+        <span class="n">csvWriter</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+        <span class="n">csvWriter</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="k">if</span><span class="o">(</span> <span class="n">delegate</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">){</span>
+            <span class="k">this</span><span class="o">.</span><span class="na">delegate</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+            <span class="k">this</span><span class="o">.</span><span class="na">delegate</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="c1">// Step 2: Replace file contents</span>
+        <span class="n">File</span> <span class="n">file</span> <span class="o">=</span> <span class="o">((</span><span class="n">CSVDataStore</span><span class="o">)</span> <span class="n">state</span><span class="o">.</span><span class="na">getEntry</span><span class="o">().</span><span class="na">getDataStore</span><span class="o">()).</span><span class="na">file</span><span class="o">;</span>
+        
+        <span class="n">Files</span><span class="o">.</span><span class="na">copy</span><span class="o">(</span><span class="n">temp</span><span class="o">.</span><span class="na">toPath</span><span class="o">(),</span> <span class="n">file</span><span class="o">.</span><span class="na">toPath</span><span class="o">(),</span> <span class="n">StandardCopyOption</span><span class="o">.</span><span class="na">REPLACE_EXISTING</span> <span class="o">);</span>
+    <span class="o">}</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">You can see what this looks like in context by reviewing <code class="xref download docutils literal"><span class="pre">CSVFeatureWriter.java</span> <span class="pre">&lt;/../src/main/java/org/geotools/tutorial/csv2/CSVFeatureWriter.java</span></code>
+from the <strong>gt-csv</strong> plugin.</p>
+</li>
+</ol>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="write.html" title="Using FeatureStore"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="read.html" title="Using FeatureSource"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Tutorials</a> &raquo;</li>
+          <li><a href="index.html" >ContentDataStore Tutorial</a> &raquo;</li>
+        <li><a href="#">Implementing FeatureStore</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

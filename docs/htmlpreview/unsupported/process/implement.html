@@ -1,0 +1,319 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Implement &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../index.html" />
+    <link rel="up" title="Process" href="index.html" />
+    <link rel="next" title="GUI" href="gui.html" />
+    <link rel="prev" title="Process Raster Plugin" href="process-raster.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Unsupported</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Process</a> &raquo;</li>
+        <li><a href="#">Implement</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Implement</a><ul>
+<li><a class="reference internal" href="#implementing-a-new-process">Implementing a new Process</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="process-raster.html"
+                        title="previous chapter">Process Raster Plugin</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="gui.html"
+                        title="next chapter">GUI</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/unsupported/process/implement.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="implement">
+<h1>Implement<a class="headerlink" href="#implement" title="Permalink to this headline">¶</a></h1>
+<p>This API was designed with the goal of making the implementation of new processes quick. We have a number of base classes and annotations to make it quick and easy to implement a new process.</p>
+<div class="section" id="implementing-a-new-process">
+<h2>Implementing a new Process<a class="headerlink" href="#implementing-a-new-process" title="Permalink to this headline">¶</a></h2>
+<p>By using the interfaces provided in this API, implementing a new process is as easy as following the steps below.</p>
+<p>For our example, let&#8217;s create a geometry buffer process (the code for this is already included in the process API module).</p>
+<ol class="arabic" start="0">
+<li><p class="first">Create a New Project</p>
+<p>Create a new project for your process using your favourite IDE or maven.</p>
+</li>
+<li><p class="first">Create Process Factory</p>
+<p>Create a factory for your process in your new project.:</p>
+<div class="highlight-python"><div class="highlight"><pre>public class BufferFactory extends AbstractProcessFactory {
+    // making parameters available as static constants to help java programmers
+    /** Geometry for operation */
+    static final Parameter&lt;Geometry&gt; GEOM1 =
+    new Parameter&lt;Geometry&gt;(&quot;geom1&quot;, Geometry.class, Text.text(&quot;Geometry&quot;), Text.text(&quot;Geometry to buffer&quot;) );
+
+    /** Buffer amount */
+    static final Parameter&lt;Double&gt; BUFFER =
+    new Parameter&lt;Double&gt;(&quot;buffer&quot;, Double.class, Text.text(&quot;Buffer Amount&quot;), Text.text(&quot;Amount to buffer the geometry by&quot;) );
+
+    /**
+    * Map used for getParameterInfo; used to describe operation requirements for user
+    * interface creation.
+    */
+    static final Map&lt;String,Parameter&lt;?&gt;&gt; prameterInfo = new TreeMap&lt;String,Parameter&lt;?&gt;&gt;();
+    static {
+    prameterInfo.put( GEOM1.key, GEOM1 );
+    prameterInfo.put( BUFFER.key, BUFFER );
+    }
+
+    static final Parameter&lt;Geometry&gt; RESULT =
+    new Parameter&lt;Geometry&gt;(&quot;result&quot;, Geometry.class, Text.text(&quot;Result&quot;), Text.text(&quot;Result of Geometry.getBuffer( Buffer )&quot;) );
+
+    /**
+    * Map used to describe operation results.
+    */
+    static final Map&lt;String,Parameter&lt;?&gt;&gt; resultInfo = new TreeMap&lt;String,Parameter&lt;?&gt;&gt;();
+    static {
+    resultInfo.put( RESULT.key, RESULT );
+    }
+
+    public Process create(Map&lt;String, Object&gt; parameters)
+            throws IllegalArgumentException {
+        return new BufferProcess( this );
+    }
+
+    public InternationalString getDescription() {
+        return Text.text(&quot;Buffer a geometry&quot;);
+    }
+
+    public Map&lt;String, Parameter&lt;?&gt;&gt; getParameterInfo() {
+        return Collections.unmodifiableMap( prameterInfo );
+    }
+
+    public Map&lt;String, Parameter&lt;?&gt;&gt; getResultInfo(
+            Map&lt;String, Object&gt; parameters) throws IllegalArgumentException {
+        return Collections.unmodifiableMap( resultInfo );
+    }
+
+    public InternationalString getTitle() {
+        // please note that this is a title for display purposes only
+        // finding an specific implementation by name is not possible
+        return Text.text(&quot;Buffer&quot;);
+    }
+
+    public Process create() throws IllegalArgumentException {
+        return new BufferProcess( this );
+    }
+
+    public String getName() {
+        return &quot;buffer&quot;;
+    }
+
+    public boolean supportsProgress() {
+        return true;
+    }
+
+    public String getVersion() {
+        return &quot;1.0.0&quot;;
+    }
+
+}
+</pre></div>
+</div>
+</li>
+<li><p class="first">Next we need to implement the Process class itself.</p>
+<p>Create Process Class</p>
+<p>Create a new process class and implement the execute method.:</p>
+<div class="highlight-python"><div class="highlight"><pre>class BufferProcess extends AbstractProcess {
+    private boolean started = false;
+
+    public BufferProcess( BufferFactory bufferFactory ) {
+    super( bufferFactory );
+    }
+
+    public ProcessFactory getFactory() {
+    return factory;
+    }
+
+    public Map&lt;String,Object&gt; execute(Map&lt;String,Object&gt; input, ProgressListener monitor){
+        if (started) throw new IllegalStateException(&quot;Process can only be run once&quot;);
+        started = true;
+
+        if( monitor == null ) monitor = new NullProgressListener();
+
+        try {
+            monitor.started();
+            monitor.setTask( Text.text(&quot;Grabbing arguments&quot;) );
+            monitor.progress( 10.0f );
+            Geometry geom1 = (Geometry) input.get( BufferFactory.GEOM1.key );
+            Double buffer = (Double) input.get( BufferFactory.BUFFER.key );
+
+            monitor.setTask( Text.text(&quot;Processing Buffer&quot;) );
+            monitor.progress( 25.0f );
+
+            if( monitor.isCanceled() ){
+            return null; // user has canceled this operation
+            }
+
+            Geometry resultGeom = geom1.buffer(buffer);
+
+            monitor.setTask( Text.text(&quot;Encoding result&quot; ));
+            monitor.progress( 90.0f );
+
+            Map&lt;String,Object&gt; result = new HashMap&lt;String, Object&gt;();
+            result.put( BufferFactory.RESULT.key, resultGeom );
+            monitor.complete(); // same as 100.0f
+
+            return result;
+        }
+        catch (Exception eek){
+            monitor.exceptionOccurred(eek);
+            return null;
+        }
+        finally {
+            monitor.dispose();
+        }
+        }
+}
+</pre></div>
+</div>
+</li>
+<li><p class="first">Finally, we need to make sure our new factory will get found and listed by the
+Processors FactoryFinder.</p>
+<p>Create a &#8220;services&#8221; file to list your factory with the plugin system:</p>
+<ul class="simple">
+<li>/src/main/resources/META-INF/services/org.geotools.process.ProcessFactory</li>
+</ul>
+</li>
+<li><p class="first">List your factories (one per line) in the above file:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">org</span><span class="o">.</span><span class="n">geotools</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">BufferFactory</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">When this is combined into a jar; the ProcessFactoryFinder will use the files
+in META-INF to &#8220;discover&#8221; your process factory.</p>
+</li>
+</ol>
+<ol class="arabic" start="4">
+<li><p class="first">Now we can use the new process. Let&#8217;s write a JUnit test to ensure it works.</p>
+<p>Create a JUnit test case in the test folder, let&#8217;s call it MyProcessTest.java:</p>
+<div class="highlight-python"><div class="highlight"><pre>public class MyProcessTest extends TestCase {
+
+    public void testBufferProcess() throws Exception {
+        // create a Well-Known-Text reader so we can create a quick polygon geometry for our test
+        WKTReader reader = new WKTReader( new GeometryFactory() );
+
+        Geometry geom1 = (Polygon) reader.read(&quot;POLYGON((20 10, 30 0, 40 10, 30 20, 20 10))&quot;);
+        Double buffer = new Double(213.78);
+
+        Map&lt;String, Object&gt; map = new HashMap&lt;String, Object&gt;();
+        map.put( BufferFactory.GEOM1.key, geom1 );
+        map.put( BufferFactory.BUFFER.key, buffer );
+
+        BufferProcess process = new BufferProcess( null );
+        Map&lt;String, Object&gt; resultMap = process.execute( map, null );
+
+        assertNotNull( resultMap );
+        Object result = resultMap.get(BufferFactory.RESULT.key);
+        assertNotNull( result );
+        assertTrue( &quot;expected geometry&quot;, result instanceof Geometry );
+        Geometry bufferedGeom = geom1.buffer(buffer);
+        assertTrue( bufferedGeom.equals( (Geometry) result ) );
+
+        // do some more assets to validate the result of your process
+    }
+}
+</pre></div>
+</div>
+</li>
+<li><p class="first">Now run your test as a JUnit test. When your test passes, your implementation is complete!</p>
+</li>
+</ol>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="gui.html" title="GUI"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="process-raster.html" title="Process Raster Plugin"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Unsupported</a> &raquo;</li>
+          <li><a href="index.html" >Process</a> &raquo;</li>
+        <li><a href="#">Implement</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

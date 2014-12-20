@@ -1,0 +1,186 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Coverage &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../index.html" />
+    <link rel="up" title="Library" href="../index.html" />
+    <link rel="next" title="Coverage FAQ" href="faq.html" />
+    <link rel="prev" title="EPSG Oracle Plugin" href="../referencing/oracle.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Library</a> &raquo;</li>
+        <li><a href="#">Coverage</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../referencing/oracle.html"
+                        title="previous chapter">EPSG Oracle Plugin</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="faq.html"
+                        title="next chapter">Coverage FAQ</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/library/coverage/index.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="coverage">
+<h1>Coverage<a class="headerlink" href="#coverage" title="Permalink to this headline">¶</a></h1>
+<p>The gt-coverage module provides a way to build and use highly structured grids of numeric values
+such as imagery data, for instance GeoTIFF format files, or multi-dimensional matrix data, like
+that found in NetCDF format files.</p>
+<img alt="../../_images/gt-coverage.png" src="../../_images/gt-coverage.png" />
+<p>The gt-coverage module is responsible for:</p>
+<ul class="simple">
+<li>implementation of the coverage interfaces from <a class="reference internal" href="../opengis/index.html"><em>gt-opengis</em></a> such as GridCoverage2D and Format</li>
+<li>Bridging between Java Advanced Imaging, JAI Image IO and Java Image facilities and the geospatial idea of a GridCoverage</li>
+<li>Recognising additional formats available on the CLASSPATH using <strong>GridFormatFinder</strong></li>
+</ul>
+<p>The module supports the use of coverage information (ie raster) from a range of sources.</p>
+<p><strong>Tutorial</strong></p>
+<ul class="simple">
+<li><a class="reference internal" href="../../tutorial/raster/image.html"><em>Image Tutorial</em></a></li>
+</ul>
+<p><strong>Maven</strong>:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;dependency&gt;
+  &lt;groupId&gt;org.geotools&lt;/groupId&gt;
+  &lt;artifactId&gt;gt-coverage&lt;/artifactId&gt;
+  &lt;version&gt;${geotools.version}&lt;/version&gt;
+&lt;/dependency&gt;
+</pre></div>
+</div>
+<p><strong>Contents</strong></p>
+<div class="sidebar">
+<p class="first sidebar-title">Details</p>
+<div class="toctree-wrapper last compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Coverage FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internal/index.html">Internal</a></li>
+</ul>
+</div>
+</div>
+<p>Contents:</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="grid.html">GridCoverage</a></li>
+</ul>
+</div>
+<p>Format plugins:</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="arcgrid.html">ArcGrid Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="arcsde.html">ArcSDE Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="geotiff.html">GeoTIFF Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="grassraster.html">GrassRaster Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="grassraster.html#data-structure-of-a-rastermap">Data structure of a rastermap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="grassraster.html#usage">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gtopo30.html">GTOPO30 Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="image.html">Image Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="imageio.html">ImageIO-EXT GDAL Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="jdbc/index.html">Image Moasic JDBC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="oracle.html">Oracle GeoRaster Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pgraster.html">Postgis Raster Plug in</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mosaic.html">Mosaic Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyramid.html">Image Pyramid Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyramid.html#example">Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multidim.html">Coverage MultiDimensional</a></li>
+</ul>
+</div>
+<p>Unsupported plugins:</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="coverageio.html">Coverage IO Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="geotiff_new.html">GeoTIFF New Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="image-collection.html">Image collection plug-in</a></li>
+<li class="toctree-l1"><a class="reference internal" href="jp2k.html">JP2K Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="netCDF.html">netCDF Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="matlab.html">Matlab Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html">Coverage Tools</a></li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="faq.html" title="Coverage FAQ"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="../referencing/oracle.html" title="EPSG Oracle Plugin"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Library</a> &raquo;</li>
+        <li><a href="#">Coverage</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

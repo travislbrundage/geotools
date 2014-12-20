@@ -1,0 +1,897 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Strategy Patterns &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../index.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+        <li><a href="#">Strategy Patterns</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Strategy Patterns</a><ul>
+<li><a class="reference internal" href="#csvdatastore">CSVDataStore</a></li>
+<li><a class="reference internal" href="#csvdatastorefactory">CSVDataStoreFactory</a></li>
+<li><a class="reference internal" href="#csvfeaturereader">CSVFeatureReader</a></li>
+<li><a class="reference internal" href="#csviterator">CSVIterator</a></li>
+<li><a class="reference internal" href="#csvfeaturesource">CSVFeatureSource</a></li>
+<li><a class="reference internal" href="#csvfilestate">CSVFileState</a></li>
+<li><a class="reference internal" href="#csvstrategy">CSVStrategy</a></li>
+<li><a class="reference internal" href="#abstractcsvstrategy">AbstractCSVStrategy</a></li>
+<li><a class="reference internal" href="#csvattributesonlystrategy">CSVAttributesOnlyStrategy</a></li>
+<li><a class="reference internal" href="#csvlatlonstrategy">CSVLatLonStrategy</a></li>
+<li><a class="reference internal" href="#csvspecifiedlatlngstrategy">CSVSpecifiedLatLngStrategy</a></li>
+<li><a class="reference internal" href="#csvspecifiedwktstrategy">CSVSpecifiedWKTStrategy</a></li>
+<li><a class="reference internal" href="#csvstrategysupport">CSVStrategySupport</a></li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/tutorial/datastore/strategy.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="strategy-patterns">
+<h1>Strategy Patterns<a class="headerlink" href="#strategy-patterns" title="Permalink to this headline">¶</a></h1>
+<p>Since this tutorial has been written the result has been broken out into a distinct <strong>gt-csv</strong> module. This work has also been forked into service as part of the GeoServer importer module. In GeoServer&#8217;s fork, many interesting updates were made to add new abilities. The implementation is strictly concerned with reading content (as part of an import process) and has added a nifty CSVStrategy (with implementations for CSVAttributesOnly, CSVLatLonStrategy, CSVSpecifiedLatLngStrategy and SpecifiedWKTStrategy). In this section we&#8217;ll discuss the new implementation with strategy objects. If you want to follow along with the code, it is available as an unsupported plugin:</p>
+<ul class="simple">
+<li><a class="reference download internal" href="../../_downloads/CSVDataStore1.java"><code class="xref download docutils literal"><span class="pre">CSVDataStore.java</span></code></a></li>
+<li><a class="reference download internal" href="../../_downloads/CSVDataStoreFactory1.java"><code class="xref download docutils literal"><span class="pre">CSVDataStoreFactory.java</span></code></a></li>
+<li><a class="reference download internal" href="../../_downloads/CSVFeatureReader1.java"><code class="xref download docutils literal"><span class="pre">CSVFeatureReader.java</span></code></a></li>
+<li><a class="reference download internal" href="../../_downloads/CSVIterator.java"><code class="xref download docutils literal"><span class="pre">CSVIterator.java</span></code></a></li>
+<li><a class="reference download internal" href="../../_downloads/CSVFeatureSource1.java"><code class="xref download docutils literal"><span class="pre">CSVFeatureSource.java</span></code></a></li>
+<li><a class="reference download internal" href="../../_downloads/CSVFileState.java"><code class="xref download docutils literal"><span class="pre">CSVFileState.java</span></code></a></li>
+<li><a class="reference download internal" href="../../_downloads/CSVStrategy.java"><code class="xref download docutils literal"><span class="pre">CSVStrategy</span></code></a></li>
+<li><a class="reference download internal" href="../../_downloads/AbstractCSVStrategy.java"><code class="xref download docutils literal"><span class="pre">AbstractCSVStrategy.java</span></code></a></li>
+<li><a class="reference download internal" href="../../_downloads/CSVAttributesOnlyStrategy.java"><code class="xref download docutils literal"><span class="pre">CSVAttributesOnlyStrategy.java</span></code></a></li>
+<li><a class="reference download internal" href="../../_downloads/CSVLatLonStrategy.java"><code class="xref download docutils literal"><span class="pre">CSVLatLonStrategy.java</span></code></a></li>
+<li><a class="reference download internal" href="../../_downloads/CSVSpecifiedLatLngStrategy.java"><code class="xref download docutils literal"><span class="pre">CSVSpecifiedLatLngStrategy.java</span></code></a></li>
+<li><a class="reference download internal" href="../../_downloads/CSVSpecifiedWKTStrategy.java"><code class="xref download docutils literal"><span class="pre">CSVSpecifiedWKTStrategy.java</span></code></a></li>
+<li><a class="reference download internal" href="../../_downloads/CSVStrategySupport.java"><code class="xref download docutils literal"><span class="pre">CSVStrategySupport.java</span></code></a></li>
+</ul>
+<div class="section" id="csvdatastore">
+<h2>CSVDataStore<a class="headerlink" href="#csvdatastore" title="Permalink to this headline">¶</a></h2>
+<p>CSVDataStore now uses a CSVStrategy and CSVFileState. The CSVFileState holds information about the file we are reading from. CSVStrategy is a generic interface for the strategy objects CSVDataStore can use.</p>
+<blockquote>
+<div><div class="highlight-java"><div class="highlight"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CSVDataStore</span> <span class="kd">extends</span> <span class="n">ContentDataStore</span> <span class="kd">implements</span> <span class="n">FileDataStore</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="n">CSVStrategy</span> <span class="n">csvStrategy</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="n">CSVFileState</span> <span class="n">csvFileState</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">CSVDataStore</span><span class="o">(</span><span class="n">CSVFileState</span> <span class="n">csvFileState</span><span class="o">,</span> <span class="n">CSVStrategy</span> <span class="n">csvStrategy</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">csvFileState</span> <span class="o">=</span> <span class="n">csvFileState</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">csvStrategy</span> <span class="o">=</span> <span class="n">csvStrategy</span><span class="o">;</span>
+
+    <span class="o">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>Using the CSVFileState to do work for us, the createTypeNames() method is much simpler.</p>
+<blockquote>
+<div><div class="highlight-java"><div class="highlight"><pre>    <span class="kd">public</span> <span class="n">Name</span> <span class="nf">getTypeName</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="n">NameImpl</span><span class="o">(</span><span class="n">csvFileState</span><span class="o">.</span><span class="na">getTypeName</span><span class="o">());</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">protected</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Name</span><span class="o">&gt;</span> <span class="nf">createTypeNames</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">Collections</span><span class="o">.</span><span class="na">singletonList</span><span class="o">(</span><span class="n">getTypeName</span><span class="o">());</span>
+    <span class="o">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>CSVDataStore now implements the FileDataStore interface to ensure a standard for operations which are performed by File DataStores. As such, it must override its methods. Note the use of the CSVStrategy in order to determine the schema; depending on the strategy defined, the schema for this store will be different. For this implementation, the CSVDataStore is read only, so the write methods throw a new UnsupportedOperationException.</p>
+<blockquote>
+<div><div class="highlight-java"><div class="highlight"><pre><span class="kd">public</span> <span class="n">SimpleFeatureType</span> <span class="nf">getSchema</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">csvStrategy</span><span class="o">.</span><span class="na">getFeatureType</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">updateSchema</span><span class="o">(</span><span class="n">SimpleFeatureType</span> <span class="n">featureType</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="n">UnsupportedOperationException</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="n">SimpleFeatureSource</span> <span class="nf">getFeatureSource</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="n">CSVFeatureSource</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="n">FeatureReader</span><span class="o">&lt;</span><span class="n">SimpleFeatureType</span><span class="o">,</span> <span class="n">SimpleFeature</span><span class="o">&gt;</span> <span class="nf">getFeatureReader</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="n">CSVFeatureSource</span><span class="o">(</span><span class="k">this</span><span class="o">).</span><span class="na">getReader</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="n">FeatureWriter</span><span class="o">&lt;</span><span class="n">SimpleFeatureType</span><span class="o">,</span> <span class="n">SimpleFeature</span><span class="o">&gt;</span> <span class="nf">getFeatureWriter</span><span class="o">(</span><span class="n">Filter</span> <span class="n">filter</span><span class="o">,</span>
+            <span class="n">Transaction</span> <span class="n">transaction</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="n">UnsupportedOperationException</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="n">FeatureWriter</span><span class="o">&lt;</span><span class="n">SimpleFeatureType</span><span class="o">,</span> <span class="n">SimpleFeature</span><span class="o">&gt;</span> <span class="nf">getFeatureWriter</span><span class="o">(</span><span class="n">Transaction</span> <span class="n">transaction</span><span class="o">)</span>
+            <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="n">UnsupportedOperationException</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="n">FeatureWriter</span><span class="o">&lt;</span><span class="n">SimpleFeatureType</span><span class="o">,</span> <span class="n">SimpleFeature</span><span class="o">&gt;</span> <span class="nf">getFeatureWriterAppend</span><span class="o">(</span>
+            <span class="n">Transaction</span> <span class="n">transaction</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="n">UnsupportedOperationException</span><span class="o">();</span>
+    <span class="o">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="csvdatastorefactory">
+<h2>CSVDataStoreFactory<a class="headerlink" href="#csvdatastorefactory" title="Permalink to this headline">¶</a></h2>
+<p>The new architecture with the added strategy objects expands the CSVDataStoreFactory&#8217;s capabilities; it comprises of more Param fields now.</p>
+<blockquote>
+<div><div class="highlight-java"><div class="highlight"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CSVDataStoreFactory</span> <span class="kd">implements</span> <span class="n">FileDataStoreFactorySpi</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">FILE_TYPE</span> <span class="o">=</span> <span class="s">&quot;csv&quot;</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">String</span><span class="o">[]</span> <span class="n">EXTENSIONS</span> <span class="o">=</span> <span class="k">new</span> <span class="n">String</span><span class="o">[]</span> <span class="o">{</span> <span class="s">&quot;.&quot;</span> <span class="o">+</span> <span class="n">FILE_TYPE</span> <span class="o">};</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">Param</span> <span class="n">FILE_PARAM</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Param</span><span class="o">(</span><span class="s">&quot;file&quot;</span><span class="o">,</span> <span class="n">File</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">FILE_TYPE</span> <span class="o">+</span> <span class="s">&quot; file&quot;</span><span class="o">,</span> <span class="kc">false</span><span class="o">);</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">Param</span> <span class="n">URL_PARAM</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Param</span><span class="o">(</span><span class="s">&quot;url&quot;</span><span class="o">,</span> <span class="n">URL</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">FILE_TYPE</span> <span class="o">+</span> <span class="s">&quot; file&quot;</span><span class="o">,</span> <span class="kc">false</span><span class="o">);</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">Param</span> <span class="n">NAMESPACEP</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Param</span><span class="o">(</span><span class="s">&quot;namespace&quot;</span><span class="o">,</span> <span class="n">URI</span><span class="o">.</span><span class="na">class</span><span class="o">,</span>
+            <span class="s">&quot;uri to the namespace&quot;</span><span class="o">,</span> <span class="kc">false</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="k">new</span> <span class="n">KVP</span><span class="o">(</span><span class="n">Param</span><span class="o">.</span><span class="na">LEVEL</span><span class="o">,</span> <span class="s">&quot;advanced&quot;</span><span class="o">));</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">Param</span> <span class="n">STRATEGYP</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Param</span><span class="o">(</span><span class="s">&quot;strategy&quot;</span><span class="o">,</span> <span class="n">String</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="s">&quot;strategy&quot;</span><span class="o">,</span> <span class="kc">false</span><span class="o">);</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">Param</span> <span class="n">LATFIELDP</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Param</span><span class="o">(</span><span class="s">&quot;latField&quot;</span><span class="o">,</span> <span class="n">String</span><span class="o">.</span><span class="na">class</span><span class="o">,</span>
+            <span class="s">&quot;Latitude field. Assumes a CSVSpecifiedLatLngStrategy&quot;</span><span class="o">,</span> <span class="kc">false</span><span class="o">);</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">Param</span> <span class="n">LnGFIELDP</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Param</span><span class="o">(</span><span class="s">&quot;lngField&quot;</span><span class="o">,</span> <span class="n">String</span><span class="o">.</span><span class="na">class</span><span class="o">,</span>
+            <span class="s">&quot;Longitude field. Assumes a CSVSpecifiedLatLngStrategy&quot;</span><span class="o">,</span> <span class="kc">false</span><span class="o">);</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">Param</span> <span class="n">WKTP</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Param</span><span class="o">(</span><span class="s">&quot;wktField&quot;</span><span class="o">,</span> <span class="n">String</span><span class="o">.</span><span class="na">class</span><span class="o">,</span>
+            <span class="s">&quot;WKT field. Assumes a CSVSpecifiedWKTStrategy&quot;</span><span class="o">,</span> <span class="kc">false</span><span class="o">);</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">Param</span><span class="o">[]</span> <span class="n">parametersInfo</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Param</span><span class="o">[]</span> <span class="o">{</span> <span class="n">FILE_PARAM</span> <span class="o">};</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>Much of the class&#8217;s structure is improved to be more compartmentalized. The metadata is mostly the same with some data now being held in class fields rather than literals.</p>
+<blockquote>
+<div><div class="highlight-java"><div class="highlight"><pre>    <span class="kd">public</span> <span class="n">String</span> <span class="nf">getDisplayName</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">FILE_TYPE</span><span class="o">.</span><span class="na">toUpperCase</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">getDescription</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="s">&quot;Comma delimited text file&quot;</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="n">Param</span><span class="o">[]</span> <span class="nf">getParametersInfo</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">parametersInfo</span><span class="o">;</span>
+    <span class="o">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>isAvailable() just attempts to read the class, and if it succeeds, returns true.</p>
+<blockquote>
+<div></div></blockquote>
+<p>The canProcess() method was made more tolerant, now accepting URL and File params through the fileFromParams() method. It will try File first, then URL before giving up.</p>
+<blockquote>
+<div></div></blockquote>
+<p>Finally, the different strategies are implemented in the createDataStoreFromFile() method. The method is overloaded to make some parameters optional, which the class will then fill in for us.</p>
+<blockquote>
+<div></div></blockquote>
+</div>
+<div class="section" id="csvfeaturereader">
+<h2>CSVFeatureReader<a class="headerlink" href="#csvfeaturereader" title="Permalink to this headline">¶</a></h2>
+<p>The CSVFeatureReader now delegates much of the functionality to a new class called CSVIterator as well as the CSVStrategy. The resulting code is very clean and short.</p>
+<blockquote>
+<div></div></blockquote>
+</div>
+<div class="section" id="csviterator">
+<h2>CSVIterator<a class="headerlink" href="#csviterator" title="Permalink to this headline">¶</a></h2>
+<p>The CSVIterator is a helper class primarily for CSVFeatureReader. Much of the old code is now implemented here, and has the added benefit of allowing an iterator to be instantiated for use elsewhere, making the code more general than before.</p>
+<blockquote>
+<div></div></blockquote>
+<p>With the addition of the CSVFileState, the class now reads from it instead of the CSVDataStore.</p>
+<blockquote>
+<div><div class="highlight-java"><div class="highlight"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CSVIterator</span> <span class="kd">implements</span> <span class="n">Iterator</span><span class="o">&lt;</span><span class="n">SimpleFeature</span><span class="o">&gt;</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kt">int</span> <span class="n">idx</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="n">SimpleFeature</span> <span class="n">next</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="n">CsvReader</span> <span class="n">csvReader</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="n">CSVStrategy</span> <span class="n">csvStrategy</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">CSVIterator</span><span class="o">(</span><span class="n">CSVFileState</span> <span class="n">csvFileState</span><span class="o">,</span> <span class="n">CSVStrategy</span> <span class="n">csvStrategy</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">csvStrategy</span> <span class="o">=</span> <span class="n">csvStrategy</span><span class="o">;</span>
+        <span class="n">csvReader</span> <span class="o">=</span> <span class="n">csvFileState</span><span class="o">.</span><span class="na">openCSVReader</span><span class="o">();</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span>
+        <span class="n">next</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="o">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>Because we&#8217;re now using strategy objects to implement functionality, the readFeature() method no longer makes any assumptions about the nature of the data. It is delegated to the strategy to make such a decision. The resulting method is shorter, just passing what it reads off to builders to implement based on the strategy.</p>
+<blockquote>
+<div><div class="highlight-java"><div class="highlight"><pre><span class="kd">private</span> <span class="n">SimpleFeature</span> <span class="nf">readFeature</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">csvReader</span><span class="o">.</span><span class="na">readRecord</span><span class="o">())</span> <span class="o">{</span>
+            <span class="n">String</span><span class="o">[]</span> <span class="n">csvRecord</span> <span class="o">=</span> <span class="n">csvReader</span><span class="o">.</span><span class="na">getValues</span><span class="o">();</span>
+            <span class="k">return</span> <span class="n">buildFeature</span><span class="o">(</span><span class="n">csvRecord</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="o">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>You can check out the entire <a class="reference download internal" href="../../_downloads/CSVIterator.java"><code class="xref download docutils literal"><span class="pre">CSVIterator.java</span></code></a> to see the full changes.</p>
+</div>
+<div class="section" id="csvfeaturesource">
+<h2>CSVFeatureSource<a class="headerlink" href="#csvfeaturesource" title="Permalink to this headline">¶</a></h2>
+<p>CSVFeatureSource retains the same basic structure, but the code is assisted by the new classes. It now overloads the constructor:</p>
+<blockquote>
+<div><div class="highlight-java"><div class="highlight"><pre><span class="nd">@SuppressWarnings</span><span class="o">(</span><span class="s">&quot;unchecked&quot;</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">CSVFeatureSource</span> <span class="kd">extends</span> <span class="n">ContentFeatureSource</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="nf">CSVFeatureSource</span><span class="o">(</span><span class="n">CSVDataStore</span> <span class="n">datastore</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">(</span><span class="n">datastore</span><span class="o">,</span> <span class="n">Query</span><span class="o">.</span><span class="na">ALL</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="nf">CSVFeatureSource</span><span class="o">(</span><span class="n">CSVDataStore</span> <span class="n">datastore</span><span class="o">,</span> <span class="n">Query</span> <span class="n">query</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">(</span><span class="k">new</span> <span class="n">ContentEntry</span><span class="o">(</span><span class="n">datastore</span><span class="o">,</span> <span class="n">datastore</span><span class="o">.</span><span class="na">getTypeName</span><span class="o">()),</span> <span class="n">query</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="nf">CSVFeatureSource</span><span class="o">(</span><span class="n">ContentEntry</span> <span class="n">entry</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">(</span><span class="n">entry</span><span class="o">,</span> <span class="n">Query</span><span class="o">.</span><span class="na">ALL</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="nf">CSVFeatureSource</span><span class="o">(</span><span class="n">ContentEntry</span> <span class="n">entry</span><span class="o">,</span> <span class="n">Query</span> <span class="n">query</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kd">super</span><span class="o">(</span><span class="n">entry</span><span class="o">,</span> <span class="n">query</span><span class="o">);</span>
+    <span class="o">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>The getBoundsInternal() method is now implemented by making use of the methods provdied by ContentFeatureSource. A new ReferencedEnvelope is created to store the bounds for this feature source. It uses the feature type (getSchema()) to determine the CRS (getCoordinateReferenceSystem()) - this information is used to correctly construct the bounds for the feature. The FeatureReader is now created by using the Query and CSVStrategy - the getReader() method calls getReaderInternal() which shows how it is created. Finally, using the reader, the features are cycled through and included in the bounds in order to calculate the bounds for this entire datastore.</p>
+<blockquote>
+<div><div class="highlight-java"><div class="highlight"><pre><span class="kd">protected</span> <span class="n">ReferencedEnvelope</span> <span class="nf">getBoundsInternal</span><span class="o">(</span><span class="n">Query</span> <span class="n">query</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+        <span class="n">ReferencedEnvelope</span> <span class="n">bounds</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ReferencedEnvelope</span><span class="o">(</span><span class="n">getSchema</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">getCoordinateReferenceSystem</span><span class="o">());</span>
+        <span class="n">FeatureReader</span><span class="o">&lt;</span><span class="n">SimpleFeatureType</span><span class="o">,</span> <span class="n">SimpleFeature</span><span class="o">&gt;</span> <span class="n">featureReader</span> <span class="o">=</span> <span class="n">getReader</span><span class="o">(</span><span class="n">query</span><span class="o">);</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="k">while</span> <span class="o">(</span><span class="n">featureReader</span><span class="o">.</span><span class="na">hasNext</span><span class="o">())</span> <span class="o">{</span>
+                <span class="n">SimpleFeature</span> <span class="n">feature</span> <span class="o">=</span> <span class="n">featureReader</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
+                <span class="n">bounds</span><span class="o">.</span><span class="na">include</span><span class="o">(</span><span class="n">feature</span><span class="o">.</span><span class="na">getBounds</span><span class="o">());</span>
+            <span class="o">}</span>
+        <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+            <span class="n">featureReader</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">bounds</span><span class="o">;</span>
+    <span class="o">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>The getReaderInternal() method now utilizes the strategy of the CSVDataStore rather than state to reflect the changes to the CSVFeatureReader design.</p>
+<blockquote>
+<div><div class="highlight-java"><div class="highlight"><pre><span class="kd">protected</span> <span class="n">FeatureReader</span><span class="o">&lt;</span><span class="n">SimpleFeatureType</span><span class="o">,</span> <span class="n">SimpleFeature</span><span class="o">&gt;</span> <span class="nf">getReaderInternal</span><span class="o">(</span><span class="n">Query</span> <span class="n">query</span><span class="o">)</span>
+            <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+        <span class="n">CSVDataStore</span> <span class="n">dataStore</span> <span class="o">=</span> <span class="n">getDataStore</span><span class="o">();</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="n">CSVFeatureReader</span><span class="o">(</span><span class="n">dataStore</span><span class="o">.</span><span class="na">getCSVStrategy</span><span class="o">(),</span> <span class="n">query</span><span class="o">);</span>
+    <span class="o">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>getCountInternal() uses the same idea as getBoundsInternal() - it now utilizes the Query and CSVStrategy to obtain a FeatureReader, then simply counts them.</p>
+<blockquote>
+<div><div class="highlight-java"><div class="highlight"><pre><span class="kd">protected</span> <span class="kt">int</span> <span class="nf">getCountInternal</span><span class="o">(</span><span class="n">Query</span> <span class="n">query</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+        <span class="n">FeatureReader</span><span class="o">&lt;</span><span class="n">SimpleFeatureType</span><span class="o">,</span> <span class="n">SimpleFeature</span><span class="o">&gt;</span> <span class="n">featureReader</span> <span class="o">=</span> <span class="n">getReader</span><span class="o">(</span><span class="n">query</span><span class="o">);</span>
+        <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="k">for</span> <span class="o">(</span><span class="n">n</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">featureReader</span><span class="o">.</span><span class="na">hasNext</span><span class="o">();</span> <span class="n">n</span><span class="o">++)</span> <span class="o">{</span>
+                <span class="n">featureReader</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
+            <span class="o">}</span>
+        <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+            <span class="n">featureReader</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">n</span><span class="o">;</span>
+    <span class="o">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>The buildFeatureType() method is now very simple using getSchema() to grab the feature type of the datastore.</p>
+<blockquote>
+<div><div class="highlight-java"><div class="highlight"><pre><span class="kd">protected</span> <span class="n">SimpleFeatureType</span> <span class="nf">buildFeatureType</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">getDataStore</span><span class="o">().</span><span class="na">getSchema</span><span class="o">();</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="csvfilestate">
+<h2>CSVFileState<a class="headerlink" href="#csvfilestate" title="Permalink to this headline">¶</a></h2>
+<p>The CSVFileState is a new class to assist with File manipulation in our CSVDataStore. It will hold some information about our .csv file and allow it to be opened for reading.</p>
+<blockquote>
+<div><div class="highlight-java"><div class="highlight"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CSVFileState</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="n">CoordinateReferenceSystem</span> <span class="nf">DEFAULT_CRS</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">FactoryException</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">CRS</span><span class="o">.</span><span class="na">decode</span><span class="o">(</span><span class="s">&quot;EPSG:4326&quot;</span><span class="o">);</span>
+    <span class="o">};</span>
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="n">File</span> <span class="n">file</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">typeName</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="n">CoordinateReferenceSystem</span> <span class="n">crs</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="n">URI</span> <span class="n">namespace</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">dataInput</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="kd">volatile</span> <span class="n">String</span><span class="o">[]</span> <span class="n">headers</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">CSVFileState</span><span class="o">(</span><span class="n">File</span> <span class="n">file</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">(</span><span class="n">file</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="nf">CSVFileState</span><span class="o">(</span><span class="n">File</span> <span class="n">file</span><span class="o">,</span> <span class="n">URI</span> <span class="n">namespace</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">(</span><span class="n">file</span><span class="o">,</span> <span class="n">namespace</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="nf">CSVFileState</span><span class="o">(</span><span class="n">File</span> <span class="n">file</span><span class="o">,</span> <span class="n">URI</span> <span class="n">namespace</span><span class="o">,</span> <span class="n">String</span> <span class="n">typeName</span><span class="o">,</span> <span class="n">CoordinateReferenceSystem</span> <span class="n">crs</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">file</span> <span class="o">=</span> <span class="n">file</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">typeName</span> <span class="o">=</span> <span class="n">typeName</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">crs</span> <span class="o">=</span> <span class="n">crs</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">namespace</span> <span class="o">=</span> <span class="n">namespace</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">dataInput</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="c1">// used by unit tests</span>
+    <span class="kd">public</span> <span class="nf">CSVFileState</span><span class="o">(</span><span class="n">String</span> <span class="n">dataInput</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">(</span><span class="n">dataInput</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="nf">CSVFileState</span><span class="o">(</span><span class="n">String</span> <span class="n">dataInput</span><span class="o">,</span> <span class="n">String</span> <span class="n">typeName</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">dataInput</span> <span class="o">=</span> <span class="n">dataInput</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">typeName</span> <span class="o">=</span> <span class="n">typeName</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">crs</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">namespace</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">file</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="n">URI</span> <span class="nf">getNamespace</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">namespace</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="n">File</span> <span class="nf">getFile</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">file</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">getTypeName</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">typeName</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">?</span> <span class="n">typeName</span> <span class="o">:</span> <span class="n">FilenameUtils</span><span class="o">.</span><span class="na">getBaseName</span><span class="o">(</span><span class="n">file</span><span class="o">.</span><span class="na">getPath</span><span class="o">());</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="n">CoordinateReferenceSystem</span> <span class="nf">getCrs</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">crs</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="n">crs</span><span class="o">;</span>
+        <span class="o">}</span>
+
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="n">CSVFileState</span><span class="o">.</span><span class="na">DEFAULT_CRS</span><span class="o">();</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">FactoryException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>The class opens the file for reading, ensures it is the correct CSV format, and gives back a CSVReader to read the file through a stream.</p>
+<blockquote>
+<div></div></blockquote>
+<p>The readCSVHeaders() and getCSVHeaders() methods grab the headers from the file (thus, leaving just the data).</p>
+<blockquote>
+<div><div class="highlight-java"><div class="highlight"><pre><span class="kd">public</span> <span class="n">String</span><span class="o">[]</span> <span class="nf">getCSVHeaders</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">headers</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="kd">synchronized</span> <span class="o">(</span><span class="k">this</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">if</span> <span class="o">(</span><span class="n">headers</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="n">headers</span> <span class="o">=</span> <span class="n">readCSVHeaders</span><span class="o">();</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">headers</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="n">String</span><span class="o">[]</span> <span class="nf">readCSVHeaders</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">CsvReader</span> <span class="n">csvReader</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="n">csvReader</span> <span class="o">=</span> <span class="n">openCSVReader</span><span class="o">();</span>
+            <span class="k">return</span> <span class="n">csvReader</span><span class="o">.</span><span class="na">getHeaders</span><span class="o">();</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">IOException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="n">RuntimeException</span><span class="o">(</span><span class="s">&quot;Failure reading csv headers&quot;</span><span class="o">,</span> <span class="n">e</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">csvReader</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">csvReader</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="csvstrategy">
+<h2>CSVStrategy<a class="headerlink" href="#csvstrategy" title="Permalink to this headline">¶</a></h2>
+<p>CSVStrategy is a basic interface which defines our strategy pattern for the CSVDataStore. What this essentially is saying is that the included methods&#8217; implementation will be injected into our CSVDataStore to use.</p>
+<blockquote>
+<div><div class="highlight-java"><div class="highlight"><pre><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">CSVStrategy</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="n">SimpleFeatureType</span> <span class="nf">getFeatureType</span><span class="o">();</span>
+
+    <span class="kd">public</span> <span class="n">CSVIterator</span> <span class="nf">iterator</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="n">SimpleFeature</span> <span class="nf">createFeature</span><span class="o">(</span><span class="n">String</span> <span class="n">recordId</span><span class="o">,</span> <span class="n">String</span><span class="o">[]</span> <span class="n">csvRecord</span><span class="o">);</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="abstractcsvstrategy">
+<h2>AbstractCSVStrategy<a class="headerlink" href="#abstractcsvstrategy" title="Permalink to this headline">¶</a></h2>
+<p>The AbstractCSVStrategy defines an abstract class which can be subclassed into specific strategies. The strategy objects are used by the CSVDataStore to determine how certain methods will operate; by passing the strategy objects into the CSVDataStore, their implementation is utilized. This is the basic concept of the strategy design pattern. Through this design, we can continue extending the abilities of the CSVDataStore in the future much more easily. It will simply require specifiying a new Strategy class.</p>
+<blockquote>
+<div><div class="highlight-java"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">org.opengis.feature.simple.SimpleFeatureType</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">AbstractCSVStrategy</span> <span class="kd">implements</span> <span class="n">CSVStrategy</span> <span class="o">{</span>
+
+    <span class="kd">protected</span> <span class="kd">final</span> <span class="n">CSVFileState</span> <span class="n">csvFileState</span><span class="o">;</span>
+
+    <span class="kd">protected</span> <span class="kd">volatile</span> <span class="n">SimpleFeatureType</span> <span class="n">featureType</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">AbstractCSVStrategy</span><span class="o">(</span><span class="n">CSVFileState</span> <span class="n">csvFileState</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">csvFileState</span> <span class="o">=</span> <span class="n">csvFileState</span><span class="o">;</span>
+        <span class="n">featureType</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="o">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>The class defines some of the CSVStrategy&#8217;s methods as well as adding one more for subclasses to define - buildFeatureType(). So in the end, subclasses of AbstractCSVStrategy will need to implement createFeature() and buildFeatureType(), while getFeatureType() and iterator() are provided for them.</p>
+<blockquote>
+<div><div class="highlight-java"><div class="highlight"><pre><span class="kd">protected</span> <span class="kd">abstract</span> <span class="n">SimpleFeatureType</span> <span class="nf">buildFeatureType</span><span class="o">();</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="n">SimpleFeatureType</span> <span class="nf">getFeatureType</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">featureType</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="kd">synchronized</span> <span class="o">(</span><span class="k">this</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">if</span> <span class="o">(</span><span class="n">featureType</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="n">featureType</span> <span class="o">=</span> <span class="n">buildFeatureType</span><span class="o">();</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">featureType</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="n">CSVIterator</span> <span class="nf">iterator</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="n">CSVIterator</span><span class="o">(</span><span class="n">csvFileState</span><span class="o">,</span> <span class="k">this</span><span class="o">);</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="csvattributesonlystrategy">
+<h2>CSVAttributesOnlyStrategy<a class="headerlink" href="#csvattributesonlystrategy" title="Permalink to this headline">¶</a></h2>
+<p>The CSVAttributesOnlyStrategy is the simplest implementation; it simply directly reads the file and obtains the values as attributes for the feature. The feature type is built using helper methods from a support class which will be visited later. The headers from the .csv file are read in as attributes for this feature. Each header heads a single column, and in each row values populate each of these attributes. The csvRecord parameter contains one line of data read in from the file, and each String is mapped to its attribute. The SimpleFeatureBuilder utility class uses all the data to build this feature.</p>
+<blockquote>
+<div><div class="highlight-java"><div class="highlight"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CSVAttributesOnlyStrategy</span> <span class="kd">extends</span> <span class="n">AbstractCSVStrategy</span> <span class="kd">implements</span> <span class="n">CSVStrategy</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="nf">CSVAttributesOnlyStrategy</span><span class="o">(</span><span class="n">CSVFileState</span> <span class="n">csvFileState</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kd">super</span><span class="o">(</span><span class="n">csvFileState</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">protected</span> <span class="n">SimpleFeatureType</span> <span class="nf">buildFeatureType</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">SimpleFeatureTypeBuilder</span> <span class="n">builder</span> <span class="o">=</span> <span class="n">CSVStrategySupport</span><span class="o">.</span><span class="na">createBuilder</span><span class="o">(</span><span class="n">csvFileState</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">builder</span><span class="o">.</span><span class="na">buildFeatureType</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="n">SimpleFeature</span> <span class="nf">createFeature</span><span class="o">(</span><span class="n">String</span> <span class="n">recordId</span><span class="o">,</span> <span class="n">String</span><span class="o">[]</span> <span class="n">csvRecord</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">SimpleFeatureType</span> <span class="n">featureType</span> <span class="o">=</span> <span class="n">getFeatureType</span><span class="o">();</span>
+        <span class="n">SimpleFeatureBuilder</span> <span class="n">builder</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SimpleFeatureBuilder</span><span class="o">(</span><span class="n">featureType</span><span class="o">);</span>
+        <span class="n">String</span><span class="o">[]</span> <span class="n">headers</span><span class="o">;</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="n">csvFileState</span><span class="o">.</span><span class="na">getCSVHeaders</span><span class="o">();</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">headers</span><span class="o">.</span><span class="na">length</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="n">String</span> <span class="n">header</span> <span class="o">=</span> <span class="n">headers</span><span class="o">[</span><span class="n">i</span><span class="o">];</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">csvRecord</span><span class="o">.</span><span class="na">length</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">String</span> <span class="n">value</span> <span class="o">=</span> <span class="n">csvRecord</span><span class="o">[</span><span class="n">i</span><span class="o">].</span><span class="na">trim</span><span class="o">();</span>
+                <span class="n">builder</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">header</span><span class="o">,</span> <span class="n">value</span><span class="o">);</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="c1">// geotools converters take care of converting for us</span>
+                <span class="n">builder</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">header</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">builder</span><span class="o">.</span><span class="na">buildFeature</span><span class="o">(</span><span class="n">csvFileState</span><span class="o">.</span><span class="na">getTypeName</span><span class="o">()</span> <span class="o">+</span> <span class="s">&quot;-&quot;</span> <span class="o">+</span> <span class="n">recordId</span><span class="o">);</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="csvlatlonstrategy">
+<h2>CSVLatLonStrategy<a class="headerlink" href="#csvlatlonstrategy" title="Permalink to this headline">¶</a></h2>
+<p>The CSVLatLonStrategy provides the additional component of supplanting Latitude and Longitude fields with a Point geometry. We search through the headers to see if there is a match for both Latitude and Longitude, and if so, we remove those attributes and replace it with the Point geometry.</p>
+<blockquote>
+<div><div class="highlight-java"><div class="highlight"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CSVLatLonStrategy</span> <span class="kd">extends</span> <span class="n">AbstractCSVStrategy</span> <span class="kd">implements</span> <span class="n">CSVStrategy</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">GEOMETRY_COLUMN</span> <span class="o">=</span> <span class="s">&quot;location&quot;</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">CSVLatLonStrategy</span><span class="o">(</span><span class="n">CSVFileState</span> <span class="n">csvFileState</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kd">super</span><span class="o">(</span><span class="n">csvFileState</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">protected</span> <span class="n">SimpleFeatureType</span> <span class="nf">buildFeatureType</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">String</span><span class="o">[]</span> <span class="n">headers</span><span class="o">;</span>
+        <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Class</span><span class="o">&lt;?&gt;&gt;</span> <span class="n">typesFromData</span><span class="o">;</span>
+        <span class="n">CsvReader</span> <span class="n">csvReader</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="n">csvReader</span> <span class="o">=</span> <span class="n">csvFileState</span><span class="o">.</span><span class="na">openCSVReader</span><span class="o">();</span>
+            <span class="n">headers</span> <span class="o">=</span> <span class="n">csvReader</span><span class="o">.</span><span class="na">getHeaders</span><span class="o">();</span>
+            <span class="n">typesFromData</span> <span class="o">=</span> <span class="n">CSVStrategySupport</span><span class="o">.</span><span class="na">findMostSpecificTypesFromData</span><span class="o">(</span><span class="n">csvReader</span><span class="o">,</span> <span class="n">headers</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">IOException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="n">RuntimeException</span><span class="o">(</span><span class="n">e</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">csvReader</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">csvReader</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="n">SimpleFeatureTypeBuilder</span> <span class="n">builder</span> <span class="o">=</span> <span class="n">CSVStrategySupport</span><span class="o">.</span><span class="na">createBuilder</span><span class="o">(</span><span class="n">csvFileState</span><span class="o">,</span> <span class="n">headers</span><span class="o">,</span>
+                <span class="n">typesFromData</span><span class="o">);</span>
+        <span class="kt">boolean</span> <span class="n">validLat</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+        <span class="kt">boolean</span> <span class="n">validLon</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+        <span class="n">String</span> <span class="n">latSpelling</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="n">String</span> <span class="n">lonSpelling</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="k">for</span> <span class="o">(</span><span class="n">String</span> <span class="n">col</span> <span class="o">:</span> <span class="n">headers</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">Class</span><span class="o">&lt;?&gt;</span> <span class="n">type</span> <span class="o">=</span> <span class="n">typesFromData</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">col</span><span class="o">);</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">isLatitude</span><span class="o">(</span><span class="n">col</span><span class="o">))</span> <span class="o">{</span>
+                <span class="n">latSpelling</span> <span class="o">=</span> <span class="n">col</span><span class="o">;</span>
+                <span class="k">if</span> <span class="o">(</span><span class="n">CSVStrategySupport</span><span class="o">.</span><span class="na">isNumeric</span><span class="o">(</span><span class="n">type</span><span class="o">))</span> <span class="o">{</span>
+                    <span class="n">validLat</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+                <span class="o">}</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">isLongitude</span><span class="o">(</span><span class="n">col</span><span class="o">))</span> <span class="o">{</span>
+                <span class="n">lonSpelling</span> <span class="o">=</span> <span class="n">col</span><span class="o">;</span>
+                <span class="k">if</span> <span class="o">(</span><span class="n">CSVStrategySupport</span><span class="o">.</span><span class="na">isNumeric</span><span class="o">(</span><span class="n">type</span><span class="o">))</span> <span class="o">{</span>
+                    <span class="n">validLon</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">validLat</span> <span class="o">&amp;&amp;</span> <span class="n">validLon</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">builder</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">GEOMETRY_COLUMN</span><span class="o">,</span> <span class="n">Point</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+            <span class="n">builder</span><span class="o">.</span><span class="na">remove</span><span class="o">(</span><span class="n">latSpelling</span><span class="o">);</span>
+            <span class="n">builder</span><span class="o">.</span><span class="na">remove</span><span class="o">(</span><span class="n">lonSpelling</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">builder</span><span class="o">.</span><span class="na">buildFeatureType</span><span class="o">();</span>
+    <span class="o">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>When creating the feature, we check to see if we&#8217;re in the Latitude column and take it as our y value, and check to see if we&#8217;re in the Longitude column and take it as our x value. If we found Lat/Lon columns, we convert the x and y into a Point geometry and pass it to our feature builder. The atrribute name is predefined to be &#8220;locations&#8221; for the Geometry Column.</p>
+<blockquote>
+<div><div class="highlight-java"><div class="highlight"><pre><span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="n">SimpleFeature</span> <span class="nf">createFeature</span><span class="o">(</span><span class="n">String</span> <span class="n">recordId</span><span class="o">,</span> <span class="n">String</span><span class="o">[]</span> <span class="n">csvRecord</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">SimpleFeatureType</span> <span class="n">featureType</span> <span class="o">=</span> <span class="n">getFeatureType</span><span class="o">();</span>
+        <span class="n">SimpleFeatureBuilder</span> <span class="n">builder</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SimpleFeatureBuilder</span><span class="o">(</span><span class="n">featureType</span><span class="o">);</span>
+        <span class="n">GeometryDescriptor</span> <span class="n">geometryDescriptor</span> <span class="o">=</span> <span class="n">featureType</span><span class="o">.</span><span class="na">getGeometryDescriptor</span><span class="o">();</span>
+        <span class="n">GeometryFactory</span> <span class="n">geometryFactory</span> <span class="o">=</span> <span class="k">new</span> <span class="n">GeometryFactory</span><span class="o">();</span>
+        <span class="n">Double</span> <span class="n">x</span> <span class="o">=</span> <span class="kc">null</span><span class="o">,</span> <span class="n">y</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="n">String</span><span class="o">[]</span> <span class="n">headers</span> <span class="o">=</span> <span class="n">csvFileState</span><span class="o">.</span><span class="na">getCSVHeaders</span><span class="o">();</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">headers</span><span class="o">.</span><span class="na">length</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="n">String</span> <span class="n">header</span> <span class="o">=</span> <span class="n">headers</span><span class="o">[</span><span class="n">i</span><span class="o">];</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">csvRecord</span><span class="o">.</span><span class="na">length</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">String</span> <span class="n">value</span> <span class="o">=</span> <span class="n">csvRecord</span><span class="o">[</span><span class="n">i</span><span class="o">].</span><span class="na">trim</span><span class="o">();</span>
+                <span class="k">if</span> <span class="o">(</span><span class="n">geometryDescriptor</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">isLatitude</span><span class="o">(</span><span class="n">header</span><span class="o">))</span> <span class="o">{</span>
+                    <span class="n">y</span> <span class="o">=</span> <span class="n">Double</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="n">value</span><span class="o">);</span>
+                <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">geometryDescriptor</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">isLongitude</span><span class="o">(</span><span class="n">header</span><span class="o">))</span> <span class="o">{</span>
+                    <span class="n">x</span> <span class="o">=</span> <span class="n">Double</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="n">value</span><span class="o">);</span>
+                <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                    <span class="n">builder</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">header</span><span class="o">,</span> <span class="n">value</span><span class="o">);</span>
+                <span class="o">}</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="n">builder</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">header</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">x</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">y</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">geometryDescriptor</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">Coordinate</span> <span class="n">coordinate</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Coordinate</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">y</span><span class="o">);</span>
+            <span class="n">Point</span> <span class="n">point</span> <span class="o">=</span> <span class="n">geometryFactory</span><span class="o">.</span><span class="na">createPoint</span><span class="o">(</span><span class="n">coordinate</span><span class="o">);</span>
+            <span class="n">builder</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">geometryDescriptor</span><span class="o">.</span><span class="na">getLocalName</span><span class="o">(),</span> <span class="n">point</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">builder</span><span class="o">.</span><span class="na">buildFeature</span><span class="o">(</span><span class="n">csvFileState</span><span class="o">.</span><span class="na">getTypeName</span><span class="o">()</span> <span class="o">+</span> <span class="s">&quot;-&quot;</span> <span class="o">+</span> <span class="n">recordId</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kt">boolean</span> <span class="nf">isLatitude</span><span class="o">(</span><span class="n">String</span> <span class="n">s</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="s">&quot;latitude&quot;</span><span class="o">.</span><span class="na">equalsIgnoreCase</span><span class="o">(</span><span class="n">s</span><span class="o">)</span> <span class="o">||</span> <span class="s">&quot;lat&quot;</span><span class="o">.</span><span class="na">equalsIgnoreCase</span><span class="o">(</span><span class="n">s</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kt">boolean</span> <span class="nf">isLongitude</span><span class="o">(</span><span class="n">String</span> <span class="n">s</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="s">&quot;lon&quot;</span><span class="o">.</span><span class="na">equalsIgnoreCase</span><span class="o">(</span><span class="n">s</span><span class="o">)</span> <span class="o">||</span> <span class="s">&quot;lng&quot;</span><span class="o">.</span><span class="na">equalsIgnoreCase</span><span class="o">(</span><span class="n">s</span><span class="o">)</span> <span class="o">||</span> <span class="s">&quot;long&quot;</span><span class="o">.</span><span class="na">equalsIgnoreCase</span><span class="o">(</span><span class="n">s</span><span class="o">)</span>
+                <span class="o">||</span> <span class="s">&quot;longitude&quot;</span><span class="o">.</span><span class="na">equalsIgnoreCase</span><span class="o">(</span><span class="n">s</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="csvspecifiedlatlngstrategy">
+<h2>CSVSpecifiedLatLngStrategy<a class="headerlink" href="#csvspecifiedlatlngstrategy" title="Permalink to this headline">¶</a></h2>
+<p>The CSVSpecifiedLatLngStrategy behaves similarly to the CSVLatLonStrategy class with just a few minor differences. First, the Latitude and Longitude columns are specified (with a specific string, such as &#8220;lat&#8221; and &#8220;lon&#8221;). Further, the points constructed can have a different specified attribute name. However, the default is still &#8220;locations&#8221; for the Geometry Column if nothing is specified.</p>
+<blockquote>
+<div><div class="highlight-java"><div class="highlight"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CSVSpecifiedLatLngStrategy</span> <span class="kd">extends</span> <span class="n">AbstractCSVStrategy</span> <span class="kd">implements</span> <span class="n">CSVStrategy</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">latField</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">lngField</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">pointField</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">CSVSpecifiedLatLngStrategy</span><span class="o">(</span><span class="n">CSVFileState</span> <span class="n">csvFileState</span><span class="o">,</span> <span class="n">String</span> <span class="n">latField</span><span class="o">,</span> <span class="n">String</span> <span class="n">lngField</span><span class="o">,</span>
+            <span class="n">String</span> <span class="n">pointField</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kd">super</span><span class="o">(</span><span class="n">csvFileState</span><span class="o">);</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">latField</span> <span class="o">=</span> <span class="n">latField</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">lngField</span> <span class="o">=</span> <span class="n">lngField</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">pointField</span> <span class="o">=</span> <span class="n">pointField</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="nf">CSVSpecifiedLatLngStrategy</span><span class="o">(</span><span class="n">CSVFileState</span> <span class="n">csvFileState</span><span class="o">,</span> <span class="n">String</span> <span class="n">latField</span><span class="o">,</span> <span class="n">String</span> <span class="n">lngField</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">(</span><span class="n">csvFileState</span><span class="o">,</span> <span class="n">latField</span><span class="o">,</span> <span class="n">lngField</span><span class="o">,</span> <span class="s">&quot;location&quot;</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">protected</span> <span class="n">SimpleFeatureType</span> <span class="nf">buildFeatureType</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">String</span><span class="o">[]</span> <span class="n">headers</span><span class="o">;</span>
+        <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Class</span><span class="o">&lt;?&gt;&gt;</span> <span class="n">typesFromData</span><span class="o">;</span>
+        <span class="n">CsvReader</span> <span class="n">csvReader</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="n">csvReader</span> <span class="o">=</span> <span class="n">csvFileState</span><span class="o">.</span><span class="na">openCSVReader</span><span class="o">();</span>
+            <span class="n">headers</span> <span class="o">=</span> <span class="n">csvReader</span><span class="o">.</span><span class="na">getHeaders</span><span class="o">();</span>
+            <span class="n">typesFromData</span> <span class="o">=</span> <span class="n">CSVStrategySupport</span><span class="o">.</span><span class="na">findMostSpecificTypesFromData</span><span class="o">(</span><span class="n">csvReader</span><span class="o">,</span> <span class="n">headers</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">IOException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="n">RuntimeException</span><span class="o">(</span><span class="n">e</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">csvReader</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">csvReader</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="n">SimpleFeatureTypeBuilder</span> <span class="n">builder</span> <span class="o">=</span> <span class="n">CSVStrategySupport</span><span class="o">.</span><span class="na">createBuilder</span><span class="o">(</span><span class="n">csvFileState</span><span class="o">,</span> <span class="n">headers</span><span class="o">,</span>
+                <span class="n">typesFromData</span><span class="o">);</span>
+        <span class="n">Class</span><span class="o">&lt;?&gt;</span> <span class="n">latClass</span> <span class="o">=</span> <span class="n">typesFromData</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">latField</span><span class="o">);</span>
+        <span class="n">Class</span><span class="o">&lt;?&gt;</span> <span class="n">lngClass</span> <span class="o">=</span> <span class="n">typesFromData</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">lngField</span><span class="o">);</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">CSVStrategySupport</span><span class="o">.</span><span class="na">isNumeric</span><span class="o">(</span><span class="n">latClass</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="n">CSVStrategySupport</span><span class="o">.</span><span class="na">isNumeric</span><span class="o">(</span><span class="n">lngClass</span><span class="o">))</span> <span class="o">{</span>
+            <span class="n">builder</span><span class="o">.</span><span class="na">remove</span><span class="o">(</span><span class="n">latField</span><span class="o">);</span>
+            <span class="n">builder</span><span class="o">.</span><span class="na">remove</span><span class="o">(</span><span class="n">lngField</span><span class="o">);</span>
+            <span class="n">builder</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">pointField</span><span class="o">,</span> <span class="n">Point</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">builder</span><span class="o">.</span><span class="na">buildFeatureType</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="n">SimpleFeature</span> <span class="nf">createFeature</span><span class="o">(</span><span class="n">String</span> <span class="n">recordId</span><span class="o">,</span> <span class="n">String</span><span class="o">[]</span> <span class="n">csvRecord</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">SimpleFeatureType</span> <span class="n">featureType</span> <span class="o">=</span> <span class="n">getFeatureType</span><span class="o">();</span>
+        <span class="n">SimpleFeatureBuilder</span> <span class="n">builder</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SimpleFeatureBuilder</span><span class="o">(</span><span class="n">featureType</span><span class="o">);</span>
+        <span class="n">GeometryDescriptor</span> <span class="n">geometryDescriptor</span> <span class="o">=</span> <span class="n">featureType</span><span class="o">.</span><span class="na">getGeometryDescriptor</span><span class="o">();</span>
+        <span class="n">GeometryFactory</span> <span class="n">geometryFactory</span> <span class="o">=</span> <span class="k">new</span> <span class="n">GeometryFactory</span><span class="o">();</span>
+        <span class="n">Double</span> <span class="n">lat</span> <span class="o">=</span> <span class="kc">null</span><span class="o">,</span> <span class="n">lng</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="n">String</span><span class="o">[]</span> <span class="n">headers</span> <span class="o">=</span> <span class="n">csvFileState</span><span class="o">.</span><span class="na">getCSVHeaders</span><span class="o">();</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">headers</span><span class="o">.</span><span class="na">length</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="n">String</span> <span class="n">header</span> <span class="o">=</span> <span class="n">headers</span><span class="o">[</span><span class="n">i</span><span class="o">];</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">csvRecord</span><span class="o">.</span><span class="na">length</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">String</span> <span class="n">value</span> <span class="o">=</span> <span class="n">csvRecord</span><span class="o">[</span><span class="n">i</span><span class="o">].</span><span class="na">trim</span><span class="o">();</span>
+                <span class="k">if</span> <span class="o">(</span><span class="n">geometryDescriptor</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">header</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">latField</span><span class="o">))</span> <span class="o">{</span>
+                    <span class="n">lat</span> <span class="o">=</span> <span class="n">Double</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="n">value</span><span class="o">);</span>
+                <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">geometryDescriptor</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">header</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">lngField</span><span class="o">))</span> <span class="o">{</span>
+                    <span class="n">lng</span> <span class="o">=</span> <span class="n">Double</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="n">value</span><span class="o">);</span>
+                <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                    <span class="n">builder</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">header</span><span class="o">,</span> <span class="n">value</span><span class="o">);</span>
+                <span class="o">}</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="n">builder</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">header</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">geometryDescriptor</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">lat</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">lng</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">Coordinate</span> <span class="n">coordinate</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Coordinate</span><span class="o">(</span><span class="n">lat</span><span class="o">,</span> <span class="n">lng</span><span class="o">);</span>
+            <span class="n">Point</span> <span class="n">point</span> <span class="o">=</span> <span class="n">geometryFactory</span><span class="o">.</span><span class="na">createPoint</span><span class="o">(</span><span class="n">coordinate</span><span class="o">);</span>
+            <span class="n">builder</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">geometryDescriptor</span><span class="o">.</span><span class="na">getLocalName</span><span class="o">(),</span> <span class="n">point</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">builder</span><span class="o">.</span><span class="na">buildFeature</span><span class="o">(</span><span class="n">csvFileState</span><span class="o">.</span><span class="na">getTypeName</span><span class="o">()</span> <span class="o">+</span> <span class="s">&quot;-&quot;</span> <span class="o">+</span> <span class="n">recordId</span><span class="o">);</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="csvspecifiedwktstrategy">
+<h2>CSVSpecifiedWKTStrategy<a class="headerlink" href="#csvspecifiedwktstrategy" title="Permalink to this headline">¶</a></h2>
+<p>CSVSpecifiedWKTStrategy is the strategy used for a Well-Known-Text (WKT) format. Similar to the CSVSpecifiedLatLngStrategy, a specified WKT must be passed to the strategy, and it used to parse for the WKT. If found, it attaches the Geometry class to the WKT in the header.</p>
+<blockquote>
+<div></div></blockquote>
+<p>In creating a feature, the line is parsed for the WKT field specified before, and if found, attempts to read a Geometry object from the file. If for some reason the field is unparseable, it will just be set to a null value. The builder utility will then build this feature after the line has been fully read.</p>
+<blockquote>
+<div></div></blockquote>
+</div>
+<div class="section" id="csvstrategysupport">
+<h2>CSVStrategySupport<a class="headerlink" href="#csvstrategysupport" title="Permalink to this headline">¶</a></h2>
+<p>The support class commonly used by all the strategy objects is CSVStrategySupport. It provides helper methods common to most strategies but that are not themselves a part of creating a strategy (and so do not belong in AbstractCSVStrategy). The createBuilder() methods are helpers that set some of the common portions for the SimpleFeatureBuilder utility object, such as the type name, coordinate reference system, namespace URI, and then the column headers.</p>
+<blockquote>
+<div><div class="highlight-java"><div class="highlight"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CSVStrategySupport</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="n">SimpleFeatureTypeBuilder</span> <span class="nf">createBuilder</span><span class="o">(</span><span class="n">CSVFileState</span> <span class="n">csvFileState</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">CsvReader</span> <span class="n">csvReader</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Class</span><span class="o">&lt;?&gt;&gt;</span> <span class="n">typesFromData</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="n">String</span><span class="o">[]</span> <span class="n">headers</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="n">csvReader</span> <span class="o">=</span> <span class="n">csvFileState</span><span class="o">.</span><span class="na">openCSVReader</span><span class="o">();</span>
+            <span class="n">headers</span> <span class="o">=</span> <span class="n">csvReader</span><span class="o">.</span><span class="na">getHeaders</span><span class="o">();</span>
+            <span class="n">typesFromData</span> <span class="o">=</span> <span class="n">findMostSpecificTypesFromData</span><span class="o">(</span><span class="n">csvReader</span><span class="o">,</span> <span class="n">headers</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">IOException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="n">RuntimeException</span><span class="o">(</span><span class="s">&quot;Failure reading csv file&quot;</span><span class="o">,</span> <span class="n">e</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">csvReader</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">csvReader</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">CSVStrategySupport</span><span class="o">.</span><span class="na">createBuilder</span><span class="o">(</span><span class="n">csvFileState</span><span class="o">,</span> <span class="n">headers</span><span class="o">,</span> <span class="n">typesFromData</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="n">SimpleFeatureTypeBuilder</span> <span class="nf">createBuilder</span><span class="o">(</span><span class="n">CSVFileState</span> <span class="n">csvFileState</span><span class="o">,</span>
+            <span class="n">String</span><span class="o">[]</span> <span class="n">headers</span><span class="o">,</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Class</span><span class="o">&lt;?&gt;&gt;</span> <span class="n">typesFromData</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">SimpleFeatureTypeBuilder</span> <span class="n">builder</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SimpleFeatureTypeBuilder</span><span class="o">();</span>
+        <span class="n">builder</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="n">csvFileState</span><span class="o">.</span><span class="na">getTypeName</span><span class="o">());</span>
+        <span class="n">builder</span><span class="o">.</span><span class="na">setCRS</span><span class="o">(</span><span class="n">csvFileState</span><span class="o">.</span><span class="na">getCrs</span><span class="o">());</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">csvFileState</span><span class="o">.</span><span class="na">getNamespace</span><span class="o">()</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">builder</span><span class="o">.</span><span class="na">setNamespaceURI</span><span class="o">(</span><span class="n">csvFileState</span><span class="o">.</span><span class="na">getNamespace</span><span class="o">());</span>
+        <span class="o">}</span>
+        <span class="k">for</span> <span class="o">(</span><span class="n">String</span> <span class="n">col</span> <span class="o">:</span> <span class="n">headers</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">Class</span><span class="o">&lt;?&gt;</span> <span class="n">type</span> <span class="o">=</span> <span class="n">typesFromData</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">col</span><span class="o">);</span>
+            <span class="n">builder</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">col</span><span class="o">,</span> <span class="n">type</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">builder</span><span class="o">;</span>
+    <span class="o">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>findMostSpecificTypesFromData() attempts to find the type of the data being read. It attempts to read it as an Integer first, and if the format is incorrect, it tries a Double next, and if the format is still incorrect, it just defaults to a String type.</p>
+<blockquote>
+<div><div class="highlight-java"><div class="highlight"><pre><span class="kd">public</span> <span class="kd">static</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Class</span><span class="o">&lt;?&gt;&gt;</span> <span class="n">findMostSpecificTypesFromData</span><span class="o">(</span><span class="n">CsvReader</span> <span class="n">csvReader</span><span class="o">,</span>
+            <span class="n">String</span><span class="o">[]</span> <span class="n">headers</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+        <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Class</span><span class="o">&lt;?&gt;&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Class</span><span class="o">&lt;?&gt;&gt;();</span>
+        <span class="c1">// start off assuming Integers for everything</span>
+        <span class="k">for</span> <span class="o">(</span><span class="n">String</span> <span class="n">header</span> <span class="o">:</span> <span class="n">headers</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">result</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">header</span><span class="o">,</span> <span class="n">Integer</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">while</span> <span class="o">(</span><span class="n">csvReader</span><span class="o">.</span><span class="na">readRecord</span><span class="o">())</span> <span class="o">{</span>
+            <span class="n">String</span><span class="o">[]</span> <span class="n">record</span> <span class="o">=</span> <span class="n">csvReader</span><span class="o">.</span><span class="na">getValues</span><span class="o">();</span>
+            <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">values</span> <span class="o">=</span> <span class="n">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="n">record</span><span class="o">);</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">record</span><span class="o">.</span><span class="na">length</span> <span class="o">&gt;=</span> <span class="n">headers</span><span class="o">.</span><span class="na">length</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">values</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="na">subList</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="n">headers</span><span class="o">.</span><span class="na">length</span><span class="o">);</span>
+            <span class="o">}</span>
+            <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+            <span class="k">for</span> <span class="o">(</span><span class="n">String</span> <span class="n">value</span> <span class="o">:</span> <span class="n">values</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">String</span> <span class="n">header</span> <span class="o">=</span> <span class="n">headers</span><span class="o">[</span><span class="n">i</span><span class="o">];</span>
+                <span class="n">Class</span><span class="o">&lt;?&gt;</span> <span class="n">type</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">header</span><span class="o">);</span>
+                <span class="k">if</span> <span class="o">(</span><span class="n">type</span> <span class="o">==</span> <span class="n">Integer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="k">try</span> <span class="o">{</span>
+                        <span class="n">Integer</span><span class="o">.</span><span class="na">parseInt</span><span class="o">(</span><span class="n">value</span><span class="o">);</span>
+                    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">NumberFormatException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+                        <span class="k">try</span> <span class="o">{</span>
+                            <span class="n">Double</span><span class="o">.</span><span class="na">parseDouble</span><span class="o">(</span><span class="n">value</span><span class="o">);</span>
+                            <span class="n">type</span> <span class="o">=</span> <span class="n">Double</span><span class="o">.</span><span class="na">class</span><span class="o">;</span>
+                        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">NumberFormatException</span> <span class="n">ex</span><span class="o">)</span> <span class="o">{</span>
+                            <span class="n">type</span> <span class="o">=</span> <span class="n">String</span><span class="o">.</span><span class="na">class</span><span class="o">;</span>
+                        <span class="o">}</span>
+                    <span class="o">}</span>
+                <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">type</span> <span class="o">==</span> <span class="n">Double</span><span class="o">.</span><span class="na">class</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="k">try</span> <span class="o">{</span>
+                        <span class="n">Double</span><span class="o">.</span><span class="na">parseDouble</span><span class="o">(</span><span class="n">value</span><span class="o">);</span>
+                    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">NumberFormatException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+                        <span class="n">type</span> <span class="o">=</span> <span class="n">String</span><span class="o">.</span><span class="na">class</span><span class="o">;</span>
+                    <span class="o">}</span>
+                <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                    <span class="n">type</span> <span class="o">=</span> <span class="n">String</span><span class="o">.</span><span class="na">class</span><span class="o">;</span>
+                <span class="o">}</span>
+                <span class="n">result</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">header</span><span class="o">,</span> <span class="n">type</span><span class="o">);</span>
+                <span class="n">i</span><span class="o">++;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">boolean</span> <span class="nf">isNumeric</span><span class="o">(</span><span class="n">Class</span><span class="o">&lt;?&gt;</span> <span class="n">clazz</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">clazz</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="o">(</span><span class="n">clazz</span> <span class="o">==</span> <span class="n">Double</span><span class="o">.</span><span class="na">class</span> <span class="o">||</span> <span class="n">clazz</span> <span class="o">==</span> <span class="n">Integer</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+        <li><a href="#">Strategy Patterns</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

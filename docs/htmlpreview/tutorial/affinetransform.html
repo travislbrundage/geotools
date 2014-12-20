@@ -1,0 +1,845 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>AffineTransformation Tutorial &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../index.html" />
+    <link rel="up" title="Tutorials" href="index.html" />
+    <link rel="next" title="Factory Tutorial" href="factory.html" />
+    <link rel="prev" title="Map Style Tutorial" href="map/style.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Tutorials</a> &raquo;</li>
+        <li><a href="#">AffineTransformation Tutorial</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">AffineTransformation Tutorial</a><ul>
+<li><a class="reference internal" href="#welcome">Welcome</a><ul>
+<li><a class="reference internal" href="#definitions">Definitions</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#mathematical-background">Mathematical Background</a></li>
+<li><a class="reference internal" href="#calculation">Calculation</a><ul>
+<li><a class="reference internal" href="#translate-operation">Translate Operation</a></li>
+<li><a class="reference internal" href="#scale-operation">Scale Operation</a></li>
+<li><a class="reference internal" href="#mirror-operation">Mirror Operation</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#matrix-magic">Matrix Magic</a><ul>
+<li><a class="reference internal" href="#concatenation">Concatenation</a><ul>
+<li><a class="reference internal" href="#graphics2d">Graphics2D</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#inversion">Inversion</a></li>
+<li><a class="reference internal" href="#create-an-inverse-transformation">Create an inverse transformation</a><ul>
+<li><a class="reference internal" href="#noninvertibletransformexception">NoninvertibleTransformException</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#conclusion">Conclusion</a></li>
+<li><a class="reference internal" href="#references">References</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="map/style.html"
+                        title="previous chapter">Map Style Tutorial</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="factory.html"
+                        title="next chapter">Factory Tutorial</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/tutorial/affinetransform.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="affinetransformation-tutorial">
+<h1>AffineTransformation Tutorial<a class="headerlink" href="#affinetransformation-tutorial" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="welcome">
+<h2>Welcome<a class="headerlink" href="#welcome" title="Permalink to this headline">¶</a></h2>
+<p>Welcome to this tutorial about affine transformations which are used to convert coordinates from one
+domain to another. As an example we will convert world coordinates to pixel (screen or image)
+coordinates. All of the mathematics required will be introduced along the way and you will soon be
+making use of the power of these kind of calculations.</p>
+<div class="topic">
+<p class="topic-title first">About Your Instructor</p>
+<p>Christian Mueller is a geotools developer and is working for a big customer to build
+up a GIS infrastructure. In the GeoTools project he is best known for his work on
+<a class="reference internal" href="../library/coverage/jdbc/index.html"><em>Image Moasic JDBC</em></a></p>
+</div>
+<div class="section" id="definitions">
+<h3>Definitions<a class="headerlink" href="#definitions" title="Permalink to this headline">¶</a></h3>
+<p>Before we start, some important definitions.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="39%" />
+<col width="61%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Abbreviation</th>
+<th class="head">Meaning</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>LLC</td>
+<td>lower left corner</td>
+</tr>
+<tr class="row-odd"><td>ULC</td>
+<td>upper left corner</td>
+</tr>
+<tr class="row-even"><td>URC</td>
+<td>upper right corner</td>
+</tr>
+<tr class="row-odd"><td>LRC</td>
+<td>lower right corner</td>
+</tr>
+</tbody>
+</table>
+<p>We have a rectangle in world coordinates, the origin is at the LLC, x = 2000, y = 3000,width = 8000
+units an height = 9000 units.</p>
+<p>The resulting corner points are:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="39%" />
+<col width="61%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Point</th>
+<th class="head">world x,y coords</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>LLC</td>
+<td>2000,  3000</td>
+</tr>
+<tr class="row-odd"><td>ULC</td>
+<td>2000, 12000</td>
+</tr>
+<tr class="row-even"><td>URC</td>
+<td>10000, 12000</td>
+</tr>
+<tr class="row-odd"><td>LRC</td>
+<td>10000,  3000</td>
+</tr>
+</tbody>
+</table>
+<img alt="../_images/world.png" src="../_images/world.png" />
+<p>Next, we want to map this rectangle to a screen, using pixel coordinates. The available scree
+size = 400x300 pixels. Unfortunately, pixel coordinates have their origin in the ULC normally,
+not in the LLC. The next table shows the mappings.:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="25%" />
+<col width="38%" />
+<col width="38%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Point</th>
+<th class="head">world x,y coords</th>
+<th class="head">pixel x,y coords</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>LLC</td>
+<td>2000, 3000</td>
+<td>0,300</td>
+</tr>
+<tr class="row-odd"><td>ULC</td>
+<td>2000,12000</td>
+<td>0,  0</td>
+</tr>
+<tr class="row-even"><td>URC</td>
+<td>10000,12000</td>
+<td>400,  0</td>
+</tr>
+<tr class="row-odd"><td>LRC</td>
+<td>10000, 3000</td>
+<td>400,300</td>
+</tr>
+</tbody>
+</table>
+<img alt="../_images/screen.png" src="../_images/screen.png" />
+<p>The challenge is to find a method how to transform each point within the world rectangle to a
+point in the pixel rectangle. (And the other way around)</p>
+</div>
+</div>
+<div class="section" id="mathematical-background">
+<h2>Mathematical Background<a class="headerlink" href="#mathematical-background" title="Permalink to this headline">¶</a></h2>
+<p>Since most people I know dislike mathematics I will reduce this section to an absolute minimum.
+An affine transformation is based on a matrix.</p>
+<ul>
+<li><p class="first">Here we need a 3x3 matrix like this one:</p>
+<div class="highlight-python"><div class="highlight"><pre>[ m00 m01 m02 ]
+[ m10 m11 m12 ]
+[   0   0   1 ]
+</pre></div>
+</div>
+<p>The numbers are row and column indices, e.g. <strong>m12</strong> is the matrix element in
+row 1, column 2. The values in the bottom row are always as shown.</p>
+</li>
+<li><p class="first">A point is represented as a <em>column vector</em>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">[</span> <span class="n">x</span> <span class="p">]</span>
+<span class="p">[</span> <span class="n">y</span> <span class="p">]</span>
+<span class="p">[</span> <span class="mi">1</span> <span class="p">]</span>
+</pre></div>
+</div>
+<p>Once again, the bottom element is a constant (always 1).</p>
+</li>
+<li><p class="first">Transforming the point coordinates involves multiplying the point&#8217;s column vector by
+the affine transform matrix:</p>
+<div class="highlight-python"><div class="highlight"><pre>[ x_new] = [ m00 m01 m02 ] [ x ] = [ m00x + m01y + m02 ]
+[ y_new] = [ m10 m11 m12 ] [ y ] = [ m10x + m11y + m12 ]
+[ 1 ]    = [ 0   0     1 ] [ 1 ] = [ 0 + 0 + 1 ]
+</pre></div>
+</div>
+</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It is very important to understand this, but don&#8217;t worry if you are unfamiliar with
+matrix arithmetic because the steps are explained in detail below.</p>
+</div>
+<ul>
+<li><p class="first"><strong>Identify Matrix</strong></p>
+<p>A quick test. Why is the matrix:</p>
+<div class="highlight-python"><div class="highlight"><pre>[ 1 0 0 ]
+[ 0 1 0 ]
+[ 0 0 1 ]
+</pre></div>
+</div>
+<p>called the identity matrix ?</p>
+<p>Answer:</p>
+<div class="highlight-python"><div class="highlight"><pre>[ 1 0 0 ] [ x ] = [ x ]
+[ 0 1 0 ] [ y ] = [ y ]
+[ 0 0 1 ] [ 1 ] = [ 1 ]
+</pre></div>
+</div>
+<p>The detailed calculation:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="mi">1</span><span class="o">*</span><span class="n">x</span> <span class="o">+</span> <span class="mi">0</span><span class="o">*</span><span class="n">y</span> <span class="o">+</span> <span class="mi">0</span><span class="o">*</span><span class="mi">1</span> <span class="o">=</span> <span class="n">x</span>
+<span class="mi">0</span><span class="o">*</span><span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="o">*</span><span class="n">y</span> <span class="o">+</span> <span class="mi">0</span><span class="o">*</span><span class="mi">1</span> <span class="o">=</span> <span class="n">y</span>
+<span class="mi">0</span><span class="o">*</span><span class="n">x</span> <span class="o">+</span> <span class="mi">0</span><span class="o">*</span><span class="n">y</span> <span class="o">+</span> <span class="mi">1</span><span class="o">*</span><span class="mi">1</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first"><strong>Swap X and Y</strong></p>
+<p>A second test. What is this matrix responsible for:</p>
+<div class="highlight-python"><div class="highlight"><pre>[ 0 1 0 ]
+[ 1 0 0 ]
+[ 0 0 1 ]
+</pre></div>
+</div>
+<p>This matrix swaps x and y:</p>
+<div class="highlight-python"><div class="highlight"><pre>[ 0 1 0 ] [ x ] = [ y ]
+[ 1 0 0 ] [ y ] = [ x ]
+[ 0 0 1 ] [ 1 ] = [ 1 ]
+</pre></div>
+</div>
+<p>The detailed calculation:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="mi">0</span><span class="o">*</span><span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="o">*</span><span class="n">y</span> <span class="o">+</span> <span class="mi">0</span><span class="o">*</span><span class="mi">1</span> <span class="o">=</span> <span class="n">y</span>
+<span class="mi">1</span><span class="o">*</span><span class="n">x</span> <span class="o">+</span> <span class="mi">0</span><span class="o">*</span><span class="n">y</span> <span class="o">+</span> <span class="mi">0</span><span class="o">*</span><span class="mi">1</span> <span class="o">=</span> <span class="n">x</span>
+<span class="mi">0</span><span class="o">*</span><span class="n">x</span> <span class="o">+</span> <span class="mi">0</span><span class="o">*</span><span class="n">y</span> <span class="o">+</span> <span class="mi">1</span><span class="o">*</span><span class="mi">1</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="calculation">
+<h2>Calculation<a class="headerlink" href="#calculation" title="Permalink to this headline">¶</a></h2>
+<p>We need three steps for getting pixel x/y from world x/y.</p>
+<ol class="arabic simple">
+<li>Translate</li>
+<li>Scale</li>
+<li>Mirror</li>
+</ol>
+<p>These are discussed below.</p>
+<div class="section" id="translate-operation">
+<h3>Translate Operation<a class="headerlink" href="#translate-operation" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic">
+<li><p class="first">We have to shift the origin of the world rectangle to 0,0. This is easy. The LLC has values
+2000,3000, we only need to subtract 2000 from x  and 3000 from y. We use the URC with
+values 10000,12000 to demonstrate the calculation.</p>
+</li>
+<li><p class="first">Java Code</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="n">AffineTransform</span> <span class="n">translate</span><span class="o">=</span> <span class="n">AffineTransform</span><span class="o">.</span><span class="na">getTranslateInstance</span><span class="o">(-</span><span class="mi">2000</span><span class="o">,</span> <span class="o">-</span><span class="mi">3000</span><span class="o">);</span>
+<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Translate:&quot;</span> <span class="o">+</span> <span class="n">translate</span><span class="o">.</span><span class="na">toString</span><span class="o">());</span>
+<span class="n">Point2D</span> <span class="n">p</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Point2D</span><span class="o">.</span><span class="na">Double</span><span class="o">(</span><span class="mi">2000</span><span class="o">,</span><span class="mi">3000</span><span class="o">);</span>
+<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">translate</span><span class="o">.</span><span class="na">transform</span><span class="o">(</span><span class="n">p</span><span class="o">,</span> <span class="kc">null</span><span class="o">));</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Output:</p>
+<div class="highlight-python"><div class="highlight"><pre>Translate:AffineTransform[[1.0, 0.0, -2000.0], [0.0, 1.0, -3000.0]]
+Point2D.Double[0.0, 0.0]
+</pre></div>
+</div>
+</li>
+<li><p class="first">The toString() method of the AffineTransform class only shows the first two rows of the
+matrix. The static method getTranslateInstance is a convenience method, otherwise you have
+to call a constructor with 6 values.</p>
+</li>
+<li><p class="first">The matrix used:</p>
+<div class="highlight-python"><div class="highlight"><pre>[  1.00  0.00 -2000.00 ]
+[  0.00  1.00 -3000.00 ]
+[  0.00  0.00  1.00 ]
+</pre></div>
+</div>
+</li>
+<li><p class="first">The detailed calculation:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="mi">1</span> <span class="o">*</span> <span class="mi">2000</span> <span class="o">+</span> <span class="mi">0</span> <span class="o">*</span> <span class="mi">3000</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">*</span> <span class="o">-</span><span class="mi">2000</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="mi">0</span> <span class="o">*</span> <span class="mi">2000</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">*</span> <span class="mi">3000</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">*</span> <span class="o">-</span><span class="mi">3000</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="mi">0</span> <span class="o">*</span> <span class="mi">2000</span> <span class="o">+</span> <span class="mi">0</span> <span class="o">*</span> <span class="mi">3000</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">*</span> <span class="mi">1</span>     <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">The result of all four corner points is:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="15%" />
+<col width="43%" />
+<col width="43%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Point</th>
+<th class="head">before</th>
+<th class="head">after</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>LLC</td>
+<td>2000, 3000</td>
+<td>0,    0</td>
+</tr>
+<tr class="row-odd"><td>ULC</td>
+<td>2000,12000</td>
+<td>0, 9000</td>
+</tr>
+<tr class="row-even"><td>URC</td>
+<td>10000,12000</td>
+<td>8000, 9000</td>
+</tr>
+<tr class="row-odd"><td>LRC</td>
+<td>10000, 3000</td>
+<td>8000,    0</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ol>
+</div>
+<div class="section" id="scale-operation">
+<h3>Scale Operation<a class="headerlink" href="#scale-operation" title="Permalink to this headline">¶</a></h3>
+<p>The world rectangle has a width of 8000 units and a height of 9000 units, the pixel dimension has
+a width of 400 pixels and a height of 300  pixels. We need to scale with 400/8000.0 and
+300 / 9000.0.</p>
+<ol class="arabic">
+<li><p class="first">Let us use the point in the middle of the world rectangle after the translate
+operation, having its LLC at 0,0.</p>
+</li>
+<li><p class="first">Java Code</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="n">AffineTransform</span> <span class="n">scale</span><span class="o">=</span> <span class="n">AffineTransform</span><span class="o">.</span><span class="na">getScaleInstance</span><span class="o">(</span><span class="mi">400</span><span class="o">/</span><span class="mf">8000.0</span><span class="o">,</span> <span class="mi">300</span> <span class="o">/</span> <span class="mf">9000.0</span><span class="o">);</span>
+<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Scale:&quot;</span> <span class="o">+</span> <span class="n">scale</span><span class="o">.</span><span class="na">toString</span><span class="o">());</span>
+<span class="n">p</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Point2D</span><span class="o">.</span><span class="na">Double</span><span class="o">(</span><span class="mi">4000</span><span class="o">,</span><span class="mi">4500</span><span class="o">);</span>
+<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">scale</span><span class="o">.</span><span class="na">transform</span><span class="o">(</span><span class="n">p</span><span class="o">,</span> <span class="kc">null</span><span class="o">));</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Output:</p>
+<div class="highlight-python"><div class="highlight"><pre>Scale:AffineTransform[[0.05, 0.0, 0.0], [0.0, 0.033333333333333, 0.0]]
+Point2D.Double[200.0, 150.0]
+</pre></div>
+</div>
+</li>
+<li><p class="first">The detailed calculation (omitting the last one, the result is always 1)</p>
+<div class="highlight-python"><div class="highlight"><pre>0.05 * 4000 + 0      * 5000 + 1 * 0 = 200
+0    * 4000 + 0.03.. * 5000 + 1 * 0 = 150
+</pre></div>
+</div>
+</li>
+<li><p class="first">The used matrix is:</p>
+<div class="highlight-python"><div class="highlight"><pre>[  0.05  0.00    0.00 ]
+[  0.00  0.03..  0.00 ]
+[  0.00  0.00    1.00 ]
+</pre></div>
+</div>
+</li>
+<li><p class="first">Using the output of the translation operation as the input for the mirror operation, the result
+of all four corner points is:</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="15%" />
+<col width="43%" />
+<col width="43%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Point</th>
+<th class="head">before</th>
+<th class="head">after</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>LLC</td>
+<td>0,    0</td>
+<td>0,    0</td>
+</tr>
+<tr class="row-odd"><td>ULC</td>
+<td>0, 9000</td>
+<td>0,  300</td>
+</tr>
+<tr class="row-even"><td>URC</td>
+<td>8000, 9000</td>
+<td>400,  300</td>
+</tr>
+<tr class="row-odd"><td>LRC</td>
+<td>8000,    0</td>
+<td>400,    0</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</li>
+</ol>
+</div>
+<div class="section" id="mirror-operation">
+<h3>Mirror Operation<a class="headerlink" href="#mirror-operation" title="Permalink to this headline">¶</a></h3>
+<p>Remember: The world rectangle has its origin in the LLC and  the pixel rectangle has its origin
+in the ULC !</p>
+<p>There is a need for a mirroring operation. After the scale operation, we have already pixel
+values, but we must mirror the y value. The x value should not change. For mirroring,
+we must calculate:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">y_new</span> <span class="o">=</span> <span class="mi">300</span> <span class="o">-</span> <span class="n">y</span>
+</pre></div>
+</div>
+<ol class="arabic">
+<li><p class="first">Let us create the appropriate affine transform.</p>
+</li>
+<li><p class="first">Java Code</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="n">AffineTransform</span> <span class="n">mirror_y</span> <span class="o">=</span> <span class="k">new</span> <span class="n">AffineTransform</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">300</span><span class="o">);</span>
+<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Mirror:&quot;</span> <span class="o">+</span> <span class="n">mirror_y</span><span class="o">.</span><span class="na">toString</span><span class="o">());</span>
+<span class="n">p</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Point2D</span><span class="o">.</span><span class="na">Double</span><span class="o">(</span><span class="mi">100</span><span class="o">,</span><span class="mi">50</span><span class="o">);</span>
+<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">mirror_y</span><span class="o">.</span><span class="na">transform</span><span class="o">(</span><span class="n">p</span><span class="o">,</span> <span class="kc">null</span><span class="o">));</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Output:</p>
+<div class="highlight-python"><div class="highlight"><pre>Mirror:AffineTransform[[1.0, 0.0, 0.0], [0.0, -1.0, 300.0]]
+Point2D.Double[100.0, 250.0]
+</pre></div>
+</div>
+</li>
+<li><p class="first">The x value is unchanged, but the y value is mirrored.</p>
+</li>
+<li><p class="first">The matrix used is:</p>
+<div class="highlight-python"><div class="highlight"><pre>[  1.00  0.00   0.00 ]
+[  0.00 -1.00 300.00 ]
+[  0.00  0.00   1.00 ]
+</pre></div>
+</div>
+</li>
+<li><p class="first">The detailed calculation:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="mi">1</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">+</span>  <span class="mi">0</span> <span class="o">*</span> <span class="mi">50</span>  <span class="o">+</span> <span class="mi">1</span> <span class="o">*</span>   <span class="mi">0</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="mi">0</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">+</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="mi">50</span> <span class="o">+</span>  <span class="mi">1</span> <span class="o">*</span> <span class="mi">300</span> <span class="o">=</span> <span class="mi">250</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Using the output of the scale operation as the input for the scale operation, the result of all
+four corner points is:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="15%" />
+<col width="43%" />
+<col width="43%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Point</th>
+<th class="head">before</th>
+<th class="head">after</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>LLC</td>
+<td>0,    0</td>
+<td>0,  300</td>
+</tr>
+<tr class="row-odd"><td>ULC</td>
+<td>0,  300</td>
+<td>0,    0</td>
+</tr>
+<tr class="row-even"><td>URC</td>
+<td>400,  300</td>
+<td>400,    0</td>
+</tr>
+<tr class="row-odd"><td>LRC</td>
+<td>400,    0</td>
+<td>400,  300</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ol>
+</div>
+</div>
+<div class="section" id="matrix-magic">
+<h2>Matrix Magic<a class="headerlink" href="#matrix-magic" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="concatenation">
+<h3>Concatenation<a class="headerlink" href="#concatenation" title="Permalink to this headline">¶</a></h3>
+<div class="sidebar">
+<p class="first sidebar-title">Magic Part 1</p>
+<p class="last">The ability to concatenate transforms
+into a single matrix is vital to the
+performance of computer grapphics and GIS.</p>
+</div>
+<p>Until now, most of you will say that it is easier to write this calculations without the use of the AffineTransform class, be patient.
+We have created 3 AffineTransform objects, now we combine them. There is a method</p>
+<ul class="simple">
+<li>AffineTransform.concatenate(AffineTransform other)</li>
+</ul>
+<p>Which we will be introducing in this section. The only important thing to know is that you have
+to START with the LAST AffineTransform object, NOT with the first.</p>
+<ol class="arabic">
+<li><p class="first">Java Code</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="n">AffineTransform</span> <span class="n">world2pixel</span> <span class="o">=</span> <span class="k">new</span> <span class="n">AffineTransform</span><span class="o">(</span><span class="n">mirror_y</span><span class="o">);</span>
+<span class="n">world2pixel</span><span class="o">.</span><span class="na">concatenate</span><span class="o">(</span><span class="n">scale</span><span class="o">);</span>
+<span class="n">world2pixel</span><span class="o">.</span><span class="na">concatenate</span><span class="o">(</span><span class="n">translate</span><span class="o">);</span>
+<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;World2Pixel:&quot;</span> <span class="o">+</span> <span class="n">world2pixel</span><span class="o">.</span><span class="na">toString</span><span class="o">());</span>
+
+<span class="n">p</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Point2D</span><span class="o">.</span><span class="na">Double</span><span class="o">(</span><span class="mi">2000</span><span class="o">,</span><span class="mi">3000</span><span class="o">);</span>
+<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;LLC: &quot;</span> <span class="o">+</span> <span class="n">world2pixel</span><span class="o">.</span><span class="na">transform</span><span class="o">(</span><span class="n">p</span><span class="o">,</span><span class="kc">null</span><span class="o">));</span>
+<span class="n">p</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Point2D</span><span class="o">.</span><span class="na">Double</span><span class="o">(</span><span class="mi">2000</span><span class="o">,</span><span class="mi">12000</span><span class="o">);</span>
+<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;ULC: &quot;</span> <span class="o">+</span> <span class="n">world2pixel</span><span class="o">.</span><span class="na">transform</span><span class="o">(</span><span class="n">p</span><span class="o">,</span><span class="kc">null</span><span class="o">));</span>
+<span class="n">p</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Point2D</span><span class="o">.</span><span class="na">Double</span><span class="o">(</span><span class="mi">10000</span><span class="o">,</span><span class="mi">12000</span><span class="o">);</span>
+<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;URC: &quot;</span> <span class="o">+</span> <span class="n">world2pixel</span><span class="o">.</span><span class="na">transform</span><span class="o">(</span><span class="n">p</span><span class="o">,</span><span class="kc">null</span><span class="o">));</span>
+<span class="n">p</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Point2D</span><span class="o">.</span><span class="na">Double</span><span class="o">(</span><span class="mi">10000</span><span class="o">,</span><span class="mi">3000</span><span class="o">);</span>
+<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;LRC: &quot;</span> <span class="o">+</span> <span class="n">world2pixel</span><span class="o">.</span><span class="na">transform</span><span class="o">(</span><span class="n">p</span><span class="o">,</span><span class="kc">null</span><span class="o">));</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Output:</p>
+<div class="highlight-python"><div class="highlight"><pre>LLC: Point2D.Double[  0.0, 300.0]
+ULC: Point2D.Double[  0.0,   0.0]
+URC: Point2D.Double[400.0,   0.0]
+LRC: Point2D.Double[400.0, 300.0]
+</pre></div>
+</div>
+</li>
+<li><p class="first">The combined matrix is:</p>
+<div class="highlight-python"><div class="highlight"><pre>[  0.05  0.00 -100.00 ]
+[  0.00 -0.03  400.00 ]
+[  0.00  0.00    1.00 ]
+</pre></div>
+</div>
+</li>
+</ol>
+<ol class="arabic" start="5">
+<li><p class="first">Lets use LRC (10000,3000) to show a detailed calculation:</p>
+<div class="highlight-python"><div class="highlight"><pre>0.05 * 10000 +     0 * 3000 + 1 * -100  = 400
+0    * 10000 + -0.03.. 3000 + 1 *  400  = 300
+</pre></div>
+</div>
+</li>
+<li><p class="first">At the end of the day, you have exactly one AffineTransform object doing the job.</p>
+</li>
+</ol>
+<div class="section" id="graphics2d">
+<h4>Graphics2D<a class="headerlink" href="#graphics2d" title="Permalink to this headline">¶</a></h4>
+<p>As an example of the power of Affinetransformation, the java.awt.Graphics2D class has a method:</p>
+<ul class="simple">
+<li>Graphic2d.setTransform(AffineTransform tx)</li>
+</ul>
+<p>If you set our transform object in your Graphics2D object, you can draw and paint with world
+coordinates.</p>
+</div>
+</div>
+<div class="section" id="inversion">
+<h3>Inversion<a class="headerlink" href="#inversion" title="Permalink to this headline">¶</a></h3>
+<div class="sidebar">
+<p class="first sidebar-title">Magic Part II</p>
+<p class="last">The ability to invert a matrix and go
+the other way allows you to determine
+what a user clicked on.</p>
+</div>
+</div>
+<div class="section" id="create-an-inverse-transformation">
+<h3>Create an inverse transformation<a class="headerlink" href="#create-an-inverse-transformation" title="Permalink to this headline">¶</a></h3>
+<p>What about calculating world coordinates from pixel coordinates? This is a commonly asked in terms
+of &#8220;what did the user click on?&#8221;.</p>
+<p>This is easy, get the <strong>inverse</strong> transform as shown here:</p>
+<ol class="arabic">
+<li><p class="first">Look at this code segment.</p>
+<blockquote>
+<div><p>Java Code</p>
+</div></blockquote>
+<div class="highlight-java"><div class="highlight"><pre><span class="n">AffineTransform</span> <span class="n">pixel2World</span><span class="o">=</span><span class="kc">null</span><span class="o">;</span>
+<span class="k">try</span> <span class="o">{</span>
+    <span class="n">pixel2World</span> <span class="o">=</span> <span class="n">world2pixel</span><span class="o">.</span><span class="na">createInverse</span><span class="o">();</span>
+<span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">NoninvertibleTransformException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+<span class="o">}</span>
+<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Pixel2World:&quot;</span> <span class="o">+</span> <span class="n">pixel2World</span><span class="o">.</span><span class="na">toString</span><span class="o">());</span>
+
+<span class="n">p</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Point2D</span><span class="o">.</span><span class="na">Double</span><span class="o">(</span><span class="mi">200</span><span class="o">,</span><span class="mi">150</span><span class="o">);</span>
+<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;World : &quot;</span> <span class="o">+</span> <span class="n">pixel2World</span><span class="o">.</span><span class="na">transform</span><span class="o">(</span><span class="n">p</span><span class="o">,</span><span class="kc">null</span><span class="o">));</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Output:</p>
+<div class="highlight-python"><div class="highlight"><pre>Pixel2World:AffineTransform[[20.0, 0.0, 2000.0], [0.0, -30.0, 12000.0]]
+World : Point2D.Double[6000.0, 7500.0]
+</pre></div>
+</div>
+</li>
+<li><p class="first">The inverse matrix is:</p>
+<div class="highlight-python"><div class="highlight"><pre>[ 20.00  0.00 2000.00 ]
+[  0.00 -30.00 12000.00 ]
+[  0.00  0.00  1.00 ]
+</pre></div>
+</div>
+</li>
+<li><p class="first">Let us use the pixel values  200,150 (representing the center of the pixel rectangle) to show
+a detailed calculation:</p>
+<div class="highlight-python"><div class="highlight"><pre>20 * 200 +   0 * 150 + 1 * 2000 =  6000
+ 0 * 200 + -30 * 150 + 1* 12000 =  7500
+</pre></div>
+</div>
+</li>
+<li><p class="first">The point 6000,7500 is indeed the center of our world rectangle.</p>
+</li>
+<li><p class="first">The inversion result of our pixel corner points is:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="15%" />
+<col width="43%" />
+<col width="43%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Point</th>
+<th class="head">before</th>
+<th class="head">after</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>LLC</td>
+<td>0,  300</td>
+<td>2000, 3000</td>
+</tr>
+<tr class="row-odd"><td>ULC</td>
+<td>0,    0</td>
+<td>2000,12000</td>
+</tr>
+<tr class="row-even"><td>URC</td>
+<td>400,    0</td>
+<td>10000,12000</td>
+</tr>
+<tr class="row-odd"><td>LRC</td>
+<td>400,  300</td>
+<td>10000, 3000</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ol>
+<div class="admonition hint">
+<p class="first admonition-title">Hint</p>
+<p class="last">As an example, if you want to show the world coordinates while a user moves the mouse over a map,
+this transform is what you need.</p>
+</div>
+<div class="section" id="noninvertibletransformexception">
+<h4>NoninvertibleTransformException<a class="headerlink" href="#noninvertibletransformexception" title="Permalink to this headline">¶</a></h4>
+<p>It can happen that a matrix is not invertible. This chapter is for the interested reader, if you
+dislike mathematics, you can skip it. The only import thing you should now is that for this kind
+of matrices the exception can never occur.</p>
+<p>A matrix has a determinant. For creating the inverse matrix, divisions by the determinant are
+needed. As we know from school, it is not  allowed to divide by zero. As a consequence, the
+determinant with value 0 prevents the creation of an inverse matrix.</p>
+<ul>
+<li><p class="first">For a 2x2 matrix:</p>
+<div class="highlight-python"><div class="highlight"><pre>[ a b ]
+[ c d ]
+</pre></div>
+</div>
+</li>
+</ul>
+<blockquote>
+<div><p>the determinant is:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">a</span><span class="o">*</span><span class="n">d</span> <span class="o">-</span> <span class="n">c</span><span class="o">*</span><span class="n">b</span>
+</pre></div>
+</div>
+</div></blockquote>
+<ul>
+<li><p class="first">For a 3x3 matrix:</p>
+<div class="highlight-python"><div class="highlight"><pre>[ a b c]
+[ d e f]
+[ g h i]
+</pre></div>
+</div>
+<p>the determinant is:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">a</span> <span class="o">*</span> <span class="p">(</span> <span class="n">e</span><span class="o">*</span><span class="n">i</span><span class="o">-</span><span class="n">h</span><span class="o">*</span><span class="n">f</span> <span class="p">)</span> <span class="o">-</span> <span class="n">d</span> <span class="o">*</span> <span class="p">(</span><span class="n">b</span><span class="o">*</span><span class="n">i</span> <span class="o">-</span><span class="n">h</span> <span class="o">*</span><span class="n">c</span><span class="p">)</span> <span class="o">+</span> <span class="n">g</span> <span class="o">*</span> <span class="p">(</span> <span class="n">b</span><span class="o">*</span><span class="n">f</span> <span class="o">-</span><span class="n">e</span> <span class="o">*</span><span class="n">c</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>Fortunately, our matrices always have g = 0,  h = 0 and i = 1.</p>
+<ul>
+<li><p class="first">Setting 0 for g results in:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">a</span> <span class="o">*</span> <span class="p">(</span> <span class="n">e</span><span class="o">*</span><span class="n">i</span><span class="o">-</span><span class="n">h</span><span class="o">*</span><span class="n">f</span> <span class="p">)</span> <span class="o">-</span> <span class="n">d</span> <span class="o">*</span> <span class="p">(</span><span class="n">b</span><span class="o">*</span><span class="n">i</span> <span class="o">-</span><span class="n">h</span> <span class="o">*</span><span class="n">c</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Setting i to 1 results in:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">a</span> <span class="o">*</span> <span class="p">(</span> <span class="n">e</span><span class="o">-</span><span class="n">h</span><span class="o">*</span><span class="n">f</span> <span class="p">)</span> <span class="o">-</span> <span class="n">d</span> <span class="o">*</span> <span class="p">(</span><span class="n">b</span> <span class="o">-</span><span class="n">h</span> <span class="o">*</span><span class="n">c</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Finally, we set h to 0:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">a</span> <span class="o">*</span> <span class="n">e</span> <span class="o">-</span> <span class="n">d</span> <span class="o">*</span> <span class="n">b</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>This is in fact the same calculation as for the 2x2 matrix.</p>
+<ol class="arabic">
+<li><p class="first">Let as construct such a matrix</p>
+<div class="highlight-java"><div class="highlight"><pre>    <span class="n">AffineTransform</span> <span class="n">noInvert</span> <span class="o">=</span> <span class="k">new</span> <span class="n">AffineTransform</span><span class="o">(</span><span class="mi">5</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">5</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="mi">0</span><span class="o">);</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;NoInvert : &quot;</span><span class="o">+</span><span class="n">noInvert</span><span class="o">.</span><span class="na">toString</span><span class="o">());</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Determinant : &quot;</span><span class="o">+</span><span class="n">noInvert</span><span class="o">.</span><span class="na">getDeterminant</span><span class="o">());</span>
+    <span class="k">try</span> <span class="o">{</span>
+    <span class="n">noInvert</span><span class="o">.</span><span class="na">createInverse</span><span class="o">();</span>
+<span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">NoninvertibleTransformException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Output:</p>
+<div class="highlight-python"><div class="highlight"><pre>NoInvert : AffineTransform[[5.0, 5.0, 0.0], [3.0, 3.0, 0.0]]
+Determinant : 0.0
+java.awt.geom.NoninvertibleTransformException: Determinant is 0.0
+    at java.awt.geom.AffineTransform.createInverse(AffineTransform.java:2666)
+    at at.linux4all.affine.TestAffineTransform.test(TestAffineTransform.java:164)
+    at at.linux4all.affine.TestAffineTransform.main(TestAffineTransform.java:84)
+</pre></div>
+</div>
+</li>
+<li><p class="first">Remember, our matrix for world to pixel transformation was:</p>
+<div class="highlight-python"><div class="highlight"><pre>[  0.05  0.00 -100.00 ]
+[  0.00 -0.03  400.00 ]
+[  0.00  0.00    1.00 ]
+</pre></div>
+</div>
+</li>
+<li><p class="first">The determinant is:</p>
+<div class="highlight-python"><div class="highlight"><pre>0.05 *  (-0.03..) - 0 * 0
+</pre></div>
+</div>
+</li>
+<li><p class="first">which is not equal 0 and we can create the inverse matrix.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="section" id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline">¶</a></h2>
+<p>I hope this tutorial helps to demystify affine transforms, once you are used to working with them
+you will never return to doing coordinate calculations &#8220;by hand&#8221;.</p>
+<p>Take a look at the Java API of the java.awt.geom.AffineTransform class to see further
+possibilities. (rotate, shear,...)</p>
+</div>
+<div class="section" id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Java AffineTransform <a class="reference external" href="http://download.oracle.com/javase/6/docs/api/java/awt/geom/AffineTransform.html">class javadocs</a>.</li>
+</ul>
+<ul class="simple">
+<li>Wikipedia article on <a class="reference external" href="http://en.wikipedia.org/wiki/Affine_transformation">affine transformation</a>.</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="factory.html" title="Factory Tutorial"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="map/style.html" title="Map Style Tutorial"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="index.html" >Tutorials</a> &raquo;</li>
+        <li><a href="#">AffineTransformation Tutorial</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>

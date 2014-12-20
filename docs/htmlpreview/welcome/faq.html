@@ -1,0 +1,391 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>GeoTools FAQ &mdash; GeoTools 13-SNAPSHOT User Guide</title>
+    
+    <link rel="stylesheet" href="../_static/geotools.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '13-SNAPSHOT',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../index.html" />
+    <link rel="up" title="Welcome" href="index.html" />
+    <link rel="next" title="Welcome Eclipse Developers" href="eclipse.html" />
+    <link rel="prev" title="Integration" href="integration.html" /> 
+  </head>
+  <body role="document">
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            <!--div id="searchbox">
+                <form class="search" action="../search.html" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="../_static/img/search_icon_green.png" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+        </div>
+    </div>
+
+    <div class="related">
+      <ul id="breadcrumbs">
+        <li><a href="../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Welcome</a> &raquo;</li>
+        <li><a href="#">GeoTools FAQ</a></li>
+      </ul>
+    </div> 
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">GeoTools FAQ</a><ul>
+<li><a class="reference internal" href="#q-what-is-geotools">Q: What is GeoTools ?</a></li>
+<li><a class="reference internal" href="#q-how-do-i-search-the-archives-of-the-geotools-mailing-lists">Q: How do I search the archives of the GeoTools mailing lists?</a></li>
+<li><a class="reference internal" href="#q-what-are-the-features-of-the-geotools-library">Q: What are the features of the GeoTools Library?</a></li>
+<li><a class="reference internal" href="#q-okay-what-data-formats-does-geotools-support">Q: Okay what data formats does GeoTools support?</a></li>
+<li><a class="reference internal" href="#geotools-versions">GeoTools versions</a><ul>
+<li><a class="reference internal" href="#q-how-are-geotools-versions-organized">Q. How are GeoTools versions organized?</a></li>
+<li><a class="reference internal" href="#q-what-is-a-snapshot-version-and-how-do-i-use-it">Q. What is a SNAPSHOT version and how do I use it?</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#common-license-questions">Common License Questions</a><ul>
+<li><a class="reference internal" href="#q-what-licence-does-geotools-use">Q: What licence does GeoTools use?</a></li>
+<li><a class="reference internal" href="#q-can-i-use-geotools-in-my-commercial-project">Q: Can I use GeoTools in my Commercial Project?</a></li>
+<li><a class="reference internal" href="#q-can-i-use-geotools-in-my-gpl-project">Q: Can I use GeoTools in my GPL Project?</a></li>
+<li><a class="reference internal" href="#q-what-restrictions-are-there-on-my-use-of-geotools">Q: What restrictions are there on my use of GeoTools?</a></li>
+<li><a class="reference internal" href="#q-what-restrictions-are-there-on-my-re-distribution-of-geotools">Q: What restrictions are there on my re-distribution of GeoTools?</a></li>
+<li><a class="reference internal" href="#q-what-should-i-do-if-i-am-still-unsure-what-i-am-allowed-to-do">Q: What should I do if I am still unsure what I am allowed to do?</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#q-why-can-t-i-find-module-x-in-the-geotools-distribution-or-javadocs">Q: Why can&#8217;t I find module X in the GeoTools distribution or javadocs?</a></li>
+<li><a class="reference internal" href="#q-what-is-an-unsupported-module">Q: What is an unsupported module?</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="integration.html"
+                        title="previous chapter">Integration</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="eclipse.html"
+                        title="next chapter">Welcome Eclipse Developers</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/welcome/faq.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="geotools-faq">
+<h1>GeoTools FAQ<a class="headerlink" href="#geotools-faq" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="q-what-is-geotools">
+<h2>Q: What is GeoTools ?<a class="headerlink" href="#q-what-is-geotools" title="Permalink to this headline">¶</a></h2>
+<p>GeoTools is a free, open source Java geospatial toolkit for working with both vector and raster data. It is made up of a
+large number of modules that allow you to:</p>
+<blockquote>
+<div><ul class="simple">
+<li>access GIS data in many file formats and spatial databases</li>
+<li>work with an extensive range of map projections</li>
+<li>filter and analyze data in terms of spatial and non-spatial attributes</li>
+<li>compose and display maps with complex styling</li>
+<li>create and analyze graphs and networks</li>
+</ul>
+</div></blockquote>
+<p>GeoTools implements specifications of the <a class="reference external" href="http://www.osgeo.org/">Open Geospatial Consortium</a> including:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Simple Features</li>
+<li>GridCoverage</li>
+<li>Styled Layer Descriptor</li>
+<li>Filter Encoding</li>
+</ul>
+</div></blockquote>
+<p>GeoTools can be readily extended by adding new modules, either for custom applications or as contributions to the
+library.</p>
+</div>
+<div class="section" id="q-how-do-i-search-the-archives-of-the-geotools-mailing-lists">
+<h2>Q: How do I search the archives of the GeoTools mailing lists?<a class="headerlink" href="#q-how-do-i-search-the-archives-of-the-geotools-mailing-lists" title="Permalink to this headline">¶</a></h2>
+<p>Go to <a class="reference external" href="http://n2.nabble.com/GeoTools-the-java-GIS-toolkit-f1936684.html">this page</a>.</p>
+</div>
+<div class="section" id="q-what-are-the-features-of-the-geotools-library">
+<h2>Q: What are the features of the GeoTools Library?<a class="headerlink" href="#q-what-are-the-features-of-the-geotools-library" title="Permalink to this headline">¶</a></h2>
+<p>That is a hard question to answer as GeoTools is a general purpose geospatial library.</p>
+<p>Here is a sample of some of the great features in the library today:</p>
+<ul class="simple">
+<li>Supports OGC Grid Coverage implementation</li>
+<li>Coordinate reference system and transformation support</li>
+<li>Symbology using OGC Styled Layer Descriptor (SLD) specification</li>
+<li>Attribute and spatial filters using OGC Filter Encoding specification</li>
+<li>Supports graphs and networks</li>
+<li>Java Topology Suite (JTS) - with support for the OGC Simple Features Specification - used as the geometry model for vector features.</li>
+<li>A stateless, low memory renderer, particularly useful in server-side environments</li>
+<li>Powerful &#8220;schema asisted&#8221; parsing technology using XML Schema to bind to GML content</li>
+<li>Interact with OGC web services with both Web Map Server and Web Feature Server support</li>
+<li>Open plug-in system allowing you to teach the library additional formats</li>
+<li>Plug-ins for the ImageIO-EXT project allowing GeoTools to read additional raster formats from GDAL</li>
+</ul>
+</div>
+<div class="section" id="q-okay-what-data-formats-does-geotools-support">
+<h2>Q: Okay what data formats does GeoTools support?<a class="headerlink" href="#q-okay-what-data-formats-does-geotools-support" title="Permalink to this headline">¶</a></h2>
+<p>GeoTools supports additional formats through the use of plug-ins. You can control the formats supported
+by your application by only including the plug-ins you requrie.</p>
+<ul class="simple">
+<li>arcgrid</li>
+<li>arcsde</li>
+<li>db2</li>
+<li>raster formats<ul>
+<li>geotiff</li>
+<li>grassraster</li>
+<li>gtopo30</li>
+<li>image - world plus image files using common image formats such as JPEG, TIFF, GIF and PNG</li>
+<li>imageio-ext-gdal (allows access to additional GDAL formats thanks to the ImageIO project)</li>
+<li>imagemoasaic</li>
+<li>imagepyramid</li>
+<li>JP2K</li>
+</ul>
+</li>
+<li>Database &#8220;jdbc-ng&#8221; support<ul>
+<li>h2</li>
+<li>mysql</li>
+<li>oracle</li>
+<li>postgis</li>
+<li>spatialite</li>
+<li>sqlserver</li>
+</ul>
+</li>
+<li>postgis</li>
+<li>property - simple text file format often used for testing</li>
+<li>shapefile</li>
+</ul>
+<p>Perhaps one of the unsupported modules or plugins may have what you need. These modules
+are supplied by the community and do not yet meet the quality expected by the library:</p>
+<p>There are also some &#8220;unsupported&#8221; formats that are either popular or under development:</p>
+<ul class="simple">
+<li>app-schema (under development) - allows the remapping and combining of one or more data sources into a provided application schema</li>
+<li>dfx</li>
+<li>edigeo</li>
+<li>geojson</li>
+<li>wfs</li>
+</ul>
+<p>The current authoritative list of plugins is of course the source code:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://svn.osgeo.org/geotools/trunk/modules/plugin/">http://svn.osgeo.org/geotools/trunk/modules/plugin/</a></li>
+<li><a class="reference external" href="http://svn.osgeo.org/geotools/trunk/modules/unsupported/">http://svn.osgeo.org/geotools/trunk/modules/unsupported/</a></li>
+</ul>
+</div>
+<div class="section" id="geotools-versions">
+<h2>GeoTools versions<a class="headerlink" href="#geotools-versions" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="q-how-are-geotools-versions-organized">
+<h3>Q. How are GeoTools versions organized?<a class="headerlink" href="#q-how-are-geotools-versions-organized" title="Permalink to this headline">¶</a></h3>
+<p>Like many open source projects, GeoTools has a <em>development</em> version and one or more <em>stable</em> versions active at any
+given time. By active, we mean that the project developers are working on new features, improvements and bug fixes.</p>
+<p>Source code for the stable branch(es) can be found in the <em>branches</em> folder of the GeoTools subversion repository. For
+example, at the time of writing the active stable branch is <a class="reference external" href="http://svn.osgeo.org/geotools/branches/2.7.x/">branches/2.7.x</a>.</p>
+<p>Formal releases are based on a stable branch. The source code for a formal release is archived in the <em>tags</em> folder of
+the subversion repository. For example, the version 2.7.1 sources can be found in
+<a class="reference external" href="http://svn.osgeo.org/geotools/tags/2.7.1/">tags/2.7.1</a>.</p>
+<p>Source code for the development version are in the <a class="reference external" href="http://svn.osgeo.org/geotools/trunk/">trunk</a> folder. This is the
+bleeding edge code where the latest features are being worked on. Eventually this code will become the next stable
+branch.</p>
+<p>Commencing with GeoTools version 8, a major.minor.patch numbering system applies.</p>
+<dl class="docutils">
+<dt>major</dt>
+<dd>An increment of the major identifier (e.g. from version 8.x.y to 9.0.0) indicates substantial changes that can break
+binary compatibility with previous versions.</dd>
+<dt>minor</dt>
+<dd>An increment in the minor identifier (e.g. from version 8.0.y to 8.1.y) indicates new features and/or improvements
+that do not break binary compatibility with the previous version.</dd>
+<dt>patch</dt>
+<dd>An increment in the patch identifier (e.g. from version 8.0.0 to 8.0.1) indicates fixes and minor tweaks since the
+previous version.</dd>
+</dl>
+</div>
+<div class="section" id="q-what-is-a-snapshot-version-and-how-do-i-use-it">
+<h3>Q. What is a SNAPSHOT version and how do I use it?<a class="headerlink" href="#q-what-is-a-snapshot-version-and-how-do-i-use-it" title="Permalink to this headline">¶</a></h3>
+<p>A snapshot is the GeoTools code that the developers are actively working on. Usually there will be two active snapshots:
+one associated with the most recent formal release (e.g GeoTools 2.7-SNAPSHOT) and a second for the development version
+(e.g. GeoTools 8-SNAPSHOT). At times there will also be snapshot releases for an earlier stable branch that is still
+being maintained (e.g. GeoTools 2.6-SNAPSHOT).</p>
+<p>New snapshot jars are built nightly and deployed to a repository separate from the one used for formal releases. If you
+are using Maven as your build tool you can work with a snapshot release by adding the following to your pom.xml:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;repository&gt;
+    &lt;id&gt;opengeo&lt;/id&gt;
+    &lt;name&gt;OpenGeo Maven Repository&lt;/name&gt;
+    &lt;url&gt;http://repo.opengeo.org/&lt;/url&gt;
+    &lt;snapshots&gt;
+        &lt;enabled&gt;true&lt;/enabled&gt;
+    &lt;/snapshots&gt;
+&lt;/repository&gt;
+</pre></div>
+</div>
+<p>You can now build your project against a snapshot release by setting it as the your version property as shown here:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;properties&gt;
+    &lt;geotools.version&gt;8-SNAPSHOT&lt;/geotools.version&gt;
+&lt;/properties&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="common-license-questions">
+<h2>Common License Questions<a class="headerlink" href="#common-license-questions" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="q-what-licence-does-geotools-use">
+<h3>Q: What licence does GeoTools use?<a class="headerlink" href="#q-what-licence-does-geotools-use" title="Permalink to this headline">¶</a></h3>
+<p>All GeoTools modules are released under the GNU Lesser General Public License (LGPL). GeoTools can be used for
+commercial applications, any changes made to GeoTools need to be made available to your customers.</p>
+<p>An easy way to do this is to contribute the changes back to the GeoTools project (but this is not required).</p>
+</div>
+<div class="section" id="q-can-i-use-geotools-in-my-commercial-project">
+<h3>Q: Can I use GeoTools in my Commercial Project?<a class="headerlink" href="#q-can-i-use-geotools-in-my-commercial-project" title="Permalink to this headline">¶</a></h3>
+<p>Yes. This is one of the reasons we chose the LGPL license. You can build a
+Commercial application which uses GeoTools as a library and re-distribute your
+application under any license you choose. Your users will get a license to your
+application under the terms of your license and a license to the GeoTools
+library under the terms of the LGPL. You only need to give your users some way
+to get the source code of the GeoTools library, most easily by pointing your
+users to the servers of the GeoTools project.</p>
+<p>However, if you choose to modify the GeoTools library itself, then you have to
+publish the source code to those changes to the users of your application.</p>
+<p>The easiest way to do that will be to submit those changes back to the GeoTools
+project so the changes can be incorporated into the core source code.</p>
+</div>
+<div class="section" id="q-can-i-use-geotools-in-my-gpl-project">
+<h3>Q: Can I use GeoTools in my GPL Project?<a class="headerlink" href="#q-can-i-use-geotools-in-my-gpl-project" title="Permalink to this headline">¶</a></h3>
+<p>Yes. This is one of the reasons we chose the LGPL license. You can build a free
+software application which uses GeoTools as a library and re-distribute your
+application under the GPL license. Your users will get a license to your
+application under the terms of the GPL and a license to the GeoTools library
+under the terms of the LGPL. You only need to give your users some way to get
+the source code of the GeoTools library, either by pointing your users to the
+servers of the GeoTools project or by giving them the GeoTools code in the same
+way you give them the code to your GPL application.</p>
+<p>However, if you choose to modify the GeoTools library itself, then you have to
+publish the source code to those changes to your users.</p>
+<p>The easiest way to do that will be to submit those changes back to the GeoTools
+project so the changes can be incorporated into the core source code.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This means you can use GeoTools as a library but you cannot
+incorporate GeoTools code directly into your GLP application. Legally, the
+latter amounts to re-licensing GeoTools under a new license and you do not have
+the right to do so.</p>
+</div>
+</div>
+<div class="section" id="q-what-restrictions-are-there-on-my-use-of-geotools">
+<h3>Q: What restrictions are there on my use of GeoTools?<a class="headerlink" href="#q-what-restrictions-are-there-on-my-use-of-geotools" title="Permalink to this headline">¶</a></h3>
+<p>None. You can read, run, copy, or do anything else you want to do with the
+GeoTools code. This is one of the four core freedoms of free software which we
+grant you under the LGPL: the freedom to use the software for any purpose you
+choose.</p>
+<p>The only restrictions of the LGPL come when you are re-distributing GeoTools,
+that is when you are passing it on to someone else either on its own or as part
+of a larger product, such as when you share it or sell it.</p>
+</div>
+<div class="section" id="q-what-restrictions-are-there-on-my-re-distribution-of-geotools">
+<h3>Q: What restrictions are there on my re-distribution of GeoTools?<a class="headerlink" href="#q-what-restrictions-are-there-on-my-re-distribution-of-geotools" title="Permalink to this headline">¶</a></h3>
+<p>Technically, you have to provide everyone who receives a copy of GeoTools from
+you with some way to get the source code to the library. In practice, pointing
+those users to the Geotools project itself is considered an adequate solution.</p>
+<p>However, if you are re-distributing a modified version of GeoTools then you
+need to provide users with access to the modified code. This means that you
+must give your users some way to get the modified code such as by publishing it
+yourself. An alternative way to provide your users with the modifications would
+be to work with us to get your changes integrated into the GeoTools library&#8211;
+-you could then use the new library directly. The best way to do this would be
+to open a change request on our issue tracker and add to that request a code
+patch containing your changes.</p>
+</div>
+<div class="section" id="q-what-should-i-do-if-i-am-still-unsure-what-i-am-allowed-to-do">
+<h3>Q: What should I do if I am still unsure what I am allowed to do?<a class="headerlink" href="#q-what-should-i-do-if-i-am-still-unsure-what-i-am-allowed-to-do" title="Permalink to this headline">¶</a></h3>
+<p>You can clarify any questions you have by sending us questions to the user
+mailing list:</p>
+<ul class="simple">
+<li><a class="reference external" href="mailto:geotools-gt2-users&#37;&#52;&#48;lists&#46;sourceforge&#46;net">geotools-gt2-users<span>&#64;</span>lists<span>&#46;</span>sourceforge<span>&#46;</span>net</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="q-why-can-t-i-find-module-x-in-the-geotools-distribution-or-javadocs">
+<h2>Q: Why can&#8217;t I find module X in the GeoTools distribution or javadocs?<a class="headerlink" href="#q-why-can-t-i-find-module-x-in-the-geotools-distribution-or-javadocs" title="Permalink to this headline">¶</a></h2>
+<p>If you&#8217;re working with a recent GeoTools release then chances are the module that you&#8217;re looking for is an
+<a class="reference internal" href="../unsupported/index.html"><em>unsupported module</em></a>. These modules not part of the standard GeoTools distribution but are
+available from the <a class="reference external" href="http://svn.osgeo.org/geotools">Subversion repository</a> in the <strong>modules/unsupported</strong> folder. If
+you are using Maven as your build tool you can include a dependency for an unsupported module as you would any other
+GeoTools module.</p>
+</div>
+<div class="section" id="q-what-is-an-unsupported-module">
+<h2>Q: What is an unsupported module?<a class="headerlink" href="#q-what-is-an-unsupported-module" title="Permalink to this headline">¶</a></h2>
+<p>Unsupported modules are those found in the <strong>modules/unsupported</strong> folder of each GeoTools version in the <a class="reference external" href="http://svn.osgeo.org/geotools">Subversion
+repository</a>. They are not part of the standard GeoTools distribution but are still
+available for use via Subversion, Maven and manual download.</p>
+<p>A module can be unsupported for one or more of the following reasons:</p>
+<ul class="simple">
+<li>It is under development and has not yet met all of the criteria for usability, test coverage, documentation etc to be
+included in the general GeoTools distribution.</li>
+<li>It lacks a module maintainer.</li>
+<li>It has been superseded by another module and dropped from the general distribution, but still has enough useful bits
+or active users to make it worth keeping (at least for a while).</li>
+</ul>
+<p>Unsupported modules are a mixed bag: some are reliable and regularly used while others are in various states of
+development or decay. The best way to find out the status of any particular module is to look in the <a class="reference external" href="http://n2.nabble.com/geotools-gt2-users-f1936685.html">user list archives</a> and then, if you want to check further, post a question to the
+list.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="eclipse.html" title="Welcome Eclipse Developers"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="integration.html" title="Integration"
+                 accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="index.html" >Welcome</a> &raquo;</li>
+        <li><a href="#">GeoTools FAQ</a></li>
+      </ul>
+    </div> 
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, GeoTools.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+    </div>
+  </body>
+</html>
