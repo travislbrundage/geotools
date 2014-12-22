@@ -23,7 +23,10 @@
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../index.html" /> 
+    <link rel="top" title="GeoTools 13-SNAPSHOT User Guide" href="../../index.html" />
+    <link rel="up" title="ContentDataStore Tutorial" href="index.html" />
+    <link rel="next" title="Library" href="../../library/index.html" />
+    <link rel="prev" title="Quality Assurance" href="qa.html" /> 
   </head>
   <body role="document">
     <div class="header">
@@ -51,6 +54,8 @@
     <div class="related">
       <ul id="breadcrumbs">
         <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Tutorials</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">ContentDataStore Tutorial</a> &raquo;</li>
         <li><a href="#">Strategy Patterns</a></li>
       </ul>
     </div> 
@@ -77,6 +82,12 @@
 </li>
 </ul>
 
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="qa.html"
+                        title="previous chapter">Quality Assurance</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../../library/index.html"
+                        title="next chapter">Library</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -128,7 +139,7 @@
 </pre></div>
 </div>
 </div></blockquote>
-<p>Using the CSVFileState to do work for us, the createTypeNames() method is much simpler.</p>
+<p>Using the CSVFileState to do work for us, the <strong>createTypeNames()</strong> method is much simpler.</p>
 <blockquote>
 <div><div class="highlight-java"><div class="highlight"><pre>    <span class="kd">public</span> <span class="n">Name</span> <span class="nf">getTypeName</span><span class="o">()</span> <span class="o">{</span>
         <span class="k">return</span> <span class="k">new</span> <span class="n">NameImpl</span><span class="o">(</span><span class="n">csvFileState</span><span class="o">.</span><span class="na">getTypeName</span><span class="o">());</span>
@@ -141,7 +152,7 @@
 </pre></div>
 </div>
 </div></blockquote>
-<p>CSVDataStore now implements the FileDataStore interface to ensure a standard for operations which are performed by File DataStores. As such, it must override its methods. Note the use of the CSVStrategy in order to determine the schema; depending on the strategy defined, the schema for this store will be different. For this implementation, the CSVDataStore is read only, so the write methods throw a new UnsupportedOperationException.</p>
+<p>CSVDataStore now implements the FileDataStore interface to ensure a standard for operations which are performed by FileDataStores. As such, it must override its methods. Note the use of the CSVStrategy in order to determine the schema. Depending on the strategy defined, the schema for this store will be different. For this implementation, the CSVDataStore is read only, so the write methods throw a new UnsupportedOperationException.</p>
 <blockquote>
 <div><div class="highlight-java"><div class="highlight"><pre>    <span class="kd">public</span> <span class="n">SimpleFeatureType</span> <span class="nf">getSchema</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
         <span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">csvStrategy</span><span class="o">.</span><span class="na">getFeatureType</span><span class="o">();</span>
@@ -185,7 +196,7 @@
 </div>
 <div class="section" id="csvdatastorefactory">
 <h2>CSVDataStoreFactory<a class="headerlink" href="#csvdatastorefactory" title="Permalink to this headline">¶</a></h2>
-<p>The new architecture with the added strategy objects expands the CSVDataStoreFactory&#8217;s capabilities; it comprises of more Param fields now.</p>
+<p>The new architecture with the added strategy objects expands the CSVDataStoreFactory&#8217;s capabilities. It comprises of more Param fields now.</p>
 <blockquote>
 <div><div class="highlight-java"><div class="highlight"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CSVDataStoreFactory</span> <span class="kd">implements</span> <span class="n">FileDataStoreFactorySpi</span> <span class="o">{</span>
 
@@ -234,7 +245,7 @@
 </pre></div>
 </div>
 </div></blockquote>
-<p>isAvailable() just attempts to read the class, and if it succeeds, returns true.</p>
+<p>The method <strong>isAvailable()</strong> just attempts to read the class, and if it succeeds, returns true.</p>
 <blockquote>
 <div><div class="highlight-java"><div class="highlight"><pre>    <span class="nd">@Override</span>
     <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">isAvailable</span><span class="o">()</span> <span class="o">{</span>
@@ -248,7 +259,7 @@
 </pre></div>
 </div>
 </div></blockquote>
-<p>The canProcess() method was made more tolerant, now accepting URL and File params through the fileFromParams() method. It will try File first, then URL before giving up.</p>
+<p>The <strong>canProcess(Map&lt;String, Serializable&gt; params)</strong> method was made more tolerant, now accepting URL and File params through the <strong>fileFromParams(Map&lt;String, Serializable&gt; params)</strong> method. It will try File first, then URL before giving up.</p>
 <blockquote>
 <div><div class="highlight-java"><div class="highlight"><pre>    <span class="kd">private</span> <span class="kt">boolean</span> <span class="nf">canProcessExtension</span><span class="o">(</span><span class="n">String</span> <span class="n">filename</span><span class="o">)</span> <span class="o">{</span>
         <span class="n">String</span> <span class="n">extension</span> <span class="o">=</span> <span class="n">FilenameUtils</span><span class="o">.</span><span class="na">getExtension</span><span class="o">(</span><span class="n">filename</span><span class="o">);</span>
@@ -281,7 +292,7 @@
 </pre></div>
 </div>
 </div></blockquote>
-<p>Finally, the different strategies are implemented in the createDataStoreFromFile() method. The method is overloaded to make some parameters optional, which the class will then fill in for us.</p>
+<p>Finally, the different strategies are implemented in the <strong>createDataStoreFromFile()</strong> method. The method is overloaded to make some parameters optional, which the class will then fill in for us.</p>
 <blockquote>
 <div><div class="highlight-java"><div class="highlight"><pre>    <span class="kd">public</span> <span class="n">FileDataStore</span> <span class="nf">createDataStoreFromFile</span><span class="o">(</span><span class="n">File</span> <span class="n">file</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
         <span class="k">return</span> <span class="n">createDataStoreFromFile</span><span class="o">(</span><span class="n">file</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
@@ -463,7 +474,7 @@
 </pre></div>
 </div>
 </div></blockquote>
-<p>The getBoundsInternal() method is now implemented by making use of the methods provdied by ContentFeatureSource. A new ReferencedEnvelope is created to store the bounds for this feature source. It uses the feature type (getSchema()) to determine the CRS (getCoordinateReferenceSystem()) - this information is used to correctly construct the bounds for the feature. The FeatureReader is now created by using the Query and CSVStrategy - the getReader() method calls getReaderInternal() which shows how it is created. Finally, using the reader, the features are cycled through and included in the bounds in order to calculate the bounds for this entire datastore.</p>
+<p>The <strong>getBoundsInternal(Query query)</strong> method is now implemented by making use of the methods provdied by ContentFeatureSource. A new ReferencedEnvelope is created to store the bounds for this feature source. It uses the feature type (<strong>getSchema()</strong>) to determine the CRS (<strong>getCoordinateReferenceSystem()</strong>) - this information is used to construct the bounds for the feature. The FeatureReader is now created by using the Query and CSVStrategy - the <strong>getReader()</strong> method calls <strong>getReaderInternal(Query query)</strong> which shows how it is created. Finally, using the reader, the features are cycled through and included in the bounds in order to calculate the bounds for this entire datastore.</p>
 <blockquote>
 <div><div class="highlight-java"><div class="highlight"><pre>    <span class="kd">protected</span> <span class="n">ReferencedEnvelope</span> <span class="nf">getBoundsInternal</span><span class="o">(</span><span class="n">Query</span> <span class="n">query</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
         <span class="n">ReferencedEnvelope</span> <span class="n">bounds</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ReferencedEnvelope</span><span class="o">(</span><span class="n">getSchema</span><span class="o">()</span>
@@ -482,9 +493,9 @@
 </pre></div>
 </div>
 </div></blockquote>
-<p>The getReaderInternal() method now utilizes the strategy of the CSVDataStore rather than state to reflect the changes to the CSVFeatureReader design.</p>
+<p>The <strong>getReaderInternal(Query query)</strong> method now utilizes the strategy of the CSVDataStore rather than state to reflect the changes to the CSVFeatureReader design.</p>
 <blockquote>
-<div><div class="highlight-java"><div class="highlight"><pre><span class="kd">protected</span> <span class="n">FeatureReader</span><span class="o">&lt;</span><span class="n">SimpleFeatureType</span><span class="o">,</span> <span class="n">SimpleFeature</span><span class="o">&gt;</span> <span class="nf">getReaderInternal</span><span class="o">(</span><span class="n">Query</span> <span class="n">query</span><span class="o">)</span>
+<div><div class="highlight-java"><div class="highlight"><pre>    <span class="kd">protected</span> <span class="n">FeatureReader</span><span class="o">&lt;</span><span class="n">SimpleFeatureType</span><span class="o">,</span> <span class="n">SimpleFeature</span><span class="o">&gt;</span> <span class="nf">getReaderInternal</span><span class="o">(</span><span class="n">Query</span> <span class="n">query</span><span class="o">)</span>
             <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
         <span class="n">CSVDataStore</span> <span class="n">dataStore</span> <span class="o">=</span> <span class="n">getDataStore</span><span class="o">();</span>
         <span class="k">return</span> <span class="k">new</span> <span class="n">CSVFeatureReader</span><span class="o">(</span><span class="n">dataStore</span><span class="o">.</span><span class="na">getCSVStrategy</span><span class="o">(),</span> <span class="n">query</span><span class="o">);</span>
@@ -492,9 +503,9 @@
 </pre></div>
 </div>
 </div></blockquote>
-<p>getCountInternal() uses the same idea as getBoundsInternal() - it now utilizes the Query and CSVStrategy to obtain a FeatureReader, then simply counts them.</p>
+<p>The <strong>getCountInternal(Query query)</strong> method uses the same idea as <strong>getBoundsInternal(Query query)</strong> - it now utilizes the Query and CSVStrategy to obtain a FeatureReader, then simply counts them.</p>
 <blockquote>
-<div><div class="highlight-java"><div class="highlight"><pre><span class="kd">protected</span> <span class="kt">int</span> <span class="nf">getCountInternal</span><span class="o">(</span><span class="n">Query</span> <span class="n">query</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+<div><div class="highlight-java"><div class="highlight"><pre>    <span class="kd">protected</span> <span class="kt">int</span> <span class="nf">getCountInternal</span><span class="o">(</span><span class="n">Query</span> <span class="n">query</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
         <span class="n">FeatureReader</span><span class="o">&lt;</span><span class="n">SimpleFeatureType</span><span class="o">,</span> <span class="n">SimpleFeature</span><span class="o">&gt;</span> <span class="n">featureReader</span> <span class="o">=</span> <span class="n">getReader</span><span class="o">(</span><span class="n">query</span><span class="o">);</span>
         <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
         <span class="k">try</span> <span class="o">{</span>
@@ -509,18 +520,18 @@
 </pre></div>
 </div>
 </div></blockquote>
-<p>The buildFeatureType() method is now very simple using getSchema() to grab the feature type of the datastore.</p>
+<p>The <strong>buildFeatureType()</strong> method is now very simple using <strong>getSchema()</strong> to grab the feature type of the datastore.</p>
 <blockquote>
-<div><div class="highlight-java"><div class="highlight"><pre><span class="kd">protected</span> <span class="n">SimpleFeatureType</span> <span class="nf">buildFeatureType</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+<div><div class="highlight-java"><div class="highlight"><pre>    <span class="kd">protected</span> <span class="n">SimpleFeatureType</span> <span class="nf">buildFeatureType</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
         <span class="k">return</span> <span class="n">getDataStore</span><span class="o">().</span><span class="na">getSchema</span><span class="o">();</span>
-<span class="o">}</span>
+    <span class="o">}</span>
 </pre></div>
 </div>
 </div></blockquote>
 </div>
 <div class="section" id="csvfilestate">
 <h2>CSVFileState<a class="headerlink" href="#csvfilestate" title="Permalink to this headline">¶</a></h2>
-<p>The CSVFileState is a new class to assist with File manipulation in our CSVDataStore. It will hold some information about our .csv file and allow it to be opened for reading.</p>
+<p>The CSVFileState is a new class to assist with File manipulation in our CSVDataStore. It will hold some information about our <code class="file docutils literal"><span class="pre">.csv</span></code> file and allow it to be opened for reading.</p>
 <blockquote>
 <div><div class="highlight-java"><div class="highlight"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CSVFileState</span> <span class="o">{</span>
 
@@ -597,7 +608,7 @@
 </div></blockquote>
 <p>The class opens the file for reading, ensures it is the correct CSV format, and gives back a CSVReader to read the file through a stream.</p>
 <blockquote>
-<div><div class="highlight-java"><div class="highlight"><pre><span class="kd">public</span> <span class="n">CsvReader</span> <span class="nf">openCSVReader</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+<div><div class="highlight-java"><div class="highlight"><pre>    <span class="kd">public</span> <span class="n">CsvReader</span> <span class="nf">openCSVReader</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
         <span class="n">Reader</span> <span class="n">reader</span><span class="o">;</span>
         <span class="k">if</span> <span class="o">(</span><span class="n">file</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
             <span class="n">reader</span> <span class="o">=</span> <span class="k">new</span> <span class="n">BufferedReader</span><span class="o">(</span><span class="k">new</span> <span class="n">FileReader</span><span class="o">(</span><span class="n">file</span><span class="o">));</span>
@@ -608,13 +619,14 @@
         <span class="k">if</span> <span class="o">(!</span><span class="n">csvReader</span><span class="o">.</span><span class="na">readHeaders</span><span class="o">())</span> <span class="o">{</span>
             <span class="k">throw</span> <span class="k">new</span> <span class="n">IOException</span><span class="o">(</span><span class="s">&quot;Error reading csv headers&quot;</span><span class="o">);</span>
         <span class="o">}</span>
-<span class="k">return</span> <span class="n">csvReader</span><span class="o">;</span>
+        <span class="k">return</span> <span class="n">csvReader</span><span class="o">;</span>
+    <span class="o">}</span>
 </pre></div>
 </div>
 </div></blockquote>
-<p>The readCSVHeaders() and getCSVHeaders() methods grab the headers from the file (thus, leaving just the data).</p>
+<p>The <strong>readCSVHeaders()</strong> and <strong>getCSVHeaders()</strong> methods grab the headers from the file (thus, leaving just the data).</p>
 <blockquote>
-<div><div class="highlight-java"><div class="highlight"><pre><span class="kd">public</span> <span class="n">String</span><span class="o">[]</span> <span class="nf">getCSVHeaders</span><span class="o">()</span> <span class="o">{</span>
+<div><div class="highlight-java"><div class="highlight"><pre>    <span class="kd">public</span> <span class="n">String</span><span class="o">[]</span> <span class="nf">getCSVHeaders</span><span class="o">()</span> <span class="o">{</span>
         <span class="k">if</span> <span class="o">(</span><span class="n">headers</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
             <span class="kd">synchronized</span> <span class="o">(</span><span class="k">this</span><span class="o">)</span> <span class="o">{</span>
                 <span class="k">if</span> <span class="o">(</span><span class="n">headers</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
@@ -638,7 +650,6 @@
             <span class="o">}</span>
         <span class="o">}</span>
     <span class="o">}</span>
-<span class="o">}</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -660,11 +671,9 @@
 </div>
 <div class="section" id="abstractcsvstrategy">
 <h2>AbstractCSVStrategy<a class="headerlink" href="#abstractcsvstrategy" title="Permalink to this headline">¶</a></h2>
-<p>The AbstractCSVStrategy defines an abstract class which can be subclassed into specific strategies. The strategy objects are used by the CSVDataStore to determine how certain methods will operate; by passing the strategy objects into the CSVDataStore, their implementation is utilized. This is the basic concept of the strategy design pattern. Through this design, we can continue extending the abilities of the CSVDataStore in the future much more easily. It will simply require specifiying a new Strategy class.</p>
+<p>The AbstractCSVStrategy defines an abstract class which can be subclassed into specific strategies. The strategy objects are used by the CSVDataStore to determine how certain methods will operate: by passing the strategy objects into the CSVDataStore, their implementation is utilized. This is the basic concept of the strategy design pattern. Through this design, we can continue extending the abilities of the CSVDataStore in the future much more easily. It will simply require specifiying a new Strategy class.</p>
 <blockquote>
-<div><div class="highlight-java"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">org.opengis.feature.simple.SimpleFeatureType</span><span class="o">;</span>
-
-<span class="kd">public</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">AbstractCSVStrategy</span> <span class="kd">implements</span> <span class="n">CSVStrategy</span> <span class="o">{</span>
+<div><div class="highlight-java"><div class="highlight"><pre><span class="kd">public</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">AbstractCSVStrategy</span> <span class="kd">implements</span> <span class="n">CSVStrategy</span> <span class="o">{</span>
 
     <span class="kd">protected</span> <span class="kd">final</span> <span class="n">CSVFileState</span> <span class="n">csvFileState</span><span class="o">;</span>
 
@@ -677,9 +686,9 @@
 </pre></div>
 </div>
 </div></blockquote>
-<p>The class defines some of the CSVStrategy&#8217;s methods as well as adding one more for subclasses to define - buildFeatureType(). So in the end, subclasses of AbstractCSVStrategy will need to implement createFeature() and buildFeatureType(), while getFeatureType() and iterator() are provided for them.</p>
+<p>The class defines some of the CSVStrategy&#8217;s methods as well as adding one more for subclasses to define - <strong>buildFeatureType()</strong>. So in the end, subclasses of AbstractCSVStrategy will need to implement <strong>createFeature(String recordId, String[] csvRecord)</strong> and <strong>buildFeatureType()</strong>, while <strong>getFeatureType()</strong> and <strong>iterator()</strong> are provided for them.</p>
 <blockquote>
-<div><div class="highlight-java"><div class="highlight"><pre><span class="kd">protected</span> <span class="kd">abstract</span> <span class="n">SimpleFeatureType</span> <span class="nf">buildFeatureType</span><span class="o">();</span>
+<div><div class="highlight-java"><div class="highlight"><pre>    <span class="kd">protected</span> <span class="kd">abstract</span> <span class="n">SimpleFeatureType</span> <span class="nf">buildFeatureType</span><span class="o">();</span>
 
     <span class="nd">@Override</span>
     <span class="kd">public</span> <span class="n">SimpleFeatureType</span> <span class="nf">getFeatureType</span><span class="o">()</span> <span class="o">{</span>
@@ -705,7 +714,7 @@
 </div>
 <div class="section" id="csvattributesonlystrategy">
 <h2>CSVAttributesOnlyStrategy<a class="headerlink" href="#csvattributesonlystrategy" title="Permalink to this headline">¶</a></h2>
-<p>The CSVAttributesOnlyStrategy is the simplest implementation; it simply directly reads the file and obtains the values as attributes for the feature. The feature type is built using helper methods from a support class which will be visited later. The headers from the .csv file are read in as attributes for this feature. Each header heads a single column, and in each row values populate each of these attributes. The csvRecord parameter contains one line of data read in from the file, and each String is mapped to its attribute. The SimpleFeatureBuilder utility class uses all the data to build this feature.</p>
+<p>The CSVAttributesOnlyStrategy is the simplest implementation. It directly reads the file and obtains the values as attributes for the feature. The feature type is built using helper methods from a support class which will be visited later. The headers from the <code class="file docutils literal"><span class="pre">.csv</span></code> file are read in as attributes for this feature. Each header is an attribute defined in that column, and each row provides the values for all the attributes of one feature. The csvRecord parameter contains one line of data read in from the file, and each String is mapped to its attribute. The SimpleFeatureBuilder utility class uses all the data to build this feature.</p>
 <blockquote>
 <div><div class="highlight-java"><div class="highlight"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CSVAttributesOnlyStrategy</span> <span class="kd">extends</span> <span class="n">AbstractCSVStrategy</span> <span class="kd">implements</span> <span class="n">CSVStrategy</span> <span class="o">{</span>
 
@@ -801,7 +810,7 @@
 </div></blockquote>
 <p>When creating the feature, we check to see if we&#8217;re in the Latitude column and take it as our y value, and check to see if we&#8217;re in the Longitude column and take it as our x value. If we found Lat/Lon columns, we convert the x and y into a Point geometry and pass it to our feature builder. The atrribute name is predefined to be &#8220;locations&#8221; for the Geometry Column.</p>
 <blockquote>
-<div><div class="highlight-java"><div class="highlight"><pre><span class="nd">@Override</span>
+<div><div class="highlight-java"><div class="highlight"><pre>    <span class="nd">@Override</span>
     <span class="kd">public</span> <span class="n">SimpleFeature</span> <span class="nf">createFeature</span><span class="o">(</span><span class="n">String</span> <span class="n">recordId</span><span class="o">,</span> <span class="n">String</span><span class="o">[]</span> <span class="n">csvRecord</span><span class="o">)</span> <span class="o">{</span>
         <span class="n">SimpleFeatureType</span> <span class="n">featureType</span> <span class="o">=</span> <span class="n">getFeatureType</span><span class="o">();</span>
         <span class="n">SimpleFeatureBuilder</span> <span class="n">builder</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SimpleFeatureBuilder</span><span class="o">(</span><span class="n">featureType</span><span class="o">);</span>
@@ -840,7 +849,6 @@
         <span class="k">return</span> <span class="s">&quot;lon&quot;</span><span class="o">.</span><span class="na">equalsIgnoreCase</span><span class="o">(</span><span class="n">s</span><span class="o">)</span> <span class="o">||</span> <span class="s">&quot;lng&quot;</span><span class="o">.</span><span class="na">equalsIgnoreCase</span><span class="o">(</span><span class="n">s</span><span class="o">)</span> <span class="o">||</span> <span class="s">&quot;long&quot;</span><span class="o">.</span><span class="na">equalsIgnoreCase</span><span class="o">(</span><span class="n">s</span><span class="o">)</span>
                 <span class="o">||</span> <span class="s">&quot;longitude&quot;</span><span class="o">.</span><span class="na">equalsIgnoreCase</span><span class="o">(</span><span class="n">s</span><span class="o">);</span>
     <span class="o">}</span>
-<span class="o">}</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -935,7 +943,7 @@
 </div>
 <div class="section" id="csvspecifiedwktstrategy">
 <h2>CSVSpecifiedWKTStrategy<a class="headerlink" href="#csvspecifiedwktstrategy" title="Permalink to this headline">¶</a></h2>
-<p>CSVSpecifiedWKTStrategy is the strategy used for a Well-Known-Text (WKT) format. Similar to the CSVSpecifiedLatLngStrategy, a specified WKT must be passed to the strategy, and it used to parse for the WKT. If found, it attaches the Geometry class to the WKT in the header.</p>
+<p>CSVSpecifiedWKTStrategy is the strategy used for a Well-Known-Text (WKT) format. Similar to the CSVSpecifiedLatLngStrategy, a specified WKT must be passed to the strategy to be used to parse for the WKT. If found, it attaches the Geometry class to the WKT in the header.</p>
 <blockquote>
 <div><div class="highlight-java"><div class="highlight"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CSVSpecifiedWKTStrategy</span> <span class="kd">extends</span> <span class="n">AbstractCSVStrategy</span> <span class="kd">implements</span> <span class="n">CSVStrategy</span> <span class="o">{</span>
 
@@ -955,13 +963,15 @@
             <span class="n">builder</span><span class="o">.</span><span class="na">remove</span><span class="o">(</span><span class="n">wktField</span><span class="o">);</span>
             <span class="n">builder</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">wktField</span><span class="o">,</span> <span class="n">Geometry</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
         <span class="o">}</span>
-<span class="k">return</span> <span class="n">builder</span><span class="o">.</span><span class="na">buildFeatureType</span><span class="o">();</span>
+        <span class="k">return</span> <span class="n">builder</span><span class="o">.</span><span class="na">buildFeatureType</span><span class="o">();</span>
+    <span class="o">}</span>
 </pre></div>
 </div>
 </div></blockquote>
 <p>In creating a feature, the line is parsed for the WKT field specified before, and if found, attempts to read a Geometry object from the file. If for some reason the field is unparseable, it will just be set to a null value. The builder utility will then build this feature after the line has been fully read.</p>
 <blockquote>
-<div><div class="highlight-java"><div class="highlight"><pre><span class="kd">public</span> <span class="n">SimpleFeature</span> <span class="nf">createFeature</span><span class="o">(</span><span class="n">String</span> <span class="n">recordId</span><span class="o">,</span> <span class="n">String</span><span class="o">[]</span> <span class="n">csvRecord</span><span class="o">)</span> <span class="o">{</span>
+<div><div class="highlight-java"><div class="highlight"><pre>    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="n">SimpleFeature</span> <span class="nf">createFeature</span><span class="o">(</span><span class="n">String</span> <span class="n">recordId</span><span class="o">,</span> <span class="n">String</span><span class="o">[]</span> <span class="n">csvRecord</span><span class="o">)</span> <span class="o">{</span>
         <span class="n">SimpleFeatureType</span> <span class="n">featureType</span> <span class="o">=</span> <span class="n">getFeatureType</span><span class="o">();</span>
         <span class="n">SimpleFeatureBuilder</span> <span class="n">builder</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SimpleFeatureBuilder</span><span class="o">(</span><span class="n">featureType</span><span class="o">);</span>
         <span class="n">GeometryDescriptor</span> <span class="n">geometryDescriptor</span> <span class="o">=</span> <span class="n">featureType</span><span class="o">.</span><span class="na">getGeometryDescriptor</span><span class="o">();</span>
@@ -989,15 +999,13 @@
         <span class="o">}</span>
         <span class="k">return</span> <span class="n">builder</span><span class="o">.</span><span class="na">buildFeature</span><span class="o">(</span><span class="n">csvFileState</span><span class="o">.</span><span class="na">getTypeName</span><span class="o">()</span> <span class="o">+</span> <span class="s">&quot;-&quot;</span> <span class="o">+</span> <span class="n">recordId</span><span class="o">);</span>
     <span class="o">}</span>
-
-<span class="o">}</span>
 </pre></div>
 </div>
 </div></blockquote>
 </div>
 <div class="section" id="csvstrategysupport">
 <h2>CSVStrategySupport<a class="headerlink" href="#csvstrategysupport" title="Permalink to this headline">¶</a></h2>
-<p>The support class commonly used by all the strategy objects is CSVStrategySupport. It provides helper methods common to most strategies but that are not themselves a part of creating a strategy (and so do not belong in AbstractCSVStrategy). The createBuilder() methods are helpers that set some of the common portions for the SimpleFeatureBuilder utility object, such as the type name, coordinate reference system, namespace URI, and then the column headers.</p>
+<p>The support class commonly used by all the strategy objects is CSVStrategySupport. It provides helper methods common to most strategies but that are not themselves a part of creating a strategy (and so do not belong in AbstractCSVStrategy). The <strong>createBuilder()</strong> methods are helpers that set some of the common portions for the SimpleFeatureBuilder utility object, such as the type name, coordinate reference system, namespace URI, and then the column headers.</p>
 <blockquote>
 <div><div class="highlight-java"><div class="highlight"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CSVStrategySupport</span> <span class="o">{</span>
 
@@ -1036,9 +1044,9 @@
 </pre></div>
 </div>
 </div></blockquote>
-<p>findMostSpecificTypesFromData() attempts to find the type of the data being read. It attempts to read it as an Integer first, and if the format is incorrect, it tries a Double next, and if the format is still incorrect, it just defaults to a String type.</p>
+<p>The <strong>findMostSpecificTypesFromData(CsvReader csvReader, String[] headers)</strong> method attempts to find the type of the data being read. It attempts to read it as an Integer first, and if the format is incorrect, it tries a Double next, and if the format is still incorrect, it just defaults to a String type.</p>
 <blockquote>
-<div><div class="highlight-java"><div class="highlight"><pre><span class="kd">public</span> <span class="kd">static</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Class</span><span class="o">&lt;?&gt;&gt;</span> <span class="n">findMostSpecificTypesFromData</span><span class="o">(</span><span class="n">CsvReader</span> <span class="n">csvReader</span><span class="o">,</span>
+<div><div class="highlight-java"><div class="highlight"><pre>    <span class="kd">public</span> <span class="kd">static</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Class</span><span class="o">&lt;?&gt;&gt;</span> <span class="n">findMostSpecificTypesFromData</span><span class="o">(</span><span class="n">CsvReader</span> <span class="n">csvReader</span><span class="o">,</span>
             <span class="n">String</span><span class="o">[]</span> <span class="n">headers</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
         <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Class</span><span class="o">&lt;?&gt;&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Class</span><span class="o">&lt;?&gt;&gt;();</span>
         <span class="c1">// start off assuming Integers for everything</span>
@@ -1085,7 +1093,6 @@
     <span class="kd">public</span> <span class="kd">static</span> <span class="kt">boolean</span> <span class="nf">isNumeric</span><span class="o">(</span><span class="n">Class</span><span class="o">&lt;?&gt;</span> <span class="n">clazz</span><span class="o">)</span> <span class="o">{</span>
         <span class="k">return</span> <span class="n">clazz</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="o">(</span><span class="n">clazz</span> <span class="o">==</span> <span class="n">Double</span><span class="o">.</span><span class="na">class</span> <span class="o">||</span> <span class="n">clazz</span> <span class="o">==</span> <span class="n">Integer</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
     <span class="o">}</span>
-<span class="o">}</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -1100,7 +1107,15 @@
     </div>
     <div class="related">
       <ul id="breadcrumbs">
+            <li class="right" style="margin-right: 10px">
+              <a href="../../library/index.html" title="Library"
+                 accesskey="N">next</a></li>
+            <li class="right" >
+              <a href="qa.html" title="Quality Assurance"
+                 accesskey="P">previous</a> |</li>
         <li><a href="../../index.html">GeoTools 13-SNAPSHOT User Guide</a> &raquo;</li>
+          <li><a href="../index.html" >Tutorials</a> &raquo;</li>
+          <li><a href="index.html" >ContentDataStore Tutorial</a> &raquo;</li>
         <li><a href="#">Strategy Patterns</a></li>
       </ul>
     </div> 

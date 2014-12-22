@@ -11,7 +11,7 @@ Since this tutorial has been written the result has been broken out into a disti
 Unsupported Module
 ^^^^^^^^^^^^^^^^^^
 
-Good tutorials do not just teach, they get pressed into production. The CSVDataStore outlined in the original tutorial was forked into geoserver with some modifications. You can see the strategy page for details on the changes. The original tutorial code is still available here:
+Good tutorials do not just teach, they get pressed into production. The CSVDataStore outlined in the original tutorial was forked into geoserver with some modifications. You can see the :doc:`strategy page </tutorial/datastore/strategy>` for details on the changes. The original tutorial code is still available here:
 
 * :download:`CSVDataStore.java </../src/main/java/org/geotools/tutorial/csv2/CSVDataStore.java>`
 * :download:`CSVDataStoreFactory.java </../src/main/java/org/geotools/tutorial/csv2/CSVDataStoreFactory.java>`

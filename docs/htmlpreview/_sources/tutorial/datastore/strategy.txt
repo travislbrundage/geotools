@@ -32,13 +32,13 @@ CSVDataStore now uses a CSVStrategy and CSVFileState. The CSVFileState holds inf
       :start-after: import org.opengis.filter.Filter;
       :end-before: public Name getTypeName() {
 
-Using the CSVFileState to do work for us, the createTypeNames() method is much simpler.
+Using the CSVFileState to do work for us, the **createTypeNames()** method is much simpler.
 
    .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVDataStore.java
       :language: java
       :lines: 40-47
 
-CSVDataStore now implements the FileDataStore interface to ensure a standard for operations which are performed by File DataStores. As such, it must override its methods. Note the use of the CSVStrategy in order to determine the schema; depending on the strategy defined, the schema for this store will be different. For this implementation, the CSVDataStore is read only, so the write methods throw a new UnsupportedOperationException.
+CSVDataStore now implements the FileDataStore interface to ensure a standard for operations which are performed by FileDataStores. As such, it must override its methods. Note the use of the CSVStrategy in order to determine the schema. Depending on the strategy defined, the schema for this store will be different. For this implementation, the CSVDataStore is read only, so the write methods throw a new UnsupportedOperationException.
 
    .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVDataStore.java
       :language: java
@@ -47,7 +47,7 @@ CSVDataStore now implements the FileDataStore interface to ensure a standard for
 CSVDataStoreFactory
 ^^^^^^^^^^^^^^^^^^^
 
-The new architecture with the added strategy objects expands the CSVDataStoreFactory's capabilities; it comprises of more Param fields now.
+The new architecture with the added strategy objects expands the CSVDataStoreFactory's capabilities. It comprises of more Param fields now.
 
    .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVDataStoreFactory.java
       :language: java
@@ -60,19 +60,19 @@ Much of the class's structure is improved to be more compartmentalized. The meta
       :language: java
       :lines: 55-68
 
-isAvailable() just attempts to read the class, and if it succeeds, returns true.
+The method **isAvailable()** just attempts to read the class, and if it succeeds, returns true.
 
    .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVDataStoreFactory.java
       :language: java
       :lines: 99-107
 
-The canProcess() method was made more tolerant, now accepting URL and File params through the fileFromParams() method. It will try File first, then URL before giving up.
+The **canProcess(Map<String, Serializable> params)** method was made more tolerant, now accepting URL and File params through the **fileFromParams(Map<String, Serializable> params)** method. It will try File first, then URL before giving up.
 
    .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVDataStoreFactory.java
       :language: java
       :lines: 70-97
 
-Finally, the different strategies are implemented in the createDataStoreFromFile() method. The method is overloaded to make some parameters optional, which the class will then fill in for us.
+Finally, the different strategies are implemented in the **createDataStoreFromFile()** method. The method is overloaded to make some parameters optional, which the class will then fill in for us.
 
    .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVDataStoreFactory.java
       :language: java
@@ -113,41 +113,34 @@ CSVFeatureSource retains the same basic structure, but the code is assisted by t
       :start-after: import org.opengis.feature.simple.SimpleFeatureType;
       :end-before: public CSVDataStore getDataStore() {
 
-The getBoundsInternal() method is now implemented by making use of the methods provdied by ContentFeatureSource. A new ReferencedEnvelope is created to store the bounds for this feature source. It uses the feature type (getSchema()) to determine the CRS (getCoordinateReferenceSystem()) - this information is used to correctly construct the bounds for the feature. The FeatureReader is now created by using the Query and CSVStrategy - the getReader() method calls getReaderInternal() which shows how it is created. Finally, using the reader, the features are cycled through and included in the bounds in order to calculate the bounds for this entire datastore.
+The **getBoundsInternal(Query query)** method is now implemented by making use of the methods provdied by ContentFeatureSource. A new ReferencedEnvelope is created to store the bounds for this feature source. It uses the feature type (**getSchema()**) to determine the CRS (**getCoordinateReferenceSystem()**) - this information is used to construct the bounds for the feature. The FeatureReader is now created by using the Query and CSVStrategy - the **getReader()** method calls **getReaderInternal(Query query)** which shows how it is created. Finally, using the reader, the features are cycled through and included in the bounds in order to calculate the bounds for this entire datastore.
 
    .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVFeatureSource.java
       :language: java
       :lines: 41-54
 
-The getReaderInternal() method now utilizes the strategy of the CSVDataStore rather than state to reflect the changes to the CSVFeatureReader design.
+The **getReaderInternal(Query query)** method now utilizes the strategy of the CSVDataStore rather than state to reflect the changes to the CSVFeatureReader design.
 
    .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVFeatureSource.java
       :language: java
-      :prepend: protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
-      :start-after: protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
-      :end-before: protected SimpleFeatureType buildFeatureType() throws IOException {
+      :lines: 69-73
 
-getCountInternal() uses the same idea as getBoundsInternal() - it now utilizes the Query and CSVStrategy to obtain a FeatureReader, then simply counts them.
+The **getCountInternal(Query query)** method uses the same idea as **getBoundsInternal(Query query)** - it now utilizes the Query and CSVStrategy to obtain a FeatureReader, then simply counts them.
 
    .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVFeatureSource.java
       :language: java
-      :prepend: protected int getCountInternal(Query query) throws IOException {
-      :start-after: protected int getCountInternal(Query query) throws IOException {
-      :end-before: protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
+      :lines: 56-67
 
-The buildFeatureType() method is now very simple using getSchema() to grab the feature type of the datastore.
+The **buildFeatureType()** method is now very simple using **getSchema()** to grab the feature type of the datastore.
 
    .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVFeatureSource.java
       :language: java
-      :prepend: protected SimpleFeatureType buildFeatureType() throws IOException {
-      :start-after: protected SimpleFeatureType buildFeatureType() throws IOException {
-      :end-before: }
-      :append: }
+      :lines: 75-77
 
 CSVFileState
 ^^^^^^^^^^^^
 
-The CSVFileState is a new class to assist with File manipulation in our CSVDataStore. It will hold some information about our .csv file and allow it to be opened for reading.
+The CSVFileState is a new class to assist with File manipulation in our CSVDataStore. It will hold some information about our :file:`.csv` file and allow it to be opened for reading.
 
    .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVFileState.java
       :language: java
@@ -158,17 +151,13 @@ The class opens the file for reading, ensures it is the correct CSV format, and 
 
    .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVFileState.java
       :language: java
-      :prepend: public CsvReader openCSVReader() throws IOException {
-      :start-after: public CsvReader openCSVReader() throws IOException {
-      :end-before: return csvReader;
-      :append: return csvReader;
+      :lines: 94-106
 
-The readCSVHeaders() and getCSVHeaders() methods grab the headers from the file (thus, leaving just the data).
+The **readCSVHeaders()** and **getCSVHeaders()** methods grab the headers from the file (thus, leaving just the data).
 
    .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVFileState.java
       :language: java
-      :prepend: public String[] getCSVHeaders() {
-      :start-after: public String[] getCSVHeaders() {
+      :lines: 108-131
 
 CSVStrategy
 ^^^^^^^^^^^
@@ -182,25 +171,23 @@ CSVStrategy is a basic interface which defines our strategy pattern for the CSVD
 AbstractCSVStrategy
 ^^^^^^^^^^^^^^^^^^^
 
-The AbstractCSVStrategy defines an abstract class which can be subclassed into specific strategies. The strategy objects are used by the CSVDataStore to determine how certain methods will operate; by passing the strategy objects into the CSVDataStore, their implementation is utilized. This is the basic concept of the strategy design pattern. Through this design, we can continue extending the abilities of the CSVDataStore in the future much more easily. It will simply require specifiying a new Strategy class.
+The AbstractCSVStrategy defines an abstract class which can be subclassed into specific strategies. The strategy objects are used by the CSVDataStore to determine how certain methods will operate: by passing the strategy objects into the CSVDataStore, their implementation is utilized. This is the basic concept of the strategy design pattern. Through this design, we can continue extending the abilities of the CSVDataStore in the future much more easily. It will simply require specifiying a new Strategy class.
 
    .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/parse/AbstractCSVStrategy.java
       :language: java
-      :prepend: import org.opengis.feature.simple.SimpleFeatureType;
       :start-after: import org.opengis.feature.simple.SimpleFeatureType;
       :end-before: protected abstract SimpleFeatureType buildFeatureType();
 
-The class defines some of the CSVStrategy's methods as well as adding one more for subclasses to define - buildFeatureType(). So in the end, subclasses of AbstractCSVStrategy will need to implement createFeature() and buildFeatureType(), while getFeatureType() and iterator() are provided for them.
+The class defines some of the CSVStrategy's methods as well as adding one more for subclasses to define - **buildFeatureType()**. So in the end, subclasses of AbstractCSVStrategy will need to implement **createFeature(String recordId, String[] csvRecord)** and **buildFeatureType()**, while **getFeatureType()** and **iterator()** are provided for them.
 
    .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/parse/AbstractCSVStrategy.java
       :language: java
-      :prepend: protected abstract SimpleFeatureType buildFeatureType();
-      :start-after: protected abstract SimpleFeatureType buildFeatureType();
+      :start-after: }
 
 CSVAttributesOnlyStrategy
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-The CSVAttributesOnlyStrategy is the simplest implementation; it simply directly reads the file and obtains the values as attributes for the feature. The feature type is built using helper methods from a support class which will be visited later. The headers from the .csv file are read in as attributes for this feature. Each header heads a single column, and in each row values populate each of these attributes. The csvRecord parameter contains one line of data read in from the file, and each String is mapped to its attribute. The SimpleFeatureBuilder utility class uses all the data to build this feature. 
+The CSVAttributesOnlyStrategy is the simplest implementation. It directly reads the file and obtains the values as attributes for the feature. The feature type is built using helper methods from a support class which will be visited later. The headers from the :file:`.csv` file are read in as attributes for this feature. Each header is an attribute defined in that column, and each row provides the values for all the attributes of one feature. The csvRecord parameter contains one line of data read in from the file, and each String is mapped to its attribute. The SimpleFeatureBuilder utility class uses all the data to build this feature. 
 
    .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/parse/CSVAttributesOnlyStrategy.java
       :language: java
@@ -220,8 +207,7 @@ When creating the feature, we check to see if we're in the Latitude column and t
 
    .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/parse/CSVLatLonStrategy.java
       :language: java
-      :prepend: @Override
-      :start-after: @Override
+      :lines: 74-112
 
 CSVSpecifiedLatLngStrategy
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -236,35 +222,31 @@ The CSVSpecifiedLatLngStrategy behaves similarly to the CSVLatLonStrategy class 
 CSVSpecifiedWKTStrategy
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-CSVSpecifiedWKTStrategy is the strategy used for a Well-Known-Text (WKT) format. Similar to the CSVSpecifiedLatLngStrategy, a specified WKT must be passed to the strategy, and it used to parse for the WKT. If found, it attaches the Geometry class to the WKT in the header.
+CSVSpecifiedWKTStrategy is the strategy used for a Well-Known-Text (WKT) format. Similar to the CSVSpecifiedLatLngStrategy, a specified WKT must be passed to the strategy to be used to parse for the WKT. If found, it attaches the Geometry class to the WKT in the header.
 
    .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/parse/CSVSpecifiedWKTStrategy.java
       :language: java
-      :start-after: import com.vividsolutions.jts.io.WKTReader;
-      :end-before: return builder.buildFeatureType();
-      :append: return builder.buildFeatureType();
+      :lines: 22-41
 
 In creating a feature, the line is parsed for the WKT field specified before, and if found, attempts to read a Geometry object from the file. If for some reason the field is unparseable, it will just be set to a null value. The builder utility will then build this feature after the line has been fully read.
 
    .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/parse/CSVSpecifiedWKTStrategy.java
       :language: java
-      :prepend: public SimpleFeature createFeature(String recordId, String[] csvRecord) {
-      :start-after: public SimpleFeature createFeature(String recordId, String[] csvRecord) {
+      :lines: 43-71
 
 
 CSVStrategySupport
 ^^^^^^^^^^^^^^^^^^
 
-The support class commonly used by all the strategy objects is CSVStrategySupport. It provides helper methods common to most strategies but that are not themselves a part of creating a strategy (and so do not belong in AbstractCSVStrategy). The createBuilder() methods are helpers that set some of the common portions for the SimpleFeatureBuilder utility object, such as the type name, coordinate reference system, namespace URI, and then the column headers.
+The support class commonly used by all the strategy objects is CSVStrategySupport. It provides helper methods common to most strategies but that are not themselves a part of creating a strategy (and so do not belong in AbstractCSVStrategy). The **createBuilder()** methods are helpers that set some of the common portions for the SimpleFeatureBuilder utility object, such as the type name, coordinate reference system, namespace URI, and then the column headers.
 
    .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/parse/CSVStrategySupport.java
       :language: java
       :start-after: import com.csvreader.CsvReader;
       :end-before: public static Map<String, Class<?>> findMostSpecificTypesFromData(CsvReader csvReader,
 
-findMostSpecificTypesFromData() attempts to find the type of the data being read. It attempts to read it as an Integer first, and if the format is incorrect, it tries a Double next, and if the format is still incorrect, it just defaults to a String type.
+The **findMostSpecificTypesFromData(CsvReader csvReader, String[] headers)** method attempts to find the type of the data being read. It attempts to read it as an Integer first, and if the format is incorrect, it tries a Double next, and if the format is still incorrect, it just defaults to a String type.
 
    .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/parse/CSVStrategySupport.java
       :language: java
-      :prepend: public static Map<String, Class<?>> findMostSpecificTypesFromData(CsvReader csvReader,
-      :start-after: public static Map<String, Class<?>> findMostSpecificTypesFromData(CsvReader csvReader,
+      :lines: 54-100
