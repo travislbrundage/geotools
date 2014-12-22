@@ -7,7 +7,7 @@
  * free to do whatever they wish with this file. Use it well and enjoy!
  */
 // header start
-package org.geotools.tutorial.csv;
+package org.geotools.data.csv;
 
 import java.awt.RenderingHints.Key;
 import java.io.File;
@@ -15,10 +15,12 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.util.KVP;
+import org.geotools.util.logging.Logging;
 
 /**
  * Provide access to CSV Files.
@@ -61,8 +63,8 @@ public class CSVDataStoreFactory implements DataStoreFactorySpi {
     public synchronized boolean isAvailable() {
         if (isAvailable == null) {
             try {
-                Class cvsReaderType = Class.forName("com.csvreader.CsvReader");
-                isAvailable = true;
+                Class<?> cvsReaderType = Class.forName("com.csvreader.CsvReader");
+                isAvailable = cvsReaderType != null;
             } catch (ClassNotFoundException e) {
                 isAvailable = false;
             }
@@ -108,12 +110,17 @@ public class CSVDataStoreFactory implements DataStoreFactorySpi {
         File file = (File) FILE_PARAM.lookUp(params);
         return new CSVDataStore(file);
     }
-
     // createDataStore end
-
+    
+    private static final Logger LOGGER = Logging.getLogger("org.geotools.data.csv");
+    
     // createNewDataStore start
     public DataStore createNewDataStore(Map<String, Serializable> params) throws IOException {
-        return null;
+        File file = (File) FILE_PARAM.lookUp(params);
+        if (file.exists() ){
+            LOGGER.warning("File already exsists: "+file);
+        }
+        return new CSVDataStore(file);
     }
     // createNewDataStore end
 
