@@ -6,7 +6,7 @@
  * This file is hereby placed into the Public Domain. This means anyone is
  * free to do whatever they wish with this file. Use it well and enjoy!
  */
-package org.geotools.data.csv;
+package org.geotools.tutorial.csv;
 
 import java.io.IOException;
 import java.util.NoSuchElementException;
@@ -24,11 +24,6 @@ import com.csvreader.CsvReader;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 
-/**
- * 
- *
- * @source $URL$
- */
 public class CSVFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {
     
     /** State used when reading file */
@@ -99,9 +94,6 @@ public class CSVFeatureReader implements FeatureReader<SimpleFeatureType, Simple
     public boolean hasNext() throws IOException {
         if( next != null ){
             return true;
-        }
-        else if (reader == null ){
-            return false;
         }
         else {
             next = readFeature(); // read next feature so we can check
