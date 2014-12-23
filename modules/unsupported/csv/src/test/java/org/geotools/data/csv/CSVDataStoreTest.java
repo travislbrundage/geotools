@@ -3,10 +3,12 @@
  * This code is licensed under the GPL 2.0 license, available at the root
  * application directory.
  */
-package org.geotools.data.csv;
+package org.geoserver.importer.csv;
 
+import static org.geoserver.importer.ImporterTestUtils.unpack;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.geoserver.importer.ImporterTestUtils.unpack;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,10 +19,9 @@ import java.util.List;
 
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureReader;
-import org.geotools.data.csv.parse.CSVLatLonStrategy;
-import org.geotools.test.TestData;
 import org.junit.Before;
 import org.junit.Test;
+import org.geoserver.importer.csv.parse.CSVLatLonStrategy;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
@@ -34,7 +35,7 @@ public class CSVDataStoreTest {
 
     @Before
     public void setUp() throws Exception {
-        URL resource = TestData.getResource(CSVDataStoreTest.class, "locations.csv");
+    	URL resource = DataUtilities.fileToURL(new File(unpack("csv/locations.zip"), "locations.csv"));
         assertNotNull("Failure finding locations csv file", resource);
         File file = DataUtilities.urlToFile(resource);
         CSVFileState csvFileState = new CSVFileState(file);
