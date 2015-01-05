@@ -17,7 +17,7 @@
   <groupId>org.geotools</groupId>
   <artifactId>gt-csv</artifactId>
   <packaging>jar</packaging>
-  <name>Example</name>
+  <name>CSV Data Store</name>
   <description>
     DataStore for CSV files; mostly used as a tutorial in how to write
     a datastore.
@@ -42,6 +42,16 @@
       <name>Lee Breisacher</name>
       <email>leebreisacher@verizon.net</email>
       <organization>n/a</organization>
+      <roles>
+        <role>Contributor</role>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>travisb</id>
+      <name>Travis Brundage</name>
+      <email>tbrundage@boundlessgeo.com</email>
+      <organization>Boundless</organization>
       <roles>
         <role>Contributor</role>
         <role>Java Developer</role>
