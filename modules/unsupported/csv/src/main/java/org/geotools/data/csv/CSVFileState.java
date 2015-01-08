@@ -18,19 +18,24 @@
 package org.geotools.data.csv;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.net.URI;
 
 import org.apache.commons.io.FilenameUtils;
 import org.geotools.referencing.CRS;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.csvreader.CsvReader;
+import com.csvreader.CsvWriter;
 
 public class CSVFileState {
 
@@ -140,5 +145,18 @@ public class CSVFileState {
                 csvReader.close();
             }
         }
+    }
+    
+    public CsvWriter openCSVWriter() throws IOException {
+    	Writer writer;
+        if (file != null) {
+            writer = new BufferedWriter(new FileWriter(file));
+        } else {
+        	StringWriter stringWriter = new StringWriter();
+        	stringWriter.write(dataInput);
+            writer = stringWriter;
+        }
+        CsvWriter csvWriter = new CsvWriter(writer, ',');
+        return csvWriter;
     }
 }
