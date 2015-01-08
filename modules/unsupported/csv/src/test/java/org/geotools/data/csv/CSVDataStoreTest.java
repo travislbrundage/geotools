@@ -7,8 +7,10 @@ package org.geotools.data.csv;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -19,7 +21,11 @@ import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Transaction;
+import org.geotools.data.Query;
 import org.geotools.data.csv.parse.CSVLatLonStrategy;
+import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.test.TestData;
 import org.junit.Before;
 import org.junit.Test;
@@ -97,81 +103,81 @@ public class CSVDataStoreTest {
         assertEquals("Unexpected numbers", expectedNumbers, numbers);
     }
     
-    //@Test
-    public void testWriteFeatures() throws IOException {
-    	// There's no filtering a CSV and transactions are atomic
-    	Filter filter = Filter.INCLUDE;
-    	Transaction transaction = Transaction.AUTO_COMMIT;
-    	
-    	// Test one: No filter
-    	FeatureWriter<SimpleFeatureType, SimpleFeature> writer = csvDataStore.getFeatureWriter(transaction);
-    	// Overwrite some of the locations.csv file?
-    	
-    	/*
-    	 * LAT, LON, CITY, NUMBER, YEAR
-    	 * 50, 100, Potato, 12, 2000
-		 * 10, 20, Tomato, 15, 1999
-    	 */
-    	
-    	// Make sure it actually was written
-    	testReadOne();
-    	// Test two: With filter, doesn't do anything though
-    	writer = csvDataStore.getFeatureWriter(filter, transaction);
-    	// Same test as previous
-    	// Rewrite some of the original file's contents back
-    	
-    	/*
-    	 * LAT, LON, CITY, NUMBER, YEAR
-		 * 46.066667, 11.116667, Trento, 140, 2002
-		 * 44.9441, -93.0852, St Paul, 125, 2003
-		 * 13.752222, 100.493889, Bangkok, 150, 2004
-		 * 45.420833, -75.69, Ottawa, 200, 2004
-		 * 44.9801, -93.251867, Minneapolis, 350, 2005
-    	 */
+    /**
+     * Test query with a start index
+     * @throws IOException
+     * @throws FileNotFoundException
+     */
+     @Test
+     public void testOffset() throws FileNotFoundException, IOException {
+         Query query = new Query(Query.ALL);
+         query.setStartIndex(3);
+         SimpleFeatureSource rows = csvDataStore.getFeatureSource();
+         SimpleFeatureCollection matches = rows.getFeatures(query);
+         List<String> offsetCities = Arrays.asList("Ottawa", "Minneapolis", "Lausanne", "Victoria", "Cape Town", "Sydney");
+         int count = 0;
+         SimpleFeatureIterator iter = matches.features();
+         while(iter.hasNext()) {
+             SimpleFeature f = iter.next();
+             assertTrue(offsetCities.contains(f.getAttribute("CITY")));
+             count++;
+         }
+         iter.close();
+         assertEquals(6, count);
+         assertEquals(6, matches.size());
+         assertEquals(6, rows.getCount(query));
     
-    	// Test three: Appending to the end of the file
-    	writer = csvDataStore.getFeatureWriterAppend(transaction);
-    	// add the remainder of the original content
-    }
     
-    // Make this less dumb
-    private boolean testReadOne() throws IOException {
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader = csvDataStore.getFeatureReader();
-        List<Coordinate> geometries = new ArrayList<Coordinate>();
-        List<String> cities = new ArrayList<String>();
-        List<String> numbers = new ArrayList<String>();
-
-        while (reader.hasNext()) {
-            SimpleFeature feature = reader.next();
-            Point geometry = (Point) feature.getDefaultGeometry();
-            geometries.add(geometry.getCoordinate());
-            cities.add(feature.getAttribute("CITY").toString());
-            numbers.add(feature.getAttribute("NUMBER").toString());
-        }
-
-        List<Coordinate> expectedCoordinates = makeExpectedCoordinates(46.066667, 11.116667,
-                44.9441, -93.0852, 13.752222, 100.493889, 45.420833, -75.69, 44.9801, -93.251867,
-                46.519833, 6.6335, 48.428611, -123.365556, -33.925278, 18.423889, -33.859972,
-                151.211111);
-        assertEquals("Unexpected coordinates", expectedCoordinates, geometries);
-
-        List<String> expectedCities = Arrays
-                .asList("Trento, St Paul, Bangkok, Ottawa, Minneapolis, Lausanne, Victoria, Cape Town, Sydney"
-                        .split(", "));
-        assertEquals("Unexecpted cities", expectedCities, cities);
-
-        List<String> expectedNumbers = Arrays.asList("140, 125, 150, 200, 350, 560, 721, 550, 436"
-                .split(", "));
-        assertEquals("Unexpected numbers", expectedNumbers, numbers);
-        
-    	return true;
-    }
+     }
     
-    private boolean testReadTwo() {
-    	return true;
-    }
+     /**
+     * Test query with maxFeatures
+     * @throws IOException
+     * @throws FileNotFoundException
+     */
+     @Test
+     public void testLimit() throws FileNotFoundException, IOException {
+         Query query = new Query(Query.ALL);
+         query.setMaxFeatures(3);
+         SimpleFeatureSource rows = csvDataStore.getFeatureSource();
+         SimpleFeatureCollection matches = rows.getFeatures(query);
+         List<String> limitCities = Arrays.asList("Trento", "St Paul", "Bangkok");
+         int count = 0;
+         SimpleFeatureIterator iter = matches.features();
+         while(iter.hasNext()) {
+             SimpleFeature f = iter.next();
+             assertTrue(limitCities.contains(f.getAttribute("CITY")));
+             count++;
+         }
+         iter.close();
+         assertEquals(3, count);
+         assertEquals(3, matches.size());
+         assertEquals(3, rows.getCount(query));
+     }
     
-    private boolean testReadThree() {
-    	return true;
-    }
+     /**
+     * Test query with maxFeatures and startIndex
+     * @throws IOException
+     * @throws FileNotFoundException
+     */
+     @Test
+     public void testLimitOffset() throws FileNotFoundException, IOException {
+         Query query = new Query(Query.ALL);
+         query.setMaxFeatures(3);
+         query.setStartIndex(3);
+         SimpleFeatureSource rows = csvDataStore.getFeatureSource();
+         SimpleFeatureCollection matches = rows.getFeatures(query);
+         List<String> limitCities = Arrays.asList("Ottawa", "Minneapolis", "Lausanne");
+         int count = 0;
+         SimpleFeatureIterator iter = matches.features();
+         while(iter.hasNext()) {
+             SimpleFeature f = iter.next();
+             assertTrue(limitCities.contains(f.getAttribute("CITY")));
+             count++;
+         }
+         iter.close();
+         assertEquals(3, count);
+         assertEquals(3, matches.size());
+         assertEquals(3, rows.getCount(query));
+     }
 }
