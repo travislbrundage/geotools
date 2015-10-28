@@ -129,5 +129,6 @@ public abstract class JDBCDateTest extends JDBCTestSupport {
         
         cal.setTime((java.util.Date) fa[0].getProperty("dt").getValue());
         assertEquals(ms, cal.getTimeInMillis());
+        writer.close();
     }
 }
