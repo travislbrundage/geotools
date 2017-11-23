@@ -38,7 +38,7 @@ public class VerticaTestSetup extends JDBCTestSetup {
     }
 
     @Override
-    protected Properties createExampleFixture() {
+    protected Properties createOfflineFixture() {
         Properties p = new Properties();
 
         p.put("driver", "com.vertica.jdbc.Driver");

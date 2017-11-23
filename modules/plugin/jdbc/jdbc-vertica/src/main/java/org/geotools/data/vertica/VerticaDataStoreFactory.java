@@ -31,9 +31,7 @@ public class VerticaDataStoreFactory extends JDBCDataStoreFactory {
 
     public String getDisplayName() { return "Vertica"; }
 
-    protected String getDriverClassName() {
-        return "com.vertica.jdbc.Driver";
-    }
+    protected String getDriverClassName() { return "com.vertica.jdbc.Driver"; }
 
     protected String getDatabaseID() {
         return (String) DBTYPE.sample;
