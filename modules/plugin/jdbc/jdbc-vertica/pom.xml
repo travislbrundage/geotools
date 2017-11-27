@@ -58,11 +58,4 @@
     <!-- =========================================================== -->
     <!--     Dependency Management                                   -->
     <!-- =========================================================== -->
-    <dependencies>
-        <dependency>
-            <groupId>com.vertica.jdbc</groupId>
-            <artifactId>Driver</artifactId>
-            <version>7.1.2-0</version>
-        </dependency>
-    </dependencies>
 </project>

@@ -26,7 +26,7 @@ public class VerticaDataStoreFactory extends JDBCDataStoreFactory {
     public static final Param PORT = new Param("port", Integer.class, "Port", true, 5433);
 
     protected SQLDialect createSQLDialect(JDBCDataStore dataStore) {
-        return new VerticaDialect(dataStore);
+        return new VerticaDialectBasic(dataStore);
     }
 
     public String getDisplayName() { return "Vertica"; }

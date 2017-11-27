@@ -27,11 +27,9 @@ public class VerticaBooleanTestSetup extends JDBCBooleanTestSetup {
     }
     @Override
     protected void createBooleanTable() throws Exception {
-        // TODO: Can AUTO_INCREMENT be combined in this way
-        // or do we need to add it to column afterwards?
-        run( "CREATE TABLE b (id INT AUTO_INCREMENT PRIMARY KEY, boolProperty BOOLEAN)");
-        run( "INSERT INTO b (boolProperty) VALUES (false)");
-        run( "INSERT INTO b (boolProperty) VALUES (true)");
+        run( "CREATE TABLE b (id INT PRIMARY KEY, boolProperty BOOLEAN)");
+        run( "INSERT INTO b (id, boolProperty) VALUES (1, false)");
+        run( "INSERT INTO b (id, boolProperty) VALUES (2, true)");
     }
 
     @Override

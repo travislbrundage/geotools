@@ -45,8 +45,8 @@ public class VerticaTestSetup extends JDBCTestSetup {
         p.put("url", "jdbc:vertica://localhost/geotools");
         p.put("host", "localhost");
         p.put("port", "5433");
-        p.put("user", "geotools");
-        p.put("password", "geotools");
+        p.put("user", "dbadmin");
+        p.put("password", "admin");
 
         return p;
     }
