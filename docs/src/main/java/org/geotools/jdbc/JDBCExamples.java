@@ -57,4 +57,18 @@ void postgisExample() throws IOException {
     DataStore dataStore=DataStoreFinder.getDataStore(params);
     // postgisExample end
 }
+
+void verticaExample() throws IOException {
+    // verticaExample start
+    java.util.Map params = new java.util.HashMap();
+    params.put(VerticaDataStoreFactory.DBTYPE.key, "vertica");
+    params.put(VerticaDataStoreFactory.HOST.key, "localhost");
+    params.put(VerticaDataStoreFactory.PORT.key, 5433);
+    params.put(VerticaDataStoreFactory.DATABASE.key, "database");
+    params.put(VerticaDataStoreFactory.USER.key, "geotools");
+    params.put(VerticaDataStoreFactory.PASSWD.key, "geotools");
+
+    DataStore dataStore=DataStoreFinder.getDataStore(params);
+    // verticaExample end
+}
 }

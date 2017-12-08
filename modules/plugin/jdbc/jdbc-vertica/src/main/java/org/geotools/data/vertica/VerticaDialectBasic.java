@@ -64,4 +64,10 @@ public class VerticaDialectBasic extends BasicSQLDialect {
     public FilterToSQL createFilterToSQL() {
         return new VerticaFilterToSQL();
     }
+
+    @Override
+    public Class<?> getMapping(ResultSet columnMetaData, Connection cx)
+            throws SQLException {
+        return delegate.getMapping(columnMetaData, cx);
+    }
 }

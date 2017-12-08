@@ -1,21 +1,20 @@
 package org.geotools.data.vertica;
 
-import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.*;
 import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKBReader;
 import com.vividsolutions.jts.io.WKTWriter;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.SQLDialect;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-
+import org.geotools.util.logging.Logging;
 import org.opengis.feature.type.GeometryDescriptor;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Delegate for {@link VerticaDialectBasic}
@@ -29,6 +28,7 @@ import java.sql.SQLException;
  * @source $URL$
  */
 public class VerticaDialect extends SQLDialect {
+    private static final Logger LOGGER = Logging.getLogger(VerticaDialect.class);
 
     public VerticaDialect( JDBCDataStore dataStore ) {
         super( dataStore );
@@ -45,6 +45,7 @@ public class VerticaDialect extends SQLDialect {
     @Override
     public Envelope decodeGeometryEnvelope(ResultSet rs, int column,
                                            Connection cx) throws SQLException, IOException {
+        // TODO: This might require similar logic to decodeGeometryValue
         byte[] wkb = rs.getBytes(column);
 
         try {
@@ -68,21 +69,104 @@ public class VerticaDialect extends SQLDialect {
         }
     }
 
-    // TODO: Fix
     @Override
     public Geometry decodeGeometryValue(GeometryDescriptor descriptor,
                                         ResultSet rs, String column, GeometryFactory factory, Connection cx)
             throws IOException, SQLException {
-        byte[] bytes = rs.getBytes(column);
-        if ( bytes == null ) {
-            return null;
-        }
+        // get the index and table name for WKB generation
+        int index = rs.findColumn(column);
+        ResultSetMetaData rsmd = rs.getMetaData();
+        String tableName = rsmd.getTableName(index);
+        LOGGER.log(Level.WARNING, "tableName just to be sure: " + tableName);
+
+        // Vertica requires a call to ST_AsBinary on the column
+        // to convert spatial data to WKB
+        Statement statement = null;
+        ResultSet result = null;
 
         try {
-            return new WKBReader(factory).read(bytes);
-        } catch (ParseException e) {
-            String msg = "Error decoding wkb";
-            throw (IOException) new IOException(msg).initCause(e);
+            String sqlStatement = "SELECT ST_AsBinary(" + column + ")" //
+                    + " FROM " + tableName;
+
+            statement = cx.createStatement();
+            result = statement.executeQuery(sqlStatement);
+            if (result.next()) {
+                byte[] bytes = result.getBytes(1);
+                if ( bytes == null ) {
+                    return null;
+                }
+
+                try {
+                    return new WKBReader(factory).read(bytes);
+                } catch (ParseException e) {
+                    String msg = "Error decoding wkb";
+                    throw (IOException) new IOException(msg).initCause(e);
+                }
+            }
+        } finally {
+            dataStore.closeSafe(result);
+            dataStore.closeSafe(statement);
+        }
+
+        return null;
+    }
+
+    String lookupGeometryType(ResultSet columnMetaData, Connection cx) throws SQLException {
+        // grab the information we need to proceed
+        String tableName = columnMetaData.getString("TABLE_NAME");
+        String columnName = columnMetaData.getString("COLUMN_NAME");
+
+        Statement statement = null;
+        ResultSet result = null;
+
+        try {
+            String sqlStatement = "SELECT ST_GeometryType(" + columnName + ")" //
+                    + " FROM " + tableName;
+
+            LOGGER.log(Level.FINE, "Geometry type check; {0} ", sqlStatement);
+            statement = cx.createStatement();
+            result = statement.executeQuery(sqlStatement);
+
+            if (result.next()) {
+                return result.getString(1);
+            }
+        } finally {
+            dataStore.closeSafe(result);
+            dataStore.closeSafe(statement);
+        }
+
+        return null;
+    }
+
+    @Override
+    public Class<?> getMapping(ResultSet columnMetaData, Connection cx)
+            throws SQLException {
+        String typeName = columnMetaData.getString("TYPE_NAME");
+
+        if("geometry".equalsIgnoreCase(typeName) || "geography".equalsIgnoreCase(typeName)) {
+            // determine the type held in the geometry column
+            String geomType = lookupGeometryType(columnMetaData, cx);
+            LOGGER.log(Level.WARNING, "geomType result from lookup: " + geomType);
+
+            if (geomType == "ST_Point") {
+                return Point.class;
+            } else if(geomType == "ST_MultiPoint") {
+                return MultiPoint.class;
+            } else if(geomType == "ST_Polygon") {
+                return Polygon.class;
+            } else if(geomType == "ST_MultiPolygon") {
+                return MultiPolygon.class;
+            } else if(geomType == "ST_LineString") {
+                return LineString.class;
+            } else if(geomType == "ST_MultiLineString") {
+                return MultiLineString.class;
+            } else if(geomType == "ST_GeometryCollection") {
+                return GeometryCollection.class;
+            } else {
+                return Geometry.class;
+            }
+        } else {
+            return super.getMapping(columnMetaData, cx);
         }
     }
 }
