@@ -1,0 +1,2 @@
+org.geotools.data.vertica.VerticaDataStoreFactory
+org.geotools.data.vertica.VerticaJNDIDataStoreFactory
